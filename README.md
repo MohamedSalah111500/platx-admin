@@ -1,4 +1,4 @@
-# platx -  Angular 13 Responsive Admin Dashboard Template 
+# platx -  Angular 17 Responsive Admin Dashboard  
 
 ## Development server
 
