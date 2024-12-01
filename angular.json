@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "platx": {
+    "platx-admin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -39,7 +39,7 @@
               "polylabel",
               "@ckeditor/ckeditor5-build-classic"
             ],
-            "outputPath": "dist/platx",
+            "outputPath": "dist/platx-admin",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
