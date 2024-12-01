@@ -1,0 +1,25 @@
+<!-- Upload button initially visible -->
+<div *ngIf="!selectedFile && !filePreview" class="upload-button">
+    <label for="fileInput" class="btn btn-light p-3 border-2 d-flex align-items-center justify-content-center">
+      <i class="bx bx-upload text-success font-size-20 mx-2"></i>
+      Upload Image
+    </label>
+    <input
+      type="file"
+      id="fileInput"
+      (change)="onFileSelected($event)"
+      accept="image/*"
+      hidden
+    />
+  </div>
+  
+  <!-- Preview bar visible when a file is selected -->
+  <div *ngIf="selectedFile || filePreview" class="preview-bar d-flex align-items-center">
+    @if (loading){
+      <div role="status" class="spinner-border text-primary m-1"><span  class="sr-only">Loading...</span></div>
+    }
+    <img [src]="filePreview" *ngIf="filePreview" alt="File" class="preview-img me-2" />
+    <span class="file-name">{{ selectedFile?.name }}</span>
+    <button (click)="removeFile()" class="btn btn-danger ms-auto">Delete</button>
+  </div>
+  

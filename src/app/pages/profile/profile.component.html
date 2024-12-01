@@ -1,0 +1,193 @@
+<div class="container-fluid">
+  <app-page-title
+    title="Profile"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  @if(loading){
+  <div class="spinner-border text-info m-1" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  } @if(profileData){
+  <div class="row">
+    <div class="col-xl-7">
+      <div class="card overflow-hidden">
+        <div class="bg-primary-subtle">
+          <div class="row">
+            <div class="col-7">
+              <div class="text-primary p-3">
+                <h5 class="text-primary">Welcome Back !</h5>
+                <p>It will seem like simplified</p>
+              </div>
+            </div>
+            <div class="col-5 align-self-end">
+              <img
+                src="assets/images/profile-img.png"
+                alt=""
+                class="img-fluid"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0 profile-block">
+          <div class="row">
+            <div class="col-sm-9">
+              <div class="avatar-md profile-user-wid mb-4">
+                @if(profileData?.profileImage){
+                <img
+                  src="{{ profileData.profileImage }}"
+                  alt=""
+                  class="img-thumbnail rounded-circle"
+                />
+                }@else {
+                <span class="profile-user-name">
+                  {{ profileData?.firstName.charAt(0).toUpperCase()
+                  }}{{ profileData?.lastName.charAt(0) }}
+                </span>
+                }
+              </div>
+              <h5 class="font-size-18 ">
+                {{ profileData.firstName }} {{ profileData.lastName }}
+                @if(type=="staff"){
+                <span class="text-muted mb-0 font-size-14"> - {{ profileData?.qualification?.name }}</span>
+              }
+              </h5>
+              @if(type=="staff"){
+              <p class="text-muted mb-0 font-size-12">
+                {{ profileData?.qualification?.description }}
+              </p>
+
+
+            }
+            </div>
+            <div class="col-sm-3 p-3">
+              <div class="d-flex align-items-center justify-content-end">
+              <button class="btn btn-light btn-sm d-flex align-items-center " (click)="editQualificationsModal?.show()">
+                Update  Info
+              <i class="mdi mdi-pencil font-size-16 mx-1"></i>
+            </button>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end card -->
+    </div>
+    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
+      @if(profileData){
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Personal Information</h4>
+          <div class="table-responsive">
+            <table class="table table-nowrap mb-0">
+              <tbody>
+                <tr>
+                  <th scope="row">Full Name :</th>
+                  <td>
+                    {{ profileData.firstName }} {{ profileData.lastName }}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Date Of Birth:</th>
+                  <td>{{ profileData.dateOfBirth }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Mobile :</th>
+                  <td>{{ profileData.phoneNumber }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">E-mail :</th>
+                  <td>{{ profileData.email }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Location :</th>
+                  <td>{{ profileData.address }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      }
+      <!-- end card -->
+    </div>
+@if(type=="staff"){
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h4 class="card-title">Experience</h4>
+
+          </div>
+          <div class="">
+            @if(profileData?.qualification?.qualificationExperiences){
+            <ul class="verti-timeline list-unstyled">
+              @for (experience of profileData?.qualification?.qualificationExperiences; track $index){
+              <li class="event-list"   [class.active]="experience.isPresent"  >
+                <div class="event-timeline-dot">
+                  <i class="bx bx-right-arrow-circle" [class.bx-fade-right]="experience.isPresent"></i>
+                </div>
+                <div class="d-flex">
+                  <div class="flex-grow-1">
+                    <div>
+                      <h5 class="font-size-15">
+                        <a class="text-primary font-size-18">{{experience.placeName}} - </a>
+                        <a class="text-dark"> {{experience.jobTitle}}</a>
+                      </h5>
+                      <span class="text-muted ">{{experience.startDate |  date:"MMM , yyyy"}} - {{experience.endDate | date:"MMM , yyyy"}}</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            }
+            </ul>
+          }@else{
+            <platx-empty-state type="emptyRecords" message="No Experience Found Add It Now !"></platx-empty-state>
+          }
+          </div>
+        </div>
+      </div>
+      <!-- end card -->
+    </div>
+  }
+    <div class="col-xl-8">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Revenue</h4>
+          <apx-chart
+            dir="ltr"
+            class="apex-charts"
+            [series]="revenueBarChart.series"
+            [chart]="revenueBarChart.chart"
+            [xaxis]="revenueBarChart.xaxis"
+            [colors]="revenueBarChart.colors"
+            [yaxis]="revenueBarChart.yaxis"
+            [dataLabels]="revenueBarChart.dataLabels"
+            [stroke]="revenueBarChart.stroke"
+            [plotOptions]="revenueBarChart.plotOptions"
+            [fill]="revenueBarChart.fill"
+          >
+          </apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+  <!-- end row -->
+</div>
+
+<div
+  bsModal
+  #editQualificationsModal="bs-modal"
+  class="modal fade modal-lg"
+  id="editQualificationsModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <platx-qualification-model
+    [title]="'Update Qualififcations'"
+    [profileId]="profileId"
+    [profileData]="profileData"
+    [model]="editQualificationsModal"
+    [hasQualification]="hasQualification"
+  ></platx-qualification-model>
+</div>

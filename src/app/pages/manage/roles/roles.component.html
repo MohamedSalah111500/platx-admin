@@ -1,0 +1,245 @@
+<div class="container-fluid">
+  <app-page-title
+    title="Roles"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="searchTableList"
+                    placeholder="Search..."
+                    [(ngModel)]="term"
+                    (ngModelChange)="search()"
+                  />
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button
+                  type="button"
+                  data-bs-toggle="modal"
+                  (click)="newContactModal.show()"
+                  class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"
+                >
+                  <i class="mdi mdi-plus me-1"></i> Add New
+                </button>
+              </div>
+            </div>
+            <!-- end col-->
+          </div>
+          <!-- end row -->
+          <div class="table-responsive">
+            <table
+              class="table align-middle table-nowrap table-hover dt-responsive nowrap w-100"
+              id="userList-table"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th scope="col" style="width: 40px">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Creation Time</th>
+                  <th scope="col">Last Update</th>
+                  <th scope="col" style="width: 100px">Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @if(!loading){ @for (item of list; track item; let i = $index) {
+                <tr>
+                  <td>{{ i + 1 + (page - 1) * pageSize }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.creationTime | date : "medium" }}</td>
+                  <td>{{ item.updateTime }}</td>
+                  <td>
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                      <li class="list-inline-item">
+                        <div dropdown class="dropdown">
+                          <a
+                            dropdownToggle
+                            href="javascript: void(0);"
+                            class="dropdown-toggle card-drop px-2 show"
+                            aria-expanded="true"
+                          >
+                            <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                          </a>
+                          <ul
+                            *dropdownMenu
+                            class="dropdown-menu dropdown-menu-end show"
+                            style="
+                              position: absolute;
+                              inset: 0px 0px auto auto;
+                              margin: 0px;
+                              transform: translate(0px, 31.25px);
+                            "
+                            placement="bottom-end"
+                          >
+                            <li>
+                              <a
+                                href="javascript:void(0);"
+                                (click)="edit(item)"
+                                class="dropdown-item edit-list"
+                                data-edit-id="8"
+                                ><i
+                                  class="mdi mdi-pencil font-size-16 text-success me-1"
+                                ></i>
+                                Edit</a
+                              >
+                            </li>
+                            <li>
+                              <a
+                                href="javascript:void(0);"
+                                (click)="openDeleteModel(item.id)"
+                                class="dropdown-item remove-list"
+                                data-remove-id="8"
+                                ><i
+                                  class="mdi mdi-trash-can font-size-16 text-danger me-1"
+                                ></i>
+                                Delete</a
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                } }
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <ul
+                class="pagination pagination-rounded justify-content-center mt-4"
+              >
+                <pagination
+                  class="pagination-wrap hstack gap-2"
+                  [totalItems]="totalCount"
+                  [itemsPerPage]="pageSize"
+                  (pageChanged)="pageChanged($event)"
+                ></pagination>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  bsModal
+  #newContactModal="bs-modal"
+  class="modal fade"
+  id="newContactModal"
+  tabindex="-1"
+  aria-labelledby="newContactModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{editMode ? 'Edit':'Add New'}}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="newContactModal.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="create()"
+          [formGroup]="roleForm"
+          autocomplete="off"
+          class="needs-validation createContact-form"
+          id="createContact-form"
+          novalidate
+        >
+          <div class="row">
+            <div class="col-lg-12">
+              <input type="hidden" class="form-control" id="userid-input" />
+              <div class="mb-3">
+                <label for="username-input" class="form-label">Role Name</label>
+                <input
+                  type="text"
+                  id="username-input"
+                  class="form-control"
+                  placeholder="Enter name"
+                  formControlName="name"
+                  required
+                />
+                <div class="errors">
+                  <div
+                    *ngIf="
+                      submitted && roleForm.controls.name?.errors?.required"
+                    class="p-2">
+                    <div class="error">this field is required</div>
+                  </div>
+                  <div
+                    *ngIf="
+                      submitted && roleForm.controls.name?.errors?.minlength"
+                    class="p-2">
+                    <div class="error">min length is 3</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="text-end">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary me-1"
+                  (click)="newContactModal.hide()"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  id="addContact-btn"
+                  class="btn btn-success"
+                >
+                {{editMode ? 'Update':'Add New'}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- end modal body -->
+    </div>
+    <!-- end modal-content -->
+  </div>
+  <!-- end modal-dialog -->
+</div>
+<!-- end newContactModal -->
+
+<!-- removeItemModal -->
+<div
+  bsModal
+  #removeItemModal="bs-modal"
+  class="modal fade"
+  id="removeItemModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+<platx-confirm-model
+  [title]="'Are you sure you want to remove this row?'"
+  (confirm)="confirmDelete(deleteId)"
+  (cancel)="removeItemModal.hide()"
+  />
+
+</div>
+<!-- end removeItemModal -->
