@@ -213,11 +213,17 @@ export function convertDateToLocalDate(date: string) {
   return utcDate.toLocaleString();
 }
 
-
 export function atLeastOneRadioSelected(controlName: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const controller = control.get(controlName)?.value;
     const isAnySelected = controller?.some((answer: any) => answer.isCorrect);
     return isAnySelected ? null : { required: true };
   };
+}
+
+export function errorMapper(errors: any): string {
+  const errorList = Object.entries(errors as Record<string, string[]>).map(
+    ([field, messages]) => `${field}: ${messages.join(", ")}`
+  );
+  return errorList.join(", ");
 }

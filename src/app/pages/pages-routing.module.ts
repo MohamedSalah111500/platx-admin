@@ -15,6 +15,11 @@ const routes: Routes = [
     loadChildren: () =>
       import("./manage/manage.module").then((m) => m.ManageModule),
   },
+  {
+    path: "tenant",
+    loadChildren: () =>
+      import("./tenant/tenant.module").then((m) => m.TenantModule),
+  },
 ];
 
 @NgModule({

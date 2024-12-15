@@ -87,6 +87,13 @@
         "DEFAULT": "Default"
       }
     },
+    "MANAGE_TENANT": {
+      "TEXT": "Manage Tenant",
+      "BADGE": "04",
+      "LIST": {
+        "DEFAULT": "Default"
+      }
+    },
     "LAYOUTS": {
       "TEXT": "Layouts",
       "LIST": {

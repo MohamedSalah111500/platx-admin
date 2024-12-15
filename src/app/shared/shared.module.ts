@@ -5,6 +5,8 @@ import { UIModule } from './ui/ui.module';
 
 import { WidgetModule } from './widget/widget.module';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { DropzoneModule } from "ngx-dropzone-wrapper";
+import { provideNgxMask } from "ngx-mask";
 
 @NgModule({
   declarations: [
@@ -13,8 +15,11 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
   imports: [
     CommonModule,
     UIModule,
-    WidgetModule
+    WidgetModule,
+    DropzoneModule
   ],
+  providers: [provideNgxMask()],
+
 })
 
 export class SharedModule { }

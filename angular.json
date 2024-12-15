@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "platx",
+      "prefix": "platx-admin",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -99,14 +99,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "platx:build"
+            "buildTarget": "platx-admin:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "platx:build:production"
+              "buildTarget": "platx-admin:build:production"
             },
             "development": {
-              "buildTarget": "platx:build:development"
+              "buildTarget": "platx-admin:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -114,7 +114,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "platx:build"
+            "buildTarget": "platx-admin:build"
           }
         },
         "test": {
@@ -163,20 +163,20 @@
           },
           "configurations": {
             "development": {
-              "devServerTarget": "platx:serve:development"
+              "devServerTarget": "platx-admin:serve:development"
             }
           }
         },
         "e2e": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "platx:serve",
+            "devServerTarget": "platx-admin:serve",
             "watch": true,
             "headless": false
           },
           "configurations": {
             "production": {
-              "devServerTarget": "platx:serve:production"
+              "devServerTarget": "platx-admin:serve:production"
             }
           }
         }

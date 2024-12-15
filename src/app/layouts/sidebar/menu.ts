@@ -14,8 +14,14 @@ export const MENU: MenuItem[] = [
   },
   {
     id: 2,
-    label: "MENUITEMS.MANAGE_INSTANCE.TEXT",
+    label: "MENUITEMS.MANAGE_TENANT.TEXT",
     icon: "bx-cog",
-    link: "/manage/roles",
+    link: "/tenant",
   },
+  // {
+  //   id: 3,
+  //   label: "MENUITEMS.MANAGE_INSTANCE.TEXT",
+  //   icon: "bx-cog",
+  //   link: "/manage/roles",
+  // },
 ];

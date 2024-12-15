@@ -14,6 +14,7 @@ const CHAT_BASE = "api/Messages";
 const GRADES_BASE = "api/Grades";
 const UNIT_BASE = "api/Unit";
 const EXAM_BASE = "api/Exam";
+const TENANT_BASE = "api/Tenant";
 
 export const AUTH_URLS = {
   LOGIN: `${environment.apiURL.concat(AUTH_BASE)}login`,
@@ -70,10 +71,6 @@ export const STAFF_URLS = {
 
 export const QUALIFICATIONS_URLS = {
   CREATE: `${environment.apiURL.concat(QUALIFICATIONS_BASE)}`,
-  // GET_ALL: `${environment.apiURL.concat(QUALIFICATIONS_BASE)}`,
-  // GET_BY_ID: (id: string) => `${environment.apiURL.concat(QUALIFICATIONS_BASE)}/${id}`,
-  // UPDATE: `${environment.apiURL.concat(QUALIFICATIONS_BASE)}`,
-  // DELETE: (id: string) => `${environment.apiURL.concat(QUALIFICATIONS_BASE)}/${id}`,
 };
 
 export const FILE_MANAGER_URLS = {
@@ -178,4 +175,14 @@ export const EXAM_URLS = {
   UPDATE: `${environment.apiURL.concat(EXAM_BASE)}`,
   DELETE: (examId: number) =>
     `${environment.apiURL.concat(EXAM_BASE)}/${examId}`,
+};
+
+
+
+export const TENANT_URLS = {
+  CREATE: `${environment.apiURL.concat(TENANT_BASE)}`,
+  GET_ALL: `${environment.apiURL.concat(TENANT_BASE)}`,
+  GET_BY_ID: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/${id}`,
+  UPDATE: `${environment.apiURL.concat(TENANT_BASE)}`,
+  DELETE: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/${id}`,
 };

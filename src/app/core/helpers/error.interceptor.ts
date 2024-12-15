@@ -10,9 +10,11 @@ import { catchError } from "rxjs/operators";
 import { AuthenticationService } from "../../account/auth/services/auth.service";
 import { SpinnerService } from "../../shared/ui/spinner/spinner.service";
 import { ToastrService } from "ngx-toastr";
+import { errorMapper } from "src/app/utiltis/functions";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
+  errorMapper = errorMapper
   constructor(
     private authenticationService: AuthenticationService,
     public toastr: ToastrService,
@@ -31,13 +33,11 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((err) => {
         if (err.status === 401) {
           this.toastr.error("you are not authruzed", "Error 401");
-
           // auto logout if 401 response returned from api
           this.authenticationService.logout();
           location.reload();
         }
-        const errorMessage = err?.error?.message
-        this.toastr.error(errorMessage, "Error");
+        this.toastr.error(this.errorMapper(err.error.errors));
         return throwError(err);
       })
     );
