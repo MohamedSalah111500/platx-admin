@@ -1,7 +1,6 @@
 import { Component, Output, EventEmitter, Input } from "@angular/core";
-import { co, er } from "@fullcalendar/core/internal-common";
 import { ToastrService } from "ngx-toastr";
-import { FilemanagerService } from "src/app/pages/filemanager/services/filemanager.service";
+import { FilemanagerService } from "../../services/filemanager.service";
 
 @Component({
   selector: "platx-image-upload",
@@ -10,7 +9,6 @@ import { FilemanagerService } from "src/app/pages/filemanager/services/filemanag
 })
 export class ImageUploadComponent {
   @Input() fileUrl: string | null = null;
-
   @Output() fileUploadSuccess = new EventEmitter<{ id: string; url: string }>();
   selectedFile: File | null = null;
   filePreview: string | ArrayBuffer | null = null;
@@ -24,7 +22,6 @@ export class ImageUploadComponent {
   ngOnInit(event: Event): void {
     if (this.fileUrl) {
       this.filePreview = this.fileUrl;
-      console.log(this.fileUrl);
     }
   }
 

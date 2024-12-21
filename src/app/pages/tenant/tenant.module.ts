@@ -19,10 +19,11 @@ import { TenantComponent } from './components/tenant/tenant.component';
 import { FileUploadComponent } from 'src/app/shared/components/file-upload/file-upload.component';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { ImageUploadComponent } from 'src/app/shared/components/image-upload/image-upload.component';
 
 
 @NgModule({
-  declarations: [TenantComponent, AddEditComponent,FileUploadComponent],
+  declarations: [TenantComponent, AddEditComponent,FileUploadComponent,ImageUploadComponent],
   imports: [
     CommonModule,
     TenantRoutingModule,

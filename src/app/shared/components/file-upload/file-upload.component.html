@@ -15,10 +15,10 @@
           <div class="d-flex p-2">
             <div class="flex-shrink-0 me-3">
               <div class="avatar-md rounded d-flex align-items-center justify-content-center font-size-24">
-                @if(file.dataURL){
-                <img class="img-fluid rounded d-block mh-100" [src]="file?.dataURL" alt="Dropzone-Image" />
+                @if(file.dataURL || file.url){
+                <img class="img-fluid rounded d-block mh-100" [src]="file?.dataURL || file?.url " alt="Dropzone-Image" />
                 }@else{
-                <i [ngClass]="getIconClass(file.type)"></i>
+                <i [ngClass]="getIconClass(file?.type)"></i>
                 }
               </div>
             </div>

@@ -178,11 +178,12 @@ export const EXAM_URLS = {
 };
 
 
-
 export const TENANT_URLS = {
   CREATE: `${environment.apiURL.concat(TENANT_BASE)}`,
   GET_ALL: `${environment.apiURL.concat(TENANT_BASE)}`,
+  UPDATE:`${environment.apiURL.concat(TENANT_BASE)}`,
   GET_BY_ID: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/${id}`,
-  UPDATE: `${environment.apiURL.concat(TENANT_BASE)}`,
   DELETE: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/${id}`,
+  ACTIVATE: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/ActivateTenant/${id}`,
+  DEACTIVATE: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/DeActivateTenant/${id}`,
 };

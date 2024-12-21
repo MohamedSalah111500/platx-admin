@@ -50,6 +50,7 @@
                   <th scope="col">Name</th>
                   <th scope="col">Creation Time</th>
                   <th scope="col">Last Update</th>
+                  <th scope="col">Status</th>
                   <th scope="col" style="width: 100px">Action</th>
                 </tr>
               </thead>
@@ -61,6 +62,18 @@
                   <td>{{ item.title }}</td>
                   <td>{{ item.creationTime | date : "medium" }}</td>
                   <td>{{ item.updateTime | date : "medium"}}</td>
+                  <td><ui-switch
+                    id="isActive"
+                    uncheckedLabel="InActive"
+                    checkedLabel="Active"
+                    size="small"
+                    class="me-1"
+                    [beforeChange]="OnBeforeChange"
+                    (click)="onToggle($event,item)"
+                    [checked]="item.isActive"
+                  >
+                 </ui-switch>
+                </td>
                   <td>
                     <ul class="list-inline font-size-20 contact-links mb-0">
                       <li class="list-inline-item">
@@ -154,3 +167,21 @@
   />
 </div>
 <!-- end removeItemModal -->
+
+
+<!-- removeItemModal -->
+<div
+  bsModal
+  #confirmModal="bs-modal"
+  class="modal fade"
+  id="confirmModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <platx-confirm-model
+    [title]="'Are you sure you want to Cange Status?'"
+    (confirm)="confirmActivation()"
+    (cancel)="confirmModal.hide()"
+  />
+</div>
+<!-- end confirmModal -->

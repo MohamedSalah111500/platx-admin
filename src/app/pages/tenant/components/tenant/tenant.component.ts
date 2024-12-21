@@ -10,6 +10,8 @@ import {
 import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
 import { TenantService } from "./../../services/tenantService.service";
+import { Router } from "@angular/router";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-tenant",
@@ -21,8 +23,9 @@ export class TenantComponent implements OnInit {
 
   @ViewChild("newContactModal", { static: false })
   newContactModal?: ModalDirective;
-  @ViewChild("removeItemModal", { static: false })
-  removeItemModal?: ModalDirective;
+  @ViewChild("removeItemModal") removeItemModal?: ModalDirective;
+  @ViewChild("confirmModal") confirmModal?: ModalDirective;
+
   deleteId: any;
   returnedArray: any;
   // -------------------
@@ -30,13 +33,20 @@ export class TenantComponent implements OnInit {
   list: any[];
   totalCount: number = 0;
   page: number = 1;
-  pageSize: number = 8;
+  pageSize: number = 10;
+  isLoading = true;
+
+  selectedTenant: any;
 
   constructor(
     private fb: FormBuilder,
     public toastr: ToastrService,
-    public tenantService: TenantService
+    public tenantService: TenantService,
+    private router: Router
   ) {}
+  OnBeforeChange: Observable<boolean> = new Observable((observer) => {
+    this.confirmModal.show();
+  });
 
   ngOnInit() {
     this.breadCrumbItems = [
@@ -52,7 +62,6 @@ export class TenantComponent implements OnInit {
         this.list = response.items;
         this.returnedArray = response.items;
         this.totalCount = response.totalCount;
-        console.log(response.items);
       },
       (error) => {}
     );
@@ -68,8 +77,37 @@ export class TenantComponent implements OnInit {
     }
   }
 
-  edit(item: any) {}
+  edit(item: any) {
+    this.router.navigateByUrl("/tenant/add-edit", {
+      state: { mode: "edit", id: item.id },
+    });
+  }
 
+  onToggle(event, tenant: string) {
+    this.selectedTenant = tenant;
+  }
+
+  confirmActivation() {
+    if (this.selectedTenant.isActive) {
+      this.tenantService.deActivateTenant(this.selectedTenant.id).subscribe(
+        () => {
+          this.toastr.success("Tenant DeActivated successfully");
+          this.getAllData(this.page, this.pageSize);
+          this.confirmModal.hide();
+        },
+        (error) => this.toastr.success("Tenant DeActivated Failed")
+      );
+    } else {
+      this.tenantService.activateTenant(this.selectedTenant.id).subscribe(
+        () => {
+          this.toastr.success("Tenant DeActivated successfully");
+          this.getAllData(this.page, this.pageSize);
+          this.confirmModal.hide();
+        },
+        (error) => this.toastr.success("Tenant DeActivated Failed")
+      );
+    }
+  }
   // pagechanged
   pageChanged(event: PageChangedEvent): void {
     this.getAllData(event.page, event.itemsPerPage);
@@ -82,10 +120,10 @@ export class TenantComponent implements OnInit {
   }
 
   confirmDelete(id: any) {
-    // this.manageService.deleteRole(id).subscribe(() => {
-    //   this.toastr.success("deleted successfully", "Role");
-    //   this.getAllData(this.page, this.pageSize);
-    // });
-    // this.removeItemModal?.hide();
+    this.tenantService.deleteTenant(id).subscribe(() => {
+      this.toastr.success("deleted successfully", "Role");
+      this.getAllData(this.page, this.pageSize);
+    });
+    this.removeItemModal?.hide();
   }
 }

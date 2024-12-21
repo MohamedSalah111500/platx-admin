@@ -7,17 +7,27 @@ export interface Tenant {
   title?: string;
   domain?: string;
   coverFileId?: null;
-  coverFile?: null;
+  coverFile?: TenantFile;
   logoFileId?: null;
-  logoFile?: null;
+  logoFile?: TenantFile;
   description?: string;
   creationTime?: string;
   createdBy?: null;
   updateTime?: string;
   isActive?: boolean;
 }
+interface TenantFile {
+  id: number;
+  name: string;
+  size: number;
+  url: string;
+  fileType: number;
+  creationTime: string;
+  updateTime: null;
+}
 
 export interface TenantFormGroup {
+  id: FormControl;
   LastName: FormControl;
   FirstName: FormControl;
   Domain: FormControl;

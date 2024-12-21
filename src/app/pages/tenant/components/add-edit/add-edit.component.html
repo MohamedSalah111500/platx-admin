@@ -100,8 +100,11 @@
           </div>
 
           <div class="col-lg-12 mb-3">
-            <label for="logoFile">Logo File</label>
+            <label for="logoFile"
+              >Logo File</label
+            >
             <platx-file-upload
+              [imageFile]="tenantForm.controls.LogoFile.value"
               (fileUploadSuccess)="onFileUploadSuccess('LogoFile', $event)"
             ></platx-file-upload>
             <div
@@ -115,6 +118,7 @@
           <div class="col-lg-12 mb-3">
             <label for="coverFile">Cover File</label>
             <platx-file-upload
+            [imageFile]="tenantForm.controls.CoverFile.value"
               (fileUploadSuccess)="onFileUploadSuccess('CoverFile', $event)"
             ></platx-file-upload>
             <div
@@ -154,7 +158,8 @@
             </div>
           </div>
           <div class="col-lg-12">
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
+            <button type="submit" class="btn btn-primary w-100">
+              {{mode == "edit" ? "Update" : "Create"}}</button>
           </div>
         </div>
       </form>

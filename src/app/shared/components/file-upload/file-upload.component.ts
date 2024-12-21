@@ -1,5 +1,10 @@
-import { Component, Output, EventEmitter, Input } from "@angular/core";
-import { co, er } from "@fullcalendar/core/internal-common";
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  SimpleChanges,
+} from "@angular/core";
 import { DropzoneConfigInterface } from "ngx-dropzone-wrapper";
 import { ToastrService } from "ngx-toastr";
 import { getIconClass } from "src/app/utiltis/functions";
@@ -11,6 +16,8 @@ import { getIconClass } from "src/app/utiltis/functions";
 })
 export class FileUploadComponent {
   getIconClass = getIconClass;
+  @Input() fileUrl: string | null = null;
+  @Input() imageFile: any = null;
   @Output() fileUploadSuccess = new EventEmitter<{ id: string; url: string }>();
   selectedFile: File | null = null;
   filePreview: string | ArrayBuffer | null = null;
@@ -23,23 +30,38 @@ export class FileUploadComponent {
     addRemoveLinks: true, // Option to remove files
     maxFiles: 1, // Limit to 1 file (optional)
   };
-
   uploadedFiles: any[] = [];
 
-  constructor(
-    public toastr: ToastrService,
-  ) {}
+  constructor(public toastr: ToastrService) {}
 
   ngOnInit(event: Event): void {}
 
+  async urlToFile(
+    url: string,
+    filename: string,
+    mimeType: string = "image/jpeg"
+  ): Promise<File> {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], filename, { type: mimeType });
+  }
+
   onUploadSuccess(file: any) {
+    this.uploadedFiles = [];
     setTimeout(() => {
       this.fileUploadSuccess.emit(file);
-      this.uploadedFiles.push(file);
-    }, 100);
+    }, 50);
   }
 
   removeFile(event: any) {
     this.uploadedFiles.splice(this.uploadedFiles.indexOf(event), 1);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["imageFile"]) {
+      if (this.imageFile) {
+        this.uploadedFiles.push(this.imageFile);
+      }
+    }
   }
 }
