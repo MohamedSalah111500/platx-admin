@@ -21,7 +21,6 @@ import { ExtrapagesModule } from "./extrapages/extrapages.module";
 import { LayoutsModule } from "./layouts/layouts.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { initFirebaseBackend } from "./authUtils";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
@@ -36,8 +35,6 @@ import { JwtInterceptor } from "./core/helpers/jwt.interceptor";
 import { FakeBackendInterceptor } from "./core/helpers/fake-backend";
 import { rootReducer } from "./store";
 import { AuthenticationEffects } from "./store/Authentication/authentication.effects";
-import { AngularFireModule } from "@angular/fire/compat";
-import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { CartEffects } from "./store/Cart/cart.effects";
 import { ProjectEffects } from "./store/ProjectsData/project.effects";
 import { usersEffects } from "./store/UserGrid/user.effects";
@@ -48,9 +45,7 @@ import { AuthInterceptor } from "./core/helpers/auth.interceptor";
 import { UIModule } from "./shared/ui/ui.module";
 
 if (environment.defaultauth === "firebase") {
-  initFirebaseBackend(environment.firebaseConfig);
 } else {
-  // tslint:disable-next-line: no-unused-expression
   FakeBackendInterceptor;
 }
 
@@ -64,8 +59,6 @@ export function createTranslateLoader(http: HttpClient): any {
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
