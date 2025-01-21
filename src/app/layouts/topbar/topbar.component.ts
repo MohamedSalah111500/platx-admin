@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
-import { AuthenticationService } from "../../account/auth/services/auth.service";
 import { AuthfakeauthenticationService } from "../../core/services/authfake.service";
 import { environment } from "../../../environments/environment";
 import { CookieService } from "ngx-cookie-service";
@@ -13,6 +12,7 @@ import { changesLayout } from "src/app/store/layouts/layout.actions";
 import { getLayoutMode } from "src/app/store/layouts/layout.selector";
 import { RootReducerState } from "src/app/store";
 import { User } from "src/app/store/Authentication/auth.models";
+import { AuthenticationService } from "src/app/auth/services/auth.service";
 
 @Component({
   selector: "app-topbar",

@@ -3,10 +3,10 @@ import { Component, OnInit } from "@angular/core";
 import { revenueBarChart, statData } from "./data";
 
 import { ChartType, StaffResponse } from "./types";
-import { AuthenticationService } from "src/app/account/auth/services/auth.service";
 import { User } from "src/app/store/Authentication/auth.models";
 import { ActivatedRoute } from "@angular/router";
 import { ManageService } from "../manage/services/manageService.service";
+import { AuthenticationService } from "src/app/auth/services/auth.service";
 
 @Component({
   selector: "app-profile",

@@ -49,19 +49,19 @@ export class TenantService {
             ...responseData,
             logoFile: {
               ...responseData.logoFile,
-              url: environment.apiURL.slice(0, -1) + responseData.logoFile.url,
+              url: environment.apiURL.slice(0, -1) + responseData.logoFile?.url,
               type:
-                responseData.logoFile.fileType == 2
+                responseData.logoFile?.fileType == 2
                   ? "image/png"
-                  : responseData.logoFile.fileType,
+                  : responseData.logoFile?.fileType,
             },
             coverFile: {
               ...responseData.coverFile,
-              url: environment.apiURL.slice(0, -1) + responseData.coverFile.url,
+              url: environment.apiURL.slice(0, -1) + responseData.coverFile?.url,
               type:
-                responseData.coverFile.fileType == 2
+                responseData.coverFile?.fileType == 2
                   ? "image/png"
-                  : responseData.coverFile.fileType,
+                  : responseData.coverFile?.fileType,
             },
           };
           observer.next(newResponseData);

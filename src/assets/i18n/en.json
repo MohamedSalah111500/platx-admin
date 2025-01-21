@@ -94,6 +94,13 @@
         "DEFAULT": "Default"
       }
     },
+    "PLANS": {
+      "TEXT": "plans",
+      "BADGE": "04",
+      "LIST": {
+        "DEFAULT": "Default"
+      }
+    },
     "LAYOUTS": {
       "TEXT": "Layouts",
       "LIST": {

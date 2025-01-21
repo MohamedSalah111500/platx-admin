@@ -18,6 +18,12 @@ export const MENU: MenuItem[] = [
     icon: "bx-cog",
     link: "/tenant",
   },
+  {
+    id: 3,
+    label: "MENUITEMS.PLANS.TEXT",
+    icon: "bx-cog",
+    link: "/plans",
+  },
   // {
   //   id: 3,
   //   label: "MENUITEMS.MANAGE_INSTANCE.TEXT",

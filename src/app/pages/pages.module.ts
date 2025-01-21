@@ -30,6 +30,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import { TimepickerModule } from "ngx-bootstrap/timepicker";
+import { PlansModule } from "./plans/plans.module";
 
 @NgModule({
   declarations: [],
@@ -45,6 +46,7 @@ import { TimepickerModule } from "ngx-bootstrap/timepicker";
     HttpClientModule,
     UIModule,
     ManageModule,
+    PlansModule,
     UtilityModule,
     UiModule,
     WidgetModule,

@@ -6,8 +6,6 @@ import { Store } from '@ngrx/store';
 import { changeLayoutWidth, changeMode, changeSidebarMode } from 'src/app/store/layouts/layout.actions';
 import { getLayoutMode, getLayoutWidth, getsidebar } from 'src/app/store/layouts/layout.selector';
 import { RootReducerState } from 'src/app/store';
-import { changesLayout } from 'src/app/store/layouts/layout.actions';
-// import { RootReducerState } from 'src/app/store';
 
 @Component({
   selector: 'app-rightsidebar',

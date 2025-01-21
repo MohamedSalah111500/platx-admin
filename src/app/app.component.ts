@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   };
 
   ngOnInit() {
-    localStorage.setItem("currentUser", JSON.stringify(this.userData));
+   // localStorage.setItem("currentUser", JSON.stringify(this.userData));
     this.spinnerService.visibility$.subscribe((isVisible) => {
       this.isSpinnerVisible = isVisible;
     });

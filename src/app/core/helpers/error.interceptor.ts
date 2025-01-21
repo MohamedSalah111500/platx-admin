@@ -7,10 +7,10 @@ import {
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { AuthenticationService } from "../../account/auth/services/auth.service";
 import { SpinnerService } from "../../shared/ui/spinner/spinner.service";
 import { ToastrService } from "ngx-toastr";
 import { errorMapper } from "src/app/utiltis/functions";
+import { AuthenticationService } from "src/app/auth/services/auth.service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
