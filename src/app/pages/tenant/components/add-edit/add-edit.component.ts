@@ -73,12 +73,12 @@ export class AddEditComponent {
       IsActive: tenant.isActive ?? true,
       Title: tenant.title || "",
       FirstName: tenant.firstName || "",
-      Password: "",
-      Email: "",
+      Email: tenant.email || "",
       Description: tenant.description || "",
       CreatedBy: tenant.createdBy || "",
     };
     this.tenantForm.patchValue(mappedResponse);
+    this.tenantForm.controls.Password.disable();
   }
 
   onFileUploadSuccess(controlName: string, file: any): void {

@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { JSONParser } from "@amcharts/amcharts5";
+import { Injectable } from "@angular/core";
 
-const TOKEN_KEY = 'auth-token';
-const USER_KEY = 'currentUser';
+const TOKEN_KEY = "auth-token";
+const USER_KEY = "currentUser";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class TokenStorageService {
-  constructor() { }
+  constructor() {}
 
   signOut(): void {
     window.sessionStorage.clear();
@@ -19,7 +20,8 @@ export class TokenStorageService {
   }
 
   public getToken(): string | null {
-    return localStorage.getItem('token');
+    let userData = JSONParser.parse(localStorage.getItem("currentUser"));
+    return userData?.token;
   }
 
   public saveUser(user: any): void {

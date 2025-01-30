@@ -1,16 +1,12 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { AuthenticationService } from "../services/auth.service";
 
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { LoginForm } from "../types";
+import { el } from "@fullcalendar/core/internal-common";
+import { UserService } from "src/app/core/services/user.service";
 
 @Component({
   selector: "app-login",
@@ -26,8 +22,6 @@ export class LoginComponent implements OnInit {
   error: any = "";
   returnUrl: string;
   fieldTextType!: boolean;
-
-  // set the currenr year
   year: number = new Date().getFullYear();
 
   loginForm: FormGroup<LoginForm> = new FormGroup<LoginForm>({
@@ -38,34 +32,35 @@ export class LoginComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private userService: UserService,
     private authenticationService: AuthenticationService,
     public toastr: ToastrService
   ) {}
 
-  ngOnInit() {
-    if (localStorage.getItem("currentUser")) {
-      //this.router.navigate(["/"]);
-    }
-  }
+  ngOnInit() {}
 
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
-    const userName = this.loginForm.controls.userName.value;
-    const password = this.loginForm.controls.password.value;
+    const { userName, password } = this.loginForm.value;
+    let pathname = window.location.pathname;
+    const extractedDomain = pathname.split("/")[1];
 
-    // Login Api
-    this.authenticationService.login(userName, password).subscribe(
-      (response) => {
-        this.toastr.success("Registration successful", "Bootstrap");
-        localStorage.setItem("currentUser", JSON.stringify(response));
-        this.router.navigate(["/"]);
-      },
-      (error) => {
-        let firstErrorMessage =
-          error?.error?.errors[Object.keys(error.error.errors)[0]];
-        this.error = firstErrorMessage;
-      }
-    );
+    this.authenticationService
+      .login(userName, password, extractedDomain)
+      .subscribe(
+        (response) => {
+
+            this.toastr.success("Login successful", "Bootstrap");
+            localStorage.setItem("currentUser", JSON.stringify(response));
+            this.userService.saveUserDataInLocalStorage(response);
+            this.router.navigate(["/dashboard"]);
+        },
+        (error) => {
+          const firstErrorMessage =
+            error?.error?.errors[Object.keys(error.error.errors)[0]];
+          this.error = firstErrorMessage;
+        }
+      );
   }
 
   /**

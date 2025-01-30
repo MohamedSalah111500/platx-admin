@@ -31,10 +31,7 @@ import {
   HttpClient,
 } from "@angular/common/http";
 import { ErrorInterceptor } from "./core/helpers/error.interceptor";
-import { JwtInterceptor } from "./core/helpers/jwt.interceptor";
-import { FakeBackendInterceptor } from "./core/helpers/fake-backend";
 import { rootReducer } from "./store";
-import { AuthenticationEffects } from "./store/Authentication/authentication.effects";
 import { CartEffects } from "./store/Cart/cart.effects";
 import { ProjectEffects } from "./store/ProjectsData/project.effects";
 import { usersEffects } from "./store/UserGrid/user.effects";
@@ -43,11 +40,6 @@ import { CandidateEffects } from "./store/Candidate/candidate.effects";
 import { tasklistEffects } from "./store/Tasks/tasks.effect";
 import { AuthInterceptor } from "./core/helpers/auth.interceptor";
 import { UIModule } from "./shared/ui/ui.module";
-
-if (environment.defaultauth === "firebase") {
-} else {
-  FakeBackendInterceptor;
-}
 
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, "assets/i18n/", ".json");
@@ -81,7 +73,6 @@ export function createTranslateLoader(http: HttpClient): any {
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
     EffectsModule.forRoot([
-      AuthenticationEffects,
       CartEffects,
       ProjectEffects,
       usersEffects,
@@ -92,14 +83,8 @@ export function createTranslateLoader(http: HttpClient): any {
   ],
   bootstrap: [AppComponent],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: FakeBackendInterceptor,
-      multi: true,
-    },
   ],
 })
 export class AppModule {}

@@ -6,6 +6,7 @@ export interface Tenant {
   id?: string;
   title?: string;
   domain?: string;
+  email?: string;
   coverFileId?: null;
   coverFile?: TenantFile;
   logoFileId?: null;

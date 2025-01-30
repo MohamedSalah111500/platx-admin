@@ -1,21 +1,15 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { User } from 'src/app/store/Authentication/auth.models';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { User } from "src/app/store/Authentication/auth.models";
 
-@Injectable({ providedIn: 'root' })
-export class UserProfileService {
-    constructor(private http: HttpClient) { }
-    /***
-     * Get All User
-     */
-    getAll() {
-        return this.http.get<User[]>(`api/users`);
-    }
+@Injectable({ providedIn: "root" })
+export class UserService {
+  constructor(private http: HttpClient) {}
 
-    /***
-     * Facked User Register
-     */
-    register(user: User) {
-        return this.http.post(`/users/register`, user);
-    }
+  saveUserDataInLocalStorage(user: User) {
+    if (!user) return;
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    localStorage.setItem("roles", JSON.stringify(user.roles));
+    localStorage.setItem("userType", JSON.stringify(user.roles[0]));
+  }
 }

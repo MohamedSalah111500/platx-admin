@@ -6,39 +6,48 @@ import {
   HttpInterceptor,
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import {  tap } from "rxjs/operators";
 import { SpinnerService } from "../../shared/ui/spinner/spinner.service";
 import { ToastrService } from "ngx-toastr";
-import { errorMapper } from "src/app/utiltis/functions";
 import { AuthenticationService } from "src/app/auth/services/auth.service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  errorMapper = errorMapper
   constructor(
     private authenticationService: AuthenticationService,
     public toastr: ToastrService,
-    private spinnerService:SpinnerService
+    private spinnerService: SpinnerService
   ) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-
     const isSpecificApiRequest = request.url.includes("/api");
     if (isSpecificApiRequest) {
       this.spinnerService.show();
     }
     return next.handle(request).pipe(
-      catchError((err) => {
-        if (err.status === 401) {
-          this.toastr.error("you are not authruzed", "Error 401");
-          // auto logout if 401 response returned from api
-          this.authenticationService.logout();
-          location.reload();
-        }
-        this.toastr.error(this.errorMapper(err.error.errors));
-        return throwError(err);
+      tap({
+        next: (event) => {
+          setTimeout(() => this.spinnerService.hide(), 1000);
+        },
+        error: (err) => {
+          if (err.status === 401) {
+            this.toastr.error("you are not authruzed", "Error 401");
+            this.authenticationService.logout();
+            location.reload();
+            return
+          }
+
+          if (err.status === 403) {
+            this.toastr.error("you are not authruzed", "Error 403");
+            return
+
+          }
+          const errorMessage = err?.error?.message;
+          this.toastr.error(errorMessage, "Error");
+          return throwError(err);
+        },
       })
     );
   }
