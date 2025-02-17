@@ -35,7 +35,6 @@ export class AddEditComponent {
     IsActive: new FormControl(true, [Validators.required]),
     CoverFile: new FormControl("", [Validators.required]),
     Title: new FormControl("", [Validators.required]),
-    Password: new FormControl("", [Validators.required]),
     Email: new FormControl("", [Validators.required]),
     Description: new FormControl(""),
     CreatedBy: new FormControl(""),
@@ -80,7 +79,6 @@ export class AddEditComponent {
       CreatedBy: tenant.createdBy || "",
     };
     this.tenantForm.patchValue(mappedResponse);
-    this.tenantForm.controls.Password.disable();
   }
 
   onFileUploadSuccess(controlName: string, file: any): void {
@@ -103,7 +101,6 @@ export class AddEditComponent {
     formData.append("IsActive", formVal.IsActive.toString());
     formData.append("LastName", formVal.LastName);
     formData.append("LogoFile", formVal.LogoFile);
-    formData.append("Password", formVal.Password);
     formData.append("Title", formVal.Title);
 
     if (this.mode == "edit") {

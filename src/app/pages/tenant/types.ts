@@ -38,7 +38,6 @@ export interface TenantFormGroup {
   IsActive: FormControl;
   CoverFile: FormControl;
   Title: FormControl;
-  Password: FormControl;
   Email: FormControl;
   Description: FormControl;
   CreatedBy: FormControl;

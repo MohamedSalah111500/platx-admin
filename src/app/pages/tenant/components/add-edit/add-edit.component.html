@@ -7,7 +7,7 @@
     <div class="card-body">
       <form [formGroup]="tenantForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="row">
-          <div class="col-lg-6 mb-3">
+          <div class="col-lg-4 mb-3">
             <label for="firstName">First Name *</label>
             <input
               type="text"
@@ -22,7 +22,7 @@
               First Name is required.
             </div>
           </div>
-          <div class="col-lg-6 mb-3">
+          <div class="col-lg-4 mb-3">
             <label for="lastName">Last Name *</label>
             <input
               type="text"
@@ -37,8 +37,23 @@
               Last Name is required.
             </div>
           </div>
+          <div class="col-lg-4 mb-3">
+            <label for="title">Title *</label>
+            <input
+              type="text"
+              id="title"
+              class="form-control"
+              formControlName="Title"
+            />
+            <div
+              *ngIf="submitted && tenantForm.controls.Title.invalid"
+              class="text-danger"
+            >
+              Title is required.
+            </div>
+          </div>
 
-          <div class="col-lg-6 mb-3">
+          <div class="col-lg-4 mb-3">
             <label for="domain">Domain *</label>
             <input
               type="text"
@@ -53,19 +68,23 @@
               Domain is required.
             </div>
           </div>
-          <div class="col-lg-6 mb-3">
-            <label for="title">Title *</label>
+
+
+
+
+          <div class="col-lg-4 mb-3">
+            <label for="email">Email *</label>
             <input
-              type="text"
-              id="title"
+              type="email"
+              id="email"
               class="form-control"
-              formControlName="Title"
+              formControlName="Email"
             />
             <div
-              *ngIf="submitted && tenantForm.controls.Title.invalid"
+              *ngIf="submitted && tenantForm.controls.Email.invalid"
               class="text-danger"
             >
-              Title is required.
+              Enter a valid email.
             </div>
           </div>
 
@@ -84,41 +103,12 @@
               Phone Number is required.
             </div>
           </div>
-
-          <div class="col-lg-4 mb-3">
-            <label for="email">Email *</label>
-            <input
-              type="email"
-              id="email"
-              class="form-control"
-              formControlName="Email"
-            />
-            <div
-              *ngIf="submitted && tenantForm.controls.Email.invalid"
-              class="text-danger"
-            >
-              Enter a valid email.
-            </div>
-          </div>
-          <div class="col-lg-4 mb-3">
-            <label for="password">Password *</label>
-            <input
-              type="text"
-              id="password"
-              class="form-control"
-              formControlName="Password"
-            />
-            <div
-              *ngIf="submitted && tenantForm.controls.Password.invalid"
-              class="text-danger"
-            >
-              Password must be at least 8 characters.
-            </div>
-          </div>
           <hr class="text-gray" />
 
           <div class="col-lg-6 mb-3">
-            <label for="logoFile">Logo File <span class="text-muted">(optional)</span></label>
+            <label for="logoFile"
+              >Logo File <span class="text-muted">(optional)</span></label
+            >
             <platx-file-upload
               [imageFile]="tenantForm.controls.LogoFile.value"
               (fileUploadSuccess)="onFileUploadSuccess('LogoFile', $event)"
@@ -132,7 +122,9 @@
           </div>
 
           <div class="col-lg-6 mb-3">
-            <label for="coverFile">Cover File <span class="text-muted">(optional)</span></label>
+            <label for="coverFile"
+              >Cover File <span class="text-muted">(optional)</span></label
+            >
             <platx-file-upload
               [imageFile]="tenantForm.controls.CoverFile.value"
               (fileUploadSuccess)="onFileUploadSuccess('CoverFile', $event)"
@@ -160,7 +152,9 @@
           </div>
 
           <div class="col-lg-12 mb-3">
-            <label for="description">Description <span class="text-muted">(optional)</span></label>
+            <label for="description"
+              >Description <span class="text-muted">(optional)</span></label
+            >
             <textarea
               id="description"
               class="form-control"
