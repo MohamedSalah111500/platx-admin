@@ -14,6 +14,7 @@
               id="firstName"
               class="form-control"
               formControlName="FirstName"
+              placeholder="example: Mohamed"
             />
             <div
               *ngIf="submitted && tenantForm.controls.FirstName.invalid"
@@ -29,6 +30,7 @@
               id="lastName"
               class="form-control"
               formControlName="LastName"
+              placeholder="example: Yassir"
             />
             <div
               *ngIf="submitted && tenantForm.controls.LastName.invalid"
@@ -44,6 +46,7 @@
               id="title"
               class="form-control"
               formControlName="Title"
+              placeholder="example: My Platform"
             />
             <div
               *ngIf="submitted && tenantForm.controls.Title.invalid"
@@ -60,6 +63,7 @@
               id="domain"
               class="form-control"
               formControlName="Domain"
+              placeholder="example: my-platform"
             />
             <div
               *ngIf="submitted && tenantForm.controls.Domain.invalid"
@@ -69,9 +73,6 @@
             </div>
           </div>
 
-
-
-
           <div class="col-lg-4 mb-3">
             <label for="email">Email *</label>
             <input
@@ -79,6 +80,8 @@
               id="email"
               class="form-control"
               formControlName="Email"
+              placeholder="example: WQWQW@example.com"
+
             />
             <div
               *ngIf="submitted && tenantForm.controls.Email.invalid"
@@ -95,6 +98,8 @@
               id="PhoneNumber"
               class="form-control"
               formControlName="PhoneNumber"
+              placeholder="example: +1234567890"
+
             />
             <div
               *ngIf="submitted && tenantForm.controls.PhoneNumber.invalid"
