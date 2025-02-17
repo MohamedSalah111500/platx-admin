@@ -20,16 +20,17 @@ export class AddEditComponent {
   errorMapper = errorMapper;
   breadCrumbItems: Array<{}> = [
     { label: "Manage Tenant" },
-    { label: "List", active: true },
+    { label: "Create", active: true },
   ];
   submitted = false;
   mode: string = "create";
 
   tenantForm: FormGroup<TenantFormGroup> = this.fb.group<TenantFormGroup>({
     id: new FormControl(null),
-    LastName: new FormControl("", []),
-    FirstName: new FormControl("", []),
+    LastName: new FormControl("", [Validators.required]),
+    FirstName: new FormControl("", [Validators.required]),
     Domain: new FormControl("", [Validators.required]),
+    PhoneNumber: new FormControl("", [Validators.required]),
     LogoFile: new FormControl("", [Validators.required]),
     IsActive: new FormControl(true, [Validators.required]),
     CoverFile: new FormControl("", [Validators.required]),
@@ -75,6 +76,7 @@ export class AddEditComponent {
       FirstName: tenant.firstName || "",
       Email: tenant.email || "",
       Description: tenant.description || "",
+      PhoneNumber: tenant.phoneNumber || "",
       CreatedBy: tenant.createdBy || "",
     };
     this.tenantForm.patchValue(mappedResponse);
@@ -94,6 +96,7 @@ export class AddEditComponent {
     formData.append("CoverFile", formVal.CoverFile);
     formData.append("CreatedBy", formVal.CreatedBy); //@TODO
     formData.append("Description", formVal.Description);
+    formData.append("PhoneNumber", formVal.PhoneNumber);
     formData.append("Domain", formVal.Domain);
     formData.append("Email", formVal.Email);
     formData.append("FirstName", formVal.FirstName);

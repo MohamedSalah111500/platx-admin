@@ -15,6 +15,7 @@ export interface Tenant {
   creationTime?: string;
   createdBy?: null;
   updateTime?: string;
+  phoneNumber?: string;
   isActive?: boolean;
 }
 interface TenantFile {
@@ -31,6 +32,7 @@ export interface TenantFormGroup {
   id: FormControl;
   LastName: FormControl;
   FirstName: FormControl;
+  PhoneNumber: FormControl;
   Domain: FormControl;
   LogoFile: FormControl;
   IsActive: FormControl;
