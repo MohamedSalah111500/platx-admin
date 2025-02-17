@@ -48,6 +48,8 @@
                 <tr>
                   <th scope="col" style="width: 40px">#</th>
                   <th scope="col">Name</th>
+                  <th scope="col">Domain</th>
+                  <th scope="col">Phone Number</th>
                   <th scope="col">Creation Time</th>
                   <th scope="col">Last Update</th>
                   <th scope="col">Status</th>
@@ -60,8 +62,10 @@
                 <tr>
                   <td>{{ i + 1 + (page - 1) * pageSize }}</td>
                   <td>{{ item.title }}</td>
-                  <td>{{ item.creationTime | date : "medium" }}</td>
-                  <td>{{ item.updateTime | date : "medium"}}</td>
+                  <td>{{ item.domain }}</td>
+                  <td>{{ item.phoneNumber }}</td>
+                  <td>{{ item.creationTime | date : "short" }}</td>
+                  <td>{{ item.updateTime | date : "short"}}</td>
                   <td><ui-switch
                     id="isActive"
                     uncheckedLabel="InActive"
