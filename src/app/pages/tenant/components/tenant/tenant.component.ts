@@ -25,9 +25,11 @@ export class TenantComponent implements OnInit {
   newContactModal?: ModalDirective;
   @ViewChild("removeItemModal") removeItemModal?: ModalDirective;
   @ViewChild("confirmModal") confirmModal?: ModalDirective;
+  @ViewChild("updateQuota") updateQuota?: ModalDirective;
 
   deleteId: any;
   returnedArray: any;
+  tenantIdOfQuota?:number | string
   // -------------------
   loading: boolean = false;
   list: any[];
@@ -35,7 +37,8 @@ export class TenantComponent implements OnInit {
   page: number = 1;
   pageSize: number = 10;
   isLoading = true;
-
+  newQuota:number = 0;
+  isSubmitedNewQuota= false
   selectedTenant: any;
 
   constructor(
@@ -118,7 +121,20 @@ export class TenantComponent implements OnInit {
     this.deleteId = id;
     this.removeItemModal?.show();
   }
-
+  openUpgradeQuotaModal(id: string) {
+    this.tenantIdOfQuota = id;
+    this.newQuota = 0
+    this.updateQuota?.show();
+  }
+  onConfirmChangeQuota(){
+    this.isSubmitedNewQuota = true
+    this.updateQuota?.hide()
+    // TODO  send reuqest of update quota
+  }
+  onCancelChangeQuota(){
+    this.newQuota = 0
+    this.updateQuota?.hide()
+  }
   confirmDelete(id: any) {
     this.tenantService.deleteTenant(id).subscribe(() => {
       this.toastr.success("deleted successfully", "Role");

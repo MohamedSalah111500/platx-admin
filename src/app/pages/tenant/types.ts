@@ -17,6 +17,7 @@ export interface Tenant {
   updateTime?: string;
   phoneNumber?: string;
   isActive?: boolean;
+  quota:number
 }
 interface TenantFile {
   id: number;
@@ -41,6 +42,7 @@ export interface TenantFormGroup {
   Email: FormControl;
   Description: FormControl;
   CreatedBy: FormControl;
+  quota:FormControl
 }
 
 export interface GetAllTenantsResponse {
