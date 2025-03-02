@@ -99,7 +99,7 @@ export class SweetalertComponent implements OnInit {
     Swal.fire({
       title: 'Sweet!',
       text: 'Modal with a custom image.',
-      imageUrl: 'assets/images/logo-dark.png',
+      imageUrl: 'assets/images/logo-color.png',
       imageHeight: 20,
       confirmButtonColor: '#556ee6'
     });
