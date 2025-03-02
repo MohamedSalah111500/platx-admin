@@ -119,4 +119,7 @@ export class TenantService {
   deActivateTenant(id: string): Observable<Tenant> {
     return this.http.put<Tenant>(TENANT_URLS.DEACTIVATE(id), null);
   }
+  updateTenantQuota(tenantId: string,quotaAI:number): Observable<Tenant> {
+    return this.http.put<Tenant>(TENANT_URLS.UPDATE_QUOTA(), {tenantId,quotaAI});
+  }
 }

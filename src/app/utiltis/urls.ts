@@ -186,4 +186,5 @@ export const TENANT_URLS = {
   DELETE: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/${id}`,
   ACTIVATE: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/ActivateTenant/${id}`,
   DEACTIVATE: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/DeActivateTenant/${id}`,
+  UPDATE_QUOTA: () => `${environment.apiURL.concat(TENANT_BASE)}/UpdateTenantQuotaAI`,
 };

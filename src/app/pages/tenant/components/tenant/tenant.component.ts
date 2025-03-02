@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { ModalDirective } from "ngx-bootstrap/modal";
+import {Component,OnInit,ViewChild} from "@angular/core";
+import {ModalDirective} from "ngx-bootstrap/modal";
 import {
   FormBuilder,
   FormControl,
@@ -7,11 +7,12 @@ import {
   Validators,
 } from "@angular/forms";
 
-import { PageChangedEvent } from "ngx-bootstrap/pagination";
-import { ToastrService } from "ngx-toastr";
-import { TenantService } from "./../../services/tenantService.service";
-import { Router } from "@angular/router";
-import { Observable } from "rxjs";
+import {PageChangedEvent} from "ngx-bootstrap/pagination";
+import {ToastrService} from "ngx-toastr";
+import {TenantService} from "./../../services/tenantService.service";
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {Tenant} from "../../types";
 
 @Component({
   selector: "app-tenant",
@@ -21,7 +22,7 @@ export class TenantComponent implements OnInit {
   breadCrumbItems: Array<{}>;
   term: any;
 
-  @ViewChild("newContactModal", { static: false })
+  @ViewChild("newContactModal",{static: false})
   newContactModal?: ModalDirective;
   @ViewChild("removeItemModal") removeItemModal?: ModalDirective;
   @ViewChild("confirmModal") confirmModal?: ModalDirective;
@@ -29,48 +30,48 @@ export class TenantComponent implements OnInit {
 
   deleteId: any;
   returnedArray: any;
-  tenantIdOfQuota?:number | string
+  tenantIdOfQuota: string
   // -------------------
   loading: boolean = false;
-  list: any[];
+  list: Tenant[] = [];
   totalCount: number = 0;
   page: number = 1;
   pageSize: number = 10;
   isLoading = true;
-  newQuota:number = 0;
-  isSubmitedNewQuota= false
+  newQuota: number = 0;
+  isSubmitedNewQuota = false
   selectedTenant: any;
 
-  constructor(
+  constructor (
     private fb: FormBuilder,
     public toastr: ToastrService,
     public tenantService: TenantService,
     private router: Router
-  ) {}
+  ) { }
   OnBeforeChange: Observable<boolean> = new Observable((observer) => {
     this.confirmModal.show();
   });
 
-  ngOnInit() {
+  ngOnInit () {
     this.breadCrumbItems = [
-      { label: "Manage Tenant" },
-      { label: "List", active: true },
+      {label: "Manage Tenant"},
+      {label: "List",active: true},
     ];
-    this.getAllData(this.page, this.pageSize);
+    this.getAllData(this.page,this.pageSize);
   }
 
-  getAllData(pageNumber: number, pageSize: number) {
-    this.tenantService.getAllTenants(pageNumber, pageSize).subscribe(
+  getAllData (pageNumber: number,pageSize: number) {
+    this.tenantService.getAllTenants(pageNumber,pageSize).subscribe(
       (response) => {
         this.list = response.items;
         this.returnedArray = response.items;
         this.totalCount = response.totalCount;
       },
-      (error) => {}
+      (error) => { }
     );
   }
 
-  search() {
+  search () {
     if (this.term) {
       this.list = this.returnedArray.filter((data: any) => {
         return data.name.toLowerCase().includes(this.term.toLowerCase());
@@ -80,22 +81,22 @@ export class TenantComponent implements OnInit {
     }
   }
 
-  edit(item: any) {
-    this.router.navigateByUrl("/tenant/add-edit", {
-      state: { mode: "edit", id: item.id },
+  edit (item: any) {
+    this.router.navigateByUrl("/tenant/add-edit",{
+      state: {mode: "edit",id: item.id},
     });
   }
 
-  onToggle(event, tenant: string) {
+  onToggle (event,tenant: Tenant) {
     this.selectedTenant = tenant;
   }
 
-  confirmActivation() {
+  confirmActivation () {
     if (this.selectedTenant.isActive) {
       this.tenantService.deActivateTenant(this.selectedTenant.id).subscribe(
         () => {
           this.toastr.success("Tenant DeActivated successfully");
-          this.getAllData(this.page, this.pageSize);
+          this.getAllData(this.page,this.pageSize);
           this.confirmModal.hide();
         },
         (error) => this.toastr.success("Tenant DeActivated Failed")
@@ -104,7 +105,7 @@ export class TenantComponent implements OnInit {
       this.tenantService.activateTenant(this.selectedTenant.id).subscribe(
         () => {
           this.toastr.success("Tenant DeActivated successfully");
-          this.getAllData(this.page, this.pageSize);
+          this.getAllData(this.page,this.pageSize);
           this.confirmModal.hide();
         },
         (error) => this.toastr.success("Tenant DeActivated Failed")
@@ -112,33 +113,46 @@ export class TenantComponent implements OnInit {
     }
   }
   // pagechanged
-  pageChanged(event: PageChangedEvent): void {
-    this.getAllData(event.page, event.itemsPerPage);
+  pageChanged (event: PageChangedEvent): void {
+    this.getAllData(event.page,event.itemsPerPage);
     this.page = event.page;
   }
 
-  openDeleteModel(id: any) {
+  openDeleteModel (id: any) {
     this.deleteId = id;
     this.removeItemModal?.show();
   }
-  openUpgradeQuotaModal(id: string) {
+  openUpgradeQuotaModal (id: string,quota: number) {
     this.tenantIdOfQuota = id;
-    this.newQuota = 0
+    this.newQuota = quota
     this.updateQuota?.show();
   }
-  onConfirmChangeQuota(){
+  onConfirmChangeQuota () {
     this.isSubmitedNewQuota = true
-    this.updateQuota?.hide()
-    // TODO  send reuqest of update quota
+    if (!this.newQuota) return;
+    this.tenantService.updateTenantQuota(this.tenantIdOfQuota,this.newQuota).subscribe(
+      {
+        next: () => {
+          this.toastr.success("Quota Updated successfully");
+          this.getAllData(this.page,this.pageSize);
+        },
+        error: (error) => this.toastr.success("Quota Updated Failed"),
+        complete: () => {
+          this.updateQuota?.hide()
+          this.isSubmitedNewQuota = false
+        }
+      },
+
+    );
   }
-  onCancelChangeQuota(){
+  onCancelChangeQuota () {
     this.newQuota = 0
     this.updateQuota?.hide()
   }
-  confirmDelete(id: any) {
+  confirmDelete (id: any) {
     this.tenantService.deleteTenant(id).subscribe(() => {
-      this.toastr.success("deleted successfully", "Role");
-      this.getAllData(this.page, this.pageSize);
+      this.toastr.success("deleted successfully","Role");
+      this.getAllData(this.page,this.pageSize);
     });
     this.removeItemModal?.hide();
   }

@@ -10,6 +10,7 @@ import {ToastrService} from "ngx-toastr";
 import {TenantService} from "../../services/tenantService.service";
 import {errorMapper} from "src/app/utiltis/functions";
 import {Tenant} from "./../../types";
+import {Router} from "@angular/router";
 
 @Component({
   selector: "platx-admin-add-edit",
@@ -38,13 +39,14 @@ export class AddEditComponent {
     Email: new FormControl("",[Validators.required]),
     Description: new FormControl(""),
     CreatedBy: new FormControl(""),
-    quota: new FormControl(30,[Validators.required]),
+    QuotaAI: new FormControl(30,[Validators.required]),
   });
 
   constructor (
     private fb: FormBuilder,
     private tenantService: TenantService,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    private router: Router
   ) { }
 
   ngOnInit () {
@@ -65,6 +67,7 @@ export class AddEditComponent {
   }
 
   updateForm (tenant: Tenant): void {
+    console.log(tenant)
     const mappedResponse = {
       id: tenant.id,
       LastName: tenant.lastName || "",
@@ -78,7 +81,7 @@ export class AddEditComponent {
       Description: tenant.description || "",
       PhoneNumber: tenant.phoneNumber || "",
       CreatedBy: tenant.createdBy || "",
-      quota: tenant.quota || 30,
+      QuotaAI: tenant.quotaAI|| 30,
     };
     this.tenantForm.patchValue(mappedResponse);
   }
@@ -104,20 +107,31 @@ export class AddEditComponent {
     formData.append("LastName",formVal.LastName);
     formData.append("LogoFile",formVal.LogoFile);
     formData.append("Title",formVal.Title);
+    formData.append("QuotaAI",formVal.QuotaAI);
 
     if (this.mode == "edit") {
       formData.append("Id",formVal.id);
-      this.tenantService.putUpdateTenant(formData).subscribe(
-        (res) => this.toastr.success("Tenant Updated successfully"),
-        (err) => this.toastr.error(this.errorMapper(err.error.errors))
+      this.tenantService.putUpdateTenant(formData).subscribe({
+        next: (response) => {
+          this.toastr.success("Tenant updated successfully");
+          this.router.navigate(["/tenant"]);
+        },
+        error: (err) => {
+          this.toastr.error(this.errorMapper(err.error?.errors) ?? "Error Please Try Again");
+          this.submitted = false
+        }
+      }
+
       );
     } else {
       this.tenantService.postCreateTenant(formData).subscribe(
         (response) => {
           this.toastr.success("Tenant created successfully");
+          this.router.navigate(["/tenant"]);
         },
         (err) => {
           this.toastr.error(this.errorMapper(err.error?.errors) ?? "Error Please Try Again");
+          this.submitted = false
         }
       );
     }

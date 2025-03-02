@@ -33,6 +33,7 @@
                   <th scope="col" style="width: 40px">#</th>
                   <th scope="col">Name</th>
                   <th scope="col">Domain</th>
+                  <th scope="col">Quota</th>
                   <th scope="col">Phone Number</th>
                   <th scope="col">Creation Time</th>
                   <th scope="col">Last Update</th>
@@ -47,6 +48,7 @@
                   <td>{{ i + 1 + (page - 1) * pageSize }}</td>
                   <td>{{ item.title }}</td>
                   <td>{{ item.domain }}</td>
+                  <td>{{ item.quotaAI }}</td>
                   <td>{{ item.phoneNumber }}</td>
                   <td>{{ item.creationTime | date : "short" }}</td>
                   <td>{{ item.updateTime | date : "short"}}</td>
@@ -80,7 +82,7 @@
                                 Delete</a>
                             </li>
                             <li>
-                              <button (click)="openUpgradeQuotaModal(item.id)" class="dropdown-item remove-list">
+                              <button (click)="openUpgradeQuotaModal(item.id,item.quotaAI)" class="dropdown-item remove-list">
                                 <i class="mdi mdi-alpha-k-circle text-secondary font-size-16 me-1"></i>
 
                                 Quota</button>
@@ -125,8 +127,6 @@
 <!-- end confirmModal -->
 
 <!-- update quota -->
-
-
 <div bsModal #updateQuota="bs-modal" class="modal fade" id="updateQuota" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content">

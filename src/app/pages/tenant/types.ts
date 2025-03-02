@@ -18,7 +18,9 @@ export interface Tenant {
   phoneNumber?: string;
   isActive?: boolean;
   quota:number
+  quotaAI:number
 }
+
 interface TenantFile {
   id: number;
   name: string;
@@ -42,10 +44,22 @@ export interface TenantFormGroup {
   Email: FormControl;
   Description: FormControl;
   CreatedBy: FormControl;
-  quota:FormControl
+  QuotaAI:FormControl
 }
 
 export interface GetAllTenantsResponse {
   items: Tenant[];
   totalCount: number;
 }
+
+
+interface FileInfo {
+  id: number;
+  name: string;
+  size: number;
+  url: string;
+  fileType: number;
+  updateTime: string | null;
+  creationTime: string;
+}
+
