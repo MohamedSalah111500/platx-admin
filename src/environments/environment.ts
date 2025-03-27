@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiURL:'http://platx.runasp.net/',
+  apiURL:'https://platx.runasp.net/',
   defaultauth: 'fakebackend',
   firebaseConfig: {
     apiKey: "",
