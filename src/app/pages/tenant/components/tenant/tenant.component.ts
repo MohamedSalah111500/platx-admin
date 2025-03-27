@@ -104,11 +104,11 @@ export class TenantComponent implements OnInit {
     } else {
       this.tenantService.activateTenant(this.selectedTenant.id).subscribe(
         () => {
-          this.toastr.success("Tenant DeActivated successfully");
+          this.toastr.success("Tenant Activated successfully");
           this.getAllData(this.page,this.pageSize);
           this.confirmModal.hide();
         },
-        (error) => this.toastr.success("Tenant DeActivated Failed")
+        (error) => this.toastr.success("Tenant Activated Failed")
       );
     }
   }
