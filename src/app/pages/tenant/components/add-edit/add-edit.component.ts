@@ -91,8 +91,8 @@ export class AddEditComponent {
   }
 
   onSubmit (): void {
-    this.submitted = true;
     if (!this.tenantForm.valid) return;
+    this.submitted = true;
 
     let formVal = this.tenantForm.value;
     const formData = new FormData();
