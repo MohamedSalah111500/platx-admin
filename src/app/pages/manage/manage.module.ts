@@ -14,10 +14,9 @@ import { ContactsRoutingModule } from './manage-routing.module';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { RolesComponent } from './roles/roles.component';
 
 @NgModule({
-  declarations: [RolesComponent],
+  declarations: [],
   imports: [
     CommonModule,
     ContactsRoutingModule,

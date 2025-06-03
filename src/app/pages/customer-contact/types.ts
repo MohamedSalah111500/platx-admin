@@ -1,0 +1,61 @@
+import { FormControl } from "@angular/forms";
+
+export interface Tenant {
+  lastName: string;
+  firstName: string;
+  id?: string;
+  title?: string;
+  domain?: string;
+  email?: string;
+  coverFileId?: null;
+  coverFile?: TenantFile;
+  logoFileId?: null;
+  logoFile?: TenantFile;
+  description?: string;
+  creationTime?: string;
+  createdBy?: null;
+  updateTime?: string;
+  phoneNumber?: string;
+  isActive?: boolean;
+  quota: number;
+  quotaAI: number;
+}
+
+interface TenantFile {
+  id: number;
+  name: string;
+  size: number;
+  url: string;
+  fileType: number;
+  creationTime: string;
+  updateTime: null;
+}
+
+export interface TenantFormGroup {
+  id: FormControl;
+  LastName: FormControl;
+  FirstName: FormControl;
+  PhoneNumber: FormControl;
+  Domain: FormControl;
+  LogoFile: FormControl;
+  IsActive: FormControl;
+  CoverFile: FormControl;
+  Title: FormControl;
+  Email: FormControl;
+  Description: FormControl;
+  CreatedBy: FormControl;
+  QuotaAI: FormControl;
+}
+
+export interface GetAllCustomerContactsResponse {
+  items: CustomerContact[];
+  totalCount: number;
+}
+
+export interface CustomerContact {
+  name: string;
+  email: string;
+  phone: string;
+  massage: string;
+  isDemo: boolean;
+}

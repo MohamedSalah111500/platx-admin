@@ -5,11 +5,7 @@ import { DefaultComponent } from "./dashboards/default/default.component";
 
 const routes: Routes = [
   { path: "dashboard", component: DefaultComponent },
-  {
-    path: "profile",
-    loadChildren: () =>
-      import("./profile/profile.module").then((m) => m.ProfileModule),
-  },
+
   {
     path: "manage",
     loadChildren: () =>
@@ -19,6 +15,13 @@ const routes: Routes = [
     path: "tenant",
     loadChildren: () =>
       import("./tenant/tenant.module").then((m) => m.TenantModule),
+  },
+  {
+    path: "customer-contact",
+    loadChildren: () =>
+      import("./customer-contact/customer-contact.module").then(
+        (m) => m.CustomerContactModule
+      ),
   },
 
   {

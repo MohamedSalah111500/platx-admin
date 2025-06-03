@@ -5,9 +5,6 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, Observer } from "rxjs";
 import { GetAllTenantsResponse, Tenant } from "../types";
 import {
-  ROLES_URLS,
-  STAFF_URLS,
-  STUDENTS_URLS,
   TENANT_URLS,
 } from "src/app/utiltis/urls";
 import { pagination } from "src/app/utiltis/functions";

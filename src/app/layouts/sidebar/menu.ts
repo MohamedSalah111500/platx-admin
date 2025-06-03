@@ -19,6 +19,12 @@ export const MENU: MenuItem[] = [
     link: "/tenant",
   },
   {
+    id: 2,
+    label: "MENUITEMS.CUSTOMER_CONTACT.TEXT",
+    icon: "bx-user",
+    link: "/customer-contact",
+  },
+  {
     id: 3,
     label: "MENUITEMS.PLANS.TEXT",
     icon: "bx-cog",

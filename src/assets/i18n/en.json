@@ -94,6 +94,14 @@
         "DEFAULT": "Default"
       }
     },
+      "CUSTOMER_CONTACT": {
+      "TEXT": "Customer Contact",
+      "BADGE": "04",
+      "LIST": {
+        "DEFAULT": "Default"
+      }
+    },
+
     "PLANS": {
       "TEXT": "plans",
       "BADGE": "04",
