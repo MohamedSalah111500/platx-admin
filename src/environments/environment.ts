@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiURL:'https://platx.runasp.net/',
-    apiURL:'https://platx-backend-prod.runasp.net/',
+  apiURL:'https://platx.runasp.net/',
+    // apiURL:'https://platx-backend-prod.runasp.net/',
 
   defaultauth: 'fakebackend',
   firebaseConfig: {
