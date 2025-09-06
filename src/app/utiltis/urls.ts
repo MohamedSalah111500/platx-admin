@@ -47,4 +47,5 @@ export const PLATX_CONTACT_URLS = {
   GET_CONTACT: `${environment.apiURL
     .concat(PLATX_CONTACT_BASE)
     .concat("/GetContactDetailsList")}`,
+    DELETE: (id: string) => `${environment.apiURL.concat(PLATX_CONTACT_BASE)}/${id}`,
 };

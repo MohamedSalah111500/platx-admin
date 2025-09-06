@@ -15,7 +15,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TenantRoutingModule } from './customer-contact-routing.module';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { UiSwitchModule } from 'ngx-ui-switch';
-import { CustomerContactComponent } from './components/tenant/customer-contact.component';
+import { CustomerContactComponent } from './components/customer-contact/customer-contact.component';
 
 
 @NgModule({

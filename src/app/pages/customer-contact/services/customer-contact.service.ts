@@ -7,6 +7,7 @@ import { GetAllCustomerContactsResponse } from "../types";
 import { PLATX_CONTACT_URLS } from "src/app/utiltis/urls";
 import { pagination } from "src/app/utiltis/functions";
 import { ToastrService } from "ngx-toastr";
+import { IGeneralSuccessMessageResponse } from "src/app/shared/general-types";
 
 @Injectable({
   providedIn: "root",
@@ -37,16 +38,16 @@ export class CustomerContactService {
     );
   }
 
-  // deleteTenant(id: string): Observable<Tenant> {
-  //   return new Observable((observer: Observer<Tenant>) => {
-  //     this.http.delete<Tenant>(TENANT_URLS.DELETE(id)).subscribe(
-  //       (responseData: Tenant) => {
-  //         observer.next(responseData);
-  //       },
-  //       (error) => {
-  //         observer.error(error);
-  //       }
-  //     );
-  //   });
-  // }
+  deleteContact(id: string): Observable<IGeneralSuccessMessageResponse> {
+    return new Observable((observer: Observer<IGeneralSuccessMessageResponse>) => {
+      this.http.delete<IGeneralSuccessMessageResponse>(PLATX_CONTACT_URLS.DELETE(id)).subscribe(
+        (responseData: IGeneralSuccessMessageResponse) => {
+          observer.next(responseData);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
+    });
+  }
 }

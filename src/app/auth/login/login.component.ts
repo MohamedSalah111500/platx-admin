@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     const extractedDomain = pathname.split("/")[1];
 
     this.authenticationService
-      .login(userName, password, extractedDomain)
+      .login(userName, password, 'mohamed-salah')
       .subscribe(
         (response) => {
 
