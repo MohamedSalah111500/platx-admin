@@ -1,0 +1,237 @@
+<div class="container-fluid">
+  <app-page-title
+    title="Subscription Plan"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="row">
+          <!-- Basic Information -->
+          <div class="col-lg-6 mb-3">
+            <label for="name">Name *</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              formControlName="name"
+            />
+            <div
+              *ngIf="submitted && subscriptionForm.controls.name.invalid"
+              class="text-danger"
+            >
+              Name is required.
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <label for="displayName">Display Name</label>
+            <input
+              type="text"
+              id="displayName"
+              class="form-control"
+              formControlName="displayName"
+            />
+          </div>
+
+          <div class="col-lg-12 mb-3">
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              class="form-control"
+              formControlName="description"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- Pricing -->
+          <div class="col-lg-4 mb-3">
+            <label for="monthlyPrice">Monthly Price</label>
+            <input
+              type="number"
+              id="monthlyPrice"
+              class="form-control"
+              formControlName="monthlyPrice"
+            />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="yearlyPrice">Yearly Price</label>
+            <input
+              type="number"
+              id="yearlyPrice"
+              class="form-control"
+              formControlName="yearlyPrice"
+            />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="originalPrice">Original Price</label>
+            <input
+              type="number"
+              id="originalPrice"
+              class="form-control"
+              formControlName="originalPrice"
+            />
+          </div>
+
+          <!-- Limits -->
+          <div class="col-lg-4 mb-3">
+            <label for="maxStudents">Max Students</label>
+            <input
+              type="number"
+              id="maxStudents"
+              class="form-control"
+              formControlName="maxStudents"
+            />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="maxCourses">Max Courses</label>
+            <input
+              type="number"
+              id="maxCourses"
+              class="form-control"
+              formControlName="maxCourses"
+            />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="maxVideoSizeGB">Max Video Size (GB)</label>
+            <input
+              type="number"
+              id="maxVideoSizeGB"
+              class="form-control"
+              formControlName="maxVideoSizeGB"
+            />
+          </div>
+
+          <!-- Features -->
+          <div class="col-12">
+            <h5 class="mb-3">Features</h5>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <div>
+              <label class="d-block">Specialized Options</label>
+              <ui-switch
+                formControlName="hasSpecializedOptions"
+                size="small"
+                class="me-1"
+              ></ui-switch>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <div>
+              <label class="d-block">Custom UI</label>
+              <ui-switch
+                formControlName="hasCustomUI"
+                size="small"
+                class="me-1"
+              ></ui-switch>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <div>
+              <label class="d-block">Quiz and Assignments</label>
+              <ui-switch
+                formControlName="hasQuizAndAssignments"
+                size="small"
+                class="me-1"
+              ></ui-switch>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <div>
+              <label class="d-block">Technical Support</label>
+              <ui-switch
+                formControlName="hasTechnicalSupport"
+                size="small"
+                class="me-1"
+              ></ui-switch>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <div>
+              <label class="d-block">Document and Media</label>
+              <ui-switch
+                formControlName="hasDocumentAndMedia"
+                size="small"
+                class="me-1"
+              ></ui-switch>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <div>
+              <label class="d-block">Lifelong Access</label>
+              <ui-switch
+                formControlName="hasLifelongAccess"
+                size="small"
+                class="me-1"
+              ></ui-switch>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <div>
+              <label class="d-block">Advanced Reports</label>
+              <ui-switch
+                formControlName="hasAdvancedReports"
+                size="small"
+                class="me-1"
+              ></ui-switch>
+            </div>
+          </div>
+
+          <!-- Display Settings -->
+          <div class="col-12">
+            <h5 class="mb-3">Display Settings</h5>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="sortOrder">Sort Order</label>
+            <input
+              type="number"
+              id="sortOrder"
+              class="form-control"
+              formControlName="sortOrder"
+            />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <div>
+              <label class="d-block">Featured Plan</label>
+              <ui-switch
+                formControlName="isFeatured"
+                size="small"
+                class="me-1"
+              ></ui-switch>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <div>
+              <label class="d-block">Popular Plan</label>
+              <ui-switch
+                formControlName="isPopular"
+                size="small"
+                class="me-1"
+              ></ui-switch>
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <button type="submit" class="btn btn-primary w-100">
+              {{mode == "edit" ? "Update" : "Create"}} Plan
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

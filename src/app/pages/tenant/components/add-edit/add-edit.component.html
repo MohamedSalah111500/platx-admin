@@ -1,0 +1,110 @@
+<div class="container-fluid">
+  <app-page-title title="Tenant" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="tenantForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="row">
+          <div class="col-lg-4 mb-3">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" class="form-control" formControlName="FirstName"
+              placeholder="example: Mohamed" />
+            <div *ngIf="submitted && tenantForm.controls.FirstName.invalid" class="text-danger">
+              First Name is required.
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" class="form-control" formControlName="LastName"
+              placeholder="example: Yassir" />
+            <div *ngIf="submitted && tenantForm.controls.LastName.invalid" class="text-danger">
+              Last Name is required.
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label for="title">Title *</label>
+            <input type="text" id="title" class="form-control" formControlName="Title"
+              placeholder="example: My Platform" />
+            <div *ngIf="submitted && tenantForm.controls.Title.invalid" class="text-danger">
+              Title is required.
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="domain">Domain *</label>
+            <input type="text" id="domain" class="form-control" formControlName="Domain"
+              placeholder="example: my-platform" />
+            <div *ngIf="submitted && tenantForm.controls.Domain.invalid" class="text-danger">
+              Domain is required.
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="email">Email *</label>
+            <input type="email" id="email" class="form-control" formControlName="Email"
+              placeholder="example: WQWQW@example.com" />
+            <div *ngIf="submitted && tenantForm.controls.Email.invalid" class="text-danger">
+              Enter a valid email.
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label for="PhoneNumber">Phone Number *</label>
+            <input type="text" id="PhoneNumber" class="form-control" formControlName="PhoneNumber"
+              placeholder="example: +1234567890" />
+            <div *ngIf="submitted && tenantForm.controls.PhoneNumber.invalid" class="text-danger">
+              Phone Number is required.
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <label for="quota">AI Quota *</label>
+            <input type="number" id="quota" class="form-control" formControlName="QuotaAI"
+              placeholder="30" />
+            <div *ngIf="submitted && tenantForm.controls.QuotaAI.invalid" class="text-danger">
+              Enter a valid quota.
+            </div>
+          </div>
+          <hr class="text-gray" />
+
+          <div class="col-lg-6 mb-3">
+            <label for="logoFile">Logo File <span class="text-muted">(optional)</span></label>
+            <platx-file-upload [imageFile]="tenantForm.controls.LogoFile.value"
+              (fileUploadSuccess)="onFileUploadSuccess('LogoFile', $event)"></platx-file-upload>
+            <div *ngIf="submitted && tenantForm.controls.LogoFile.invalid" class="text-danger">
+              Logo file is required.
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <label for="coverFile">Cover File <span class="text-muted">(optional)</span></label>
+            <platx-file-upload [imageFile]="tenantForm.controls.CoverFile.value"
+              (fileUploadSuccess)="onFileUploadSuccess('CoverFile', $event)"></platx-file-upload>
+            <div *ngIf="submitted && tenantForm.controls.CoverFile.invalid" class="text-danger">
+              Cover file is required.
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <div>
+              <label for="isActive d-block">Is Platform Active</label>
+            </div>
+            <ui-switch id="isActive" uncheckedLabel="InActive" checkedLabel="Active" size="small" class="me-1"
+              formControlName="IsActive"></ui-switch>
+          </div>
+
+          <div class="col-lg-12 mb-3">
+            <label for="description">Description <span class="text-muted">(optional)</span></label>
+            <textarea id="description" class="form-control" formControlName="Description"></textarea>
+            <div *ngIf="submitted && tenantForm.controls.Description.invalid" class="text-danger">
+              Description is required.
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <button type="submit" class="btn btn-primary w-100" [disabled]="submitted">
+              {{ mode == "edit" ? "Update" : "Create" }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # platx -  Angular 17 Responsive Admin Dashboard  
+=======
+# platx-admin -  Angular 13 Responsive Admin Dashboard Template 
+>>>>>>> 0bbb283f2262a18d1355725de514439f59eb01e3
 
 ## Development server
 
