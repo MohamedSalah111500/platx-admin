@@ -2,11 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { NgApexchartsModule } from 'ng-apexcharts';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-
-import { NgSelectModule } from '@ng-select/ng-select';
 
 import { WidgetModule } from '../../shared/widget/widget.module';
 import { UIModule } from '../../shared/ui/ui.module';
@@ -20,17 +17,17 @@ import { FileUploadComponent } from 'src/app/shared/components/file-upload/file-
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { ImageUploadComponent } from 'src/app/shared/components/image-upload/image-upload.component';
+import { SubscriptionSectionComponent } from './components/subscription-section/subscription-section.component';
+import { TenantSubscriptionComponent } from './components/tenant-subscription/tenant-subscription.component';
 
 
 @NgModule({
-  declarations: [TenantComponent, AddEditComponent,FileUploadComponent,ImageUploadComponent],
+  declarations: [TenantComponent, AddEditComponent,FileUploadComponent,ImageUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent],
   imports: [
     CommonModule,
     TenantRoutingModule,
     WidgetModule,
     UIModule,
-    NgSelectModule,
-    NgApexchartsModule,
     FormsModule,
     ReactiveFormsModule ,
     TooltipModule.forRoot(),

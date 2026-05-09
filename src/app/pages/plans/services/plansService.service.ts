@@ -5,7 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, Observer } from "rxjs";
 import { Plan } from "../types";
 import {
-  TENANT_URLS,
+  SUBSCRIPTION_PLANS_URLS,
 } from "src/app/utiltis/urls";
 import { pagination } from "src/app/utiltis/functions";
 import { map } from "rxjs";
@@ -20,18 +20,14 @@ export class PlansService {
 
   getAllPLans(): Observable<Plan[]> {
     return new Observable((observer: Observer<Plan[]>) => {
-      this.http
-        .get<Plan[]>(
-          "https://localhost:7154/api/plans?includePlanFeatures=true"
-        )
-        .subscribe(
-          (responseData: Plan[]) => {
-            observer.next(responseData);
-          },
-          (error) => {
-            observer.error(error);
-          }
-        );
+      this.http.get<Plan[]>(SUBSCRIPTION_PLANS_URLS.GET_ALL).subscribe(
+        (responseData: Plan[]) => {
+          observer.next(responseData);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
     });
   }
 

@@ -5,6 +5,9 @@ const TENANT_BASE = "api/Tenant";
 const PLATX_CONTACT_BASE = "api/PlatxContact";
 const FILE_MANAGER_BASE = "api/Attachements";
 const GENERAL_FILE_BASE = "api/Files";
+const SUBSCRIPTION_PLANS_BASE = "api/admin/subscription-plans";
+const TENANT_SUBSCRIPTIONS_BASE = "api/TenantSubscriptions";
+const RENEWAL_REQUESTS_BASE = "api/RenewalRequests";
 
 
 export const AUTH_URLS = {
@@ -41,6 +44,33 @@ export const TENANT_URLS = {
     `${environment.apiURL.concat(TENANT_BASE)}/DeActivateTenant/${id}`,
   UPDATE_QUOTA: () =>
     `${environment.apiURL.concat(TENANT_BASE)}/UpdateTenantQuotaAI`,
+  FULL_DELETE: (id: string) =>
+    `${environment.apiURL.concat(TENANT_BASE)}/full-delete/${id}`,
+};
+
+export const SUBSCRIPTION_PLANS_URLS = {
+  GET_ALL: `${environment.apiURL.concat(SUBSCRIPTION_PLANS_BASE)}`,
+  GET_BY_ID: (id: number) => `${environment.apiURL.concat(SUBSCRIPTION_PLANS_BASE)}/${id}`,
+  CREATE: `${environment.apiURL.concat(SUBSCRIPTION_PLANS_BASE)}`,
+  UPDATE: (id: number) => `${environment.apiURL.concat(SUBSCRIPTION_PLANS_BASE)}/${id}`,
+  DELETE: (id: number) => `${environment.apiURL.concat(SUBSCRIPTION_PLANS_BASE)}/${id}`,
+};
+
+export const TENANT_SUBSCRIPTIONS_URLS = {
+  GET_CURRENT: (tenantId: string) =>
+    `${environment.apiURL.concat(TENANT_SUBSCRIPTIONS_BASE)}/tenant/${tenantId}/current`,
+  GET_HISTORY: (tenantId: string) =>
+    `${environment.apiURL.concat(TENANT_SUBSCRIPTIONS_BASE)}/tenant/${tenantId}/history`,
+  ASSIGN: (tenantId: string) =>
+    `${environment.apiURL.concat(TENANT_SUBSCRIPTIONS_BASE)}/tenant/${tenantId}/assign`,
+  EXTEND: (subscriptionId: number) =>
+    `${environment.apiURL.concat(TENANT_SUBSCRIPTIONS_BASE)}/${subscriptionId}/extend`,
+};
+
+export const RENEWAL_REQUESTS_URLS = {
+  GET_PAGED: `${environment.apiURL.concat(RENEWAL_REQUESTS_BASE)}`,
+  GET_BY_ID: (id: number) => `${environment.apiURL.concat(RENEWAL_REQUESTS_BASE)}/${id}`,
+  HANDLE: (id: number) => `${environment.apiURL.concat(RENEWAL_REQUESTS_BASE)}/${id}/handle`,
 };
 
 export const PLATX_CONTACT_URLS = {

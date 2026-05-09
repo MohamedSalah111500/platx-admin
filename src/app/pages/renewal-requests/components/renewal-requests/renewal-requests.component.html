@@ -1,0 +1,139 @@
+<div class="container-fluid renewal-page">
+  <app-page-title title="Renewal Requests" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="card sub-shell">
+    <!-- Header -->
+    <div class="card-body sub-header">
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+        <div>
+          <h4 class="mb-1 fw-bold">Renewal Requests</h4>
+          <p class="text-muted mb-0">Review and handle subscription renewal requests from tenants</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="pill pill-soft">
+            Total <strong class="ms-1">{{ totalCount }}</strong>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="card-body sub-section">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="info-label d-block mb-2">Filter by status</label>
+          <select class="form-select form-select-clean" [(ngModel)]="filterStatus" (change)="onFilterChange()">
+            <option [ngValue]="null">All</option>
+            <option [ngValue]="RenewalRequestStatus.Pending">Pending</option>
+            <option [ngValue]="RenewalRequestStatus.Handled">Handled</option>
+            <option [ngValue]="RenewalRequestStatus.Rejected">Rejected</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+    </div>
+
+    <!-- Table -->
+    <div class="card-body sub-section pb-2" *ngIf="!loading">
+      <div class="history-table">
+        <div class="history-row history-head">
+          <div>#</div>
+          <div>Tenant</div>
+          <div>Requested</div>
+          <div>Status</div>
+          <div>Notes</div>
+          <div class="text-end">Action</div>
+        </div>
+
+        <div class="history-row" *ngIf="items.length === 0">
+          <div class="empty-row">
+            <div class="empty-icon mx-auto mb-2">
+              <i class="mdi mdi-inbox-outline"></i>
+            </div>
+            No renewal requests found
+          </div>
+        </div>
+
+        <div class="history-row" *ngFor="let item of items">
+          <div class="fw-medium">#{{ item.id }}</div>
+          <div>
+            <div class="fw-medium">{{ item.tenantTitle || "—" }}</div>
+            <div class="text-muted font-size-12">{{ item.tenantId }}</div>
+          </div>
+          <div>{{ item.requestedAt | date: "MMM d, yyyy HH:mm" }}</div>
+          <div>
+            <span class="pill" [ngClass]="pillClass(item.status)">
+              <span class="status-dot" [ngClass]="dotClass(item.status)"></span>
+              {{ statusLabel(item.status) }}
+            </span>
+          </div>
+          <div class="text-muted notes-cell">{{ item.adminNotes || "—" }}</div>
+          <div class="text-end">
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              *ngIf="item.status === RenewalRequestStatus.Pending"
+              (click)="openHandle(handleTpl, item)"
+            >
+              Handle
+            </button>
+            <span class="text-muted font-size-12" *ngIf="item.status !== RenewalRequestStatus.Pending">
+              Handled {{ item.handledAt | date: "MMM d, yyyy" }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-end mt-3" *ngIf="totalCount > size">
+        <pagination
+          [totalItems]="totalCount"
+          [itemsPerPage]="size"
+          [(ngModel)]="page"
+          (pageChanged)="onPageChange($event)"
+          [boundaryLinks]="true"
+          previousText="‹"
+          nextText="›"
+          firstText="«"
+          lastText="»"
+          class="pagination-rounded"
+        ></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Handle Modal -->
+<ng-template #handleTpl>
+  <div class="modal-header">
+    <h5 class="modal-title">Handle Renewal Request</h5>
+    <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
+  </div>
+  <form [formGroup]="handleForm" (ngSubmit)="submitHandle()">
+    <div class="modal-body">
+      <div class="info-tile mb-3">
+        <span class="info-label">Tenant</span>
+        <div class="info-value-sm">{{ selected?.tenantTitle || selected?.tenantId }}</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Decision <span class="text-danger">*</span></label>
+        <select class="form-select" formControlName="status">
+          <option [ngValue]="RenewalRequestStatus.Handled">Handled</option>
+          <option [ngValue]="RenewalRequestStatus.Rejected">Rejected</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Notes</label>
+        <textarea class="form-control" formControlName="adminNotes" rows="3" placeholder="Optional notes..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modalRef?.hide()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="handleForm.invalid">Submit</button>
+    </div>
+  </form>
+</ng-template>

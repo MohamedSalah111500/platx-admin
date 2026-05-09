@@ -1,12 +1,5 @@
 import {Component,OnInit,ViewChild} from "@angular/core";
 import {ModalDirective} from "ngx-bootstrap/modal";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
-
 import {PageChangedEvent} from "ngx-bootstrap/pagination";
 import {ToastrService} from "ngx-toastr";
 import {TenantService} from "./../../services/tenantService.service";
@@ -22,13 +15,15 @@ export class TenantComponent implements OnInit {
   breadCrumbItems: Array<{}>;
   term: any;
 
-  @ViewChild("newContactModal",{static: false})
-  newContactModal?: ModalDirective;
   @ViewChild("removeItemModal") removeItemModal?: ModalDirective;
   @ViewChild("confirmModal") confirmModal?: ModalDirective;
   @ViewChild("updateQuota") updateQuota?: ModalDirective;
+  @ViewChild("fullDeleteModal") fullDeleteModal?: ModalDirective;
 
   deleteId: any;
+  fullDeleteId: string;
+  fullDeleteTenantName: string = '';
+  fullDeleteConfirmText: string = '';
   returnedArray: any;
   tenantIdOfQuota: string
   // -------------------
@@ -37,13 +32,11 @@ export class TenantComponent implements OnInit {
   totalCount: number = 0;
   page: number = 1;
   pageSize: number = 10;
-  isLoading = true;
   newQuota: number = 0;
   isSubmitedNewQuota = false
   selectedTenant: any;
 
   constructor (
-    private fb: FormBuilder,
     public toastr: ToastrService,
     public tenantService: TenantService,
     private router: Router
@@ -155,5 +148,31 @@ export class TenantComponent implements OnInit {
       this.getAllData(this.page,this.pageSize);
     });
     this.removeItemModal?.hide();
+  }
+
+  openFullDeleteModel (id: string,name: string) {
+    this.fullDeleteId = id;
+    this.fullDeleteTenantName = name;
+    this.fullDeleteConfirmText = '';
+    this.fullDeleteModal?.show();
+  }
+
+  confirmFullDelete () {
+    if (this.fullDeleteConfirmText !== 'delete') return;
+    this.tenantService.fullDeleteTenant(this.fullDeleteId).subscribe(
+      () => {
+        this.toastr.success("Tenant deleted permanently","Tenant");
+        this.getAllData(this.page,this.pageSize);
+        this.fullDeleteModal?.hide();
+      },
+      (error) => {
+        this.toastr.error("Failed to delete tenant","Tenant");
+      }
+    );
+  }
+
+  cancelFullDelete () {
+    this.fullDeleteConfirmText = '';
+    this.fullDeleteModal?.hide();
   }
 }

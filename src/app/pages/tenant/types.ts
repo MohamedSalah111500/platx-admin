@@ -52,14 +52,3 @@ export interface GetAllTenantsResponse {
   totalCount: number;
 }
 
-
-interface FileInfo {
-  id: number;
-  name: string;
-  size: number;
-  url: string;
-  fileType: number;
-  updateTime: string | null;
-  creationTime: string;
-}
-

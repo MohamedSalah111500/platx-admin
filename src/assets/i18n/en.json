@@ -102,12 +102,18 @@
       }
     },
 
+    "MANAGEMENT": {
+      "TEXT": "Management"
+    },
     "PLANS": {
-      "TEXT": "plans",
+      "TEXT": "Subscription Plans",
       "BADGE": "04",
       "LIST": {
         "DEFAULT": "Default"
       }
+    },
+    "RENEWAL_REQUESTS": {
+      "TEXT": "Renewal Requests"
     },
     "LAYOUTS": {
       "TEXT": "Layouts",

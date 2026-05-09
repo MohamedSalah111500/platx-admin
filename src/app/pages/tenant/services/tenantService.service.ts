@@ -8,7 +8,6 @@ import {
   TENANT_URLS,
 } from "src/app/utiltis/urls";
 import { pagination } from "src/app/utiltis/functions";
-import { map } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ToastrService } from "ngx-toastr";
 
@@ -118,5 +117,18 @@ export class TenantService {
   }
   updateTenantQuota(tenantId: string,quotaAI:number): Observable<Tenant> {
     return this.http.put<Tenant>(TENANT_URLS.UPDATE_QUOTA(), {tenantId,quotaAI});
+  }
+
+  fullDeleteTenant(id: string): Observable<Tenant> {
+    return new Observable((observer: Observer<Tenant>) => {
+      this.http.delete<Tenant>(TENANT_URLS.FULL_DELETE(id)).subscribe(
+        (responseData: Tenant) => {
+          observer.next(responseData);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
+    });
   }
 }

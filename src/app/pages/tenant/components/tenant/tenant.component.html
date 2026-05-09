@@ -76,6 +76,12 @@
                                 Edit</a>
                             </li>
                             <li>
+                              <a [routerLink]="['/tenant/subscription', item.id]" class="dropdown-item">
+                                <i class="mdi mdi-credit-card-outline font-size-16 text-primary me-1"></i>
+                                Manage Subscription
+                              </a>
+                            </li>
+                            <li>
                               <a href="javascript:void(0);" (click)="openDeleteModel(item.id)"
                                 class="dropdown-item remove-list" data-remove-id="8"><i
                                   class="mdi mdi-trash-can font-size-16 text-danger me-1"></i>
@@ -84,8 +90,13 @@
                             <li>
                               <button (click)="openUpgradeQuotaModal(item.id,item.quotaAI)" class="dropdown-item remove-list">
                                 <i class="mdi mdi-alpha-k-circle text-secondary font-size-16 me-1"></i>
-
                                 Quota</button>
+                            </li>
+                            <li>
+                              <a href="javascript:void(0);" (click)="openFullDeleteModel(item.id, item.title)"
+                                class="dropdown-item remove-list"><i
+                                  class="mdi mdi-delete-forever font-size-16 text-danger me-1"></i>
+                                Full Delete</a>
                             </li>
                           </ul>
                         </div>
@@ -125,6 +136,35 @@
     (cancel)="confirmModal.hide()" />
 </div>
 <!-- end confirmModal -->
+
+<!-- fullDeleteModal -->
+<div bsModal #fullDeleteModal="bs-modal" class="modal fade" id="fullDeleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body p-4 text-center">
+        <i class="mdi mdi-alert-circle-outline text-danger" style="font-size: 48px;"></i>
+        <p class="text-muted font-size-16 mb-2 mt-2">
+          You are about to permanently delete tenant <strong>{{ fullDeleteTenantName }}</strong> and all its data.
+        </p>
+        <p class="text-danger font-size-14 mb-3">This action cannot be undone.</p>
+        <label class="form-label">Type <strong>delete</strong> to confirm</label>
+        <input type="text" class="form-control text-center" [(ngModel)]="fullDeleteConfirmText"
+          placeholder="Type delete here" />
+        <div class="hstack gap-2 justify-content-center mb-0 mt-3">
+          <button type="button" class="btn btn-danger me-1"
+            [disabled]="fullDeleteConfirmText !== 'delete'"
+            (click)="confirmFullDelete()">
+            Delete Permanently
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancelFullDelete()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end fullDeleteModal -->
 
 <!-- update quota -->
 <div bsModal #updateQuota="bs-modal" class="modal fade" id="updateQuota" tabindex="-1" aria-hidden="true">

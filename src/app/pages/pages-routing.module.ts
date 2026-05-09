@@ -29,6 +29,13 @@ const routes: Routes = [
     loadChildren: () =>
       import("./plans/plans.module").then((m) => m.PlansModule),
   },
+  {
+    path: "renewal-requests",
+    loadChildren: () =>
+      import("./renewal-requests/renewal-requests.module").then(
+        (m) => m.RenewalRequestsModule
+      ),
+  },
 ];
 
 @NgModule({

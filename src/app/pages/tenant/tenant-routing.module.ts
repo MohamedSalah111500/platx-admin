@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AddEditComponent } from "./components/add-edit/add-edit.component";
 import { TenantComponent } from "./components/tenant/tenant.component";
+import { TenantSubscriptionComponent } from "./components/tenant-subscription/tenant-subscription.component";
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: "add-edit",
     component: AddEditComponent,
+  },
+  {
+    path: "subscription/:id",
+    component: TenantSubscriptionComponent,
   },
 
 ];

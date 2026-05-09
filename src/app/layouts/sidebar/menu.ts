@@ -26,14 +26,21 @@ export const MENU: MenuItem[] = [
   },
   {
     id: 3,
-    label: "MENUITEMS.PLANS.TEXT",
+    label: "MENUITEMS.MANAGEMENT.TEXT",
     icon: "bx-cog",
-    link: "/plans",
+    subItems: [
+      {
+        id: 31,
+        label: "MENUITEMS.PLANS.TEXT",
+        link: "/plans",
+        parentId: 3,
+      },
+      {
+        id: 32,
+        label: "MENUITEMS.RENEWAL_REQUESTS.TEXT",
+        link: "/renewal-requests",
+        parentId: 3,
+      },
+    ],
   },
-  // {
-  //   id: 3,
-  //   label: "MENUITEMS.MANAGE_INSTANCE.TEXT",
-  //   icon: "bx-cog",
-  //   link: "/manage/roles",
-  // },
 ];

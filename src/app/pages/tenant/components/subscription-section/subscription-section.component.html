@@ -1,0 +1,201 @@
+<div class="subscription-section">
+  <div class="card sub-shell">
+    <!-- Header -->
+    <div class="card-body sub-header">
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+        <div>
+          <h4 class="mb-1 fw-bold">Plan & Billing</h4>
+          <p class="text-muted mb-0">Manage subscription plan, expiry and renewals</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <button
+            type="button"
+            class="btn btn-action"
+            [disabled]="!current"
+            (click)="openExtendModal(extendTpl)"
+          >
+            <i class="mdi mdi-calendar-plus me-1"></i> Extend
+          </button>
+          <button type="button" class="btn btn-primary" (click)="openAssignModal(assignTpl)">
+            <i class="mdi mdi-plus me-1"></i> Assign Plan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current plan -->
+    <div class="card-body sub-section">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-semibold mb-0">Current plan</h6>
+      </div>
+
+      <ng-container *ngIf="current; else noCurrent">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="info-tile h-100">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="info-label">Plan</span>
+                <div class="d-flex gap-2 flex-wrap">
+                  <span class="pill pill-soft">
+                    {{ current.subscriptionPlan?.displayName || current.subscriptionPlan?.name }}
+                  </span>
+                  <span class="pill" [ngClass]="pillClass(current.status)">
+                    <span class="status-dot" [ngClass]="dotClass(current.status)"></span>
+                    {{ statusLabel(current.status) }}
+                  </span>
+                </div>
+              </div>
+              <div class="info-value">{{ current.amountPaid }} {{ current.currency }}</div>
+              <div class="info-sub">per period</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-tile h-100">
+              <span class="info-label d-block mb-2">Expiry date</span>
+              <div class="info-value">{{ current.endDate | date: "MMM d, yyyy" }}</div>
+              <div class="info-sub">{{ daysRemaining(current.endDate) }} days remaining</div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noCurrent>
+        <div class="empty-state text-center py-5">
+          <div class="empty-icon mx-auto mb-3">
+            <i class="mdi mdi-credit-card-outline"></i>
+          </div>
+          <h6 class="fw-semibold mb-2">No active subscription</h6>
+          <p class="text-muted mb-3">Click "Assign Plan" above to set one for this tenant.</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Details -->
+    <div class="card-body sub-section" *ngIf="current">
+      <h6 class="fw-semibold mb-2">Subscription details</h6>
+      <p class="text-muted mb-3">Information about the current subscription period</p>
+
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="info-tile h-100">
+            <span class="info-label">Start date</span>
+            <div class="info-value-sm">{{ current.startDate | date: "MMM d, yyyy" }}</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info-tile h-100">
+            <span class="info-label">Status</span>
+            <div class="info-value-sm">
+              <span class="pill" [ngClass]="pillClass(current.status)">
+                <span class="status-dot" [ngClass]="dotClass(current.status)"></span>
+                {{ statusLabel(current.status) }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info-tile h-100">
+            <span class="info-label">Days remaining</span>
+            <div class="info-value-sm">{{ daysRemaining(current.endDate) }} days</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info-tile h-100">
+            <span class="info-label">Total history</span>
+            <div class="info-value-sm">{{ history.length }} entries</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="card-body sub-section">
+      <h6 class="fw-semibold mb-2">Subscription history</h6>
+      <p class="text-muted mb-3">All subscription periods for this tenant, newest first</p>
+
+      <div class="history-table">
+        <div class="history-row history-head">
+          <div>Plan</div>
+          <div>Start</div>
+          <div>End</div>
+          <div>Status</div>
+          <div class="text-end">Amount</div>
+        </div>
+        <div class="history-row" *ngIf="history.length === 0">
+          <div class="empty-row">No history yet</div>
+        </div>
+        <div class="history-row" *ngFor="let h of history">
+          <div class="fw-medium">{{ h.subscriptionPlan?.displayName || h.subscriptionPlan?.name }}</div>
+          <div>{{ h.startDate | date: "MMM d, yyyy" }}</div>
+          <div>{{ h.endDate | date: "MMM d, yyyy" }}</div>
+          <div>
+            <span class="pill" [ngClass]="pillClass(h.status)">
+              <span class="status-dot" [ngClass]="dotClass(h.status)"></span>
+              {{ statusLabel(h.status) }}
+            </span>
+          </div>
+          <div class="text-end">{{ h.amountPaid }} {{ h.currency }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Assign Modal -->
+<ng-template #assignTpl>
+  <div class="modal-header">
+    <h5 class="modal-title">Assign Subscription Plan</h5>
+    <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
+  </div>
+  <form [formGroup]="assignForm" (ngSubmit)="submitAssign()">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="form-label">Plan <span class="text-danger">*</span></label>
+        <select class="form-select" formControlName="subscriptionPlanId" (change)="onPlanChange()">
+          <option [ngValue]="null" disabled>Select a plan</option>
+          <option *ngFor="let p of plans" [ngValue]="p.id">
+            {{ p.displayName || p.name }} — {{ p.monthlyPrice }} EGP
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Duration (days) <span class="text-danger">*</span></label>
+        <input type="number" class="form-control" formControlName="durationDays" min="1" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Amount (override)</label>
+        <input
+          type="number"
+          class="form-control"
+          formControlName="amount"
+          placeholder="Leave empty to use plan price"
+        />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modalRef?.hide()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="assignForm.invalid">Assign</button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- Extend Modal -->
+<ng-template #extendTpl>
+  <div class="modal-header">
+    <h5 class="modal-title">Extend Subscription</h5>
+    <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
+  </div>
+  <form [formGroup]="extendForm" (ngSubmit)="submitExtend()">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label class="form-label">Days to add <span class="text-danger">*</span></label>
+        <input type="number" class="form-control" formControlName="days" min="1" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modalRef?.hide()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="extendForm.invalid">Extend</button>
+    </div>
+  </form>
+</ng-template>
