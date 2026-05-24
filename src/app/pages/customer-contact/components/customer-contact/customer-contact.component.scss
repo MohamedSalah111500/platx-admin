@@ -135,6 +135,11 @@
 
   .message-preview { max-width: 320px; }
 
+  .contact-cell {
+    min-width: 200px;
+    i.mdi { font-size: 14px; }
+  }
+
   .new-badge {
     padding: 2px 6px;
     font-size: 10px;

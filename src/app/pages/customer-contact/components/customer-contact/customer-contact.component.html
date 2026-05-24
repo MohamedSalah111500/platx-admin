@@ -95,9 +95,8 @@
               <thead>
                 <tr>
                   <th style="width:42px">#</th>
+                  <th>Customer</th>
                   <th>Contact</th>
-                  <th>Email</th>
-                  <th>Phone</th>
                   <th>Message</th>
                   <th>Type</th>
                   <th>Received</th>
@@ -124,26 +123,26 @@
                   </td>
 
                   <td>
-                    <div class="d-flex align-items-center gap-2" *ngIf="item.email; else dashEmail">
-                      <a href="mailto:{{ item.email }}" class="text-body font-size-13 text-truncate"
-                        style="max-width:200px;">
-                        {{ item.email }}
-                      </a>
-                      <button type="button" class="icon-btn" title="Copy email" (click)="copy(item.email)">
-                        <i class="mdi mdi-content-copy"></i>
-                      </button>
+                    <div class="contact-cell">
+                      <div class="d-flex align-items-center gap-2" *ngIf="item.email">
+                        <i class="mdi mdi-email-outline text-primary"></i>
+                        <a href="mailto:{{ item.email }}" class="text-body font-size-13 text-truncate"
+                          style="max-width:200px;">
+                          {{ item.email }}
+                        </a>
+                        <button type="button" class="icon-btn" title="Copy email" (click)="copy(item.email)">
+                          <i class="mdi mdi-content-copy"></i>
+                        </button>
+                      </div>
+                      <div class="d-flex align-items-center gap-2 mt-1" *ngIf="item.phone">
+                        <i class="mdi mdi-phone-outline text-success"></i>
+                        <a href="tel:{{ item.phone }}" class="text-body font-size-13">{{ item.phone }}</a>
+                        <button type="button" class="icon-btn" title="Copy phone" (click)="copy(item.phone)">
+                          <i class="mdi mdi-content-copy"></i>
+                        </button>
+                      </div>
+                      <span *ngIf="!item.email && !item.phone" class="text-muted">—</span>
                     </div>
-                    <ng-template #dashEmail><span class="text-muted">—</span></ng-template>
-                  </td>
-
-                  <td>
-                    <div class="d-flex align-items-center gap-2" *ngIf="item.phone; else dashPhone">
-                      <a href="tel:{{ item.phone }}" class="text-body font-size-13">{{ item.phone }}</a>
-                      <button type="button" class="icon-btn" title="Copy phone" (click)="copy(item.phone)">
-                        <i class="mdi mdi-content-copy"></i>
-                      </button>
-                    </div>
-                    <ng-template #dashPhone><span class="text-muted">—</span></ng-template>
                   </td>
 
                   <td>
@@ -213,7 +212,7 @@
                 }
                 @if (!list.length) {
                 <tr>
-                  <td colspan="8">
+                  <td colspan="7">
                     <div class="empty-block">
                       <i class="mdi mdi-email-search-outline font-size-32 text-muted mb-2 d-block"></i>
                       <div class="fw-semibold text-dark">No contacts found</div>
