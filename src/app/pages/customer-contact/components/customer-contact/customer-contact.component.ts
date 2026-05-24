@@ -1,97 +1,180 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
-import { FormBuilder } from "@angular/forms";
 
 import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
-import { Router } from "@angular/router";
-import { Observable } from "rxjs";
-import { CustomerContact, Tenant } from "../../types";
+import { CustomerContact } from "../../types";
 import { CustomerContactService } from "../../services/customer-contact.service";
 
 @Component({
   selector: "app-customer-contact",
   templateUrl: "./customer-contact.component.html",
+  styleUrls: ["./customer-contact.component.scss"],
 })
 export class CustomerContactComponent implements OnInit {
-  breadCrumbItems: Array<{}>;
+  breadCrumbItems: Array<{}> = [];
   term: any;
 
-  @ViewChild("newContactModal", { static: false })
-  newContactModal?: ModalDirective;
   @ViewChild("removeItemModal") removeItemModal?: ModalDirective;
-  @ViewChild("confirmModal") confirmModal?: ModalDirective;
-  @ViewChild("updateQuota") updateQuota?: ModalDirective;
+  @ViewChild("messageModal") messageModal?: ModalDirective;
 
   deleteId: any;
-  returnedArray: any;
-  tenantIdOfQuota: string;
+  returnedArray: CustomerContact[] = [];
   // -------------------
   loading: boolean = false;
   list: CustomerContact[] = [];
   totalCount: number = 0;
   page: number = 1;
   pageSize: number = 10;
-  isLoading = true;
-  newQuota: number = 0;
-  isSubmitedNewQuota = false;
-  selectedTenant: any;
+
+  typeFilter: "all" | "demo" | "general" = "all";
+  selectedMessage: CustomerContact | null = null;
+
+  stats = {
+    total: 0,
+    demo: 0,
+    general: 0,
+    uniqueDomains: 0,
+  };
 
   constructor(
-    private fb: FormBuilder,
     public toastr: ToastrService,
-    public customerContactService: CustomerContactService,
-    private router: Router
+    public customerContactService: CustomerContactService
   ) {}
-  OnBeforeChange: Observable<boolean> = new Observable((observer) => {
-    this.confirmModal.show();
-  });
 
   ngOnInit() {
     this.breadCrumbItems = [
-      { label: "Manage Tenant" },
-      { label: "List", active: true },
+      { label: "Customer" },
+      { label: "Contacts", active: true },
     ];
     this.getAllData(this.page, this.pageSize);
   }
 
   getAllData(pageNumber: number, pageSize: number) {
+    this.loading = true;
     this.customerContactService
       .getAllPlatXContacts(pageNumber, pageSize)
       .subscribe(
         (response) => {
-          this.list = response.items;
-          this.returnedArray = response.items;
+          this.returnedArray = response.items || [];
+          this.list = this.returnedArray;
           this.totalCount = response.totalCount;
+          this.loading = false;
+          this.computeStats();
         },
-        (error) => {}
+        () => {
+          this.loading = false;
+        }
       );
   }
 
-  search() {
-    if (this.term) {
-      this.list = this.returnedArray.filter((data: any) => {
-        return data.name.toLowerCase().includes(this.term.toLowerCase());
-      });
-    } else {
-      this.list = this.returnedArray;
+  private computeStats() {
+    const demo = this.returnedArray.filter((c) => c.isDemo).length;
+    const general = this.returnedArray.length - demo;
+    const domains = new Set(
+      this.returnedArray
+        .map((c) => (c.email || "").split("@")[1])
+        .filter((d) => !!d)
+    );
+    this.stats = {
+      total: this.totalCount || this.returnedArray.length,
+      demo,
+      general,
+      uniqueDomains: domains.size,
+    };
+  }
+
+  setFilter(filter: CustomerContactComponent["typeFilter"]) {
+    this.typeFilter = filter;
+    this.applyFilter();
+  }
+
+  private applyFilter() {
+    let result = [...this.returnedArray];
+    if (this.typeFilter !== "all") {
+      result = result.filter((c) =>
+        this.typeFilter === "demo" ? c.isDemo : !c.isDemo
+      );
     }
+    if (this.term) {
+      const q = this.term.toLowerCase();
+      result = result.filter(
+        (data: any) =>
+          (data.name || "").toLowerCase().includes(q) ||
+          (data.email || "").toLowerCase().includes(q) ||
+          (data.phone || "").toLowerCase().includes(q) ||
+          (data.massage || "").toLowerCase().includes(q)
+      );
+    }
+    this.list = result;
   }
 
-  edit(item: any) {
-    this.router.navigateByUrl("/tenant/add-edit", {
-      state: { mode: "edit", id: item.id },
-    });
+  search() {
+    this.applyFilter();
   }
 
-  onToggle(event, tenant: Tenant) {
-    this.selectedTenant = tenant;
+  initials(name?: string): string {
+    if (!name) return "?";
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  avatarColor(seed?: string): string {
+    const palette = [
+      "#6366f1",
+      "#0ea5e9",
+      "#10b981",
+      "#f59e0b",
+      "#ef4444",
+      "#8b5cf6",
+      "#14b8a6",
+      "#ec4899",
+    ];
+    if (!seed) return palette[0];
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++)
+      hash = (hash + seed.charCodeAt(i)) % 999;
+    return palette[hash % palette.length];
+  }
+
+  truncate(text: string, max = 80): string {
+    if (!text) return "";
+    return text.length > max ? text.substring(0, max) + "…" : text;
+  }
+
+  copy(value: string) {
+    if (!value || !navigator?.clipboard) return;
+    navigator.clipboard.writeText(value).then(
+      () => this.toastr.success("Copied to clipboard"),
+      () => this.toastr.error("Failed to copy")
+    );
+  }
+
+  openMessage(item: CustomerContact) {
+    this.selectedMessage = item;
+    this.messageModal?.show();
+  }
+
+  closeMessage() {
+    this.messageModal?.hide();
+    this.selectedMessage = null;
   }
 
   // pagechanged
   pageChanged(event: PageChangedEvent): void {
-    this.getAllData(event.page, event.itemsPerPage);
+    if (event.page === this.page) return;
     this.page = event.page;
+    this.typeFilter = "all";
+    this.term = "";
+    this.getAllData(event.page, event.itemsPerPage);
+  }
+
+  onPageSizeChange(): void {
+    this.page = 1;
+    this.typeFilter = "all";
+    this.term = "";
+    this.getAllData(this.page, this.pageSize);
   }
 
   openDeleteModel(id: any) {
@@ -99,10 +182,6 @@ export class CustomerContactComponent implements OnInit {
     this.removeItemModal?.show();
   }
 
-  onCancelChangeQuota() {
-    this.newQuota = 0;
-    this.updateQuota?.hide();
-  }
   confirmDelete(id: any) {
     this.customerContactService.deleteContact(id).subscribe(() => {
       this.toastr.success("deleted successfully", "Contact");

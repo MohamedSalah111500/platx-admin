@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx --no-install ng build --configuration development)",
+      "Bash(npx --no-install ng serve --port 0 --configuration development)",
+      "Bash(kill %1)"
+    ]
+  }
+}

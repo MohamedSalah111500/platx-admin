@@ -1,118 +1,276 @@
-<div class="container-fluid">
+<div class="container-fluid tenant-page">
   <app-page-title title="Tenant" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
+  <!-- KPI cards (wraps cleanly: 1 / 2 / 3 / 5 columns) -->
+  <div class="row g-3 mb-3">
+    <div class="col-12 col-sm-6 col-lg-4 col-xxl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="statusFilter === 'all'" (click)="setFilter('all')">
+        <div class="kpi-icon kpi-icon-primary">
+          <i class="mdi mdi-domain"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">Total Tenants</div>
+          <div class="kpi-value">{{ stats.total }}</div>
+          <div class="kpi-sub text-muted">All registered workspaces</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-4 col-xxl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="statusFilter === 'active'" (click)="setFilter('active')">
+        <div class="kpi-icon kpi-icon-success">
+          <i class="mdi mdi-check-decagram"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">Active</div>
+          <div class="kpi-value">{{ stats.active }}</div>
+          <div class="kpi-sub text-success">Currently enabled</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-4 col-xxl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="statusFilter === 'expiring'"
+        (click)="setFilter('expiring')">
+        <div class="kpi-icon kpi-icon-warning">
+          <i class="mdi mdi-alarm-light"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">Expiring Soon</div>
+          <div class="kpi-value">{{ stats.expiringSoon }}</div>
+          <div class="kpi-sub text-warning">Renewal within 7 days</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-6 col-xxl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="statusFilter === 'expired'"
+        (click)="setFilter('expired')">
+        <div class="kpi-icon kpi-icon-danger">
+          <i class="mdi mdi-clock-alert-outline"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">Expired</div>
+          <div class="kpi-value">{{ stats.expired }}</div>
+          <div class="kpi-sub text-danger">Needs renewal</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-6 col-xxl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="statusFilter === 'inactive'"
+        (click)="setFilter('inactive')">
+        <div class="kpi-icon kpi-icon-muted">
+          <i class="mdi mdi-pause-circle-outline"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">Inactive</div>
+          <div class="kpi-value">{{ stats.inactive }}</div>
+          <div class="kpi-sub text-muted">Disabled tenants</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main table card -->
   <div class="row">
     <div class="col-lg-12">
-      <div class="card">
+      <div class="card tenant-table-card">
         <div class="card-body">
-          <div class="row mb-2">
-            <div class="col-sm-4">
-              <div class="search-box me-2 mb-2 d-inline-block">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div>
+              <h5 class="mb-0 fw-bold">Tenants</h5>
+              <small class="text-muted">
+                Showing {{ list.length }} of {{ stats.total }} tenants
+                <span *ngIf="statusFilter !== 'all'">·
+                  <span class="text-primary">filtered by {{ statusFilter }}</span>
+                  <a href="javascript:void(0)" class="ms-1" (click)="setFilter('all')">clear</a>
+                </span>
+              </small>
+            </div>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <div class="search-box">
                 <div class="position-relative">
-                  <input type="text" class="form-control" id="searchTableList" placeholder="Search..."
+                  <input type="text" class="form-control" placeholder="Search name, domain, email..."
                     [(ngModel)]="term" (ngModelChange)="search()" />
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
+              <select class="form-select page-size-select" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+                <option [ngValue]="10">10 / page</option>
+                <option [ngValue]="25">25 / page</option>
+                <option [ngValue]="50">50 / page</option>
+                <option [ngValue]="100">100 / page</option>
+              </select>
+              <button type="button" [routerLink]="['/tenant/add-edit']" class="btn btn-success">
+                <i class="mdi mdi-plus me-1"></i> Add Tenant
+              </button>
             </div>
-            <div class="col-sm-8">
-              <div class="text-sm-end">
-                <button type="button" data-bs-toggle="modal" [routerLink]="['/tenant/add-edit']"
-                  class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2">
-                  <i class="mdi mdi-plus me-1"></i> Add New
-                </button>
-              </div>
-            </div>
-            <!-- end col-->
           </div>
-          <!-- end row -->
-          <div class="table-responsive">
-            <table class="table align-middle table-nowrap table-hover dt-responsive nowrap w-100" id="userList-table">
-              <thead class="table-light">
+
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary"></div>
+          </div>
+
+          <div class="table-responsive" *ngIf="!loading">
+            <table class="table align-middle table-hover smart-table mb-0">
+              <thead>
                 <tr>
-                  <th scope="col" style="width: 40px">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Domain</th>
-                  <th scope="col">Quota</th>
-                  <th scope="col">Phone Number</th>
-                  <th scope="col">Creation Time</th>
-                  <th scope="col">Last Update</th>
-                  <th scope="col">Status</th>
-                  <th scope="col" style="width: 100px">Action</th>
+                  <th style="width:42px">#</th>
+                  <th>Tenant</th>
+                  <th>Contact</th>
+                  <th>Plan & Quota</th>
+                  <th>Renewal</th>
+                  <th>Created</th>
+                  <th>Status</th>
+                  <th style="width:80px" class="text-end">Actions</th>
                 </tr>
               </thead>
-
               <tbody>
-                @if(!loading){ @for (item of list; track item; let i = $index) {
+                @for (item of list; track item.id; let i = $index) {
                 <tr>
-                  <td>{{ i + 1 + (page - 1) * pageSize }}</td>
-                  <td>{{ item.title }}</td>
-                  <td>{{ item.domain }}</td>
-                  <td>{{ item.quotaAI }}</td>
-                  <td>{{ item.phoneNumber }}</td>
-                  <td>{{ item.creationTime | date : "short" }}</td>
-                  <td>{{ item.updateTime | date : "short"}}</td>
-                  <td><ui-switch id="isActive" uncheckedLabel="InActive" checkedLabel="Active" size="small" class="me-1"
-                      [beforeChange]="OnBeforeChange" (click)="onToggle($event,item)" [checked]="item.isActive">
+                  <td class="text-muted">{{ i + 1 + (page - 1) * pageSize }}</td>
+
+                  <!-- Tenant identity -->
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="tenant-avatar" [style.background]="avatarColor(item.id)">
+                        {{ initials(item.title) }}
+                      </div>
+                      <div class="name-wrap">
+                        <div class="fw-semibold text-dark text-truncate">{{ item.title }}</div>
+                        <div class="font-size-12 text-muted text-truncate">
+                          <i class="mdi mdi-web font-size-11 me-1"></i>{{ item.domain || '—' }}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <!-- Contact -->
+                  <td>
+                    <div class="font-size-13" *ngIf="item.email">
+                      <i class="mdi mdi-email-outline text-primary me-1"></i>
+                      <a href="mailto:{{ item.email }}" class="text-body">{{ item.email }}</a>
+                    </div>
+                    <div class="font-size-12 text-muted" *ngIf="item.phoneNumber">
+                      <i class="mdi mdi-phone-outline me-1"></i>{{ item.phoneNumber }}
+                    </div>
+                    <span *ngIf="!item.email && !item.phoneNumber" class="text-muted">—</span>
+                  </td>
+
+                  <!-- Plan & Quota -->
+                  <td>
+                    <ng-container *ngIf="subMeta(item.id).sub as sub; else noPlan">
+                      <div class="fw-medium text-dark">
+                        {{ sub.subscriptionPlan?.displayName || sub.subscriptionPlan?.name }}
+                      </div>
+                    </ng-container>
+                    <ng-template #noPlan>
+                      <div class="text-muted font-size-13">No plan</div>
+                    </ng-template>
+                    <div class="font-size-12 text-muted mt-1">
+                      <i class="mdi mdi-alpha-k-circle text-secondary me-1"></i>
+                      Quota: <span class="fw-medium text-dark">{{ item.quotaAI || 0 }}</span>
+                    </div>
+                  </td>
+
+                  <!-- Renewal countdown -->
+                  <td>
+                    <ng-container *ngIf="subMeta(item.id) as meta">
+                      <span [ngClass]="subPillClass(meta.bucket)">
+                        <span class="pill-dot"></span>
+                        {{ subPillLabel(meta) }}
+                      </span>
+                      <div class="font-size-11 text-muted mt-1" *ngIf="meta.sub">
+                        Ends {{ meta.sub.endDate | date:'mediumDate' }}
+                      </div>
+                    </ng-container>
+                  </td>
+
+                  <!-- Created -->
+                  <td>
+                    <div class="font-size-13 fw-medium text-dark">
+                      {{ relativeCreated(item.creationTime) }}
+                    </div>
+                    <div class="font-size-11 text-muted">
+                      {{ item.creationTime | date:'mediumDate' }}
+                    </div>
+                  </td>
+
+                  <!-- Status switch -->
+                  <td>
+                    <ui-switch id="isActive" uncheckedLabel="Off" checkedLabel="On" size="small"
+                      [beforeChange]="OnBeforeChange" (click)="onToggle($event, item)" [checked]="item.isActive">
                     </ui-switch>
                   </td>
-                  <td>
-                    <ul class="list-inline font-size-20 contact-links mb-0">
-                      <li class="list-inline-item">
-                        <div dropdown class="dropdown">
-                          <a dropdownToggle href="javascript: void(0);" class="dropdown-toggle card-drop px-2 show"
-                            aria-expanded="true">
-                            <i class="mdi mdi-dots-horizontal font-size-18"></i>
+
+                  <!-- Actions -->
+                  <td class="text-end">
+                    <div dropdown class="dropdown d-inline-block">
+                      <a dropdownToggle href="javascript:void(0);"
+                        class="btn btn-sm btn-light action-btn" aria-expanded="false">
+                        <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                      </a>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
+                        <li>
+                          <a href="javascript:void(0);" (click)="edit(item)" class="dropdown-item">
+                            <i class="mdi mdi-pencil-outline text-success me-2"></i> Edit
                           </a>
-                          <ul *dropdownMenu class="dropdown-menu dropdown-menu-end show" style="
-                              position: absolute;
-                              inset: 0px 0px auto auto;
-                              margin: 0px;
-                              transform: translate(0px, 31.25px);
-                            " placement="bottom-end">
-                            <li>
-                              <a href="javascript:void(0);" (click)="edit(item)" class="dropdown-item edit-list"
-                                data-edit-id="8"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i>
-                                Edit</a>
-                            </li>
-                            <li>
-                              <a [routerLink]="['/tenant/subscription', item.id]" class="dropdown-item">
-                                <i class="mdi mdi-credit-card-outline font-size-16 text-primary me-1"></i>
-                                Manage Subscription
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0);" (click)="openDeleteModel(item.id)"
-                                class="dropdown-item remove-list" data-remove-id="8"><i
-                                  class="mdi mdi-trash-can font-size-16 text-danger me-1"></i>
-                                Delete</a>
-                            </li>
-                            <li>
-                              <button (click)="openUpgradeQuotaModal(item.id,item.quotaAI)" class="dropdown-item remove-list">
-                                <i class="mdi mdi-alpha-k-circle text-secondary font-size-16 me-1"></i>
-                                Quota</button>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0);" (click)="openFullDeleteModel(item.id, item.title)"
-                                class="dropdown-item remove-list"><i
-                                  class="mdi mdi-delete-forever font-size-16 text-danger me-1"></i>
-                                Full Delete</a>
-                            </li>
-                          </ul>
-                        </div>
-                      </li>
-                    </ul>
+                        </li>
+                        <li>
+                          <a href="javascript:void(0);" (click)="manageSubscription(item)" class="dropdown-item">
+                            <i class="mdi mdi-credit-card-refresh-outline text-primary me-2"></i>
+                            Manage Subscription
+                          </a>
+                        </li>
+                        <li>
+                          <a href="javascript:void(0);" (click)="openUpgradeQuotaModal(item.id, item.quotaAI)"
+                            class="dropdown-item">
+                            <i class="mdi mdi-alpha-k-circle text-secondary me-2"></i> Update Quota
+                          </a>
+                        </li>
+                        <li>
+                          <hr class="dropdown-divider" />
+                        </li>
+                        <li>
+                          <a href="javascript:void(0);" (click)="openDeleteModel(item.id)" class="dropdown-item">
+                            <i class="mdi mdi-trash-can-outline text-warning me-2"></i> Soft Delete
+                          </a>
+                        </li>
+                        <li>
+                          <a href="javascript:void(0);" (click)="openFullDeleteModel(item.id, item.title)"
+                            class="dropdown-item">
+                            <i class="mdi mdi-delete-forever-outline text-danger me-2"></i> Full Delete
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </td>
                 </tr>
-                } }
+                }
+                @if (!list.length) {
+                <tr>
+                  <td colspan="8">
+                    <div class="empty-block">
+                      <i class="mdi mdi-domain-off font-size-32 text-muted mb-2 d-block"></i>
+                      <div class="fw-semibold text-dark">No tenants found</div>
+                      <div class="text-muted font-size-13">Try adjusting the filter or search.</div>
+                    </div>
+                  </td>
+                </tr>
+                }
               </tbody>
             </table>
           </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <ul class="pagination pagination-rounded justify-content-center mt-4">
-                <pagination class="pagination-wrap hstack gap-2" [totalItems]="totalCount" [itemsPerPage]="pageSize"
-                  (pageChanged)="pageChanged($event)"></pagination>
+
+          <div class="row mt-3">
+            <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2">
+              <small class="text-muted">
+                Showing
+                <strong>{{ (page - 1) * pageSize + (list.length ? 1 : 0) }}</strong>
+                –
+                <strong>{{ (page - 1) * pageSize + list.length }}</strong>
+                of <strong>{{ stats.total }}</strong> tenants
+              </small>
+              <ul class="pagination pagination-rounded mb-0">
+                <pagination class="pagination-wrap hstack gap-2" [totalItems]="stats.total" [itemsPerPage]="pageSize"
+                  [(ngModel)]="page" (pageChanged)="pageChanged($event)"></pagination>
               </ul>
             </div>
           </div>
@@ -127,15 +285,12 @@
   <platx-confirm-model [title]="'Are you sure you want to remove this row?'" (confirm)="confirmDelete(deleteId)"
     (cancel)="removeItemModal.hide()" />
 </div>
-<!-- end removeItemModal -->
 
-
-<!-- removeItemModal -->
+<!-- confirmModal -->
 <div bsModal #confirmModal="bs-modal" class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
-  <platx-confirm-model [title]="'Are you sure you want to Cange Status?'" (confirm)="confirmActivation()"
+  <platx-confirm-model [title]="'Are you sure you want to Change Status?'" (confirm)="confirmActivation()"
     (cancel)="confirmModal.hide()" />
 </div>
-<!-- end confirmModal -->
 
 <!-- fullDeleteModal -->
 <div bsModal #fullDeleteModal="bs-modal" class="modal fade" id="fullDeleteModal" tabindex="-1" aria-hidden="true">
@@ -151,8 +306,7 @@
         <input type="text" class="form-control text-center" [(ngModel)]="fullDeleteConfirmText"
           placeholder="Type delete here" />
         <div class="hstack gap-2 justify-content-center mb-0 mt-3">
-          <button type="button" class="btn btn-danger me-1"
-            [disabled]="fullDeleteConfirmText !== 'delete'"
+          <button type="button" class="btn btn-danger me-1" [disabled]="fullDeleteConfirmText !== 'delete'"
             (click)="confirmFullDelete()">
             Delete Permanently
           </button>
@@ -164,7 +318,6 @@
     </div>
   </div>
 </div>
-<!-- end fullDeleteModal -->
 
 <!-- update quota -->
 <div bsModal #updateQuota="bs-modal" class="modal fade" id="updateQuota" tabindex="-1" aria-hidden="true">

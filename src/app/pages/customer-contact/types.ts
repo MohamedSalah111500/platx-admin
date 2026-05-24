@@ -53,6 +53,7 @@ export interface GetAllCustomerContactsResponse {
 }
 
 export interface CustomerContact {
+  id?: string;
   name: string;
   email: string;
   phone: string;

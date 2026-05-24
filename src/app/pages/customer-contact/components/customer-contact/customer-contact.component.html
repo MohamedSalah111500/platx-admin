@@ -1,86 +1,294 @@
-<div class="container-fluid">
+<div class="container-fluid contact-page">
   <app-page-title title="Customer Contact" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
+  <!-- KPI cards -->
+  <div class="row g-3 mb-3">
+    <div class="col-md-6 col-xl-3">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="typeFilter === 'all'" (click)="setFilter('all')">
+        <div class="kpi-icon kpi-icon-primary">
+          <i class="mdi mdi-account-multiple-outline"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">Total Contacts</div>
+          <div class="kpi-value">{{ stats.total }}</div>
+          <div class="kpi-sub text-muted">All received messages</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="typeFilter === 'demo'" (click)="setFilter('demo')">
+        <div class="kpi-icon kpi-icon-success">
+          <i class="mdi mdi-rocket-launch-outline"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">Demo Requests</div>
+          <div class="kpi-value">{{ stats.demo }}</div>
+          <div class="kpi-sub text-success">Leads to follow up</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="typeFilter === 'general'" (click)="setFilter('general')">
+        <div class="kpi-icon kpi-icon-info">
+          <i class="mdi mdi-email-outline"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">General Inquiries</div>
+          <div class="kpi-value">{{ stats.general }}</div>
+          <div class="kpi-sub text-info">Support &amp; questions</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon-warning">
+          <i class="mdi mdi-web"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">Unique Domains</div>
+          <div class="kpi-value">{{ stats.uniqueDomains }}</div>
+          <div class="kpi-sub text-warning">Distinct email domains</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main card -->
   <div class="row">
     <div class="col-lg-12">
-      <div class="card">
+      <div class="card contact-table-card">
         <div class="card-body">
-          <div class="row mb-2">
-            <div class="col-sm-12">
-              <div class="search-box me-2 mb-2 d-inline-block">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div>
+              <h5 class="mb-0 fw-bold">Contact Messages</h5>
+              <small class="text-muted">
+                Showing {{ list.length }} of {{ stats.total }} contacts
+                <span *ngIf="typeFilter !== 'all'">·
+                  <span class="text-primary">filtered by {{ typeFilter }}</span>
+                  <a href="javascript:void(0)" class="ms-1" (click)="setFilter('all')">clear</a>
+                </span>
+              </small>
+            </div>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <div class="search-box">
                 <div class="position-relative">
-                  <input type="text" class="form-control" id="searchTableList" placeholder="Search..."
+                  <input type="text" class="form-control" placeholder="Search name, email, phone, message..."
                     [(ngModel)]="term" (ngModelChange)="search()" />
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
+              <select class="form-select page-size-select" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+                <option [ngValue]="10">10 / page</option>
+                <option [ngValue]="25">25 / page</option>
+                <option [ngValue]="50">50 / page</option>
+                <option [ngValue]="100">100 / page</option>
+              </select>
             </div>
-
-            <!-- end col-->
           </div>
-          <!-- end row -->
-          <div class="table-responsive">
-            <table class="table align-middle table-nowrap table-hover dt-responsive nowrap w-100" id="userList-table">
-              <thead class="table-light">
+
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary"></div>
+          </div>
+
+          <div class="table-responsive" *ngIf="!loading">
+            <table class="table align-middle smart-table mb-0">
+              <thead>
                 <tr>
-                  <th scope="col" style="width: 40px">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">ُEmail /phone</th>
-                  <th scope="col">Message</th>
-                  <th scope="col">Is Domain</th>
-                  <th scope="col" style="width: 100px">Action</th>
+                  <th style="width:42px">#</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Message</th>
+                  <th>Type</th>
+                  <th style="width:80px" class="text-end">Actions</th>
                 </tr>
               </thead>
-
               <tbody>
-                @if(!loading){ @for (item of list; track item; let i = $index) {
+                @for (item of list; track item; let i = $index) {
                 <tr>
-                  <td>{{ i + 1 + (page - 1) * pageSize }}</td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.email }}</td>
-                  <td>{{ item.massage }}</td>
-                  <td>{{ item.isDemo ? 'Yes' : 'No' }}</td>
+                  <td class="text-muted">{{ i + 1 + (page - 1) * pageSize }}</td>
 
                   <td>
-                    <ul class="list-inline font-size-20 contact-links mb-0">
-                      <li class="list-inline-item">
-                        <div dropdown class="dropdown">
-                          <a dropdownToggle href="javascript: void(0);" class="dropdown-toggle card-drop px-2 show"
-                            aria-expanded="true">
-                            <i class="mdi mdi-dots-horizontal font-size-18"></i>
-                          </a>
-                          <ul *dropdownMenu class="dropdown-menu dropdown-menu-end show" style="
-                              position: absolute;
-                              inset: 0px 0px auto auto;
-                              margin: 0px;
-                              transform: translate(0px, 31.25px);
-                            " placement="bottom-end">
-                            <li>
-                              <a href="javascript:void(0);" (click)="openDeleteModel(item.id)"
-                                class="dropdown-item remove-list" data-remove-id="8"><i
-                                  class="mdi mdi-trash-can font-size-16 text-danger me-1"></i>
-                                Delete</a>
-                            </li>
-
-                          </ul>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="contact-avatar" [style.background]="avatarColor(item.email || item.name)">
+                        {{ initials(item.name) }}
+                      </div>
+                      <div class="name-wrap">
+                        <div class="fw-semibold text-dark text-truncate">{{ item.name || '—' }}</div>
+                        <div class="font-size-12 text-muted text-truncate" *ngIf="item.email">
+                          {{ (item.email || '').split('@')[1] }}
                         </div>
-                      </li>
-                    </ul>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="d-flex align-items-center gap-2" *ngIf="item.email; else dashEmail">
+                      <a href="mailto:{{ item.email }}" class="text-body font-size-13 text-truncate"
+                        style="max-width:200px;">
+                        {{ item.email }}
+                      </a>
+                      <button type="button" class="icon-btn" title="Copy email" (click)="copy(item.email)">
+                        <i class="mdi mdi-content-copy"></i>
+                      </button>
+                    </div>
+                    <ng-template #dashEmail><span class="text-muted">—</span></ng-template>
+                  </td>
+
+                  <td>
+                    <div class="d-flex align-items-center gap-2" *ngIf="item.phone; else dashPhone">
+                      <a href="tel:{{ item.phone }}" class="text-body font-size-13">{{ item.phone }}</a>
+                      <button type="button" class="icon-btn" title="Copy phone" (click)="copy(item.phone)">
+                        <i class="mdi mdi-content-copy"></i>
+                      </button>
+                    </div>
+                    <ng-template #dashPhone><span class="text-muted">—</span></ng-template>
+                  </td>
+
+                  <td>
+                    <div class="message-preview" *ngIf="item.massage; else noMsg">
+                      <span class="text-body font-size-13">{{ truncate(item.massage, 70) }}</span>
+                      <a href="javascript:void(0)" class="ms-1 font-size-12" (click)="openMessage(item)"
+                        *ngIf="item.massage && item.massage.length > 70">
+                        Read more
+                      </a>
+                    </div>
+                    <ng-template #noMsg><span class="text-muted">—</span></ng-template>
+                  </td>
+
+                  <td>
+                    <span class="pill" [ngClass]="item.isDemo ? 'pill-success' : 'pill-info'">
+                      <span class="pill-dot"></span>
+                      {{ item.isDemo ? 'Demo Request' : 'Inquiry' }}
+                    </span>
+                  </td>
+
+                  <td class="text-end">
+                    <div dropdown class="dropdown d-inline-block">
+                      <a dropdownToggle href="javascript:void(0);"
+                        class="btn btn-sm btn-light action-btn" aria-expanded="false">
+                        <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                      </a>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
+                        <li>
+                          <a href="javascript:void(0);" (click)="openMessage(item)" class="dropdown-item">
+                            <i class="mdi mdi-eye-outline text-primary me-2"></i> View Message
+                          </a>
+                        </li>
+                        <li *ngIf="item.email">
+                          <a href="mailto:{{ item.email }}" class="dropdown-item">
+                            <i class="mdi mdi-reply-outline text-success me-2"></i> Reply by Email
+                          </a>
+                        </li>
+                        <li *ngIf="item.phone">
+                          <a href="tel:{{ item.phone }}" class="dropdown-item">
+                            <i class="mdi mdi-phone-outline text-info me-2"></i> Call
+                          </a>
+                        </li>
+                        <li>
+                          <hr class="dropdown-divider" />
+                        </li>
+                        <li>
+                          <a href="javascript:void(0);" (click)="openDeleteModel(item.id)" class="dropdown-item">
+                            <i class="mdi mdi-trash-can-outline text-danger me-2"></i> Delete
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </td>
                 </tr>
-                } }
+                }
+                @if (!list.length) {
+                <tr>
+                  <td colspan="7">
+                    <div class="empty-block">
+                      <i class="mdi mdi-email-search-outline font-size-32 text-muted mb-2 d-block"></i>
+                      <div class="fw-semibold text-dark">No contacts found</div>
+                      <div class="text-muted font-size-13">Try adjusting your search or filter.</div>
+                    </div>
+                  </td>
+                </tr>
+                }
               </tbody>
             </table>
           </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <ul class="pagination pagination-rounded justify-content-center mt-4">
-                <pagination class="pagination-wrap hstack gap-2" [totalItems]="totalCount" [itemsPerPage]="pageSize"
-                  (pageChanged)="pageChanged($event)"></pagination>
+
+          <div class="row mt-3">
+            <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2">
+              <small class="text-muted">
+                Showing
+                <strong>{{ (page - 1) * pageSize + (list.length ? 1 : 0) }}</strong>
+                –
+                <strong>{{ (page - 1) * pageSize + list.length }}</strong>
+                of <strong>{{ stats.total }}</strong> contacts
+              </small>
+              <ul class="pagination pagination-rounded mb-0">
+                <pagination class="pagination-wrap hstack gap-2" [totalItems]="stats.total" [itemsPerPage]="pageSize"
+                  [(ngModel)]="page" (pageChanged)="pageChanged($event)"></pagination>
               </ul>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- view message modal -->
+<div bsModal #messageModal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" *ngIf="selectedMessage">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="d-flex align-items-center gap-2">
+          <div class="contact-avatar" [style.background]="avatarColor(selectedMessage.email || selectedMessage.name)">
+            {{ initials(selectedMessage.name) }}
+          </div>
+          <div>
+            <h5 class="modal-title mb-0">{{ selectedMessage.name }}</h5>
+            <small class="text-muted">{{ selectedMessage.email }}</small>
+          </div>
+        </div>
+        <button type="button" class="btn-close" (click)="closeMessage()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-6" *ngIf="selectedMessage.email">
+            <div class="info-row">
+              <div class="info-row-label">Email</div>
+              <div class="info-row-value">{{ selectedMessage.email }}</div>
+            </div>
+          </div>
+          <div class="col-md-6" *ngIf="selectedMessage.phone">
+            <div class="info-row">
+              <div class="info-row-label">Phone</div>
+              <div class="info-row-value">{{ selectedMessage.phone }}</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="info-row">
+              <div class="info-row-label">Type</div>
+              <div class="info-row-value">
+                <span class="pill" [ngClass]="selectedMessage.isDemo ? 'pill-success' : 'pill-info'">
+                  <span class="pill-dot"></span>
+                  {{ selectedMessage.isDemo ? 'Demo Request' : 'Inquiry' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-label">Message</div>
+          <div class="message-box">{{ selectedMessage.massage }}</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a *ngIf="selectedMessage.email" href="mailto:{{ selectedMessage.email }}" class="btn btn-primary">
+          <i class="mdi mdi-reply-outline me-1"></i> Reply by Email
+        </a>
+        <a *ngIf="selectedMessage.phone" href="tel:{{ selectedMessage.phone }}" class="btn btn-info text-white">
+          <i class="mdi mdi-phone-outline me-1"></i> Call
+        </a>
+        <button type="button" class="btn btn-light" (click)="closeMessage()">Close</button>
       </div>
     </div>
   </div>
@@ -91,8 +299,3 @@
   <platx-confirm-model [title]="'Are you sure you want to remove this row?'" (confirm)="confirmDelete(deleteId)"
     (cancel)="removeItemModal.hide()" />
 </div>
-<!-- end removeItemModal -->
-
-
-
-
