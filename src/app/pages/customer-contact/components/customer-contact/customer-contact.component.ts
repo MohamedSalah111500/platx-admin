@@ -35,6 +35,7 @@ export class CustomerContactComponent implements OnInit {
     demo: 0,
     general: 0,
     uniqueDomains: 0,
+    thisWeek: 0,
   };
 
   constructor(
@@ -76,12 +77,45 @@ export class CustomerContactComponent implements OnInit {
         .map((c) => (c.email || "").split("@")[1])
         .filter((d) => !!d)
     );
+    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const thisWeek = this.returnedArray.filter((c) => {
+      if (!c.createdAt) return false;
+      return new Date(c.createdAt).getTime() >= weekAgo;
+    }).length;
     this.stats = {
       total: this.totalCount || this.returnedArray.length,
       demo,
       general,
       uniqueDomains: domains.size,
+      thisWeek,
     };
+  }
+
+  daysSinceCreated(createdAt?: string): number {
+    if (!createdAt) return 0;
+    const ms = Date.now() - new Date(createdAt).getTime();
+    return Math.max(0, Math.floor(ms / (1000 * 60 * 60 * 24)));
+  }
+
+  relativeCreated(createdAt?: string): string {
+    if (!createdAt) return "—";
+    const ms = Date.now() - new Date(createdAt).getTime();
+    if (ms < 0) return "Just now";
+    const mins = Math.floor(ms / (1000 * 60));
+    if (mins < 1) return "Just now";
+    if (mins < 60) return `${mins} min${mins > 1 ? "s" : ""} ago`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${days} day${days > 1 ? "s" : ""} ago`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months} month${months > 1 ? "s" : ""} ago`;
+    const years = Math.floor(days / 365);
+    return `${years} year${years > 1 ? "s" : ""} ago`;
+  }
+
+  isNew(createdAt?: string): boolean {
+    return this.daysSinceCreated(createdAt) <= 2;
   }
 
   setFilter(filter: CustomerContactComponent["typeFilter"]) {

@@ -59,4 +59,5 @@ export interface CustomerContact {
   phone: string;
   massage: string;
   isDemo: boolean;
+  createdAt?: string;
 }
