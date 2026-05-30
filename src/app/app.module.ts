@@ -39,6 +39,7 @@ import { userslistEffects } from "./store/UserList/userlist.effect";
 import { CandidateEffects } from "./store/Candidate/candidate.effects";
 import { tasklistEffects } from "./store/Tasks/tasks.effect";
 import { AuthInterceptor } from "./core/helpers/auth.interceptor";
+import { ApiEnvInterceptor } from "./core/helpers/api-env.interceptor";
 import { UIModule } from "./shared/ui/ui.module";
 
 export function createTranslateLoader(http: HttpClient): any {
@@ -83,6 +84,8 @@ export function createTranslateLoader(http: HttpClient): any {
   ],
   bootstrap: [AppComponent],
   providers: [
+    // ApiEnvInterceptor rewrites the URL first, then AuthInterceptor attaches the token.
+    { provide: HTTP_INTERCEPTORS, useClass: ApiEnvInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

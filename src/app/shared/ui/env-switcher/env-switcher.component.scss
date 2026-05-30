@@ -1,0 +1,216 @@
+// Styles for <platx-env-switcher>. View encapsulation is disabled on the
+// component, so every selector below is unique-prefixed to avoid leakage.
+
+// ---------------------------------------------------------------------------
+// Chip pill
+// ---------------------------------------------------------------------------
+.env-chip,
+.env-chip:hover,
+.env-chip:focus,
+.env-chip:active,
+.env-chip.show,
+button.env-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  border: 1px solid transparent;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  line-height: 1;
+  box-shadow: none !important;
+}
+
+.env-chip {
+  transition: filter 0.15s ease;
+  .env-chip-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .env-chip-label { line-height: 1; }
+  &:hover { filter: brightness(0.96); }
+}
+
+.env-chip.env-chip-production,
+.env-chip.env-chip-production:hover,
+.env-chip.env-chip-production:focus,
+.env-chip.env-chip-production:active,
+.env-chip.env-chip-production.show {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: #a7f3d0 !important;
+}
+.env-chip.env-chip-production .env-chip-dot {
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+}
+
+.env-chip.env-chip-testing,
+.env-chip.env-chip-testing:hover,
+.env-chip.env-chip-testing:focus,
+.env-chip.env-chip-testing:active,
+.env-chip.env-chip-testing.show {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  border-color: #fcd34d !important;
+}
+.env-chip.env-chip-testing .env-chip-dot {
+  background: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22);
+  animation: env-chip-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes env-chip-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22); }
+  50%      { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.08); }
+}
+
+.env-switcher-wrap {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 8px;
+  position: relative;
+}
+
+// ---------------------------------------------------------------------------
+// Dropdown menu — bigger, with a centered 2-column option grid.
+// Popper handles screen positioning; we just set size + internal alignment.
+// ---------------------------------------------------------------------------
+.dropdown-menu.env-menu {
+  min-width: 440px !important;
+  max-width: calc(100vw - 24px);
+  padding: 20px !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 14px !important;
+  box-shadow: 0 16px 40px rgba(17, 24, 39, 0.16) !important;
+  background: #fff !important;
+  text-align: center;
+}
+
+.env-menu-head {
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f1f3f5;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.env-menu-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px;
+}
+.env-menu-head small { font-size: 12px; }
+
+.env-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  text-align: left;
+}
+
+.env-menu-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f3f5;
+  font-size: 12px;
+  color: #b91c1c;
+  text-align: center;
+  i { font-size: 14px; }
+}
+
+// ---------------------------------------------------------------------------
+// Shared option card
+// ---------------------------------------------------------------------------
+.env-option,
+.env-option:focus,
+.env-option:hover,
+.env-option:active {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  color: #111827 !important;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  box-shadow: none;
+
+  small { color: #6b7280 !important; font-size: 11px; }
+}
+
+.env-option:hover {
+  background: #f9fafb !important;
+  border-color: #d1d5db !important;
+}
+
+.env-option.active,
+.env-option.active:hover,
+.env-option.active:focus {
+  background: #eef2ff !important;
+  border-color: #6366f1 !important;
+  color: #4338ca !important;
+  small { color: #6366f1 !important; }
+}
+
+.env-option-text { flex: 1; min-width: 0; }
+.env-option-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.env-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  &.env-dot-production { background: #10b981; }
+  &.env-dot-testing { background: #f59e0b; }
+}
+
+// ---------------------------------------------------------------------------
+// Card variant (login screen layout)
+// ---------------------------------------------------------------------------
+.env-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px;
+  background: #fff;
+}
+.env-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.env-card-host {
+  font-size: 11px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+.env-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 575px) {
+  .dropdown-menu.env-menu {
+    min-width: 300px !important;
+    padding: 14px !important;
+  }
+  .env-menu-grid,
+  .env-card-grid {
+    grid-template-columns: 1fr;
+  }
+}

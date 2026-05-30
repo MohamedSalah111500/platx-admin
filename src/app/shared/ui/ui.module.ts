@@ -11,6 +11,7 @@ import { LoaderComponent } from "./loader/loader.component";
 import { SpinnerComponent } from "./spinner/spinner.component";
 import { ConfirmModelComponent } from "./confirm-model/confirm-model.component";
 import { EmptyStateComponent } from "./empty-state/empty-state.component";
+import { EnvSwitcherComponent } from "./env-switcher/env-switcher.component";
 @NgModule({
   declarations: [
     PagetitleComponent,
@@ -18,6 +19,7 @@ import { EmptyStateComponent } from "./empty-state/empty-state.component";
     SpinnerComponent,
     ConfirmModelComponent,
     EmptyStateComponent,
+    EnvSwitcherComponent,
   ],
   imports: [
     CommonModule,
@@ -32,6 +34,7 @@ import { EmptyStateComponent } from "./empty-state/empty-state.component";
     SpinnerComponent,
     ConfirmModelComponent,
     EmptyStateComponent,
+    EnvSwitcherComponent,
   ],
 })
 export class UIModule {}

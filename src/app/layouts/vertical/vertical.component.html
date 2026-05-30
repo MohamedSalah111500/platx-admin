@@ -1,4 +1,12 @@
-<div id="layout-wrapper">
+<div id="layout-wrapper" [class.has-testing-banner]="apiEnv.isTesting">
+
+  <!-- Testing-mode banner (only visible when targeting the testing API) -->
+  <div class="env-banner env-banner-testing" *ngIf="apiEnv.isTesting">
+    <i class="mdi mdi-flask-outline me-2"></i>
+    <strong>TESTING ENVIRONMENT</strong>
+    <span class="env-banner-sep">·</span>
+    <span>You are viewing data from the test API. Changes will not affect production.</span>
+  </div>
 
   <app-topbar (settingsButtonClicked)="onSettingsButtonClicked()" (mobileMenuButtonClicked)="onToggleMobileMenu()">
   </app-topbar>

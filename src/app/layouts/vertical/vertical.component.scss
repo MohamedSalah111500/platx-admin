@@ -1,0 +1,54 @@
+$banner-height: 32px;
+
+.env-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+  height: $banner-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .env-banner-sep {
+    margin: 0 8px;
+    opacity: 0.6;
+  }
+
+  &.env-banner-testing {
+    background: repeating-linear-gradient(
+      135deg,
+      #fde68a,
+      #fde68a 14px,
+      #fcd34d 14px,
+      #fcd34d 28px
+    );
+    color: #78350f;
+    border-bottom: 1px solid #f59e0b;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+
+  i { font-size: 14px; }
+}
+
+// Push everything down when the banner is present so it doesn't overlap the topbar.
+:host ::ng-deep #layout-wrapper.has-testing-banner {
+  padding-top: $banner-height;
+
+  #page-topbar { top: $banner-height; }
+  .vertical-menu { top: calc(70px + #{$banner-height}); }
+}
+
+@media (max-width: 575px) {
+  .env-banner {
+    font-size: 11px;
+    .env-banner-sep, & > span:last-child { display: none; }
+  }
+}

@@ -1,0 +1,24 @@
+// Centers the <platx-env-switcher> chip in the topbar regardless of how
+// many items are on the left/right of the navbar-header.
+.topbar-env-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
+
+  // Only the chip itself should accept clicks — the wrapper is just a
+  // positioning helper, so click-through to the rest of the topbar works.
+  > * {
+    pointer-events: auto;
+  }
+}
+
+// On narrow screens there's no room to center between the logo and the
+// right-side icons — hide the chip to avoid overlap (login screen still has it).
+@media (max-width: 991px) {
+  .topbar-env-center {
+    display: none;
+  }
+}

@@ -1,0 +1,88 @@
+<!-- CHIP variant: compact pill for the topbar -->
+<ng-container *ngIf="variant === 'chip'">
+  <div class="dropdown d-inline-block env-switcher-wrap" dropdown placement="bottom" container="body">
+    <button type="button"
+      class="btn env-chip"
+      [class.env-chip-testing]="apiMode === 'testing'"
+      [class.env-chip-production]="apiMode === 'production'"
+      dropdownToggle>
+      <span class="env-chip-dot"></span>
+      <span class="env-chip-label">{{ apiMode === 'testing' ? 'TESTING' : 'PRODUCTION' }}</span>
+      <i class="mdi mdi-chevron-down ms-1"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-end env-menu" *dropdownMenu>
+      <ng-container *ngTemplateOutlet="menuContent"></ng-container>
+    </div>
+  </div>
+</ng-container>
+
+<!-- CARD variant: standalone block for the login screen -->
+<ng-container *ngIf="variant === 'card'">
+  <div class="env-card">
+    <div class="env-card-head">
+      <span class="env-chip"
+        [class.env-chip-testing]="apiMode === 'testing'"
+        [class.env-chip-production]="apiMode === 'production'">
+        <span class="env-chip-dot"></span>
+        <span class="env-chip-label">{{ apiMode === 'testing' ? 'TESTING' : 'PRODUCTION' }}</span>
+      </span>
+      <small class="text-muted env-card-host">{{ hosts[apiMode] }}</small>
+    </div>
+    <div class="env-card-grid">
+      <button type="button" class="env-option"
+        [class.active]="apiMode === 'production'"
+        (click)="switchApiMode('production')">
+        <span class="env-dot env-dot-production"></span>
+        <div class="env-option-text">
+          <div class="env-option-title">Production</div>
+          <small class="text-muted">platx-backend-prod.runasp.net</small>
+        </div>
+        <i class="mdi mdi-check-circle text-success ms-2" *ngIf="apiMode === 'production'"></i>
+      </button>
+      <button type="button" class="env-option"
+        [class.active]="apiMode === 'testing'"
+        (click)="switchApiMode('testing')">
+        <span class="env-dot env-dot-testing"></span>
+        <div class="env-option-text">
+          <div class="env-option-title">Testing</div>
+          <small class="text-muted">platx.runasp.net</small>
+        </div>
+        <i class="mdi mdi-check-circle text-success ms-2" *ngIf="apiMode === 'testing'"></i>
+      </button>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Shared dropdown menu content (used by the chip variant) -->
+<ng-template #menuContent>
+  <div class="env-menu-head">
+    <h6 class="env-menu-title">API Environment</h6>
+    <small class="text-muted">Choose which backend to target</small>
+  </div>
+  <div class="env-menu-grid">
+    <button type="button" class="env-option"
+      [class.active]="apiMode === 'production'"
+      (click)="switchApiMode('production')">
+      <span class="env-dot env-dot-production"></span>
+      <div class="env-option-text">
+        <div class="env-option-title">Production</div>
+        <small class="text-muted">platx-backend-prod.runasp.net</small>
+      </div>
+      <i class="mdi mdi-check-circle text-success ms-2" *ngIf="apiMode === 'production'"></i>
+    </button>
+    <button type="button" class="env-option"
+      [class.active]="apiMode === 'testing'"
+      (click)="switchApiMode('testing')">
+      <span class="env-dot env-dot-testing"></span>
+      <div class="env-option-text">
+        <div class="env-option-title">Testing</div>
+        <small class="text-muted">platx.runasp.net</small>
+      </div>
+      <i class="mdi mdi-check-circle text-success ms-2" *ngIf="apiMode === 'testing'"></i>
+    </button>
+  </div>
+  <div class="env-menu-foot">
+    <i class="mdi mdi-alert-circle-outline text-danger"></i>
+    <span>Switching environments clears your session and forces re-login.</span>
+  </div>
+</ng-template>
