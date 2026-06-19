@@ -182,4 +182,92 @@
     font-weight: 600;
     letter-spacing: 0.4px;
   }
+
+  // ---- Limits ----
+
+  .limits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .limit-row {
+    padding: 14px 16px;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .limit-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .limit-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .limit-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 500;
+
+    &.limit-badge-override {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    &.limit-badge-period {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+  }
+
+  .limit-bar {
+    height: 8px;
+    background: #f3f4f6;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .limit-fill {
+    height: 100%;
+    background: #10b981;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+
+    &.limit-fill-warn {
+      background: #f59e0b;
+    }
+
+    &.limit-fill-danger {
+      background: #ef4444;
+    }
+  }
+
+  .limit-numbers {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 8px;
+  }
+
+  .limit-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-xs {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
 }

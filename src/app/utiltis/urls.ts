@@ -8,6 +8,7 @@ const GENERAL_FILE_BASE = "api/Files";
 const SUBSCRIPTION_PLANS_BASE = "api/admin/subscription-plans";
 const TENANT_SUBSCRIPTIONS_BASE = "api/TenantSubscriptions";
 const RENEWAL_REQUESTS_BASE = "api/RenewalRequests";
+const SUBSCRIPTION_LIMITS_BASE = "api/SubscriptionLimits";
 
 
 export const AUTH_URLS = {
@@ -71,6 +72,16 @@ export const RENEWAL_REQUESTS_URLS = {
   GET_PAGED: `${environment.apiURL.concat(RENEWAL_REQUESTS_BASE)}`,
   GET_BY_ID: (id: number) => `${environment.apiURL.concat(RENEWAL_REQUESTS_BASE)}/${id}`,
   HANDLE: (id: number) => `${environment.apiURL.concat(RENEWAL_REQUESTS_BASE)}/${id}/handle`,
+};
+
+export const SUBSCRIPTION_LIMITS_URLS = {
+  DEFINITIONS: `${environment.apiURL.concat(SUBSCRIPTION_LIMITS_BASE)}/definitions`,
+  PLAN_LIMITS: (planId: number) => `${environment.apiURL.concat(SUBSCRIPTION_LIMITS_BASE)}/plans/${planId}`,
+  TENANT_DASHBOARD: (tenantId: string) => `${environment.apiURL.concat(SUBSCRIPTION_LIMITS_BASE)}/tenants/${tenantId}/dashboard`,
+  TENANT_OVERRIDES: (tenantId: string) => `${environment.apiURL.concat(SUBSCRIPTION_LIMITS_BASE)}/tenants/${tenantId}/overrides`,
+  SET_OVERRIDE: `${environment.apiURL.concat(SUBSCRIPTION_LIMITS_BASE)}/tenants/overrides`,
+  REMOVE_OVERRIDE: (tenantId: string, key: string) =>
+    `${environment.apiURL.concat(SUBSCRIPTION_LIMITS_BASE)}/tenants/${tenantId}/overrides/${key}`,
 };
 
 export const PLATX_CONTACT_URLS = {

@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { FormBuilder } from "@angular/forms";
 
-import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
 import { PlansService } from "../../services/plansService.service";
 import { Router } from "@angular/router";
-import { Observable } from "rxjs";
+import { forkJoin } from "rxjs";
 import { Plan } from "../../types";
+import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
+import { SubscriptionService } from "src/app/pages/tenant/services/subscription.service";
+import { LimitDefinition, PlanLimitDto } from "src/app/pages/tenant/types/subscription.types";
 
 @Component({
   selector: "app-plans",
@@ -38,10 +40,21 @@ export class PlansComponent implements OnInit {
 
   selectedTenant: any;
 
+  // Plan limits editor
+  limitsModalRef?: BsModalRef;
+  editingPlanId?: number;
+  editingPlanName = "";
+  definitions: LimitDefinition[] = [];
+  planLimitValues: Record<string, number> = {};
+  limitsLoading = false;
+  limitsSaving = false;
+
   constructor(
     private fb: FormBuilder,
     public toastr: ToastrService,
     public plansService: PlansService,
+    private subService: SubscriptionService,
+    private modalService: BsModalService,
     private router: Router
   ) {}
 
@@ -119,4 +132,51 @@ export class PlansComponent implements OnInit {
   //   });
   //   this.removeItemModal?.hide();
    }
+
+  openLimitsModal(template: TemplateRef<any>, plan: any): void {
+    this.editingPlanId = plan.id;
+    this.editingPlanName = plan.displayName || plan.name;
+    this.planLimitValues = {};
+    this.limitsLoading = true;
+    this.limitsModalRef = this.modalService.show(template, { class: "modal-md" });
+
+    forkJoin({
+      defs: this.subService.getDefinitions(),
+      limits: this.subService.getPlanLimits(plan.id),
+    }).subscribe({
+      next: ({ defs, limits }) => {
+        this.definitions = defs;
+        const map: Record<string, number> = {};
+        defs.forEach((d) => {
+          const existing = limits.find((l) => l.limitKey === d.key);
+          map[d.key] = existing != null ? existing.value : d.defaultValue;
+        });
+        this.planLimitValues = map;
+        this.limitsLoading = false;
+      },
+      error: () => {
+        this.toastr.error("Failed to load limits");
+        this.limitsLoading = false;
+      },
+    });
+  }
+
+  savePlanLimits(): void {
+    if (this.editingPlanId == null) return;
+    this.limitsSaving = true;
+    const payload: PlanLimitDto[] = Object.entries(this.planLimitValues).map(
+      ([limitKey, value]) => ({ limitKey, value: Number(value) })
+    );
+    this.subService.setPlanLimits(this.editingPlanId, payload).subscribe({
+      next: () => {
+        this.toastr.success("Plan limits saved");
+        this.limitsModalRef?.hide();
+        this.limitsSaving = false;
+      },
+      error: (err) => {
+        this.toastr.error(err?.error?.message ?? "Failed to save limits");
+        this.limitsSaving = false;
+      },
+    });
+  }
 }

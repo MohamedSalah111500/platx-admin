@@ -85,6 +85,13 @@
                       >
                         Get Started
                       </a>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary ms-2"
+                        (click)="openLimitsModal(limitsTpl, plan)"
+                      >
+                        <i class="mdi mdi-tune me-1"></i> Edit Limits
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -97,6 +104,43 @@
     </div>
   </div>
 </div>
+
+<!-- Plan Limits Modal -->
+<ng-template #limitsTpl>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Limits — {{ editingPlanName }}</h5>
+    <button type="button" class="btn-close" (click)="limitsModalRef?.hide()"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="limitsLoading" class="text-center py-4">
+      <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+    </div>
+    <ng-container *ngIf="!limitsLoading">
+      <p class="text-muted mb-3" style="font-size:13px">
+        Use <strong>-1</strong> for unlimited. Boolean limits: <strong>1</strong> = enabled, <strong>0</strong> = disabled.
+      </p>
+      <div class="mb-3" *ngFor="let def of definitions">
+        <label class="form-label fw-semibold">
+          {{ def.displayName }}
+          <span class="text-muted fw-normal ms-1" style="font-size:12px">
+            ({{ def.unit }}<ng-container *ngIf="def.description"> — {{ def.description }}</ng-container>)
+          </span>
+        </label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="planLimitValues[def.key]"
+        />
+      </div>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="limitsModalRef?.hide()">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="limitsLoading || limitsSaving" (click)="savePlanLimits()">
+      {{ limitsSaving ? 'Saving…' : 'Save Limits' }}
+    </button>
+  </div>
+</ng-template>
 
 <!-- removeItemModal -->
 <div

@@ -5,14 +5,19 @@ import {
   AssignSubscriptionPayload,
   ExtendSubscriptionPayload,
   HandleRenewalRequestPayload,
+  LimitDefinition,
   PagedRenewalResponse,
+  PlanLimitDto,
   RenewalRequest,
   RenewalRequestStatus,
+  SetTenantOverridePayload,
   SubscriptionPlan,
+  TenantLimitsDashboard,
   TenantSubscription,
 } from "../types/subscription.types";
 import {
   RENEWAL_REQUESTS_URLS,
+  SUBSCRIPTION_LIMITS_URLS,
   SUBSCRIPTION_PLANS_URLS,
   TENANT_SUBSCRIPTIONS_URLS,
 } from "src/app/utiltis/urls";
@@ -72,5 +77,30 @@ export class SubscriptionService {
 
   handleRenewalRequest(id: number, payload: HandleRenewalRequestPayload): Observable<unknown> {
     return this.http.put(RENEWAL_REQUESTS_URLS.HANDLE(id), payload);
+  }
+
+  // Limits
+  getDefinitions(): Observable<LimitDefinition[]> {
+    return this.http.get<LimitDefinition[]>(SUBSCRIPTION_LIMITS_URLS.DEFINITIONS);
+  }
+
+  getPlanLimits(planId: number): Observable<PlanLimitDto[]> {
+    return this.http.get<PlanLimitDto[]>(SUBSCRIPTION_LIMITS_URLS.PLAN_LIMITS(planId));
+  }
+
+  setPlanLimits(planId: number, limits: PlanLimitDto[]): Observable<unknown> {
+    return this.http.post(SUBSCRIPTION_LIMITS_URLS.PLAN_LIMITS(planId), limits);
+  }
+
+  getTenantDashboard(tenantId: string): Observable<TenantLimitsDashboard> {
+    return this.http.get<TenantLimitsDashboard>(SUBSCRIPTION_LIMITS_URLS.TENANT_DASHBOARD(tenantId));
+  }
+
+  setTenantOverride(payload: SetTenantOverridePayload): Observable<unknown> {
+    return this.http.post(SUBSCRIPTION_LIMITS_URLS.SET_OVERRIDE, payload);
+  }
+
+  removeTenantOverride(tenantId: string, key: string): Observable<unknown> {
+    return this.http.delete(SUBSCRIPTION_LIMITS_URLS.REMOVE_OVERRIDE(tenantId, key));
   }
 }

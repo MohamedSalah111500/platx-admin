@@ -142,6 +142,116 @@
   </div>
 </div>
 
+<!-- Usage & Limits -->
+<div class="card-body sub-section limits-section">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h6 class="fw-semibold mb-0">Usage &amp; Limits</h6>
+      <p class="text-muted mb-0" style="font-size:13px" *ngIf="dashboard?.planName">
+        Based on <strong>{{ dashboard.planName }}</strong> plan
+      </p>
+    </div>
+    <button type="button" class="btn btn-action btn-sm" (click)="loadDashboard()">
+      <i class="mdi mdi-refresh"></i>
+    </button>
+  </div>
+
+  <div *ngIf="limitsLoading" class="text-center py-4">
+    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+  </div>
+
+  <ng-container *ngIf="!limitsLoading && dashboard">
+    <div *ngIf="dashboard.items.length === 0" class="text-center text-muted py-4">
+      No limits configured for this tenant's plan.
+    </div>
+
+    <div class="limits-list">
+      <div class="limit-row" *ngFor="let item of dashboard.items">
+        <div class="limit-meta">
+          <span class="limit-name">{{ item.displayName }}</span>
+          <span class="limit-badge limit-badge-override" *ngIf="item.isOverridden">Override</span>
+          <span class="limit-badge limit-badge-period" *ngIf="item.period !== LimitPeriod.None">
+            {{ periodLabel(item.period) }}
+          </span>
+        </div>
+
+        <!-- Boolean limit -->
+        <div *ngIf="item.unit === 'bool'" class="mb-2">
+          <span class="pill" [ngClass]="item.limit >= 1 ? 'pill-active' : 'pill-cancelled'">
+            {{ item.limit >= 1 ? 'Enabled' : 'Disabled' }}
+          </span>
+        </div>
+
+        <!-- Numeric unlimited -->
+        <div *ngIf="item.unit !== 'bool' && item.isUnlimited" class="mb-2">
+          <span class="pill pill-soft">Unlimited</span>
+          <span class="ms-2" style="font-size:13px; color:#6b7280">Used: {{ item.used }} {{ item.unit }}</span>
+        </div>
+
+        <!-- Numeric with quota -->
+        <div *ngIf="item.unit !== 'bool' && !item.isUnlimited" class="mb-2">
+          <div class="limit-bar">
+            <div
+              class="limit-fill"
+              [style.width.%]="limitPercent(item)"
+              [class.limit-fill-warn]="limitPercent(item) >= 75"
+              [class.limit-fill-danger]="limitPercent(item) >= 90"
+            ></div>
+          </div>
+          <div class="limit-numbers">
+            <span>{{ item.used }} / {{ item.limit }} {{ item.unit }}</span>
+            <span *ngIf="item.remaining != null">{{ item.remaining }} remaining</span>
+          </div>
+        </div>
+
+        <div class="limit-actions">
+          <button type="button" class="btn btn-action btn-xs" (click)="openOverrideModal(overrideTpl, item)">
+            {{ item.isOverridden ? 'Edit Override' : 'Override' }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-link btn-xs text-danger p-0"
+            *ngIf="item.isOverridden"
+            (click)="removeOverride(item.key)"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- Override Modal -->
+<ng-template #overrideTpl>
+  <div class="modal-header">
+    <h5 class="modal-title">Override: {{ overrideItem?.displayName }}</h5>
+    <button type="button" class="btn-close" (click)="overrideModalRef?.hide()"></button>
+  </div>
+  <form [formGroup]="overrideForm" (ngSubmit)="submitOverride()">
+    <div class="modal-body">
+      <p class="text-muted mb-3" style="font-size:13px" *ngIf="overrideItem?.description">
+        {{ overrideItem.description }}
+      </p>
+      <div class="mb-3">
+        <label class="form-label">
+          Value ({{ overrideItem?.unit }})
+          <span class="text-muted ms-1" style="font-size:12px">— use -1 for unlimited</span>
+        </label>
+        <input type="number" class="form-control" formControlName="value" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Reason <span class="text-muted">(optional)</span></label>
+        <input type="text" class="form-control" formControlName="reason" placeholder="e.g. Special deal" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="overrideModalRef?.hide()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="overrideForm.invalid">Save Override</button>
+    </div>
+  </form>
+</ng-template>
+
 <!-- Assign Modal -->
 <ng-template #assignTpl>
   <div class="modal-header">
