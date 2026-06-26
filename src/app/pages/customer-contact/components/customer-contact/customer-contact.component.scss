@@ -170,6 +170,8 @@
       .pill-dot { background: #10b981; } }
     &.pill-info { background: #ecfeff; color: #0e7490;
       .pill-dot { background: #06b6d4; } }
+    &.pill-warning { background: #fffbeb; color: #b45309;
+      .pill-dot { background: #f59e0b; } }
   }
 
   .smart-table .action-btn,

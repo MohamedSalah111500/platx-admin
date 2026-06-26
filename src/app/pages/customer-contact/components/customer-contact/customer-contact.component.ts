@@ -27,12 +27,13 @@ export class CustomerContactComponent implements OnInit {
   page: number = 1;
   pageSize: number = 10;
 
-  typeFilter: "all" | "demo" | "general" = "all";
+  typeFilter: "all" | "demo" | "consultation" | "general" = "all";
   selectedMessage: CustomerContact | null = null;
 
   stats = {
     total: 0,
     demo: 0,
+    consultation: 0,
     general: 0,
     uniqueDomains: 0,
     thisWeek: 0,
@@ -70,8 +71,13 @@ export class CustomerContactComponent implements OnInit {
   }
 
   private computeStats() {
-    const demo = this.returnedArray.filter((c) => c.isDemo).length;
-    const general = this.returnedArray.length - demo;
+    const consultation = this.returnedArray.filter((c) =>
+      this.isConsultation(c)
+    ).length;
+    const demo = this.returnedArray.filter(
+      (c) => c.isDemo && !this.isConsultation(c)
+    ).length;
+    const general = this.returnedArray.length - demo - consultation;
     const domains = new Set(
       this.returnedArray
         .map((c) => (c.email || "").split("@")[1])
@@ -85,10 +91,28 @@ export class CustomerContactComponent implements OnInit {
     this.stats = {
       total: this.totalCount || this.returnedArray.length,
       demo,
+      consultation,
       general,
       uniqueDomains: domains.size,
       thisWeek,
     };
+  }
+
+  /** A request is a free consultation when the visitor picked a preferred date/time. */
+  isConsultation(item?: CustomerContact | null): boolean {
+    return !!item?.preferredDate;
+  }
+
+  /** Human label for the request "Type" column. */
+  typeLabel(item?: CustomerContact | null): string {
+    if (this.isConsultation(item)) return "Free Consultation";
+    return item?.isDemo ? "Demo Request" : "Inquiry";
+  }
+
+  /** Pill CSS class for the request "Type" column. */
+  typePillClass(item?: CustomerContact | null): string {
+    if (this.isConsultation(item)) return "pill-warning";
+    return item?.isDemo ? "pill-success" : "pill-info";
   }
 
   daysSinceCreated(createdAt?: string): number {
@@ -126,9 +150,12 @@ export class CustomerContactComponent implements OnInit {
   private applyFilter() {
     let result = [...this.returnedArray];
     if (this.typeFilter !== "all") {
-      result = result.filter((c) =>
-        this.typeFilter === "demo" ? c.isDemo : !c.isDemo
-      );
+      result = result.filter((c) => {
+        if (this.typeFilter === "consultation") return this.isConsultation(c);
+        if (this.typeFilter === "demo")
+          return c.isDemo && !this.isConsultation(c);
+        return !c.isDemo && !this.isConsultation(c);
+      });
     }
     if (this.term) {
       const q = this.term.toLowerCase();

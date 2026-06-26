@@ -3,7 +3,7 @@
 
   <!-- KPI cards -->
   <div class="row g-3 mb-3">
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl">
       <div class="kpi-card kpi-clickable" [class.kpi-active]="typeFilter === 'all'" (click)="setFilter('all')">
         <div class="kpi-icon kpi-icon-primary">
           <i class="mdi mdi-account-multiple-outline"></i>
@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl">
       <div class="kpi-card kpi-clickable" [class.kpi-active]="typeFilter === 'demo'" (click)="setFilter('demo')">
         <div class="kpi-icon kpi-icon-success">
           <i class="mdi mdi-rocket-launch-outline"></i>
@@ -27,7 +27,20 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="typeFilter === 'consultation'"
+        (click)="setFilter('consultation')">
+        <div class="kpi-icon kpi-icon-warning">
+          <i class="mdi mdi-calendar-clock-outline"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">Free Consultations</div>
+          <div class="kpi-value">{{ stats.consultation }}</div>
+          <div class="kpi-sub text-warning">Scheduled by date &amp; time</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl">
       <div class="kpi-card kpi-clickable" [class.kpi-active]="typeFilter === 'general'" (click)="setFilter('general')">
         <div class="kpi-icon kpi-icon-info">
           <i class="mdi mdi-email-outline"></i>
@@ -39,7 +52,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl">
       <div class="kpi-card">
         <div class="kpi-icon kpi-icon-warning">
           <i class="mdi mdi-calendar-week-outline"></i>
@@ -157,10 +170,14 @@
                   </td>
 
                   <td>
-                    <span class="pill" [ngClass]="item.isDemo ? 'pill-success' : 'pill-info'">
+                    <span class="pill" [ngClass]="typePillClass(item)">
                       <span class="pill-dot"></span>
-                      {{ item.isDemo ? 'Demo Request' : 'Inquiry' }}
+                      {{ typeLabel(item) }}
                     </span>
+                    <div class="font-size-11 text-warning fw-medium mt-1" *ngIf="isConsultation(item)">
+                      <i class="mdi mdi-calendar-clock me-1"></i>
+                      {{ item.preferredDate | date:'EEE, MMM d, y · h:mm a' }}
+                    </div>
                   </td>
 
                   <td>
@@ -280,9 +297,20 @@
             <div class="info-row">
               <div class="info-row-label">Type</div>
               <div class="info-row-value">
-                <span class="pill" [ngClass]="selectedMessage.isDemo ? 'pill-success' : 'pill-info'">
+                <span class="pill" [ngClass]="typePillClass(selectedMessage)">
                   <span class="pill-dot"></span>
-                  {{ selectedMessage.isDemo ? 'Demo Request' : 'Inquiry' }}
+                  {{ typeLabel(selectedMessage) }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" *ngIf="isConsultation(selectedMessage)">
+            <div class="info-row">
+              <div class="info-row-label">Preferred date &amp; time</div>
+              <div class="info-row-value">
+                <i class="mdi mdi-calendar-clock text-warning me-1"></i>
+                <span class="fw-semibold">
+                  {{ selectedMessage.preferredDate | date:'EEEE, MMM d, y · h:mm a' }}
                 </span>
               </div>
             </div>

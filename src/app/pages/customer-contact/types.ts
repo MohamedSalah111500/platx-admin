@@ -59,5 +59,8 @@ export interface CustomerContact {
   phone: string;
   massage: string;
   isDemo: boolean;
+  // Preferred date & time chosen by the visitor when booking a free consultation.
+  // Null/absent for plain demo requests and general inquiries.
+  preferredDate?: string | null;
   createdAt?: string;
 }

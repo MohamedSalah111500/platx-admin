@@ -56,7 +56,6 @@ export class SubscriptionSectionComponent implements OnChanges {
     });
     this.overrideForm = this.fb.group({
       value: [null, Validators.required],
-      reason: [""],
     });
   }
 
@@ -207,7 +206,6 @@ export class SubscriptionSectionComponent implements OnChanges {
     this.overrideItem = item;
     this.overrideForm.reset({
       value: item.isUnlimited ? -1 : item.limit,
-      reason: "",
     });
     this.overrideModalRef = this.modalService.show(template, { class: "modal-sm" });
   }
@@ -220,7 +218,6 @@ export class SubscriptionSectionComponent implements OnChanges {
         tenantId: this.tenantId,
         limitKey: this.overrideItem.key,
         value: v.value,
-        reason: v.reason || undefined,
       })
       .subscribe({
         next: () => {
