@@ -9,6 +9,7 @@ const SUBSCRIPTION_PLANS_BASE = "api/admin/subscription-plans";
 const TENANT_SUBSCRIPTIONS_BASE = "api/TenantSubscriptions";
 const RENEWAL_REQUESTS_BASE = "api/RenewalRequests";
 const SUBSCRIPTION_LIMITS_BASE = "api/SubscriptionLimits";
+const COMPANY_ANALYTICS_BASE = "api/admin/CompanyAnalytics";
 
 
 export const AUTH_URLS = {
@@ -89,4 +90,14 @@ export const PLATX_CONTACT_URLS = {
     .concat(PLATX_CONTACT_BASE)
     .concat("/GetContactDetailsList")}`,
     DELETE: (id: string) => `${environment.apiURL.concat(PLATX_CONTACT_BASE)}/${id}`,
+};
+
+export const COMPANY_ANALYTICS_URLS = {
+  OVERVIEW: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/overview`,
+  GROWTH: (months: number) =>
+    `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/growth?months=${months}`,
+  ACTIVITY: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/activity`,
+  ENGAGEMENT: (recentTake: number, topTake: number) =>
+    `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/engagement?recentTake=${recentTake}&topTake=${topTake}`,
+  REVENUE: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/revenue`,
 };

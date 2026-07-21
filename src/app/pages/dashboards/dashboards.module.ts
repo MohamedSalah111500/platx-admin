@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { DashboardsRoutingModule } from './dashboards-routing.module';
 import { UIModule } from '../../shared/ui/ui.module';
@@ -24,6 +25,7 @@ import { DefaultComponent } from './default/default.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     DashboardsRoutingModule,
     UIModule,
     BsDropdownModule.forRoot(),

@@ -1,134 +1,132 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { emailSentBarChart, monthlyEarningChart } from './data';
+import { Component, OnInit } from '@angular/core';
 import { ChartType } from './dashboard.model';
-import { BsModalService, BsModalRef, ModalDirective } from 'ngx-bootstrap/modal';
-import { EventService } from '../../../core/services/event.service';
+import { AnalyticsService } from '../analytics.service';
+import {
+  CompanyActivity,
+  CompanyEngagement,
+  CompanyGrowth,
+  CompanyOverview,
+  CompanyRevenue,
+  CurrencyAmount,
+} from '../analytics.models';
 
-import { ConfigService } from '../../../core/services/config.service';
+const PRIMARY_CURRENCY = 'EGP';
 
 @Component({
   selector: 'app-default',
   templateUrl: './default.component.html',
-  styleUrls: ['./default.component.scss']
+  styleUrls: ['./default.component.scss'],
 })
 export class DefaultComponent implements OnInit {
-  modalRef?: BsModalRef;
-  isVisible: string;
+  loading = true;
 
-  emailSentBarChart: ChartType;
-  monthlyEarningChart: ChartType;
-  transactions: any;
-  statData: any;
-  config:any = {
-    backdrop: true,
-    ignoreBackdropClick: true
-  };
+  overview?: CompanyOverview;
+  activity?: CompanyActivity;
+  engagement?: CompanyEngagement;
+  growth?: CompanyGrowth;
+  revenue?: CompanyRevenue;
 
-  isActive: string;
+  statData: { title: string; value: string; icon: string }[] = [];
+  activityStats: { label: string; value: number; icon: string }[] = [];
+  growthChart?: ChartType;
+  maxPlanCount = 0;
 
-  @ViewChild('content') content;
-  @ViewChild('center', { static: false }) center?: ModalDirective;
-  constructor(private modalService: BsModalService, private configService: ConfigService, private eventService: EventService) {
-  }
+  constructor(private analytics: AnalyticsService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.analytics.getOverview().subscribe({
+      next: (o) => {
+        this.overview = o;
+        this.buildStats(o);
+      },
+    });
 
-    /**
-     * horizontal-vertical layput set
-     */
-    const attribute = document.body.getAttribute('data-layout');
+    this.analytics.getActivity().subscribe({
+      next: (a) => {
+        this.activity = a;
+        this.buildActivity(a);
+      },
+    });
 
-    this.isVisible = attribute;
-    const vertical = document.getElementById('layout-vertical');
-    if (vertical != null) {
-      vertical.setAttribute('checked', 'true');
-    }
-    if (attribute == 'horizontal') {
-      const horizontal = document.getElementById('layout-horizontal');
-      if (horizontal != null) {
-        horizontal.setAttribute('checked', 'true');
-      }
-    }
+    this.analytics.getEngagement().subscribe({
+      next: (e) => (this.engagement = e),
+    });
 
-    /**
-     * Fetches the data
-     */
-    this.fetchData();
-  }
+    this.analytics.getRevenue().subscribe({
+      next: (r) => {
+        this.revenue = r;
+        this.maxPlanCount = Math.max(1, ...r.planDistribution.map((p) => p.count));
+      },
+    });
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-     this.center?.show()
-    }, 2000);
-  }
-
-  /**
-   * Fetches the data
-   */
-  private fetchData() {
-    this.emailSentBarChart = emailSentBarChart;
-    this.monthlyEarningChart = monthlyEarningChart;
-
-    this.isActive = 'year';
-    this.configService.getConfig().subscribe(data => {
-      this.transactions = data.transactions;
-      this.statData = data.statData;
+    this.analytics.getGrowth(12).subscribe({
+      next: (g) => {
+        this.growth = g;
+        this.buildGrowthChart(g);
+        this.loading = false;
+      },
+      error: () => (this.loading = false),
     });
   }
-  opencenterModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
-  }
-  weeklyreport() {
-    this.isActive = 'week';
-    this.emailSentBarChart.series =
-      [{
-        name: 'Series A',
-        data: [44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48]
-      }, {
-        name: 'Series B',
-        data: [11, 17, 15, 15, 21, 14, 11, 18, 17, 12, 20, 18]
-      }, {
-        name: 'Series C',
-        data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22]
-      }];
+
+  private buildStats(o: CompanyOverview): void {
+    this.statData = [
+      { title: 'Total Tenants', value: `${o.totalTenants}`, icon: 'bx-buildings' },
+      { title: 'Active Tenants', value: `${o.activeTenants}`, icon: 'bx-check-shield' },
+      { title: 'Total Users', value: `${o.totalUsers}`, icon: 'bx-group' },
+      { title: 'Active Users (30d)', value: `${o.activeUsers30d}`, icon: 'bx-user-check' },
+      { title: 'Students', value: `${o.totalStudents}`, icon: 'bx-user' },
+      { title: 'Courses', value: `${o.totalCourses}`, icon: 'bx-book-open' },
+      { title: 'Enrollments', value: `${o.totalEnrollments}`, icon: 'bx-collection' },
+      { title: 'New Users This Month', value: `${o.newUsersThisMonth}`, icon: 'bx-trending-up' },
+    ];
   }
 
-  monthlyreport() {
-    this.isActive = 'month';
-    this.emailSentBarChart.series =
-      [{
-        name: 'Series A',
-        data: [44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48]
-      }, {
-        name: 'Series B',
-        data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22]
-      }, {
-        name: 'Series C',
-        data: [11, 17, 15, 15, 21, 14, 11, 18, 17, 12, 20, 18]
-      }];
+  primaryRevenue(): CurrencyAmount {
+    const totals = this.revenue?.totalRevenue || [];
+    return (
+      totals.find((r) => r.currency === PRIMARY_CURRENCY) ||
+      totals[0] || { currency: PRIMARY_CURRENCY, amount: 0 }
+    );
   }
 
-  yearlyreport() {
-    this.isActive = 'year';
-    this.emailSentBarChart.series =
-      [{
-        name: 'Series A',
-        data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22]
-      }, {
-        name: 'Series B',
-        data: [11, 17, 15, 15, 21, 14, 11, 18, 17, 12, 20, 18]
-      }, {
-        name: 'Series C',
-        data: [44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48]
-      }];
+  otherRevenues(): CurrencyAmount[] {
+    const primary = this.primaryRevenue();
+    return (this.revenue?.totalRevenue || []).filter((r) => r.currency !== primary.currency);
   }
 
+  initials(name: string): string {
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return '?';
+    return (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase();
+  }
 
-  /**
-   * Change the layout onclick
-   * @param layout Change the layout
-   */
-  changeLayout(layout: string) {
-    this.eventService.broadcast('changeLayout', layout);
+  private buildActivity(a: CompanyActivity): void {
+    this.activityStats = [
+      { label: 'Enrollments', value: a.enrollments, icon: 'bx-collection' },
+      { label: 'Exams Taken', value: a.examsTaken, icon: 'bx-edit-alt' },
+      { label: 'Homework Submissions', value: a.homeworkSubmissions, icon: 'bx-task' },
+      { label: 'Lessons Completed', value: a.lessonsCompleted, icon: 'bx-check-circle' },
+      { label: 'Live Classes', value: a.liveClasses, icon: 'bx-video' },
+      { label: 'QR Redemptions', value: a.qrRedemptions, icon: 'bx-qr-scan' },
+      { label: 'Messages', value: a.messagesSent, icon: 'bx-message-dots' },
+    ];
+  }
+
+  private buildGrowthChart(g: CompanyGrowth): void {
+    this.growthChart = {
+      chart: { height: 350, type: 'bar', toolbar: { show: false } },
+      plotOptions: { bar: { horizontal: false, columnWidth: '35%', borderRadius: 4 } },
+      dataLabels: { enabled: false },
+      series: [
+        { name: 'New Users', data: g.points.map((p) => p.newUsers) },
+        { name: 'New Enrollments', data: g.points.map((p) => p.newEnrollments) },
+        { name: 'New Tenants', data: g.points.map((p) => p.newTenants) },
+      ],
+      xaxis: { categories: g.points.map((p) => p.label) },
+      colors: ['#556ee6', '#34c38f', '#f1b44c'],
+      legend: { position: 'bottom' },
+      fill: { opacity: 1 },
+    };
   }
 }
