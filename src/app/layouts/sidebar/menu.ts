@@ -41,6 +41,12 @@ export const MENU: MenuItem[] = [
         link: "/renewal-requests",
         parentId: 3,
       },
+      {
+        id: 33,
+        label: "MENUITEMS.PAYMENTS_DUE.TEXT",
+        link: "/installments",
+        parentId: 3,
+      },
     ],
   },
 ];

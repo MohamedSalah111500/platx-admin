@@ -8,6 +8,7 @@ const GENERAL_FILE_BASE = "api/Files";
 const SUBSCRIPTION_PLANS_BASE = "api/admin/subscription-plans";
 const TENANT_SUBSCRIPTIONS_BASE = "api/TenantSubscriptions";
 const RENEWAL_REQUESTS_BASE = "api/RenewalRequests";
+const TENANT_INSTALLMENTS_BASE = "api/TenantInstallments";
 const SUBSCRIPTION_LIMITS_BASE = "api/SubscriptionLimits";
 const COMPANY_ANALYTICS_BASE = "api/admin/CompanyAnalytics";
 
@@ -67,6 +68,18 @@ export const TENANT_SUBSCRIPTIONS_URLS = {
     `${environment.apiURL.concat(TENANT_SUBSCRIPTIONS_BASE)}/tenant/${tenantId}/assign`,
   EXTEND: (subscriptionId: number) =>
     `${environment.apiURL.concat(TENANT_SUBSCRIPTIONS_BASE)}/${subscriptionId}/extend`,
+};
+
+export const TENANT_INSTALLMENTS_URLS = {
+  GET_BY_TENANT: (tenantId: string) =>
+    `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/tenant/${tenantId}`,
+  CREATE: (tenantId: string) =>
+    `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/tenant/${tenantId}`,
+  UPDATE: (id: number) => `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/${id}`,
+  DELETE: (id: number) => `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/${id}`,
+  MARK_PAID: (id: number) => `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/${id}/mark-paid`,
+  MARK_UNPAID: (id: number) => `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/${id}/mark-unpaid`,
+  GET_DUE: `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/due`,
 };
 
 export const RENEWAL_REQUESTS_URLS = {

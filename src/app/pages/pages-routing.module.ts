@@ -36,6 +36,13 @@ const routes: Routes = [
         (m) => m.RenewalRequestsModule
       ),
   },
+  {
+    path: "installments",
+    loadChildren: () =>
+      import("./installments/installments.module").then(
+        (m) => m.InstallmentsModule
+      ),
+  },
 ];
 
 @NgModule({

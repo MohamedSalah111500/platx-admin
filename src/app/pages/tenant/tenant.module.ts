@@ -19,10 +19,11 @@ import { UiSwitchModule } from 'ngx-ui-switch';
 import { ImageUploadComponent } from 'src/app/shared/components/image-upload/image-upload.component';
 import { SubscriptionSectionComponent } from './components/subscription-section/subscription-section.component';
 import { TenantSubscriptionComponent } from './components/tenant-subscription/tenant-subscription.component';
+import { InstallmentsSectionComponent } from './components/installments-section/installments-section.component';
 
 
 @NgModule({
-  declarations: [TenantComponent, AddEditComponent,FileUploadComponent,ImageUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent],
+  declarations: [TenantComponent, AddEditComponent,FileUploadComponent,ImageUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent],
   imports: [
     CommonModule,
     TenantRoutingModule,

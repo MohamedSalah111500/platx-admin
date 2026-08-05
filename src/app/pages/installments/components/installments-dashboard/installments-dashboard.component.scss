@@ -1,0 +1,142 @@
+.installments-page {
+  .sub-shell {
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  .sub-header {
+    border-bottom: 1px solid #e9ecef;
+    padding: 24px 28px;
+
+    h4 {
+      font-size: 18px;
+      color: #111827;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .sub-section {
+    padding: 24px 28px;
+    border-bottom: 1px solid #e9ecef;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .info-label {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  .form-select-clean {
+    border-radius: 8px;
+    border-color: #e5e7eb;
+    font-size: 14px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .pill-soft {
+    background: #f3f4f6;
+    color: #4b5563;
+  }
+
+  .pill-pending {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .pill-handled {
+    background: #ecfdf5;
+    color: #047857;
+  }
+
+  .pill-rejected {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+
+    &.dot-pending {
+      background: #f59e0b;
+    }
+    &.dot-handled {
+      background: #10b981;
+    }
+    &.dot-rejected {
+      background: #ef4444;
+    }
+  }
+
+  .history-table {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .history-row {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1fr 1.2fr 1fr;
+    padding: 14px 18px;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 14px;
+    color: #111827;
+    align-items: center;
+    gap: 12px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .empty-row {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 14px;
+      padding: 24px 0;
+    }
+  }
+
+  .history-head {
+    background: #f9fafb;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #6b7280;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+  }
+
+  .empty-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-size: 24px;
+  }
+}

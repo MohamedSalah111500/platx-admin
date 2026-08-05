@@ -33,4 +33,9 @@
     *ngIf="tenantId && !loading"
     [tenantId]="tenantId"
   ></platx-tenant-subscription-section>
+
+  <!-- Installments section -->
+  <div class="mt-4" *ngIf="tenantId && !loading">
+    <platx-tenant-installments-section [tenantId]="tenantId"></platx-tenant-installments-section>
+  </div>
 </div>

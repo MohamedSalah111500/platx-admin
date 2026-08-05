@@ -115,6 +115,9 @@
     "RENEWAL_REQUESTS": {
       "TEXT": "Renewal Requests"
     },
+    "PAYMENTS_DUE": {
+      "TEXT": "Payments Due"
+    },
     "LAYOUTS": {
       "TEXT": "Layouts",
       "LIST": {

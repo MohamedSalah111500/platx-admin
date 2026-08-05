@@ -1,0 +1,104 @@
+<div class="container-fluid installments-page">
+  <app-page-title title="Payments Due" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="card sub-shell">
+    <!-- Header -->
+    <div class="card-body sub-header">
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+        <div>
+          <h4 class="mb-1 fw-bold">Payments Due</h4>
+          <p class="text-muted mb-0">Installments across all tenants — chase up overdue and upcoming payments</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="pill pill-soft">
+            Total <strong class="ms-1">{{ totalCount }}</strong>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="card-body sub-section">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="info-label d-block mb-2">Filter</label>
+          <select class="form-select form-select-clean" [(ngModel)]="unpaidOnly" (change)="onFilterChange()">
+            <option [ngValue]="true">Unpaid only (overdue + upcoming)</option>
+            <option [ngValue]="false">All installments</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+    </div>
+
+    <!-- Table -->
+    <div class="card-body sub-section pb-2" *ngIf="!loading">
+      <div class="history-table">
+        <div class="history-row history-head">
+          <div>Tenant</div>
+          <div>Due Date</div>
+          <div class="text-end">Amount</div>
+          <div>Status</div>
+          <div class="text-end">Action</div>
+        </div>
+
+        <div class="history-row" *ngIf="items.length === 0">
+          <div class="empty-row">
+            <div class="empty-icon mx-auto mb-2">
+              <i class="mdi mdi-inbox-outline"></i>
+            </div>
+            No installments found
+          </div>
+        </div>
+
+        <div class="history-row" *ngFor="let item of items">
+          <div>
+            <div class="fw-medium">{{ item.tenantTitle || "—" }}</div>
+            <div class="text-muted font-size-12">{{ item.tenantId }}</div>
+          </div>
+          <div>{{ item.dueDate | date: "MMM d, yyyy" }}</div>
+          <div class="text-end fw-medium">{{ item.amount }} EGP</div>
+          <div>
+            <span class="pill" [ngClass]="pillClass(item.status)">
+              <span class="status-dot" [ngClass]="dotClass(item.status)"></span>
+              {{ statusLabel(item.status) }}
+              <ng-container *ngIf="item.status === InstallmentStatus.Overdue">
+                ({{ item.daysOverdue }}d)
+              </ng-container>
+            </span>
+          </div>
+          <div class="text-end">
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              *ngIf="!item.isPaid"
+              (click)="markPaid(item)"
+            >
+              Mark Paid
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-end mt-3" *ngIf="totalCount > size">
+        <pagination
+          [totalItems]="totalCount"
+          [itemsPerPage]="size"
+          [(ngModel)]="page"
+          (pageChanged)="onPageChange($event)"
+          [boundaryLinks]="true"
+          previousText="‹"
+          nextText="›"
+          firstText="«"
+          lastText="»"
+          class="pagination-rounded"
+        ></pagination>
+      </div>
+    </div>
+  </div>
+</div>
