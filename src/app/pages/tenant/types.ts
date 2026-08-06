@@ -19,6 +19,7 @@ export interface Tenant {
   isActive?: boolean;
   quota:number
   quotaAI:number
+  totalAmount?: number | null;
 }
 
 interface TenantFile {

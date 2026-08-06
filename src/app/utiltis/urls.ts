@@ -80,6 +80,8 @@ export const TENANT_INSTALLMENTS_URLS = {
   MARK_PAID: (id: number) => `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/${id}/mark-paid`,
   MARK_UNPAID: (id: number) => `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/${id}/mark-unpaid`,
   GET_DUE: `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/due`,
+  SET_TOTAL_AMOUNT: (tenantId: string) =>
+    `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/tenant/${tenantId}/total-amount`,
 };
 
 export const RENEWAL_REQUESTS_URLS = {

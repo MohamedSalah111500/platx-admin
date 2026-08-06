@@ -45,4 +45,11 @@ export class TenantInstallmentService {
       .set("size", size);
     return this.http.get<PagedInstallmentsResponse>(TENANT_INSTALLMENTS_URLS.GET_DUE, { params });
   }
+
+  setTotalAmount(tenantId: string, totalAmount: number | null): Observable<{ totalAmount: number | null }> {
+    return this.http.put<{ totalAmount: number | null }>(
+      TENANT_INSTALLMENTS_URLS.SET_TOTAL_AMOUNT(tenantId),
+      { totalAmount }
+    );
+  }
 }

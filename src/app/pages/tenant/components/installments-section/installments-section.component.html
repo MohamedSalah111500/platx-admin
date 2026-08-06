@@ -13,13 +13,58 @@
       </div>
     </div>
 
+    <!-- Total platform price -->
+    <div class="card-body inst-section">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="fw-semibold mb-0">Total platform price</h6>
+        <button
+          type="button"
+          class="btn btn-action btn-sm"
+          *ngIf="!editingTotalAmount"
+          (click)="startEditTotalAmount()"
+        >
+          <i class="mdi mdi-pencil-outline me-1"></i>
+          {{ tenantTotalAmount != null ? "Edit" : "Set price" }}
+        </button>
+      </div>
+
+      <ng-container *ngIf="!editingTotalAmount">
+        <div class="info-tile">
+          <span class="info-label">Full original amount (contract price)</span>
+          <div class="info-value">
+            {{ tenantTotalAmount != null ? (tenantTotalAmount + " EGP") : "Not set" }}
+          </div>
+          <div class="info-sub" *ngIf="tenantTotalAmount != null && remainingToAllocate !== 0">
+            {{ remainingToAllocate }} EGP not yet split into installments
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="d-flex gap-2 align-items-center" *ngIf="editingTotalAmount">
+        <input
+          type="number"
+          class="form-control"
+          style="max-width: 220px"
+          [(ngModel)]="totalAmountInput"
+          min="0"
+          step="0.01"
+          placeholder="e.g. 15000"
+        />
+        <span class="text-muted">EGP</span>
+        <button type="button" class="btn btn-primary btn-sm" [disabled]="savingTotalAmount" (click)="saveTotalAmount()">
+          Save
+        </button>
+        <button type="button" class="btn btn-light btn-sm" (click)="cancelEditTotalAmount()">Cancel</button>
+      </div>
+    </div>
+
     <!-- Summary -->
     <div class="card-body inst-section" *ngIf="items.length > 0">
       <div class="row g-3">
         <div class="col-md-4">
           <div class="info-tile h-100">
-            <span class="info-label">Total</span>
-            <div class="info-value">{{ totalAmount }} EGP</div>
+            <span class="info-label">Installments total</span>
+            <div class="info-value">{{ installmentsTotal }} EGP</div>
           </div>
         </div>
         <div class="col-md-4">
@@ -74,7 +119,7 @@
               </span>
             </div>
             <div class="text-end">
-              <div dropdown class="dropdown d-inline-block">
+              <div dropdown container="body" class="dropdown d-inline-block">
                 <a dropdownToggle href="javascript:void(0);" class="btn btn-sm btn-light action-btn" aria-expanded="false">
                   <i class="mdi mdi-dots-horizontal font-size-18"></i>
                 </a>

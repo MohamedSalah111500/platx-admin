@@ -183,30 +183,35 @@
     letter-spacing: 0.4px;
   }
 
-  // ---- Limits ----
+  // ---- Limits (compact) ----
+
+  .limits-section {
+    padding: 16px 28px;
+  }
 
   .limits-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
   }
 
   .limit-row {
-    padding: 14px 16px;
+    padding: 10px 12px;
     border: 1px solid #e9ecef;
-    border-radius: 10px;
+    border-radius: 8px;
     background: #fff;
   }
 
   .limit-meta {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: 6px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
   }
 
   .limit-name {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     color: #111827;
   }
@@ -229,11 +234,11 @@
   }
 
   .limit-bar {
-    height: 8px;
+    height: 5px;
     background: #f3f4f6;
     border-radius: 999px;
     overflow: hidden;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
 
   .limit-fill {
@@ -254,15 +259,15 @@
   .limit-numbers {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 11px;
     color: #6b7280;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .limit-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .btn-xs {

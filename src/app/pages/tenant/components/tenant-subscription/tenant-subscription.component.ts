@@ -45,4 +45,10 @@ export class TenantSubscriptionComponent implements OnInit {
   back(): void {
     this.router.navigate(["/tenant"]);
   }
+
+  onTotalAmountChange(value: number | null): void {
+    if (this.tenant) {
+      this.tenant.totalAmount = value;
+    }
+  }
 }

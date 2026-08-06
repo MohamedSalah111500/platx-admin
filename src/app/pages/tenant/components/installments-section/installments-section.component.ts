@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, TemplateRef } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { ToastrService } from "ngx-toastr";
@@ -12,11 +12,17 @@ import { InstallmentStatus, TenantInstallment } from "../../types/installment.ty
 })
 export class InstallmentsSectionComponent implements OnChanges {
   @Input() tenantId!: string;
+  @Input() tenantTotalAmount?: number | null;
+  @Output() tenantTotalAmountChange = new EventEmitter<number | null>();
 
   InstallmentStatus = InstallmentStatus;
 
   items: TenantInstallment[] = [];
   loading = false;
+
+  editingTotalAmount = false;
+  totalAmountInput: number | null = null;
+  savingTotalAmount = false;
 
   modalRef?: BsModalRef;
   form: FormGroup;
@@ -55,7 +61,7 @@ export class InstallmentsSectionComponent implements OnChanges {
     });
   }
 
-  get totalAmount(): number {
+  get installmentsTotal(): number {
     return this.items.reduce((sum, i) => sum + i.amount, 0);
   }
 
@@ -64,7 +70,38 @@ export class InstallmentsSectionComponent implements OnChanges {
   }
 
   get outstandingAmount(): number {
-    return this.totalAmount - this.paidAmount;
+    return this.installmentsTotal - this.paidAmount;
+  }
+
+  get remainingToAllocate(): number | null {
+    if (this.tenantTotalAmount == null) return null;
+    return this.tenantTotalAmount - this.installmentsTotal;
+  }
+
+  startEditTotalAmount(): void {
+    this.totalAmountInput = this.tenantTotalAmount ?? null;
+    this.editingTotalAmount = true;
+  }
+
+  cancelEditTotalAmount(): void {
+    this.editingTotalAmount = false;
+  }
+
+  saveTotalAmount(): void {
+    this.savingTotalAmount = true;
+    this.installmentService.setTotalAmount(this.tenantId, this.totalAmountInput).subscribe({
+      next: (res) => {
+        this.tenantTotalAmount = res.totalAmount;
+        this.tenantTotalAmountChange.emit(res.totalAmount);
+        this.editingTotalAmount = false;
+        this.savingTotalAmount = false;
+        this.toastr.success("Total platform price saved");
+      },
+      error: (err) => {
+        this.savingTotalAmount = false;
+        this.toastr.error(err?.error?.message ?? "Failed to save total amount");
+      },
+    });
   }
 
   statusLabel(status: InstallmentStatus): string {

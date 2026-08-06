@@ -28,14 +28,17 @@
     <div class="spinner-border text-primary"></div>
   </div>
 
-  <!-- Subscription section -->
-  <platx-tenant-subscription-section
-    *ngIf="tenantId && !loading"
-    [tenantId]="tenantId"
-  ></platx-tenant-subscription-section>
-
   <!-- Installments section -->
+  <div *ngIf="tenantId && !loading">
+    <platx-tenant-installments-section
+      [tenantId]="tenantId"
+      [tenantTotalAmount]="tenant?.totalAmount"
+      (tenantTotalAmountChange)="onTotalAmountChange($event)"
+    ></platx-tenant-installments-section>
+  </div>
+
+  <!-- Subscription section -->
   <div class="mt-4" *ngIf="tenantId && !loading">
-    <platx-tenant-installments-section [tenantId]="tenantId"></platx-tenant-installments-section>
+    <platx-tenant-subscription-section [tenantId]="tenantId"></platx-tenant-subscription-section>
   </div>
 </div>
