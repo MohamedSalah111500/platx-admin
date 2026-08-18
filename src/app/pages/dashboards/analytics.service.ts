@@ -8,6 +8,7 @@ import {
   CompanyGrowth,
   CompanyOverview,
   CompanyRevenue,
+  TenantStats,
 } from "./analytics.models";
 
 @Injectable({
@@ -36,5 +37,9 @@ export class AnalyticsService {
 
   getRevenue(): Observable<CompanyRevenue> {
     return this.http.get<CompanyRevenue>(COMPANY_ANALYTICS_URLS.REVENUE);
+  }
+
+  getTenantStats(): Observable<TenantStats> {
+    return this.http.get<TenantStats>(COMPANY_ANALYTICS_URLS.TENANT_STATS);
   }
 }

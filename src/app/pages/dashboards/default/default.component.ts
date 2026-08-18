@@ -34,6 +34,15 @@ export class DefaultComponent implements OnInit {
   constructor(private analytics: AnalyticsService) {}
 
   ngOnInit(): void {
+    this.loadAll();
+  }
+
+  refresh(): void {
+    this.loading = true;
+    this.loadAll();
+  }
+
+  private loadAll(): void {
     this.analytics.getOverview().subscribe({
       next: (o) => {
         this.overview = o;

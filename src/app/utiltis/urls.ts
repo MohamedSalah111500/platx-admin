@@ -115,4 +115,5 @@ export const COMPANY_ANALYTICS_URLS = {
   ENGAGEMENT: (recentTake: number, topTake: number) =>
     `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/engagement?recentTake=${recentTake}&topTake=${topTake}`,
   REVENUE: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/revenue`,
+  TENANT_STATS: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/tenant-stats`,
 };

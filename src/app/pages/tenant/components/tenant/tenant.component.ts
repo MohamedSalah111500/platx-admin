@@ -4,6 +4,7 @@ import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
 import { TenantService } from "./../../services/tenantService.service";
 import { SubscriptionService } from "./../../services/subscription.service";
+import { AnalyticsService } from "src/app/pages/dashboards/analytics.service";
 import { Router } from "@angular/router";
 import { forkJoin, Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
@@ -69,6 +70,7 @@ export class TenantComponent implements OnInit {
     public toastr: ToastrService,
     public tenantService: TenantService,
     public subscriptionService: SubscriptionService,
+    private analyticsService: AnalyticsService,
     private router: Router
   ) {}
   OnBeforeChange: Observable<boolean> = new Observable((observer) => {
@@ -81,6 +83,24 @@ export class TenantComponent implements OnInit {
       { label: "List", active: true },
     ];
     this.getAllData(this.page, this.pageSize);
+    this.loadStats();
+  }
+
+  refresh(): void {
+    this.getAllData(this.page, this.pageSize);
+    this.loadStats();
+  }
+
+  private loadStats(): void {
+    this.analyticsService.getTenantStats().subscribe((s) => {
+      this.stats = {
+        total: s.totalTenants,
+        active: s.activeTenants,
+        inactive: s.inactiveTenants,
+        expiringSoon: s.expiringSoon,
+        expired: s.expired,
+      };
+    });
   }
 
   getAllData(pageNumber: number, pageSize: number) {
@@ -102,7 +122,7 @@ export class TenantComponent implements OnInit {
   private loadSubscriptionsForList() {
     if (!this.returnedArray.length) {
       this.subMap = {};
-      this.recomputeStats();
+      this.applyFilter();
       return;
     }
     this.subsLoading = true;
@@ -120,12 +140,10 @@ export class TenantComponent implements OnInit {
         });
         this.subMap = map;
         this.subsLoading = false;
-        this.recomputeStats();
         this.applyFilter();
       },
       error: () => {
         this.subsLoading = false;
-        this.recomputeStats();
       },
     });
   }
@@ -234,27 +252,6 @@ export class TenantComponent implements OnInit {
     }
   }
 
-  private recomputeStats() {
-    let active = 0,
-      inactive = 0,
-      expiringSoon = 0,
-      expired = 0;
-    for (const t of this.returnedArray) {
-      if (t.isActive) active++;
-      else inactive++;
-      const meta = this.subMap[t.id!];
-      if (meta?.bucket === "expiring") expiringSoon++;
-      if (meta?.bucket === "expired") expired++;
-    }
-    this.stats = {
-      total: this.totalCount || this.returnedArray.length,
-      active,
-      inactive,
-      expiringSoon,
-      expired,
-    };
-  }
-
   setFilter(filter: TenantComponent["statusFilter"]) {
     this.statusFilter = filter;
     this.applyFilter();
@@ -315,6 +312,7 @@ export class TenantComponent implements OnInit {
         () => {
           this.toastr.success("Tenant DeActivated successfully");
           this.getAllData(this.page, this.pageSize);
+          this.loadStats();
           this.confirmModal.hide();
         },
         () => this.toastr.error("Tenant DeActivated Failed")
@@ -324,6 +322,7 @@ export class TenantComponent implements OnInit {
         () => {
           this.toastr.success("Tenant Activated successfully");
           this.getAllData(this.page, this.pageSize);
+          this.loadStats();
           this.confirmModal.hide();
         },
         () => this.toastr.error("Tenant Activated Failed")
@@ -381,6 +380,7 @@ export class TenantComponent implements OnInit {
     this.tenantService.deleteTenant(id).subscribe(() => {
       this.toastr.success("deleted successfully", "Role");
       this.getAllData(this.page, this.pageSize);
+      this.loadStats();
     });
     this.removeItemModal?.hide();
   }
@@ -398,6 +398,7 @@ export class TenantComponent implements OnInit {
       () => {
         this.toastr.success("Tenant deleted permanently", "Tenant");
         this.getAllData(this.page, this.pageSize);
+        this.loadStats();
         this.fullDeleteModal?.hide();
       },
       () => {

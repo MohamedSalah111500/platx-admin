@@ -91,3 +91,11 @@ export interface CompanyRevenue {
   planDistribution: PlanDistribution[];
   tenantRevenues: TenantRevenue[];
 }
+
+export interface TenantStats {
+  totalTenants: number;
+  activeTenants: number;
+  inactiveTenants: number;
+  expiringSoon: number;
+  expired: number;
+}

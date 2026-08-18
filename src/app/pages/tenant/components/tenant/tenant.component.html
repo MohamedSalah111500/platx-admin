@@ -98,6 +98,10 @@
                 <option [ngValue]="50">50 / page</option>
                 <option [ngValue]="100">100 / page</option>
               </select>
+              <button type="button" class="btn btn-outline-secondary" [disabled]="loading"
+                (click)="refresh()" title="Refresh">
+                <i class="mdi mdi-refresh" [class.mdi-spin]="loading"></i>
+              </button>
               <button type="button" [routerLink]="['/tenant/add-edit']" class="btn btn-success">
                 <i class="mdi mdi-plus me-1"></i> Add Tenant
               </button>
