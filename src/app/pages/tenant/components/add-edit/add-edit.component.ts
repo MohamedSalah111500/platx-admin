@@ -8,9 +8,11 @@ import {
 } from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {TenantService} from "../../services/tenantService.service";
+import {SubscriptionService} from "../../services/subscription.service";
+import {SubscriptionPlan} from "../../types/subscription.types";
 import {errorMapper} from "src/app/utiltis/functions";
 import {Tenant} from "./../../types";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: "platx-admin-add-edit",
@@ -25,6 +27,7 @@ export class AddEditComponent {
   ];
   submitted = false;
   mode: string = "create";
+  plans: SubscriptionPlan[] = [];
 
   tenantForm: FormGroup<TenantFormGroup> = this.fb.group<TenantFormGroup>({
     id: new FormControl(null),
@@ -40,21 +43,37 @@ export class AddEditComponent {
     Description: new FormControl(""),
     CreatedBy: new FormControl(""),
     QuotaAI: new FormControl(30,[Validators.required]),
+    SubscriptionPlanId: new FormControl(null,[Validators.required]),
   });
 
   constructor (
     private fb: FormBuilder,
     private tenantService: TenantService,
+    private subscriptionService: SubscriptionService,
     public toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit () {
-    this.mode = history.state?.mode;
+    const id = this.route.snapshot.paramMap.get("id");
+    this.mode = id ? "edit" : "create";
 
     if (this.mode == "edit") {
-      this.getTenant(history.state?.id);
+      this.tenantForm.controls.SubscriptionPlanId.clearValidators();
+      this.tenantForm.controls.SubscriptionPlanId.updateValueAndValidity();
+      this.getTenant(id!);
+    } else {
+      this.loadPlans();
     }
+  }
+
+  loadPlans (): void {
+    this.subscriptionService.getAllPlans().subscribe({
+      next: (plans) => {
+        this.plans = (plans ?? []).filter((p) => p.isActive).sort((a, b) => a.sortOrder - b.sortOrder);
+      },
+    });
   }
 
   getTenant (id: string) {
@@ -124,6 +143,7 @@ export class AddEditComponent {
 
       );
     } else {
+      formData.append("SubscriptionPlanId", formVal.SubscriptionPlanId);
       this.tenantService.postCreateTenant(formData).subscribe(
         (response) => {
           this.toastr.success("Tenant created successfully");

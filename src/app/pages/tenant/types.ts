@@ -46,10 +46,17 @@ export interface TenantFormGroup {
   Description: FormControl;
   CreatedBy: FormControl;
   QuotaAI:FormControl
+  SubscriptionPlanId: FormControl;
 }
 
 export interface GetAllTenantsResponse {
   items: Tenant[];
   totalCount: number;
+}
+
+export interface CreateTenantResponse {
+  success: boolean;
+  message: string;
+  tenantId: string;
 }
 

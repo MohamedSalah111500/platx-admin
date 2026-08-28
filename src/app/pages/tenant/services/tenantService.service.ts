@@ -3,7 +3,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, Observer } from "rxjs";
-import { GetAllTenantsResponse, Tenant } from "../types";
+import { CreateTenantResponse, GetAllTenantsResponse, Tenant } from "../types";
 import {
   TENANT_URLS,
 } from "src/app/utiltis/urls";
@@ -69,10 +69,10 @@ export class TenantService {
     });
   }
 
-  postCreateTenant(payload: FormData): Observable<Tenant> {
-    return new Observable((observer: Observer<Tenant>) => {
-      this.http.post<Tenant>(TENANT_URLS.CREATE, payload).subscribe(
-        (responseData: Tenant) => {
+  postCreateTenant(payload: FormData): Observable<CreateTenantResponse> {
+    return new Observable((observer: Observer<CreateTenantResponse>) => {
+      this.http.post<CreateTenantResponse>(TENANT_URLS.CREATE, payload).subscribe(
+        (responseData: CreateTenantResponse) => {
           observer.next(responseData);
         },
         (error) => {

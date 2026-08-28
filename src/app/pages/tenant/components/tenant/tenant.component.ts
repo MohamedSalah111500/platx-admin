@@ -293,9 +293,7 @@ export class TenantComponent implements OnInit {
   }
 
   edit(item: any) {
-    this.router.navigateByUrl("/tenant/add-edit", {
-      state: { mode: "edit", id: item.id },
-    });
+    this.router.navigate(["/tenant/add-edit", item.id]);
   }
 
   manageSubscription(item: any) {

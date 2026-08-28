@@ -55,12 +55,25 @@
               Phone Number is required.
             </div>
           </div>
-          <div class="col-12 mb-3">
+          <div class="col-lg-6 mb-3">
             <label for="quota">AI Quota *</label>
             <input type="number" id="quota" class="form-control" formControlName="QuotaAI"
               placeholder="30" />
             <div *ngIf="submitted && tenantForm.controls.QuotaAI.invalid" class="text-danger">
               Enter a valid quota.
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3" *ngIf="mode !== 'edit'">
+            <label for="subscriptionPlan">Plan *</label>
+            <select id="subscriptionPlan" class="form-control" formControlName="SubscriptionPlanId">
+              <option [ngValue]="null" disabled>Select a plan</option>
+              <option *ngFor="let plan of plans" [ngValue]="plan.id">
+                {{ plan.displayName }} — {{ plan.monthlyPrice }} EGP/month
+              </option>
+            </select>
+            <div *ngIf="submitted && tenantForm.controls.SubscriptionPlanId.invalid" class="text-danger">
+              Plan is required.
             </div>
           </div>
           <hr class="text-gray" />

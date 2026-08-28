@@ -14,6 +14,10 @@ const routes: Routes = [
     component: AddEditComponent,
   },
   {
+    path: "add-edit/:id",
+    component: AddEditComponent,
+  },
+  {
     path: "subscription/:id",
     component: TenantSubscriptionComponent,
   },
