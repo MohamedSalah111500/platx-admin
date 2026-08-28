@@ -20,10 +20,11 @@ import { ImageUploadComponent } from 'src/app/shared/components/image-upload/ima
 import { SubscriptionSectionComponent } from './components/subscription-section/subscription-section.component';
 import { TenantSubscriptionComponent } from './components/tenant-subscription/tenant-subscription.component';
 import { InstallmentsSectionComponent } from './components/installments-section/installments-section.component';
+import { TenantDomainsComponent } from './components/tenant-domains/tenant-domains.component';
 
 
 @NgModule({
-  declarations: [TenantComponent, AddEditComponent,FileUploadComponent,ImageUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent],
+  declarations: [TenantComponent, AddEditComponent,FileUploadComponent,ImageUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent, TenantDomainsComponent],
   imports: [
     CommonModule,
     TenantRoutingModule,

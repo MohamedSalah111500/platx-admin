@@ -1,0 +1,89 @@
+.tenant-domains-modal {
+  .add-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+
+    .btn {
+      white-space: nowrap;
+    }
+  }
+
+  .domain-list {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .domain-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 14px;
+    color: #111827;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .host-link {
+    font-weight: 600;
+    color: #111827;
+
+    &:hover {
+      color: #4f46e5;
+    }
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .pill-primary {
+    background: #ecfdf5;
+    color: #047857;
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+    }
+  }
+
+  .btn-xs {
+    font-size: 13px;
+  }
+
+  .checklist {
+    padding-left: 20px;
+    margin: 0;
+    font-size: 13px;
+    color: #374151;
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    code {
+      background: #f3f4f6;
+      color: #111827;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+  }
+}

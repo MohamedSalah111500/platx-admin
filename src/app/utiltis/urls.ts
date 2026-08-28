@@ -49,6 +49,13 @@ export const TENANT_URLS = {
     `${environment.apiURL.concat(TENANT_BASE)}/UpdateTenantQuotaAI`,
   FULL_DELETE: (id: string) =>
     `${environment.apiURL.concat(TENANT_BASE)}/full-delete/${id}`,
+  DOMAINS: (tenantId: string) =>
+    `${environment.apiURL.concat(TENANT_BASE)}/${tenantId}/domains`,
+  ADD_DOMAIN: `${environment.apiURL.concat(TENANT_BASE)}/domains`,
+  SET_PRIMARY_DOMAIN: (id: number) =>
+    `${environment.apiURL.concat(TENANT_BASE)}/domains/${id}/primary`,
+  DELETE_DOMAIN: (id: number) =>
+    `${environment.apiURL.concat(TENANT_BASE)}/domains/${id}`,
 };
 
 export const SUBSCRIPTION_PLANS_URLS = {

@@ -224,6 +224,12 @@
                           </a>
                         </li>
                         <li>
+                          <a href="javascript:void(0);" (click)="domainsModal.open(item)" class="dropdown-item">
+                            <i class="mdi mdi-web text-info me-2"></i>
+                            Manage Domains
+                          </a>
+                        </li>
+                        <li>
                           <a href="javascript:void(0);" (click)="openUpgradeQuotaModal(item.id, item.quotaAI)"
                             class="dropdown-item">
                             <i class="mdi mdi-alpha-k-circle text-secondary me-2"></i> Update Quota
@@ -322,6 +328,8 @@
     </div>
   </div>
 </div>
+
+<platx-tenant-domains-modal #domainsModal></platx-tenant-domains-modal>
 
 <!-- update quota -->
 <div bsModal #updateQuota="bs-modal" class="modal fade" id="updateQuota" tabindex="-1" aria-hidden="true">

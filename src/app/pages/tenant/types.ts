@@ -60,3 +60,16 @@ export interface CreateTenantResponse {
   tenantId: string;
 }
 
+export interface TenantDomain {
+  id: number;
+  host: string;
+  isPrimary: boolean;
+  creationTime: string;
+}
+
+export interface TenantDomainCreatePayload {
+  tenantId: string;
+  host: string;
+  isPrimary: boolean;
+}
+

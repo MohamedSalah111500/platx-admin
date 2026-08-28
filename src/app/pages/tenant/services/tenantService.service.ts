@@ -3,7 +3,14 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, Observer } from "rxjs";
-import { CreateTenantResponse, GetAllTenantsResponse, Tenant } from "../types";
+import {
+  CreateTenantResponse,
+  GetAllTenantsResponse,
+  Tenant,
+  TenantDomain,
+  TenantDomainCreatePayload,
+} from "../types";
+import { IGeneralSuccessMessageResponse } from "src/app/shared/general-types";
 import {
   TENANT_URLS,
 } from "src/app/utiltis/urls";
@@ -117,6 +124,22 @@ export class TenantService {
   }
   updateTenantQuota(tenantId: string,quotaAI:number): Observable<Tenant> {
     return this.http.put<Tenant>(TENANT_URLS.UPDATE_QUOTA(), {tenantId,quotaAI});
+  }
+
+  getTenantDomains(tenantId: string): Observable<TenantDomain[]> {
+    return this.http.get<TenantDomain[]>(TENANT_URLS.DOMAINS(tenantId));
+  }
+
+  addTenantDomain(payload: TenantDomainCreatePayload): Observable<TenantDomain> {
+    return this.http.post<TenantDomain>(TENANT_URLS.ADD_DOMAIN, payload);
+  }
+
+  setPrimaryTenantDomain(id: number): Observable<IGeneralSuccessMessageResponse> {
+    return this.http.put<IGeneralSuccessMessageResponse>(TENANT_URLS.SET_PRIMARY_DOMAIN(id), null);
+  }
+
+  removeTenantDomain(id: number): Observable<IGeneralSuccessMessageResponse> {
+    return this.http.delete<IGeneralSuccessMessageResponse>(TENANT_URLS.DELETE_DOMAIN(id));
   }
 
   fullDeleteTenant(id: string): Observable<Tenant> {
