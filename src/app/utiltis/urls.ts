@@ -11,6 +11,7 @@ const RENEWAL_REQUESTS_BASE = "api/RenewalRequests";
 const TENANT_INSTALLMENTS_BASE = "api/TenantInstallments";
 const SUBSCRIPTION_LIMITS_BASE = "api/SubscriptionLimits";
 const COMPANY_ANALYTICS_BASE = "api/admin/CompanyAnalytics";
+const CRM_BASE = "api/Crm";
 
 
 export const AUTH_URLS = {
@@ -123,4 +124,18 @@ export const COMPANY_ANALYTICS_URLS = {
     `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/engagement?recentTake=${recentTake}&topTake=${topTake}`,
   REVENUE: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/revenue`,
   TENANT_STATS: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/tenant-stats`,
+};
+
+export const CRM_URLS = {
+  LEADS: `${environment.apiURL.concat(CRM_BASE)}/leads`,
+  LEAD: (id: number) => `${environment.apiURL.concat(CRM_BASE)}/leads/${id}`,
+  LEAD_STATUS: (id: number) => `${environment.apiURL.concat(CRM_BASE)}/leads/${id}/status`,
+  LEAD_ASSIGN: (id: number) => `${environment.apiURL.concat(CRM_BASE)}/leads/${id}/assign`,
+  LEAD_ACTIVITIES: (id: number) => `${environment.apiURL.concat(CRM_BASE)}/leads/${id}/activities`,
+  IMPORT: `${environment.apiURL.concat(CRM_BASE)}/leads/import`,
+  STATS: `${environment.apiURL.concat(CRM_BASE)}/stats`,
+  PIPELINE: `${environment.apiURL.concat(CRM_BASE)}/pipeline`,
+  AGENTS: `${environment.apiURL.concat(CRM_BASE)}/agents`,
+  AGENT: (id: string) => `${environment.apiURL.concat(CRM_BASE)}/agents/${id}`,
+  AGENT_RESET_PASSWORD: (id: string) => `${environment.apiURL.concat(CRM_BASE)}/agents/${id}/reset-password`,
 };

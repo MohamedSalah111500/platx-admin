@@ -1,0 +1,109 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true" [config]="{ backdrop: 'static' }">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title mb-0"><i class="mdi mdi-whatsapp text-success me-1"></i> Import from WhatsApp</h5>
+          <small class="text-muted">Paste one customer per line — name and phone in any order.</small>
+        </div>
+        <button type="button" class="btn-close" (click)="close()"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-5">
+            <label class="form-label">Paste contacts</label>
+            <textarea class="form-control font-monospace" rows="14" [(ngModel)]="raw" (ngModelChange)="parse()"
+              name="raw" dir="ltr" placeholder="Ahmed Academy, +20 100 123 4567
++966 50 123 4567, Sara Learning Center, sara@mail.com
+Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
+            <div class="form-hint mt-1">
+              Separate fields with comma, semicolon, tab or “|”. Lines without a valid phone are ignored.
+              Duplicate phones (already in the CRM) are skipped automatically.
+            </div>
+
+            <div class="row g-2 mt-2">
+              <div class="col-sm-6">
+                <label class="form-label">Source</label>
+                <select class="form-select" [(ngModel)]="source" name="source">
+                  @for (s of sources; track s.value) {
+                  <option [ngValue]="s.value">{{ s.label }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-sm-6" *ngIf="isSuperAdmin">
+                <label class="form-label">Assign to</label>
+                <select class="form-select" [(ngModel)]="assignedToUserId" name="assignedToUserId">
+                  <option [ngValue]="null">Unassigned</option>
+                  @for (a of activeAgents; track a.id) {
+                  <option [ngValue]="a.id">{{ a.firstName }} {{ a.lastName }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="form-label mb-0">Preview</label>
+              <span class="pill" [ngClass]="rows.length ? 'st-won' : 'fu-none'">
+                {{ rows.length }} ready{{ rows.length > maxRows ? ' · first ' + maxRows + ' will be imported' : '' }}
+              </span>
+            </div>
+            <div class="table-responsive border rounded-3" style="max-height: 420px; overflow-y: auto;">
+              <table class="table smart-table align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th style="width:40px">#</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email / Notes</th>
+                    <th style="width:44px"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of rows; track row; let i = $index) {
+                  <tr>
+                    <td class="text-muted">{{ i + 1 }}</td>
+                    <td><input class="form-control form-control-sm" [(ngModel)]="row.name" name="name{{ i }}" /></td>
+                    <td><input class="form-control form-control-sm" dir="ltr" [(ngModel)]="row.phone" name="phone{{ i }}" /></td>
+                    <td class="text-muted" style="font-size:13px">
+                      <div *ngIf="row.email">{{ row.email }}</div>
+                      <div *ngIf="row.notes">{{ row.notes }}</div>
+                      <span *ngIf="!row.email && !row.notes">—</span>
+                    </td>
+                    <td class="text-end">
+                      <button type="button" class="icon-btn" title="Remove" (click)="remove(i)">
+                        <i class="mdi mdi-close"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  }
+                  @if (!rows.length) {
+                  <tr>
+                    <td colspan="5">
+                      <div class="empty-block">
+                        <i class="mdi mdi-clipboard-text-outline font-size-24 text-muted d-block mb-1"></i>
+                        <div class="text-muted" style="font-size:13px">Parsed contacts will appear here.</div>
+                      </div>
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="close()">Cancel</button>
+        <button type="button" class="btn btn-success" (click)="submit()" [disabled]="saving || !rows.length">
+          <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+          <i class="mdi mdi-database-import-outline me-1" *ngIf="!saving"></i>
+          Import {{ rows.length ? (rows.length > maxRows ? maxRows : rows.length) : '' }} leads
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

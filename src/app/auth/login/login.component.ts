@@ -53,7 +53,9 @@ export class LoginComponent implements OnInit {
             this.toastr.success("Login successful", "Bootstrap");
             localStorage.setItem("currentUser", JSON.stringify(response));
             this.userService.saveUserDataInLocalStorage(response);
-            this.router.navigate(["/dashboard"]);
+            const roles: string[] = response.roles || [];
+            const landing = roles.includes("SuperAdmin") ? "/dashboard" : "/crm/leads";
+            this.router.navigate([landing]);
         },
         (error) => {
           const firstErrorMessage =

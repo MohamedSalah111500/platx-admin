@@ -1,0 +1,50 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" *ngIf="lead">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title mb-0">Update status</h5>
+          <small class="text-muted">{{ lead.name }} · currently <strong>{{ label(lead.status) }}</strong></small>
+        </div>
+        <button type="button" class="btn-close" (click)="close()"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">New status</label>
+          <select class="form-select" [(ngModel)]="model.status" name="status">
+            @for (s of statuses; track s.value) {
+            <option [ngValue]="s.value">{{ s.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3" *ngIf="isLost">
+          <label class="form-label">Lost reason</label>
+          <input type="text" class="form-control" [(ngModel)]="model.lostReason" name="lostReason"
+            placeholder="Price, timing, chose a competitor..." maxlength="500" />
+        </div>
+
+        <div class="mb-3" *ngIf="!isClosed">
+          <label class="form-label">Next follow-up</label>
+          <input type="datetime-local" class="form-control" [(ngModel)]="model.nextFollowUpAt" name="nextFollowUpAt" />
+          <div class="form-hint mt-1">Leave empty to keep the current follow-up date.</div>
+        </div>
+
+        <div class="mb-0">
+          <label class="form-label">Note</label>
+          <textarea class="form-control" rows="3" [(ngModel)]="model.note" name="note" maxlength="2000"
+            placeholder="Optional note logged in the timeline"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="close()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="saving">
+          <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+          Update
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

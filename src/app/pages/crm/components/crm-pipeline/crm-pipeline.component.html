@@ -1,0 +1,80 @@
+<div class="container-fluid crm-page">
+  <app-page-title title="CRM · Pipeline" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h5 class="mb-0 fw-bold">Sales pipeline</h5>
+      <small class="text-muted">{{ openCount }} open lead{{ openCount === 1 ? '' : 's' }} · showing up to 30 per stage</small>
+    </div>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <div class="form-check form-switch mb-0">
+        <input class="form-check-input" type="checkbox" id="showClosed" [(ngModel)]="showClosed" />
+        <label class="form-check-label" for="showClosed" style="font-size:13px">Show Won / Lost</label>
+      </div>
+      <button type="button" class="btn btn-light" (click)="load()"><i class="mdi mdi-refresh"></i></button>
+      <button type="button" class="btn btn-primary" (click)="leadForm.open()"><i class="mdi mdi-plus me-1"></i> New lead</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+
+  <div class="board" *ngIf="!loading">
+    @for (col of visibleColumns; track col.status) {
+    <div class="board-column">
+      <div class="column-header">
+        <span class="d-inline-flex align-items-center gap-2">
+          <span class="pill" [ngClass]="statusMeta(col.status).cls"><span class="pill-dot"></span>{{ statusMeta(col.status).label }}</span>
+        </span>
+        <span class="count">{{ col.total }}</span>
+      </div>
+      <div class="column-body">
+        @for (lead of col.leads; track lead.id) {
+        <div class="lead-card">
+          <div class="d-flex align-items-start justify-content-between gap-2">
+            <div class="min-w-0 flex-grow-1">
+              <a [routerLink]="['/crm/leads', lead.id]" class="lead-name" [title]="lead.name">{{ lead.name }}</a>
+              <div class="lead-org text-truncate" *ngIf="lead.organization">{{ lead.organization }}</div>
+            </div>
+            <div dropdown class="d-inline-block" container="body">
+              <button dropdownToggle type="button" class="icon-btn" title="Move to..."><i class="mdi mdi-dots-vertical"></i></button>
+              <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
+                <li class="dropdown-header px-2 py-1 text-muted" style="font-size:12px">Move to</li>
+                @for (s of statuses; track s.value) {
+                <li *ngIf="s.value !== lead.status">
+                  <a href="javascript:void(0)" class="dropdown-item" (click)="move(lead, s.value)"><i class="mdi {{ s.icon }} me-2"></i>{{ s.label }}</a>
+                </li>
+                }
+                <li><hr class="dropdown-divider" /></li>
+                <li><a [routerLink]="['/crm/leads', lead.id]" class="dropdown-item"><i class="mdi mdi-eye-outline me-2"></i>Open</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-2 mt-2">
+            <a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="wa-btn" title="WhatsApp"><i class="mdi mdi-whatsapp"></i></a>
+            <span dir="ltr" style="font-size:13px" class="text-body">{{ lead.phone }}</span>
+            <span class="pill ms-auto" [ngClass]="priorityMeta(lead.priority).cls"><i class="mdi {{ priorityMeta(lead.priority).icon }}"></i></span>
+          </div>
+
+          <div class="lead-meta">
+            <span class="d-inline-flex align-items-center gap-1 text-truncate" [title]="lead.assignedToName || 'Unassigned'">
+              <span class="crm-avatar crm-avatar-sm" *ngIf="lead.assignedToName" [style.background]="avatarColor(lead.assignedToUserId)">{{ initials(lead.assignedToName) }}</span>
+              <span class="text-truncate">{{ lead.assignedToName || 'Unassigned' }}</span>
+            </span>
+            <span *ngIf="lead.nextFollowUpAt" class="pill" [ngClass]="'fu-' + (followUpState(lead.nextFollowUpAt) || 'none')">
+              <i class="mdi mdi-bell-outline"></i>{{ relativeTime(lead.nextFollowUpAt) }}
+            </span>
+          </div>
+        </div>
+        }
+        @if (!col.leads.length) {
+        <div class="column-empty">No leads here</div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
+
+<app-crm-status-modal #statusModal (changed)="load()"></app-crm-status-modal>
+<app-crm-lead-form #leadForm [agents]="agents" (saved)="load()"></app-crm-lead-form>

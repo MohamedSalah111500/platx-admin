@@ -102,6 +102,18 @@
       }
     },
 
+    "CRM": {
+      "TEXT": "CRM"
+    },
+    "CRM_LEADS": {
+      "TEXT": "Leads"
+    },
+    "CRM_PIPELINE": {
+      "TEXT": "Pipeline"
+    },
+    "CRM_TEAM": {
+      "TEXT": "Team"
+    },
     "MANAGEMENT": {
       "TEXT": "Management"
     },

@@ -1,0 +1,298 @@
+<div class="container-fluid crm-page">
+  <app-page-title title="CRM · Leads" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-4 col-xl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeKpi === 'all'" (click)="setKpi('all')">
+        <div class="kpi-icon kpi-icon-primary"><i class="mdi mdi-account-group-outline"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">All leads</div>
+          <div class="kpi-value">{{ stats?.total ?? '—' }}</div>
+          <div class="kpi-sub text-muted">+{{ stats?.newThisWeek ?? 0 }} this week</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-xl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeKpi === 'new'" (click)="setKpi('new')">
+        <div class="kpi-icon kpi-icon-info"><i class="mdi mdi-star-outline"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">New</div>
+          <div class="kpi-value">{{ stats?.new ?? '—' }}</div>
+          <div class="kpi-sub text-info">Not contacted yet</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-xl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeKpi === 'overdue'" (click)="setKpi('overdue')">
+        <div class="kpi-icon kpi-icon-danger"><i class="mdi mdi-alert-circle-outline"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Overdue follow-ups</div>
+          <div class="kpi-value">{{ stats?.overdueFollowUps ?? '—' }}</div>
+          <div class="kpi-sub text-danger">Need attention</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-xl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeKpi === 'today'" (click)="setKpi('today')">
+        <div class="kpi-icon kpi-icon-warning"><i class="mdi mdi-calendar-today"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Due today</div>
+          <div class="kpi-value">{{ stats?.dueToday ?? '—' }}</div>
+          <div class="kpi-sub text-warning">Follow up today</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-xl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeKpi === 'won'" (click)="setKpi('won')">
+        <div class="kpi-icon kpi-icon-success"><i class="mdi mdi-trophy-outline"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Won</div>
+          <div class="kpi-value">{{ stats?.won ?? '—' }}</div>
+          <div class="kpi-sub text-success">{{ stats?.wonThisMonth ?? 0 }} this month</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-xl" *ngIf="isSuperAdmin">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeKpi === 'unassigned'" (click)="setKpi('unassigned')">
+        <div class="kpi-icon kpi-icon-muted"><i class="mdi mdi-account-question-outline"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Unassigned</div>
+          <div class="kpi-value">{{ stats?.unassigned ?? '—' }}</div>
+          <div class="kpi-sub text-muted">Waiting for an agent</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card crm-card">
+    <div class="card-body">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <div>
+          <h5 class="mb-0 fw-bold">Leads</h5>
+          <small class="text-muted">
+            {{ total }} result{{ total === 1 ? '' : 's' }}
+            <a href="javascript:void(0)" class="ms-1" *ngIf="hasFilters" (click)="clearFilters()">clear filters</a>
+          </small>
+        </div>
+        <div class="d-flex flex-wrap gap-2 toolbar-actions">
+          <button type="button" class="btn btn-success" (click)="openImport()">
+            <i class="mdi mdi-whatsapp me-1"></i> Import from WhatsApp
+          </button>
+          <button type="button" class="btn btn-primary" (click)="openCreate()">
+            <i class="mdi mdi-plus me-1"></i> New lead
+          </button>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+        <div class="search-box">
+          <div class="position-relative">
+            <input type="text" class="form-control" placeholder="Search name, phone, email, organization..."
+              [(ngModel)]="filter.search" (ngModelChange)="onSearch($event)" />
+            <i class="bx bx-search-alt search-icon"></i>
+          </div>
+        </div>
+        <select class="form-select filter-select" [(ngModel)]="filter.status" (ngModelChange)="applyFilters()">
+          <option [ngValue]="null">All statuses</option>
+          @for (s of statuses; track s.value) {<option [ngValue]="s.value">{{ s.label }}</option>}
+        </select>
+        <select class="form-select filter-select" [(ngModel)]="filter.followUp" (ngModelChange)="applyFilters()">
+          <option [ngValue]="null">Any follow-up</option>
+          @for (f of followUps; track f.value) {<option [ngValue]="f.value">{{ f.label }}</option>}
+        </select>
+        <select class="form-select filter-select" [(ngModel)]="filter.source" (ngModelChange)="applyFilters()">
+          <option [ngValue]="null">All sources</option>
+          @for (s of sources; track s.value) {<option [ngValue]="s.value">{{ s.label }}</option>}
+        </select>
+        <select class="form-select filter-select" [(ngModel)]="filter.priority" (ngModelChange)="applyFilters()">
+          <option [ngValue]="null">Any priority</option>
+          @for (p of priorities; track p.value) {<option [ngValue]="p.value">{{ p.label }}</option>}
+        </select>
+        <select class="form-select filter-select" *ngIf="isSuperAdmin" [(ngModel)]="filter.assignedToUserId"
+          (ngModelChange)="filter.unassigned = null; applyFilters()">
+          <option [ngValue]="null">All agents</option>
+          @for (a of agents; track a.id) {<option [ngValue]="a.id">{{ a.firstName }} {{ a.lastName }}</option>}
+        </select>
+        <select class="form-select filter-select ms-auto" [(ngModel)]="filter.size" (ngModelChange)="onPageSizeChange()">
+          <option [ngValue]="10">10 / page</option>
+          <option [ngValue]="20">20 / page</option>
+          <option [ngValue]="50">50 / page</option>
+          <option [ngValue]="100">100 / page</option>
+        </select>
+      </div>
+
+      <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+
+      <div class="table-responsive" *ngIf="!loading">
+        <table class="table align-middle smart-table mb-0">
+          <thead>
+            <tr>
+              <th>Lead</th>
+              <th>Contact</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Source</th>
+              <th>Assigned</th>
+              <th>Follow-up</th>
+              <th>Added</th>
+              <th class="text-end" style="width:70px">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (lead of leads; track lead.id) {
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="crm-avatar" [style.background]="avatarColor(lead.phone || lead.name)">{{ initials(lead.name) }}</div>
+                  <div class="name-wrap">
+                    <a [routerLink]="['/crm/leads', lead.id]" class="fw-semibold text-dark text-truncate d-block">{{ lead.name }}</a>
+                    <div class="text-muted text-truncate" style="font-size:12px" *ngIf="lead.organization || lead.interestedPlan">
+                      {{ lead.organization || '' }}<span *ngIf="lead.organization && lead.interestedPlan"> · </span>{{ lead.interestedPlan ? 'Plan: ' + lead.interestedPlan : '' }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div class="contact-cell">
+                  <div class="d-flex align-items-center gap-2">
+                    <a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="wa-btn" title="Open WhatsApp chat">
+                      <i class="mdi mdi-whatsapp"></i>
+                    </a>
+                    <a href="tel:{{ lead.phone }}" dir="ltr">{{ lead.phone }}</a>
+                  </div>
+                  <div class="d-flex align-items-center gap-2 mt-1" *ngIf="lead.email">
+                    <i class="mdi mdi-email-outline text-primary"></i>
+                    <a href="mailto:{{ lead.email }}" class="text-truncate" style="max-width:180px">{{ lead.email }}</a>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div dropdown class="d-inline-block" container="body">
+                  <button dropdownToggle type="button" class="pill pill-btn" [ngClass]="statusMeta(lead.status).cls">
+                    <span class="pill-dot"></span> {{ statusMeta(lead.status).label }}
+                    <i class="mdi mdi-chevron-down"></i>
+                  </button>
+                  <ul *dropdownMenu class="dropdown-menu">
+                    @for (s of statuses; track s.value) {
+                    <li>
+                      <a href="javascript:void(0)" class="dropdown-item" [class.active]="s.value === lead.status"
+                        (click)="quickStatus(lead, s.value)">
+                        <i class="mdi {{ s.icon }} me-2"></i>{{ s.label }}
+                      </a>
+                    </li>
+                    }
+                  </ul>
+                </div>
+              </td>
+
+              <td>
+                <span class="pill" [ngClass]="priorityMeta(lead.priority).cls">
+                  <i class="mdi {{ priorityMeta(lead.priority).icon }}"></i>{{ priorityMeta(lead.priority).label }}
+                </span>
+              </td>
+
+              <td>
+                <span class="pill" [ngClass]="sourceMeta(lead.source).cls">
+                  <i class="mdi {{ sourceMeta(lead.source).icon }}"></i>{{ sourceMeta(lead.source).label }}
+                </span>
+              </td>
+
+              <td>
+                <ng-container *ngIf="isSuperAdmin; else assigneeReadonly">
+                  <div dropdown class="d-inline-block" container="body">
+                    <a dropdownToggle href="javascript:void(0)" class="text-body d-inline-flex align-items-center gap-1">
+                      <span class="crm-avatar crm-avatar-sm" *ngIf="lead.assignedToName" [style.background]="avatarColor(lead.assignedToUserId)">{{ initials(lead.assignedToName) }}</span>
+                      <span [class.text-muted]="!lead.assignedToName" style="font-size:13px">{{ lead.assignedToName || 'Unassigned' }}</span>
+                      <i class="mdi mdi-chevron-down text-muted"></i>
+                    </a>
+                    <ul *dropdownMenu class="dropdown-menu">
+                      <li><a href="javascript:void(0)" class="dropdown-item" [class.active]="!lead.assignedToUserId" (click)="assign(lead, null)">Unassigned</a></li>
+                      <li><hr class="dropdown-divider" /></li>
+                      @for (a of activeAgents; track a.id) {
+                      <li><a href="javascript:void(0)" class="dropdown-item" [class.active]="a.id === lead.assignedToUserId" (click)="assign(lead, a.id)">{{ a.firstName }} {{ a.lastName }}</a></li>
+                      }
+                    </ul>
+                  </div>
+                </ng-container>
+                <ng-template #assigneeReadonly>
+                  <span style="font-size:13px" [class.text-muted]="!lead.assignedToName">{{ lead.assignedToName || 'Unassigned' }}</span>
+                </ng-template>
+              </td>
+
+              <td>
+                <div class="followup-cell">
+                  <ng-container *ngIf="lead.nextFollowUpAt; else noFollowUp">
+                    <span class="pill" [ngClass]="'fu-' + (followUpState(lead.nextFollowUpAt) || 'none')">
+                      <i class="mdi mdi-bell-outline"></i>{{ relativeTime(lead.nextFollowUpAt) }}
+                    </span>
+                    <div class="text-muted mt-1" style="font-size:12px">{{ lead.nextFollowUpAt | date:'MMM d, h:mm a' }}</div>
+                  </ng-container>
+                  <ng-template #noFollowUp><span class="text-muted">—</span></ng-template>
+                </div>
+              </td>
+
+              <td>
+                <div style="font-size:13px" class="fw-medium text-dark">{{ relativeTime(lead.creationTime) }}</div>
+                <div class="text-muted" style="font-size:12px">by {{ lead.createdByName || '—' }}</div>
+              </td>
+
+              <td class="text-end">
+                <div dropdown class="dropdown d-inline-block" container="body">
+                  <a dropdownToggle href="javascript:void(0);" class="btn btn-sm btn-light action-btn">
+                    <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                  </a>
+                  <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
+                    <li><a [routerLink]="['/crm/leads', lead.id]" class="dropdown-item"><i class="mdi mdi-eye-outline text-primary me-2"></i> View timeline</a></li>
+                    <li><a href="javascript:void(0);" class="dropdown-item" (click)="openEdit(lead)"><i class="mdi mdi-pencil-outline text-info me-2"></i> Edit</a></li>
+                    <li><a href="javascript:void(0);" class="dropdown-item" (click)="statusModal.open(lead)"><i class="mdi mdi-swap-horizontal text-warning me-2"></i> Change status</a></li>
+                    <li><a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="dropdown-item"><i class="mdi mdi-whatsapp text-success me-2"></i> WhatsApp</a></li>
+                    <li *ngIf="isSuperAdmin"><hr class="dropdown-divider" /></li>
+                    <li *ngIf="isSuperAdmin"><a href="javascript:void(0);" class="dropdown-item" (click)="openDelete(lead)"><i class="mdi mdi-trash-can-outline text-danger me-2"></i> Delete</a></li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            }
+            @if (!leads.length) {
+            <tr>
+              <td colspan="9">
+                <div class="empty-block">
+                  <i class="mdi mdi-account-search-outline font-size-32 text-muted mb-2 d-block"></i>
+                  <div class="fw-semibold text-dark">No leads found</div>
+                  <div class="text-muted" style="font-size:13px">
+                    {{ hasFilters ? 'Try adjusting your filters.' : 'Add your first lead or import your WhatsApp contacts.' }}
+                  </div>
+                </div>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row mt-3" *ngIf="total > filter.size">
+        <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <small class="text-muted">
+            Showing <strong>{{ (filter.page - 1) * filter.size + (leads.length ? 1 : 0) }}</strong> –
+            <strong>{{ (filter.page - 1) * filter.size + leads.length }}</strong> of <strong>{{ total }}</strong>
+          </small>
+          <ul class="pagination pagination-rounded mb-0">
+            <pagination class="pagination-wrap hstack gap-2" [totalItems]="total" [itemsPerPage]="filter.size"
+              [maxSize]="5" [(ngModel)]="filter.page" (pageChanged)="pageChanged($event)"></pagination>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-crm-lead-form #leadForm [agents]="agents" (saved)="onSaved()"></app-crm-lead-form>
+<app-crm-status-modal #statusModal (changed)="onStatusChanged($event)"></app-crm-status-modal>
+<app-crm-import-modal #importModal [agents]="agents" (imported)="onImported()"></app-crm-import-modal>
+
+<div bsModal #removeModal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <platx-confirm-model [title]="'Delete lead \'' + (deleteTarget?.name || '') + '\' and its whole timeline?'"
+    (confirm)="confirmDelete()" (cancel)="removeModal.hide()" />
+</div>

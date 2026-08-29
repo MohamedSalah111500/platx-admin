@@ -1,0 +1,226 @@
+<div class="container-fluid crm-page">
+  <app-page-title title="CRM · Lead" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+
+  <ng-container *ngIf="!loading && lead">
+    <div class="card crm-card mb-3">
+      <div class="card-body">
+        <div class="lead-header">
+          <div class="crm-avatar crm-avatar-lg" [style.background]="avatarColor(lead.phone || lead.name)">{{ initials(lead.name) }}</div>
+          <div class="flex-grow-1 min-w-0">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+              <h4 class="mb-0 fw-bold">{{ lead.name }}</h4>
+              <span class="pill" [ngClass]="statusMeta(lead.status).cls"><span class="pill-dot"></span>{{ statusMeta(lead.status).label }}</span>
+              <span class="pill" [ngClass]="priorityMeta(lead.priority).cls"><i class="mdi {{ priorityMeta(lead.priority).icon }}"></i>{{ priorityMeta(lead.priority).label }}</span>
+              <span class="pill" [ngClass]="sourceMeta(lead.source).cls"><i class="mdi {{ sourceMeta(lead.source).icon }}"></i>{{ sourceMeta(lead.source).label }}</span>
+            </div>
+            <div class="text-muted mt-1" style="font-size:13px">
+              <span *ngIf="lead.organization">{{ lead.organization }} · </span>
+              Added {{ relativeTime(lead.creationTime) }} by {{ lead.createdByName || '—' }}
+              <span *ngIf="lead.lastContactedAt"> · Last contact {{ relativeTime(lead.lastContactedAt) }}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="btn btn-success"><i class="mdi mdi-whatsapp me-1"></i> WhatsApp</a>
+            <a href="tel:{{ lead.phone }}" class="btn btn-light"><i class="mdi mdi-phone-outline me-1"></i> Call</a>
+            <a *ngIf="lead.email" href="mailto:{{ lead.email }}" class="btn btn-light"><i class="mdi mdi-email-outline me-1"></i> Email</a>
+            <button type="button" class="btn btn-primary" (click)="leadForm.open(lead)"><i class="mdi mdi-pencil-outline me-1"></i> Edit</button>
+            <div dropdown class="d-inline-block" *ngIf="isSuperAdmin">
+              <button dropdownToggle type="button" class="btn btn-light action-btn py-2"><i class="mdi mdi-dots-horizontal font-size-18"></i></button>
+              <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
+                <li><a href="javascript:void(0)" class="dropdown-item" (click)="removeModal.show()"><i class="mdi mdi-trash-can-outline text-danger me-2"></i> Delete lead</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-3" />
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+          <div class="status-strip">
+            @for (s of statuses; track s.value) {
+            <button type="button" class="step" [class.lost]="s.value === 7"
+              [class.current]="s.value === lead.status"
+              [class.done]="s.value < lead.status && lead.status !== 7"
+              (click)="quickStatus(s.value)" [title]="'Move to ' + s.label">
+              <i class="mdi {{ s.icon }}"></i>{{ s.label }}
+            </button>
+            }
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary" (click)="statusModal.open(lead)">
+            <i class="mdi mdi-swap-horizontal me-1"></i> Change status with note
+          </button>
+        </div>
+        <div class="text-danger mt-2" style="font-size:13px" *ngIf="lead.status === 7 && lead.lostReason">
+          <i class="mdi mdi-information-outline me-1"></i> Lost reason: {{ lead.lostReason }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="card crm-card mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3">Contact details</h6>
+            <div class="info-row">
+              <div class="info-row-label">WhatsApp / Phone</div>
+              <div class="info-row-value d-flex align-items-center gap-2">
+                <a href="tel:{{ lead.phone }}" dir="ltr" class="text-body">{{ lead.phone }}</a>
+                <a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="wa-btn"><i class="mdi mdi-whatsapp"></i></a>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-row-label">Email</div>
+              <div class="info-row-value"><a *ngIf="lead.email; else dash" href="mailto:{{ lead.email }}" class="text-body">{{ lead.email }}</a></div>
+            </div>
+            <div class="info-row">
+              <div class="info-row-label">Organization</div>
+              <div class="info-row-value">{{ lead.organization || '—' }}</div>
+            </div>
+            <div class="row">
+              <div class="col-6 info-row">
+                <div class="info-row-label">Country</div>
+                <div class="info-row-value">{{ lead.country || '—' }}</div>
+              </div>
+              <div class="col-6 info-row">
+                <div class="info-row-label">City</div>
+                <div class="info-row-value">{{ lead.city || '—' }}</div>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-row-label">Interested plan</div>
+              <div class="info-row-value">{{ lead.interestedPlan || '—' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card crm-card mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3">Ownership & follow-up</h6>
+            <div class="info-row">
+              <div class="info-row-label">Assigned to</div>
+              <div class="info-row-value">
+                <ng-container *ngIf="isSuperAdmin; else assigneeReadonly">
+                  <div dropdown class="d-inline-block">
+                    <a dropdownToggle href="javascript:void(0)" class="text-body d-inline-flex align-items-center gap-2">
+                      <span class="crm-avatar crm-avatar-sm" *ngIf="lead.assignedToName" [style.background]="avatarColor(lead.assignedToUserId)">{{ initials(lead.assignedToName) }}</span>
+                      <span [class.text-muted]="!lead.assignedToName">{{ lead.assignedToName || 'Unassigned' }}</span>
+                      <i class="mdi mdi-chevron-down text-muted"></i>
+                    </a>
+                    <ul *dropdownMenu class="dropdown-menu">
+                      <li><a href="javascript:void(0)" class="dropdown-item" [class.active]="!lead.assignedToUserId" (click)="assign(null)">Unassigned</a></li>
+                      <li><hr class="dropdown-divider" /></li>
+                      @for (a of activeAgents; track a.id) {
+                      <li><a href="javascript:void(0)" class="dropdown-item" [class.active]="a.id === lead.assignedToUserId" (click)="assign(a.id)">{{ a.firstName }} {{ a.lastName }}</a></li>
+                      }
+                    </ul>
+                  </div>
+                </ng-container>
+                <ng-template #assigneeReadonly><span [class.text-muted]="!lead.assignedToName">{{ lead.assignedToName || 'Unassigned' }}</span></ng-template>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-row-label">Next follow-up</div>
+              <div class="info-row-value">
+                <ng-container *ngIf="lead.nextFollowUpAt; else dash">
+                  <span class="pill" [ngClass]="'fu-' + (followUpState(lead.nextFollowUpAt) || 'none')"><i class="mdi mdi-bell-outline"></i>{{ relativeTime(lead.nextFollowUpAt) }}</span>
+                  <div class="text-muted mt-1" style="font-size:12px">{{ lead.nextFollowUpAt | date:'EEE, MMM d, y · h:mm a' }}</div>
+                </ng-container>
+              </div>
+            </div>
+            <div class="info-row mb-0">
+              <div class="info-row-label">Last contacted</div>
+              <div class="info-row-value">{{ lead.lastContactedAt ? (lead.lastContactedAt | date:'MMM d, y · h:mm a') : '—' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card crm-card" *ngIf="lead.notes">
+          <div class="card-body">
+            <h6 class="fw-bold mb-2">Notes</h6>
+            <div class="notes-box">{{ lead.notes }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card crm-card mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3">Log activity</h6>
+            <div class="type-chips mb-2">
+              @for (t of activityTypes; track t.value) {
+              <button type="button" class="chip" [class.active]="newActivity.type === t.value" (click)="newActivity.type = t.value">
+                <i class="mdi {{ t.icon }}"></i>{{ t.label }}
+              </button>
+              }
+            </div>
+            <textarea class="form-control" rows="3" [(ngModel)]="newActivity.content" name="content" maxlength="2000"
+              placeholder="What happened? e.g. Sent pricing on WhatsApp, they will decide next week..."></textarea>
+            <div class="row g-2 align-items-end mt-1">
+              <div class="col-md-5">
+                <label class="form-label mb-1">Schedule next follow-up</label>
+                <input type="datetime-local" class="form-control" [(ngModel)]="newActivity.nextFollowUpAt" name="nextFollowUpAt" />
+              </div>
+              <div class="col-md-4">
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="markContacted" [(ngModel)]="newActivity.markAsContacted" name="markAsContacted" />
+                  <label class="form-check-label" for="markContacted" style="font-size:13px">Mark as contacted</label>
+                </div>
+              </div>
+              <div class="col-md-3 text-md-end">
+                <button type="button" class="btn btn-primary w-100" (click)="addActivity()" [disabled]="savingActivity || !newActivity.content.trim()">
+                  <span *ngIf="savingActivity" class="spinner-border spinner-border-sm me-1"></span> Log
+                </button>
+              </div>
+            </div>
+            <div class="form-hint mt-2">Calls, WhatsApp, meetings and emails automatically update “last contacted” and move a New lead to Contacted.</div>
+          </div>
+        </div>
+
+        <div class="card crm-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="fw-bold mb-0">Timeline</h6>
+              <small class="text-muted">{{ activitiesTotal }} entries</small>
+            </div>
+            <ul class="timeline">
+              @for (a of activities; track a.id) {
+              <li class="timeline-item">
+                <div class="timeline-icon" [ngClass]="activityMeta(a.type).cls"><i class="mdi {{ activityMeta(a.type).icon }}"></i></div>
+                <div class="timeline-body">
+                  <div class="timeline-meta">
+                    <strong class="text-dark">{{ activityMeta(a.type).label }}</strong>
+                    · {{ a.createdByName || '—' }}
+                    · <span [title]="a.creationTime | date:'medium'">{{ relativeTime(a.creationTime) }}</span>
+                  </div>
+                  <div class="timeline-content">{{ a.content }}</div>
+                </div>
+              </li>
+              }
+              @if (!activities.length && !activitiesLoading) {
+              <li class="empty-block">
+                <i class="mdi mdi-timeline-text-outline font-size-24 text-muted d-block mb-1"></i>
+                <div class="text-muted" style="font-size:13px">No activity yet. Log your first call or note above.</div>
+              </li>
+              }
+            </ul>
+            <div class="text-center mt-2" *ngIf="activitiesLoading"><div class="spinner-border spinner-border-sm text-primary"></div></div>
+            <div class="text-center mt-2" *ngIf="hasMoreActivities && !activitiesLoading">
+              <button type="button" class="btn btn-sm btn-light" (click)="loadMoreActivities()">Load more</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #dash><span class="text-muted">—</span></ng-template>
+
+<app-crm-lead-form #leadForm [agents]="agents" (saved)="onSaved($event)"></app-crm-lead-form>
+<app-crm-status-modal #statusModal (changed)="onStatusChanged($event)"></app-crm-status-modal>
+
+<div bsModal #removeModal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <platx-confirm-model [title]="'Delete this lead and its whole timeline?'" (confirm)="confirmDelete()" (cancel)="removeModal.hide()" />
+</div>

@@ -37,6 +37,10 @@ const routes: Routes = [
       ),
   },
   {
+    path: "crm",
+    loadChildren: () => import("./crm/crm.module").then((m) => m.CrmModule),
+  },
+  {
     path: "installments",
     loadChildren: () =>
       import("./installments/installments.module").then(

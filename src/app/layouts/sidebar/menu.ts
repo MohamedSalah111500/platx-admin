@@ -25,6 +25,35 @@ export const MENU: MenuItem[] = [
     link: "/customer-contact",
   },
   {
+    id: 4,
+    label: "MENUITEMS.CRM.TEXT",
+    icon: "bx-briefcase-alt-2",
+    roles: ["SuperAdmin", "CrmAgent"],
+    subItems: [
+      {
+        id: 41,
+        label: "MENUITEMS.CRM_LEADS.TEXT",
+        link: "/crm/leads",
+        parentId: 4,
+        roles: ["SuperAdmin", "CrmAgent"],
+      },
+      {
+        id: 42,
+        label: "MENUITEMS.CRM_PIPELINE.TEXT",
+        link: "/crm/pipeline",
+        parentId: 4,
+        roles: ["SuperAdmin", "CrmAgent"],
+      },
+      {
+        id: 43,
+        label: "MENUITEMS.CRM_TEAM.TEXT",
+        link: "/crm/team",
+        parentId: 4,
+        roles: ["SuperAdmin"],
+      },
+    ],
+  },
+  {
     id: 3,
     label: "MENUITEMS.MANAGEMENT.TEXT",
     icon: "bx-cog",

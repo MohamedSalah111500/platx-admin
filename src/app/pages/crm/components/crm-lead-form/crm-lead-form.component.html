@@ -1,0 +1,107 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true" [config]="{ backdrop: 'static' }">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="modal-header">
+          <h5 class="modal-title mb-0">
+            <i class="mdi me-1" [ngClass]="editing ? 'mdi-account-edit-outline' : 'mdi-account-plus-outline'"></i>
+            {{ editing ? 'Edit Lead' : 'New Lead' }}
+          </h5>
+          <button type="button" class="btn-close" (click)="close()"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="name" placeholder="Customer or academy name"
+                [class.is-invalid]="submitted && f['name'].errors" />
+              <div class="invalid-feedback" *ngIf="submitted && f['name'].errors">Name is required (max 150 chars).</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">WhatsApp / Phone <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" formControlName="phone" placeholder="+20 10 1234 5678" dir="ltr"
+                [class.is-invalid]="submitted && f['phone'].errors" />
+              <div class="invalid-feedback" *ngIf="submitted && f['phone'].errors">Enter a valid phone (7–15 digits).</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" formControlName="email" placeholder="name@example.com" dir="ltr"
+                [class.is-invalid]="submitted && f['email'].errors" />
+              <div class="invalid-feedback" *ngIf="submitted && f['email'].errors">Enter a valid email.</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Organization / Academy</label>
+              <input type="text" class="form-control" formControlName="organization" placeholder="Optional" />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Source</label>
+              <select class="form-select" formControlName="source">
+                @for (s of sources; track s.value) {
+                <option [ngValue]="s.value">{{ s.label }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Priority</label>
+              <select class="form-select" formControlName="priority">
+                @for (p of priorities; track p.value) {
+                <option [ngValue]="p.value">{{ p.label }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Interested plan</label>
+              <input type="text" class="form-control" formControlName="interestedPlan" placeholder="e.g. Pro" />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Country</label>
+              <input type="text" class="form-control" formControlName="country" placeholder="Optional" />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">City</label>
+              <input type="text" class="form-control" formControlName="city" placeholder="Optional" />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Next follow-up</label>
+              <input type="datetime-local" class="form-control" formControlName="nextFollowUpAt" />
+            </div>
+
+            <div class="col-md-12" *ngIf="isSuperAdmin">
+              <label class="form-label">Assigned to</label>
+              <select class="form-select" formControlName="assignedToUserId">
+                <option [ngValue]="null">Unassigned</option>
+                @for (a of activeAgents; track a.id) {
+                <option [ngValue]="a.id">{{ a.firstName }} {{ a.lastName }}{{ a.isSuperAdmin ? ' (Owner)' : '' }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Notes</label>
+              <textarea class="form-control" rows="3" formControlName="notes"
+                placeholder="What did they ask about? Any context from the WhatsApp chat..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" (click)="close()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="saving">
+            <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+            {{ editing ? 'Save changes' : 'Add lead' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
