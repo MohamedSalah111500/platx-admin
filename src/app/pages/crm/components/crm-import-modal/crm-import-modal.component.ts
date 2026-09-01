@@ -4,7 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { CrmService } from "../../services/crm.service";
 import { CrmAuthService } from "../../services/crm-auth.service";
 import { parseImportText } from "../../crm-utils";
-import { CrmAgent, CrmImportResult, CrmImportRow, CrmLeadSource, LEAD_SOURCES } from "../../types";
+import { CrmAgent, CrmImportResult, CrmImportRow, CrmLeadSource, LEAD_SOURCES, LEAD_STATUSES } from "../../types";
 
 @Component({
   selector: "app-crm-import-modal",
@@ -18,6 +18,7 @@ export class CrmImportModalComponent {
 
   readonly maxRows = 500;
   sources = LEAD_SOURCES;
+  statuses = LEAD_STATUSES;
   isSuperAdmin = this.auth.isSuperAdmin;
   raw = "";
   rows: CrmImportRow[] = [];
@@ -29,6 +30,10 @@ export class CrmImportModalComponent {
 
   get activeAgents(): CrmAgent[] {
     return this.agents.filter((a) => a.isActive);
+  }
+
+  get hasStatus(): boolean {
+    return this.rows.some((r) => r.status != null);
   }
 
   open() {

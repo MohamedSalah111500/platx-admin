@@ -1,4 +1,4 @@
-import { CrmImportRow } from "./types";
+import { CrmImportRow, CrmLeadPriority, CrmLeadStatus } from "./types";
 
 const AVATAR_PALETTE = [
   "#6366f1",
@@ -86,18 +86,123 @@ export function followUpState(iso?: string | null): FollowUpState {
   return "upcoming";
 }
 
+const STATUS_ALIASES: Record<string, CrmLeadStatus> = {
+  new: CrmLeadStatus.New,
+  contacted: CrmLeadStatus.Contacted,
+  interested: CrmLeadStatus.Interested,
+  demo: CrmLeadStatus.DemoScheduled,
+  demoscheduled: CrmLeadStatus.DemoScheduled,
+  negotiation: CrmLeadStatus.Negotiation,
+  won: CrmLeadStatus.Won,
+  subscribed: CrmLeadStatus.Won,
+  lost: CrmLeadStatus.Lost,
+  notinterested: CrmLeadStatus.Lost,
+};
+
+const PRIORITY_ALIASES: Record<string, CrmLeadPriority> = {
+  low: CrmLeadPriority.Low,
+  medium: CrmLeadPriority.Medium,
+  high: CrmLeadPriority.High,
+};
+
+const HEADER_ALIASES: Record<string, keyof CrmImportRow> = {
+  name: "name",
+  phone: "phone",
+  mobile: "phone",
+  whatsapp: "phone",
+  number: "phone",
+  email: "email",
+  organization: "organization",
+  org: "organization",
+  company: "organization",
+  academy: "organization",
+  status: "status",
+  stage: "status",
+  priority: "priority",
+  notes: "notes",
+  note: "notes",
+  summary: "notes",
+};
+
+function splitCsvLine(line: string): string[] {
+  const out: string[] = [];
+  let current = "";
+  let quoted = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (quoted && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (!quoted && /[,;\t|]/.test(ch)) {
+      out.push(current.trim());
+      current = "";
+    } else {
+      current += ch;
+    }
+  }
+  out.push(current.trim());
+  return out;
+}
+
+function parseStatus(value?: string | null): CrmLeadStatus | null {
+  const key = (value || "").toLowerCase().replace(/[^a-z]/g, "");
+  return key in STATUS_ALIASES ? STATUS_ALIASES[key] : null;
+}
+
+function parsePriority(value?: string | null): CrmLeadPriority | null {
+  const key = (value || "").toLowerCase().replace(/[^a-z]/g, "");
+  return key in PRIORITY_ALIASES ? PRIORITY_ALIASES[key] : null;
+}
+
+function detectHeader(line: string): (keyof CrmImportRow | null)[] | null {
+  const cells = splitCsvLine(line).map((c) => c.toLowerCase().replace(/[^a-z]/g, ""));
+  const mapped = cells.map((c) => HEADER_ALIASES[c] || null);
+  const hasPhone = mapped.includes("phone");
+  const known = mapped.filter((m) => !!m).length;
+  return hasPhone && known >= 2 ? mapped : null;
+}
+
+function parseWithHeader(lines: string[], header: (keyof CrmImportRow | null)[]): CrmImportRow[] {
+  const rows: CrmImportRow[] = [];
+  const seen = new Set<string>();
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const cells = splitCsvLine(line);
+    const row: CrmImportRow = { name: "", phone: "" };
+    header.forEach((key, i) => {
+      const value = cells[i] || "";
+      if (!key || !value) return;
+      if (key === "status") row.status = parseStatus(value);
+      else if (key === "priority") row.priority = parsePriority(value);
+      else row[key] = value;
+    });
+    const digits = phoneDigits(row.phone);
+    if (digits.length < 7 || digits.length > 15 || seen.has(digits)) continue;
+    seen.add(digits);
+    if (!row.name) row.name = row.phone;
+    rows.push(row);
+  }
+  return rows;
+}
+
 export function parseImportText(text: string): CrmImportRow[] {
+  const allLines = (text || "").split(/\r?\n/);
+  const firstLine = allLines.find((l) => l.trim());
+  const header = firstLine ? detectHeader(firstLine) : null;
+  if (header) return parseWithHeader(allLines.slice(allLines.indexOf(firstLine as string) + 1), header);
+
   const rows: CrmImportRow[] = [];
   const seen = new Set<string>();
 
-  for (const rawLine of (text || "").split(/\r?\n/)) {
+  for (const rawLine of allLines) {
     const line = rawLine.trim();
     if (!line) continue;
 
-    const tokens = line
-      .split(/[,;\t|]/)
-      .map((t) => t.trim())
-      .filter((t) => !!t);
+    const tokens = splitCsvLine(line).filter((t) => !!t);
     if (!tokens.length) continue;
 
     let phone = "";

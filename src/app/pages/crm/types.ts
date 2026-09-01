@@ -209,6 +209,8 @@ export interface CrmImportRow {
   email?: string | null;
   organization?: string | null;
   notes?: string | null;
+  status?: CrmLeadStatus | null;
+  priority?: CrmLeadPriority | null;
 }
 
 export interface CrmImportPayload {

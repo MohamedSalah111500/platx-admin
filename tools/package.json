@@ -1,0 +1,14 @@
+{
+  "name": "platx-whatsapp-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pull WhatsApp chats/contacts into the PlatX CRM",
+  "scripts": {
+    "dump": "node dump_whatsapp_web.js"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.26.0"
+  }
+}

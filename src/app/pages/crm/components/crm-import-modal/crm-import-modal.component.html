@@ -20,6 +20,7 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
             <div class="form-hint mt-1">
               Separate fields with comma, semicolon, tab or “|”. Lines without a valid phone are ignored.
               Duplicate phones (already in the CRM) are skipped automatically.
+              A CSV with a header row (<code>Name, Phone, Status, Priority, Notes</code>) is also accepted — e.g. the output of the WhatsApp classifier script.
             </div>
 
             <div class="row g-2 mt-2">
@@ -57,6 +58,7 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
                     <th style="width:40px">#</th>
                     <th>Name</th>
                     <th>Phone</th>
+                    <th *ngIf="hasStatus">Status</th>
                     <th>Email / Notes</th>
                     <th style="width:44px"></th>
                   </tr>
@@ -67,9 +69,14 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
                     <td class="text-muted">{{ i + 1 }}</td>
                     <td><input class="form-control form-control-sm" [(ngModel)]="row.name" name="name{{ i }}" /></td>
                     <td><input class="form-control form-control-sm" dir="ltr" [(ngModel)]="row.phone" name="phone{{ i }}" /></td>
-                    <td class="text-muted" style="font-size:13px">
+                    <td *ngIf="hasStatus">
+                      <select class="form-select form-select-sm" [(ngModel)]="row.status" name="status{{ i }}">
+                        @for (s of statuses; track s.value) {<option [ngValue]="s.value">{{ s.label }}</option>}
+                      </select>
+                    </td>
+                    <td class="text-muted" style="font-size:13px; max-width: 260px;">
                       <div *ngIf="row.email">{{ row.email }}</div>
-                      <div *ngIf="row.notes">{{ row.notes }}</div>
+                      <div *ngIf="row.notes" class="text-truncate" [title]="row.notes">{{ row.notes }}</div>
                       <span *ngIf="!row.email && !row.notes">—</span>
                     </td>
                     <td class="text-end">
@@ -81,7 +88,7 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
                   }
                   @if (!rows.length) {
                   <tr>
-                    <td colspan="5">
+                    <td [attr.colspan]="hasStatus ? 6 : 5">
                       <div class="empty-block">
                         <i class="mdi mdi-clipboard-text-outline font-size-24 text-muted d-block mb-1"></i>
                         <div class="text-muted" style="font-size:13px">Parsed contacts will appear here.</div>

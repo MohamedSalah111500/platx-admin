@@ -9,6 +9,16 @@
 
 # dependencies
 /node_modules
+node_modules/
+
+# WhatsApp tooling: local deps, linked-device session and exported customer data
+/tools/.wa-session/
+/tools/*.csv
+/tools/*.json
+!/tools/package.json
+/tools/whatsapp_dump.json
+/tools/whatsapp_qr.png
+/tools/__pycache__/
 
 # profiling files
 chrome-profiler-events*.json

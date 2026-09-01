@@ -33,6 +33,32 @@ Backend lives in `portal-backend/Platx` (`CrmController`, `CrmService`, `CrmLead
 - The `CrmAgent` role is created on demand the first time an agent is added.
 - All validation messages are localized (`SharedResources.resx` / `.ar.resx`, keys prefixed `Crm`).
 
+## Pulling existing WhatsApp customers (scripts in `tools/`)
+
+WhatsApp Desktop's own databases (`LocalState\sessions\...\*.db`) are **encrypted**, but the app renders WhatsApp Web in a WebView whose IndexedDB is not — the contact records live there in the clear.
+
+1. **Contacts, no QR, straight off this machine:** `python tools/extract_whatsapp_desktop.py` → `whatsapp_contacts.csv` (Name, Phone). It copies the IndexedDB files to a temp folder and walks the V8-serialized records, so the running app is never touched. Message *bodies* are not persisted there, so this gives names and numbers only — every lead lands as **New**.
+2. **Chats too (needed for the stage of each conversation):** `cd tools && npm install && npm run dump` → scan the QR once (phone → Linked devices). It walks every individual chat and writes `whatsapp_contacts.csv` plus `whatsapp_dump.json` (last 80 messages per chat, `WA_MESSAGES_PER_CHAT` to change). The session is kept in `tools/.wa-session` so re-runs need no QR.
+3. To get **where each conversation stands** (converting / bought / not interested):
+   - `pip install anthropic` and set `ANTHROPIC_API_KEY`.
+   - `python classify_whatsapp_chats.py --dump whatsapp_dump.json` (`--dry-run` lists what was detected without calling the API; `--chats <folder>` also accepts manual "Export chat" .txt files).
+   - Output `whatsapp_leads_classified.csv` with `Name, Phone, Status, Priority, Notes` (Arabic summary + next step). Results are cached in `whatsapp_classify_cache.json`, so re-runs only classify new chats.
+4. Paste the CSV (including the header line) into **CRM → Leads → Import from WhatsApp** — the importer recognises the header, shows the stage per row (editable), and creates the leads with that status.
+
+Everything these scripts produce (`*.csv`, `whatsapp_dump.json`, `.wa-session/`, `node_modules/`) is git-ignored — customer data never gets committed.
+
+## Duplicate protection
+
+Phone numbers are normalized before storage (digits only, leading `00` and the trunk `0` removed), and two numbers count as the same customer when one is the tail of the other — so `01111111111`, `0201111111111`, `+20 111 111 1111` and `0020-111-111-1111` all resolve to one lead, while numbers that merely share a tail across country codes stay separate. This is enforced on create, edit and import.
+
+## Tests
+
+`PlatX.OfflineContent.Tests/CrmImportTests.cs` covers the import path end to end against a real SQL Server database (a throwaway `PlatXCrmTest_*` DB on `.\SQLEXPRESS`, created and dropped per run): rows are stored with their stage, duplicates and invalid rows are skipped, search/stats/pipeline read the data back, activities move a lead to Contacted, and an agent can neither see, delete nor reassign someone else's leads.
+
+```
+dotnet test PlatX.OfflineContent.Tests/PlatX.OfflineContent.Tests.csproj --filter CrmImportTests
+```
+
 ## First-time setup
 
 1. Run the backend once (migration auto-applies).
