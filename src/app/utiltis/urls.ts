@@ -140,4 +140,7 @@ export const CRM_URLS = {
   AGENT_RESET_PASSWORD: (id: string) => `${environment.apiURL.concat(CRM_BASE)}/agents/${id}/reset-password`,
   REPORT_TEAM: `${environment.apiURL.concat(CRM_BASE)}/reports/team`,
   REPORT_ACTIVITY: `${environment.apiURL.concat(CRM_BASE)}/reports/activity`,
+  APPOINTMENTS: `${environment.apiURL.concat(CRM_BASE)}/appointments`,
+  APPOINTMENT_REMINDER: (leadId: number) =>
+    `${environment.apiURL.concat(CRM_BASE)}/leads/${leadId}/schedule-reminder`,
 };

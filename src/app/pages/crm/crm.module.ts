@@ -7,6 +7,7 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { ModalModule } from "ngx-bootstrap/modal";
 import { TooltipModule } from "ngx-bootstrap/tooltip";
 import { TranslateModule } from "@ngx-translate/core";
+import { FullCalendarModule } from "@fullcalendar/angular";
 
 import { UIModule } from "../../shared/ui/ui.module";
 import { CrmRoutingModule } from "./crm-routing.module";
@@ -16,6 +17,7 @@ import { CrmLeadDetailsComponent } from "./components/crm-lead-details/crm-lead-
 import { CrmPipelineComponent } from "./components/crm-pipeline/crm-pipeline.component";
 import { CrmAgentsComponent } from "./components/crm-agents/crm-agents.component";
 import { CrmReportsComponent } from "./components/crm-reports/crm-reports.component";
+import { CrmAppointmentsComponent } from "./components/crm-appointments/crm-appointments.component";
 import { CrmLeadFormComponent } from "./components/crm-lead-form/crm-lead-form.component";
 import { CrmStatusModalComponent } from "./components/crm-status-modal/crm-status-modal.component";
 import { CrmImportModalComponent } from "./components/crm-import-modal/crm-import-modal.component";
@@ -27,6 +29,7 @@ import { CrmImportModalComponent } from "./components/crm-import-modal/crm-impor
     CrmPipelineComponent,
     CrmAgentsComponent,
     CrmReportsComponent,
+    CrmAppointmentsComponent,
     CrmLeadFormComponent,
     CrmStatusModalComponent,
     CrmImportModalComponent,
@@ -42,6 +45,7 @@ import { CrmImportModalComponent } from "./components/crm-import-modal/crm-impor
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
     TranslateModule,
+    FullCalendarModule,
   ],
 })
 export class CrmModule {}

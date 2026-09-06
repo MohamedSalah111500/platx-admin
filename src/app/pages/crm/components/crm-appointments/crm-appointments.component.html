@@ -1,0 +1,206 @@
+<div class="container-fluid crm-page appointments-page">
+  <app-page-title [title]="'CRM.APPOINTMENTS.PAGE_TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <!-- KPI cards -->
+  <div class="row g-3 mb-3">
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeFilter === 'all'" (click)="setFilter('all')">
+        <div class="kpi-icon kpi-icon-primary"><i class="mdi mdi-calendar-check-outline"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">{{ 'CRM.APPOINTMENTS.KPI.TOTAL' | translate }}</div>
+          <div class="kpi-value">{{ stats.total }}</div>
+          <div class="kpi-sub text-muted">{{ 'CRM.APPOINTMENTS.KPI.TOTAL_SUB' | translate }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeFilter === 'overdue'" (click)="setFilter('overdue')">
+        <div class="kpi-icon kpi-icon-danger"><i class="mdi mdi-alert-circle-outline"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">{{ 'CRM.APPOINTMENTS.KPI.OVERDUE' | translate }}</div>
+          <div class="kpi-value">{{ stats.overdue }}</div>
+          <div class="kpi-sub text-danger">{{ 'CRM.APPOINTMENTS.KPI.OVERDUE_SUB' | translate }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeFilter === 'today'" (click)="setFilter('today')">
+        <div class="kpi-icon kpi-icon-warning"><i class="mdi mdi-calendar-today"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">{{ 'CRM.APPOINTMENTS.KPI.TODAY' | translate }}</div>
+          <div class="kpi-value">{{ stats.today }}</div>
+          <div class="kpi-sub text-warning">{{ 'CRM.APPOINTMENTS.KPI.TODAY_SUB' | translate }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="activeFilter === 'week'" (click)="setFilter('week')">
+        <div class="kpi-icon kpi-icon-info"><i class="mdi mdi-calendar-week"></i></div>
+        <div class="kpi-body">
+          <div class="kpi-label">{{ 'CRM.APPOINTMENTS.KPI.WEEK' | translate }}</div>
+          <div class="kpi-value">{{ stats.week }}</div>
+          <div class="kpi-sub text-info">{{ 'CRM.APPOINTMENTS.KPI.WEEK_SUB' | translate }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <!-- Calendar -->
+    <div class="col-xl-8">
+      <div class="card crm-card">
+        <div class="card-body">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div>
+              <h5 class="mb-0 fw-bold">{{ 'CRM.APPOINTMENTS.CALENDAR_TITLE' | translate }}</h5>
+              <small class="text-muted">{{ 'CRM.APPOINTMENTS.CALENDAR_HINT' | translate }}</small>
+            </div>
+            <button type="button" class="btn btn-light btn-sm" [disabled]="loading" (click)="load()">
+              <i class="mdi mdi-refresh" [class.mdi-spin]="loading"></i>
+            </button>
+          </div>
+
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border spinner-border-sm text-primary"></div>
+          </div>
+
+          <full-calendar *ngIf="!loading" [options]="calendarOptions"></full-calendar>
+
+          <!-- Reminder note -->
+          <div class="reminder-note mt-3">
+            <i class="mdi mdi-bell-ring-outline"></i>
+            <span>{{ 'CRM.APPOINTMENTS.REMINDER_NOTE' | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming list -->
+    <div class="col-xl-4">
+      <div class="card crm-card">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">
+            <i class="mdi mdi-format-list-bulleted-square me-1"></i>
+            {{ 'CRM.APPOINTMENTS.UPCOMING' | translate }}
+            <span class="text-muted fw-normal" style="font-size:12px">({{ filteredList.length }})</span>
+          </h6>
+
+          <div *ngIf="!loading && !filteredList.length" class="empty-block">
+            <i class="mdi mdi-calendar-remove-outline font-size-32 text-muted d-block mb-2"></i>
+            <div class="text-muted" style="font-size:13px">{{ 'CRM.APPOINTMENTS.EMPTY' | translate }}</div>
+          </div>
+
+          <div class="appointment-list">
+            @for (lead of filteredList; track lead.id) {
+            <button type="button" class="appointment-row" (click)="selected = lead; detailsModal.show()">
+              <div class="d-flex align-items-center gap-2 flex-grow-1 min-w-0">
+                <div class="crm-avatar crm-avatar-sm" [style.background]="avatarColor(lead.phone || lead.name)">
+                  {{ initials(lead.name) }}
+                </div>
+                <div class="min-w-0 text-start flex-grow-1">
+                  <div class="fw-semibold text-dark text-truncate">{{ lead.name }}</div>
+                  <div class="text-muted" style="font-size:12px">
+                    <i class="mdi mdi-clock-outline"></i>
+                    {{ lead.nextFollowUpAt | date:'MMM d, h:mm a' }}
+                  </div>
+                </div>
+              </div>
+              <span class="pill ms-2" [ngClass]="'fu-' + (followUpState(lead.nextFollowUpAt) || 'none')">
+                {{ relativeTime(lead.nextFollowUpAt) }}
+              </span>
+            </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Event details modal -->
+<div bsModal #detailsModal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" *ngIf="selected">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="d-flex align-items-center gap-2">
+          <div class="crm-avatar" [style.background]="avatarColor(selected.phone || selected.name)">
+            {{ initials(selected.name) }}
+          </div>
+          <div>
+            <h5 class="modal-title mb-0">{{ selected.name }}</h5>
+            <div class="text-muted" style="font-size:12px">
+              <span class="pill" [ngClass]="statusMeta(selected.status).cls">
+                <span class="pill-dot"></span>{{ statusMeta(selected.status).label | translate }}
+              </span>
+              <span class="pill ms-1" [ngClass]="priorityMeta(selected.priority).cls">
+                <i class="mdi {{ priorityMeta(selected.priority).icon }}"></i>{{ priorityMeta(selected.priority).label | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-close" (click)="closeDetails()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-row appointment-when" [ngClass]="'fu-' + (followUpState(selected.nextFollowUpAt) || 'none')">
+          <i class="mdi mdi-calendar-clock"></i>
+          <div>
+            <div class="info-row-label">{{ 'CRM.APPOINTMENTS.SCHEDULED_FOR' | translate }}</div>
+            <div class="info-row-value">
+              {{ selected.nextFollowUpAt | date:'EEEE, MMM d, y · h:mm a' }}
+              <span class="text-muted ms-2" style="font-size:12px">· {{ relativeTime(selected.nextFollowUpAt) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="info-row">
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.PHONE' | translate }}</div>
+              <div class="info-row-value d-flex align-items-center gap-2">
+                <a href="tel:{{ selected.phone }}" class="text-body" dir="ltr">{{ selected.phone }}</a>
+                <a [href]="waLink(selected.phone)" target="_blank" rel="noopener" class="wa-btn"><i class="mdi mdi-whatsapp"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6" *ngIf="selected.email">
+            <div class="info-row">
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.EMAIL' | translate }}</div>
+              <div class="info-row-value">
+                <a href="mailto:{{ selected.email }}" class="text-body">{{ selected.email }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6" *ngIf="selected.organization">
+            <div class="info-row">
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.ORGANIZATION' | translate }}</div>
+              <div class="info-row-value">{{ selected.organization }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6" *ngIf="selected.assignedToName">
+            <div class="info-row">
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.ASSIGNED_TO' | translate }}</div>
+              <div class="info-row-value">{{ selected.assignedToName }}</div>
+            </div>
+          </div>
+          <div class="col-12" *ngIf="selected.notes">
+            <div class="info-row mb-0">
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.NOTES' | translate }}</div>
+              <div class="notes-box">{{ selected.notes }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a [href]="waLink(selected.phone)" target="_blank" rel="noopener" class="btn btn-success">
+          <i class="mdi mdi-whatsapp me-1"></i> {{ 'CRM.LEADS.ACTIONS.WHATSAPP' | translate }}
+        </a>
+        <a href="tel:{{ selected.phone }}" class="btn btn-light">
+          <i class="mdi mdi-phone-outline me-1"></i> {{ 'CRM.LEAD_DETAILS.CALL' | translate }}
+        </a>
+        <button type="button" class="btn btn-primary" (click)="openLead()">
+          <i class="mdi mdi-eye-outline me-1"></i> {{ 'CRM.LEADS.ACTIONS.VIEW_TIMELINE' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

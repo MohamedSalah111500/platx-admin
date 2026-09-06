@@ -127,6 +127,12 @@ export class CrmLeadFormComponent {
           this.translate.instant(this.editing ? "CRM.LEAD_FORM.TOAST.UPDATED" : "CRM.LEAD_FORM.TOAST.ADDED"),
           this.translate.instant("MENUITEMS.CRM.TEXT")
         );
+        // If a follow-up date was set, ask the backend to (re)schedule the
+        // 2h-before reminder email. Errors are swallowed on purpose — the
+        // lead is already saved, and the reminder is a nice-to-have.
+        if (lead.nextFollowUpAt) {
+          this.crm.scheduleAppointmentReminder(lead.id).subscribe({ error: () => {} });
+        }
         this.saved.emit(lead);
         this.close();
       },

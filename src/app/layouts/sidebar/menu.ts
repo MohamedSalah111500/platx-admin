@@ -45,6 +45,13 @@ export const MENU: MenuItem[] = [
         roles: ["SuperAdmin", "CrmAgent"],
       },
       {
+        id: 45,
+        label: "MENUITEMS.CRM_APPOINTMENTS.TEXT",
+        link: "/crm/appointments",
+        parentId: 4,
+        roles: ["SuperAdmin", "CrmAgent"],
+      },
+      {
         id: 43,
         label: "MENUITEMS.CRM_REPORTS.TEXT",
         link: "/crm/reports",

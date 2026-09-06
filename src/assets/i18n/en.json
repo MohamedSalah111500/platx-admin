@@ -111,6 +111,9 @@
     "CRM_PIPELINE": {
       "TEXT": "Pipeline"
     },
+    "CRM_APPOINTMENTS": {
+      "TEXT": "My Appointments"
+    },
     "CRM_REPORTS": {
       "TEXT": "Reports"
     },
@@ -1000,6 +1003,25 @@
       },
       "TOAST": {
         "DELETED": "Lead deleted"
+      }
+    },
+    "APPOINTMENTS": {
+      "PAGE_TITLE": "CRM · My Appointments",
+      "CALENDAR_TITLE": "My schedule",
+      "CALENDAR_HINT": "Click any event to see the customer's details and open the timeline.",
+      "UPCOMING": "Upcoming",
+      "EMPTY": "No follow-ups match this filter.",
+      "SCHEDULED_FOR": "Scheduled for",
+      "REMINDER_NOTE": "You'll get an email reminder 2 hours before every appointment.",
+      "KPI": {
+        "TOTAL": "All appointments",
+        "TOTAL_SUB": "Follow-ups in the calendar window",
+        "OVERDUE": "Overdue",
+        "OVERDUE_SUB": "Missed follow-ups",
+        "TODAY": "Today",
+        "TODAY_SUB": "Due today",
+        "WEEK": "This week",
+        "WEEK_SUB": "Next 7 days"
       }
     },
     "LEAD_DETAILS": {

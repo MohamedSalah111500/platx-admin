@@ -1,0 +1,135 @@
+.appointments-page {
+  // FullCalendar chrome — align with the rest of the CRM look
+  ::ng-deep .fc {
+    --fc-border-color: #e5e7eb;
+    --fc-page-bg-color: transparent;
+    --fc-today-bg-color: rgba(99, 102, 241, 0.06);
+    --fc-neutral-bg-color: #f9fafb;
+    --fc-button-bg-color: #f3f4f6;
+    --fc-button-border-color: #e5e7eb;
+    --fc-button-text-color: #111827;
+    --fc-button-hover-bg-color: #e5e7eb;
+    --fc-button-hover-border-color: #d1d5db;
+    --fc-button-active-bg-color: #4f46e5;
+    --fc-button-active-border-color: #4f46e5;
+    font-family: inherit;
+
+    .fc-toolbar-title { font-size: 16px; font-weight: 700; }
+    .fc-button { text-transform: none; font-size: 13px; border-radius: 8px; }
+    .fc-button-active { color: #fff !important; }
+    .fc-daygrid-day-number { font-size: 12px; color: #6b7280; text-decoration: none; }
+    .fc-event { border-radius: 6px; font-size: 12px; padding: 2px 4px; cursor: pointer; }
+    .fc-event:hover { filter: brightness(0.92); }
+    .fc-list-event:hover td { background: #f9fafb; }
+  }
+
+  .reminder-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #eef2ff;
+    color: #3730a3;
+    border: 1px solid #c7d2fe;
+    border-radius: 10px;
+    font-size: 13px;
+    i { font-size: 18px; }
+  }
+
+  .appointment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 520px;
+    overflow-y: auto;
+  }
+
+  .appointment-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    &:hover { border-color: #d1d5db; background: #f9fafb; }
+  }
+
+  .appointment-when {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    margin-bottom: 16px;
+
+    > i { font-size: 22px; color: #4f46e5; margin-top: 2px; }
+
+    &.fu-overdue  { background: #fef2f2; border-color: #fecaca; > i { color: #b91c1c; } }
+    &.fu-today    { background: #fffbeb; border-color: #fde68a; > i { color: #b45309; } }
+    &.fu-upcoming { background: #eef2ff; border-color: #c7d2fe; > i { color: #4f46e5; } }
+  }
+
+  // Follow-up state pills (mini)
+  .pill.fu-overdue  { background: #fee2e2; color: #b91c1c; }
+  .pill.fu-today    { background: #fef3c7; color: #92400e; }
+  .pill.fu-upcoming { background: #eef2ff; color: #4338ca; }
+  .pill.fu-none     { background: #f3f4f6; color: #6b7280; }
+
+  @media (max-width: 575px) {
+    ::ng-deep .fc .fc-toolbar {
+      flex-direction: column;
+      gap: 8px;
+      .fc-toolbar-chunk { display: flex; justify-content: center; }
+    }
+  }
+}
+
+// Dark-mode adjustments for the calendar (surface, borders, today highlight)
+[data-bs-theme="dark"] .appointments-page {
+  ::ng-deep .fc {
+    --fc-border-color: #374151;
+    --fc-today-bg-color: rgba(99, 102, 241, 0.15);
+    --fc-neutral-bg-color: #111827;
+    --fc-button-bg-color: #1f2937;
+    --fc-button-border-color: #374151;
+    --fc-button-text-color: #e5e7eb;
+    --fc-button-hover-bg-color: #2d3748;
+    --fc-button-hover-border-color: #4b5563;
+
+    .fc-daygrid-day-number { color: #9ca3af; }
+    .fc-col-header-cell-cushion { color: #d1d5db; }
+    .fc-list-day-cushion { background: #111827 !important; color: #d1d5db; }
+    .fc-list-event:hover td { background: #232f42 !important; }
+    .fc-list-event-title, .fc-list-event-time { color: #e5e7eb; }
+  }
+
+  .reminder-note {
+    background: rgba(99, 102, 241, 0.15);
+    color: #c7d2fe;
+    border-color: rgba(99, 102, 241, 0.4);
+  }
+
+  .appointment-row {
+    background: #1f2937;
+    border-color: #374151;
+    &:hover { background: #232f42; border-color: #4b5563; }
+    .text-dark, .fw-semibold.text-dark { color: #f3f4f6 !important; }
+  }
+
+  .appointment-when {
+    &, &.fu-upcoming { background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.4); > i { color: #a5b4fc; } }
+    &.fu-overdue  { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); > i { color: #fca5a5; } }
+    &.fu-today    { background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.4); > i { color: #fcd34d; } }
+  }
+
+  .pill.fu-overdue  { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
+  .pill.fu-today    { background: rgba(245, 158, 11, 0.18); color: #fcd34d; }
+  .pill.fu-upcoming { background: rgba(99, 102, 241, 0.18); color: #a5b4fc; }
+  .pill.fu-none     { background: #374151; color: #9ca3af; }
+}

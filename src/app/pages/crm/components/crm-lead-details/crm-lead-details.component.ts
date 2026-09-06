@@ -119,11 +119,12 @@ export class CrmLeadDetailsComponent implements OnInit {
     const content = this.newActivity.content.trim();
     if (!content || this.savingActivity) return;
     this.savingActivity = true;
+    const scheduledFollowUp = fromInputDateTime(this.newActivity.nextFollowUpAt);
     this.crm
       .addActivity(this.leadId, {
         type: Number(this.newActivity.type),
         content,
-        nextFollowUpAt: fromInputDateTime(this.newActivity.nextFollowUpAt),
+        nextFollowUpAt: scheduledFollowUp,
         markAsContacted: this.newActivity.markAsContacted,
       })
       .subscribe({
@@ -133,6 +134,10 @@ export class CrmLeadDetailsComponent implements OnInit {
           this.activitiesTotal++;
           this.newActivity = { type: this.newActivity.type, content: "", nextFollowUpAt: "", markAsContacted: false };
           this.toastr.success(this.t("CRM.LEAD_DETAILS.TOAST.ACTIVITY_LOGGED"), this.crmTitle());
+          // Re-schedule the reminder email whenever this activity sets a new follow-up.
+          if (scheduledFollowUp) {
+            this.crm.scheduleAppointmentReminder(this.leadId).subscribe({ error: () => {} });
+          }
           this.loadLead();
         },
         error: () => (this.savingActivity = false),

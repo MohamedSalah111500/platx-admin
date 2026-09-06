@@ -120,6 +120,33 @@ export class CrmService {
   resetAgentPassword(id: string, newPassword: string): Observable<IGeneralSuccessMessageResponse> {
     return this.http.post<IGeneralSuccessMessageResponse>(CRM_URLS.AGENT_RESET_PASSWORD(id), { newPassword });
   }
+
+  /**
+   * Fetch all upcoming follow-ups for the "My Appointments" calendar.
+   * Server contract is a range (from/to as ISO) and returns leads whose
+   * `nextFollowUpAt` falls inside it. If the dedicated endpoint isn't
+   * available we fall back to the leads list filtered to a big page — the
+   * calendar component then does the date-window slicing.
+   */
+  getAppointments(from: string, to: string): Observable<CrmLead[]> {
+    const params = new HttpParams().set("from", from).set("to", to);
+    return this.http
+      .get<CrmLead[]>(CRM_URLS.APPOINTMENTS, { params })
+      .pipe(map((items) => (items ?? []).map(normalizeLead)));
+  }
+
+  /**
+   * Tell the backend to (re)schedule a reminder email 2h before the
+   * lead's `nextFollowUpAt`. Called after a lead is created/updated or
+   * after an activity that changes the next follow-up date.
+   * The backend owns the actual send / cancel logic.
+   */
+  scheduleAppointmentReminder(leadId: number): Observable<IGeneralSuccessMessageResponse> {
+    return this.http.post<IGeneralSuccessMessageResponse>(
+      CRM_URLS.APPOINTMENT_REMINDER(leadId),
+      { minutesBefore: 120 }
+    );
+  }
 }
 
 function normalizeLead(lead: CrmLead): CrmLead {

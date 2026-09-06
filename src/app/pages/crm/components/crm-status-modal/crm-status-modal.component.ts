@@ -72,6 +72,10 @@ export class CrmStatusModalComponent {
             this.translate.instant("CRM.TOAST.STATUS_SET", { status: statusText }),
             this.translate.instant("MENUITEMS.CRM.TEXT")
           );
+          // Re-schedule the 2h reminder if a next follow-up was picked.
+          if (lead.nextFollowUpAt) {
+            this.crm.scheduleAppointmentReminder(lead.id).subscribe({ error: () => {} });
+          }
           this.changed.emit(lead);
           this.close();
         },

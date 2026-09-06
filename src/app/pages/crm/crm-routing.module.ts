@@ -5,6 +5,7 @@ import { CrmLeadDetailsComponent } from "./components/crm-lead-details/crm-lead-
 import { CrmPipelineComponent } from "./components/crm-pipeline/crm-pipeline.component";
 import { CrmAgentsComponent } from "./components/crm-agents/crm-agents.component";
 import { CrmReportsComponent } from "./components/crm-reports/crm-reports.component";
+import { CrmAppointmentsComponent } from "./components/crm-appointments/crm-appointments.component";
 import { crmSuperAdminGuard } from "./guards/crm-super-admin.guard";
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: "leads", component: CrmLeadsComponent },
   { path: "leads/:id", component: CrmLeadDetailsComponent },
   { path: "pipeline", component: CrmPipelineComponent },
+  { path: "appointments", component: CrmAppointmentsComponent },
   { path: "reports", component: CrmReportsComponent },
   { path: "team", component: CrmAgentsComponent, canActivate: [crmSuperAdminGuard] },
 ];

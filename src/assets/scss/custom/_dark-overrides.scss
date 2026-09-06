@@ -250,6 +250,193 @@
   .modal-header, .modal-footer { border-color: #2d3748 !important; }
 
   // ------------------------------------------------------------------
+  // CRM Pipeline board — columns + cards were hardcoded to `#f5f6f8` and
+  // `#fff` in their component SCSS. Re-declare them here for dark mode.
+  // ------------------------------------------------------------------
+  .crm-page .board-column {
+    background-color: #111827 !important;
+    border-color: #374151 !important;
+  }
+  .crm-page .board-column .column-header {
+    background-color: #111827 !important;
+    border-color: #374151 !important;
+    color: #f3f4f6 !important;
+
+    .count {
+      background-color: #1f2937 !important;
+      border-color: #374151 !important;
+      color: #9ca3af !important;
+    }
+  }
+  .crm-page .lead-card {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+
+    .lead-name  { color: #f9fafb !important; }
+    .lead-org   { color: #9ca3af !important; }
+    .lead-meta  { color: #9ca3af !important; }
+    .text-body  { color: #e5e7eb !important; }
+  }
+  .crm-page .lead-card:hover {
+    border-color: #4b5563 !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  }
+  .crm-page .column-empty { color: #6b7280 !important; }
+
+  // ------------------------------------------------------------------
+  // Lead-details: activity chips, status strip, timeline, notes
+  // ------------------------------------------------------------------
+  .crm-page .chip,
+  .crm-page .step {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+
+    &.active, &.current { background-color: rgba(99, 102, 241, 0.2) !important; border-color: #6366f1 !important; color: #c7d2fe !important; }
+    &.done              { background-color: rgba(16, 185, 129, 0.18) !important; border-color: rgba(16, 185, 129, 0.45) !important; color: #6ee7b7 !important; }
+  }
+  .crm-page .timeline-icon { background-color: #1f2937 !important; }
+  .crm-page .notes-box     { background-color: #111827 !important; color: #e5e7eb !important; border-color: #374151 !important; }
+  .crm-page .wa-btn        { background-color: rgba(37, 211, 102, 0.15) !important; color: #34d399 !important; }
+
+  // ------------------------------------------------------------------
+  // Contact / phone / email links — force readable light color so digits
+  // don't look gray-on-black in the tables
+  // ------------------------------------------------------------------
+  .tenant-page .text-body,
+  .contact-page .text-body,
+  .crm-page .text-body,
+  .tenant-page a.text-body,
+  .contact-page a.text-body,
+  .crm-page a.text-body {
+    color: #e5e7eb !important;
+    &:hover { color: #ffffff !important; }
+  }
+
+  // ------------------------------------------------------------------
+  // Statistic mini blocks (agents page: Leads / Open / Won)
+  // ------------------------------------------------------------------
+  .crm-page .stat-mini .v { color: #f9fafb !important; }
+  .crm-page .metric        { color: #f3f4f6 !important; }
+  .crm-page .metric.muted  { color: #6b7280 !important; }
+  .crm-page .metric.danger { color: #fca5a5 !important; }
+  .crm-page .metric.success { color: #6ee7b7 !important; }
+
+  // ------------------------------------------------------------------
+  // Numeric cells in tables — the `.fw-medium` and plain digits need to
+  // pop against dark backgrounds
+  // ------------------------------------------------------------------
+  .smart-table tbody td,
+  .history-row,
+  .inst-row {
+    color: #e5e7eb !important;
+
+    .fw-medium { color: #f3f4f6 !important; }
+    .text-muted { color: #9ca3af !important; }
+  }
+  .smart-table tbody td.text-muted { color: #9ca3af !important; }
+
+  // Renewal / installment pages — history rows numbers
+  .history-row .fw-medium,
+  .inst-row .fw-medium { color: #f3f4f6 !important; }
+
+  // ------------------------------------------------------------------
+  // Info-tile numbers (subscription section, installments summary)
+  // ------------------------------------------------------------------
+  .info-tile .info-value,
+  .info-tile .info-value-sm {
+    color: #f9fafb !important;
+  }
+
+  // ------------------------------------------------------------------
+  // KPI icon backgrounds — soften the pastel tints so they don't glow
+  // ------------------------------------------------------------------
+  .kpi-icon.kpi-icon-primary  { background-color: rgba(99, 102, 241, 0.18) !important; color: #a5b4fc !important; }
+  .kpi-icon.kpi-icon-success  { background-color: rgba(16, 185, 129, 0.18) !important; color: #6ee7b7 !important; }
+  .kpi-icon.kpi-icon-info     { background-color: rgba(6, 182, 212, 0.18)  !important; color: #67e8f9 !important; }
+  .kpi-icon.kpi-icon-warning  { background-color: rgba(245, 158, 11, 0.18) !important; color: #fcd34d !important; }
+  .kpi-icon.kpi-icon-danger   { background-color: rgba(239, 68, 68, 0.18)  !important; color: #fca5a5 !important; }
+  .kpi-icon.kpi-icon-muted    { background-color: #374151 !important; color: #9ca3af !important; }
+
+  // ------------------------------------------------------------------
+  // Tenant subscription page — tenant header card
+  // ------------------------------------------------------------------
+  .tenant-header {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    .tenant-avatar { background-color: #4f46e5 !important; color: #fff !important; }
+  }
+
+  // ------------------------------------------------------------------
+  // Subscription section — limits (usage bars, badges)
+  // ------------------------------------------------------------------
+  .limits-section .limit-row { background-color: transparent !important; border-color: #374151 !important; }
+  .limit-badge {
+    background-color: #374151 !important;
+    color: #d1d5db !important;
+    &.limit-badge-override { background-color: rgba(245, 158, 11, 0.18) !important; color: #fcd34d !important; }
+    &.limit-badge-period   { background-color: rgba(99, 102, 241, 0.18) !important; color: #a5b4fc !important; }
+  }
+  .limit-bar  { background-color: #374151 !important; }
+  .limit-fill { background-color: #6366f1 !important;
+    &.limit-fill-warn   { background-color: #f59e0b !important; }
+    &.limit-fill-danger { background-color: #ef4444 !important; }
+  }
+  .limit-name    { color: #f3f4f6 !important; }
+  .limit-numbers { color: #9ca3af !important; }
+
+  // ------------------------------------------------------------------
+  // Tenant Domains modal (custom domains list, checklist)
+  // ------------------------------------------------------------------
+  .domain-row {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+  }
+  .host-link { color: #a5b4fc !important; &:hover { color: #c7d2fe !important; } }
+  .checklist { color: #e5e7eb !important; }
+  .checklist code {
+    background-color: #111827 !important;
+    color: #fcd34d !important;
+    border: 1px solid #374151;
+    padding: 1px 4px;
+    border-radius: 4px;
+  }
+  .pill.pill-primary {
+    background-color: rgba(99, 102, 241, 0.18) !important;
+    color: #a5b4fc !important;
+    .status-dot { background-color: #6366f1 !important; }
+  }
+
+  // ------------------------------------------------------------------
+  // Fallback for any raw `.card` / `.card-body` we didn't specifically
+  // target — pull them to dark surfaces
+  // ------------------------------------------------------------------
+  .tenant-page .card,
+  .contact-page .card,
+  .crm-page .card,
+  .renewal-page .card,
+  .installments-page .card,
+  .subscription-section .card,
+  .installments-section .card {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+  }
+
+  // Ensure any generic `.fw-bold`/`.fw-semibold` heading inside our cards is
+  // light — Bootstrap defaults to `--bs-body-color` which is fine but our
+  // pages also use explicit `text-dark` in many places.
+  .tenant-page .text-dark,
+  .contact-page .text-dark,
+  .crm-page .text-dark,
+  .renewal-page .text-dark,
+  .installments-page .text-dark,
+  .subscription-section .text-dark,
+  .installments-section .text-dark {
+    color: #f3f4f6 !important;
+  }
+
+  // ------------------------------------------------------------------
   // Cairo font stays crisp on dark bg
   // ------------------------------------------------------------------
   body { color: #e5e7eb; }
