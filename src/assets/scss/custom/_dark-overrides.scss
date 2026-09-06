@@ -437,6 +437,85 @@
   }
 
   // ------------------------------------------------------------------
+  // CRM Appointments — calendar page cards, side list, reminder banner.
+  // Component SCSS declares these with hardcoded whites; force them here
+  // so encapsulation / ordering can't leave them stuck on light surfaces.
+  // ------------------------------------------------------------------
+  .appointments-page .appointment-row,
+  .crm-page .appointment-row,
+  button.appointment-row {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+
+    .fw-semibold.text-dark,
+    .text-dark { color: #f3f4f6 !important; }
+    .text-muted { color: #9ca3af !important; }
+  }
+  .appointments-page .appointment-row:hover,
+  .crm-page .appointment-row:hover,
+  button.appointment-row:hover {
+    background-color: #232f42 !important;
+    border-color: #4b5563 !important;
+  }
+
+  .appointments-page .appointment-when {
+    background-color: rgba(99, 102, 241, 0.15) !important;
+    border-color: rgba(99, 102, 241, 0.4) !important;
+    color: #e5e7eb !important;
+    > i { color: #a5b4fc !important; }
+
+    &.fu-overdue  { background-color: rgba(239, 68, 68, 0.15) !important;
+                    border-color: rgba(239, 68, 68, 0.4) !important;
+                    > i { color: #fca5a5 !important; } }
+    &.fu-today    { background-color: rgba(245, 158, 11, 0.15) !important;
+                    border-color: rgba(245, 158, 11, 0.4) !important;
+                    > i { color: #fcd34d !important; } }
+    &.fu-upcoming { background-color: rgba(99, 102, 241, 0.15) !important;
+                    border-color: rgba(99, 102, 241, 0.4) !important;
+                    > i { color: #a5b4fc !important; } }
+  }
+
+  .appointments-page .reminder-note {
+    background-color: rgba(99, 102, 241, 0.15) !important;
+    color: #c7d2fe !important;
+    border-color: rgba(99, 102, 241, 0.4) !important;
+  }
+
+  // FullCalendar surfaces
+  .appointments-page .fc {
+    --fc-border-color: #374151;
+    --fc-today-bg-color: rgba(99, 102, 241, 0.15);
+    --fc-neutral-bg-color: #111827;
+    --fc-button-bg-color: #1f2937;
+    --fc-button-border-color: #374151;
+    --fc-button-text-color: #e5e7eb;
+    --fc-button-hover-bg-color: #2d3748;
+    --fc-button-hover-border-color: #4b5563;
+    color: #e5e7eb;
+
+    .fc-toolbar-title    { color: #f3f4f6; }
+    .fc-daygrid-day-number,
+    .fc-col-header-cell-cushion,
+    .fc-list-day-cushion { color: #d1d5db !important; }
+    .fc-list-day-cushion { background-color: #111827 !important; }
+    .fc-list-event:hover td { background-color: #232f42 !important; }
+    .fc-list-event-title,
+    .fc-list-event-time  { color: #e5e7eb !important; }
+    .fc-day-other        { background-color: rgba(255, 255, 255, 0.02); }
+  }
+
+  // Fu-state pills anywhere in the CRM
+  .crm-page .pill.fu-overdue,
+  .appointments-page .pill.fu-overdue  { background-color: rgba(239, 68, 68, 0.18) !important; color: #fca5a5 !important; }
+  .crm-page .pill.fu-today,
+  .appointments-page .pill.fu-today    { background-color: rgba(245, 158, 11, 0.18) !important; color: #fcd34d !important; }
+  .crm-page .pill.fu-upcoming,
+  .appointments-page .pill.fu-upcoming { background-color: rgba(99, 102, 241, 0.18) !important; color: #a5b4fc !important; }
+  .crm-page .pill.fu-none,
+  .appointments-page .pill.fu-none     { background-color: #374151 !important; color: #9ca3af !important; }
+
+  // ------------------------------------------------------------------
   // Cairo font stays crisp on dark bg
   // ------------------------------------------------------------------
   body { color: #e5e7eb; }

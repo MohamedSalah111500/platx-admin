@@ -11,6 +11,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!--
+    First-paint theme sync. Reads the user's last picks from localStorage and
+    stamps them on <html> + <body> before Angular boots, so a returning user
+    sees their chosen theme immediately (no flash of the default).
+  -->
+  <script>
+    (function () {
+      try {
+        var mode    = localStorage.getItem('platx_layout_mode');
+        var sidebar = localStorage.getItem('platx_sidebar_mode');
+        var topbar  = localStorage.getItem('platx_topbar_mode');
+        if (mode    === 'light' || mode    === 'dark')                   document.documentElement.setAttribute('data-bs-theme', mode);
+        if (sidebar === 'light' || sidebar === 'dark' || sidebar === 'colored') document.documentElement.setAttribute('data-sidebar', sidebar);
+        if (topbar  === 'light' || topbar  === 'dark' || topbar  === 'colored') document.documentElement.setAttribute('data-topbar',  topbar);
+      } catch (e) { /* private-mode / storage disabled — keep the HTML defaults */ }
+    })();
+  </script>
 </head>
 
 <body>
