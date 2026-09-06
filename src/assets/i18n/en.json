@@ -111,6 +111,9 @@
     "CRM_PIPELINE": {
       "TEXT": "Pipeline"
     },
+    "CRM_REPORTS": {
+      "TEXT": "Reports"
+    },
     "CRM_TEAM": {
       "TEXT": "Team"
     },

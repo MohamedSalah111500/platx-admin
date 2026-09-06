@@ -18,6 +18,9 @@ import {
   CrmPipelineColumn,
   CrmStats,
   CrmStatusPayload,
+  CrmTeamReport,
+  CrmAgentDayEntry,
+  CrmReportRange,
   Paged,
 } from "../types";
 
@@ -104,6 +107,16 @@ export class CrmService {
     return this.http.put<IGeneralSuccessMessageResponse>(CRM_URLS.AGENT(id), payload);
   }
 
+  getTeamReport(range: CrmReportRange): Observable<CrmTeamReport> {
+    return this.http.get<CrmTeamReport>(CRM_URLS.REPORT_TEAM, { params: rangeParams(range) });
+  }
+
+  getActivityFeed(range: CrmReportRange, take = 100): Observable<CrmAgentDayEntry[]> {
+    return this.http
+      .get<CrmAgentDayEntry[]>(CRM_URLS.REPORT_ACTIVITY, { params: rangeParams(range).set("take", take) })
+      .pipe(map((entries) => entries.map((e) => ({ ...e, at: normalizeServerDate(e.at) as string }))));
+  }
+
   resetAgentPassword(id: string, newPassword: string): Observable<IGeneralSuccessMessageResponse> {
     return this.http.post<IGeneralSuccessMessageResponse>(CRM_URLS.AGENT_RESET_PASSWORD(id), { newPassword });
   }
@@ -121,4 +134,11 @@ function normalizeLead(lead: CrmLead): CrmLead {
 
 function normalizeActivity(activity: CrmActivity): CrmActivity {
   return { ...activity, creationTime: normalizeServerDate(activity.creationTime) as string };
+}
+
+function rangeParams(range: CrmReportRange): HttpParams {
+  let params = new HttpParams();
+  if (range.from) params = params.set("from", range.from);
+  if (range.to) params = params.set("to", range.to);
+  return params;
 }

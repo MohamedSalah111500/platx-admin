@@ -14,6 +14,7 @@ import { CrmLeadsComponent } from "./components/crm-leads/crm-leads.component";
 import { CrmLeadDetailsComponent } from "./components/crm-lead-details/crm-lead-details.component";
 import { CrmPipelineComponent } from "./components/crm-pipeline/crm-pipeline.component";
 import { CrmAgentsComponent } from "./components/crm-agents/crm-agents.component";
+import { CrmReportsComponent } from "./components/crm-reports/crm-reports.component";
 import { CrmLeadFormComponent } from "./components/crm-lead-form/crm-lead-form.component";
 import { CrmStatusModalComponent } from "./components/crm-status-modal/crm-status-modal.component";
 import { CrmImportModalComponent } from "./components/crm-import-modal/crm-import-modal.component";
@@ -24,6 +25,7 @@ import { CrmImportModalComponent } from "./components/crm-import-modal/crm-impor
     CrmLeadDetailsComponent,
     CrmPipelineComponent,
     CrmAgentsComponent,
+    CrmReportsComponent,
     CrmLeadFormComponent,
     CrmStatusModalComponent,
     CrmImportModalComponent,

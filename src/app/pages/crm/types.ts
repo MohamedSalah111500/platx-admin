@@ -250,3 +250,60 @@ export interface CrmAgentUpdatePayload {
   lastName: string;
   isActive: boolean;
 }
+
+export interface CrmAgentPerformance {
+  userId: string;
+  name: string;
+  isSuperAdmin: boolean;
+  isActive: boolean;
+  leadsAdded: number;
+  leadsAssigned: number;
+  activitiesLogged: number;
+  leadsContacted: number;
+  won: number;
+  lost: number;
+  openLeads: number;
+  overdueFollowUps: number;
+  dueTodayFollowUps: number;
+  untouchedLeads: number;
+  lastActivityAt?: string | null;
+  winRate: number;
+}
+
+export interface CrmDailyPoint {
+  day: string;
+  leadsAdded: number;
+  activitiesLogged: number;
+  won: number;
+}
+
+export interface CrmTeamReport {
+  from: string;
+  to: string;
+  agents: CrmAgentPerformance[];
+  totals: CrmAgentPerformance;
+  daily: CrmDailyPoint[];
+}
+
+export enum CrmDayEntryKind {
+  LeadAdded = 1,
+  Activity = 2,
+}
+
+export interface CrmAgentDayEntry {
+  userId: string;
+  agentName: string;
+  leadId: number;
+  leadName: string;
+  leadPhone: string;
+  leadStatus: CrmLeadStatus;
+  kind: CrmDayEntryKind;
+  activityType?: CrmActivityType | null;
+  content?: string | null;
+  at: string;
+}
+
+export interface CrmReportRange {
+  from?: string | null;
+  to?: string | null;
+}

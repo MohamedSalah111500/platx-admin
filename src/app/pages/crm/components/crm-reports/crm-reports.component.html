@@ -1,0 +1,215 @@
+<div class="container-fluid crm-page">
+  <app-page-title title="CRM · Reports" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h5 class="mb-0 fw-bold">{{ isSuperAdmin ? 'Sales team performance' : 'My performance' }}</h5>
+      <small class="text-muted">
+        Who added which leads, what they did, and what is still waiting on them.
+      </small>
+    </div>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <div class="range-tabs">
+        <button type="button" class="tab" [class.active]="preset === 'today'" (click)="setPreset('today')">Today</button>
+        <button type="button" class="tab" [class.active]="preset === 'week'" (click)="setPreset('week')">Last 7 days</button>
+        <button type="button" class="tab" [class.active]="preset === 'month'" (click)="setPreset('month')">This month</button>
+      </div>
+      <input type="date" class="form-control filter-select" [(ngModel)]="from" (ngModelChange)="onCustomRange()" />
+      <input type="date" class="form-control filter-select" [(ngModel)]="to" (ngModelChange)="onCustomRange()" />
+      <button type="button" class="btn btn-light" (click)="load()" title="Refresh"><i class="mdi mdi-refresh"></i></button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+
+  <ng-container *ngIf="!loading && report">
+    <div class="row g-3 mb-3">
+      <div class="col-md-4 col-xl">
+        <div class="kpi-card">
+          <div class="kpi-icon kpi-icon-primary"><i class="mdi mdi-account-plus-outline"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Leads added</div>
+            <div class="kpi-value">{{ report.totals.leadsAdded }}</div>
+            <div class="kpi-sub text-muted">In the selected period</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-xl">
+        <div class="kpi-card">
+          <div class="kpi-icon kpi-icon-info"><i class="mdi mdi-message-text-outline"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Activities logged</div>
+            <div class="kpi-value">{{ report.totals.activitiesLogged }}</div>
+            <div class="kpi-sub text-info">{{ report.totals.leadsContacted }} different leads touched</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-xl">
+        <div class="kpi-card">
+          <div class="kpi-icon kpi-icon-success"><i class="mdi mdi-trophy-outline"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Won</div>
+            <div class="kpi-value">{{ report.totals.won }}</div>
+            <div class="kpi-sub text-success">Win rate {{ report.totals.winRate }}%</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-xl">
+        <div class="kpi-card">
+          <div class="kpi-icon kpi-icon-danger"><i class="mdi mdi-alert-circle-outline"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Overdue follow-ups</div>
+            <div class="kpi-value">{{ report.totals.overdueFollowUps }}</div>
+            <div class="kpi-sub text-danger">{{ report.totals.dueTodayFollowUps }} due today</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-xl">
+        <div class="kpi-card">
+          <div class="kpi-icon kpi-icon-muted"><i class="mdi mdi-account-clock-outline"></i></div>
+          <div class="kpi-body">
+            <div class="kpi-label">Never contacted</div>
+            <div class="kpi-value">{{ report.totals.untouchedLeads }}</div>
+            <div class="kpi-sub text-muted">Still sitting as New</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card crm-card mb-3" *ngIf="report.daily.length">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="fw-bold mb-0">Daily activity</h6>
+          <div class="legend">
+            <span><span class="dot added"></span>Leads added</span>
+            <span><span class="dot acts"></span>Activities</span>
+          </div>
+        </div>
+        <div class="trend">
+          @for (d of report.daily; track d.day) {
+          <div class="col" [title]="d.leadsAdded + ' leads · ' + d.activitiesLogged + ' activities · ' + d.won + ' won'">
+            <div class="bars">
+              <div class="bar added" [style.height]="barWidth(d.leadsAdded, maxDaily)"></div>
+              <div class="bar acts" [style.height]="barWidth(d.activitiesLogged, maxDaily)"></div>
+            </div>
+            <div class="day">{{ d.day | date:'d MMM' }}</div>
+          </div>
+          }
+        </div>
+        <div class="form-hint mt-2" *ngIf="busiestDay">
+          Busiest day: <strong>{{ busiestDay.day | date:'EEEE, d MMM' }}</strong> with {{ busiestDay.leadsAdded }} new leads.
+        </div>
+      </div>
+    </div>
+
+    <div class="card crm-card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="fw-bold mb-0">Per agent</h6>
+          <small class="text-muted">Click a row to see exactly what they did</small>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle smart-table mb-0">
+            <thead>
+              <tr>
+                <th>Agent</th>
+                <th class="text-center">Leads added</th>
+                <th class="text-center">Activities</th>
+                <th class="text-center">Leads touched</th>
+                <th class="text-center">Open</th>
+                <th class="text-center">Won</th>
+                <th class="text-center">Lost</th>
+                <th class="text-center">Win rate</th>
+                <th class="text-center">Overdue</th>
+                <th class="text-center">Never contacted</th>
+                <th>Last action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (a of agents; track a.userId) {
+              <tr class="agent-row" [class.selected]="selectedAgentId === a.userId" (click)="selectAgent(a)">
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="crm-avatar crm-avatar-sm" [style.background]="avatarColor(a.userId)">{{ initials(a.name) }}</div>
+                    <div class="min-w-0">
+                      <div class="fw-semibold text-dark">{{ a.name }}</div>
+                      <div class="text-muted" style="font-size:12px">
+                        {{ a.isSuperAdmin ? 'Owner' : 'CRM Agent' }}<span *ngIf="!a.isActive"> · inactive</span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center"><span class="metric" [class.muted]="!a.leadsAdded">{{ a.leadsAdded }}</span></td>
+                <td class="text-center"><span class="metric" [class.muted]="!a.activitiesLogged">{{ a.activitiesLogged }}</span></td>
+                <td class="text-center"><span class="metric" [class.muted]="!a.leadsContacted">{{ a.leadsContacted }}</span></td>
+                <td class="text-center"><span class="metric" [class.muted]="!a.openLeads">{{ a.openLeads }}</span></td>
+                <td class="text-center"><span class="metric" [class.success]="a.won > 0" [class.muted]="!a.won">{{ a.won }}</span></td>
+                <td class="text-center"><span class="metric" [class.muted]="!a.lost">{{ a.lost }}</span></td>
+                <td class="text-center"><span class="metric" [class.muted]="!a.won && !a.lost">{{ a.winRate }}%</span></td>
+                <td class="text-center"><span class="metric" [class.danger]="a.overdueFollowUps > 0" [class.muted]="!a.overdueFollowUps">{{ a.overdueFollowUps }}</span></td>
+                <td class="text-center"><span class="metric" [class.danger]="a.untouchedLeads > 0" [class.muted]="!a.untouchedLeads">{{ a.untouchedLeads }}</span></td>
+                <td>
+                  <span style="font-size:13px" *ngIf="a.lastActivityAt; else never" [title]="a.lastActivityAt | date:'medium'">
+                    {{ relativeTime(a.lastActivityAt) }}
+                  </span>
+                  <ng-template #never><span class="text-muted">No activity</span></ng-template>
+                </td>
+              </tr>
+              }
+              @if (!agents.length) {
+              <tr>
+                <td colspan="11">
+                  <div class="empty-block">
+                    <i class="mdi mdi-account-search-outline font-size-24 text-muted d-block mb-1"></i>
+                    <div class="text-muted" style="font-size:13px">No agents yet — add them from CRM → Team.</div>
+                  </div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card crm-card">
+      <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+          <h6 class="fw-bold mb-0">
+            What happened
+            <span class="text-muted fw-normal" style="font-size:13px" *ngIf="selectedAgentId">· {{ selectedAgentName }}</span>
+          </h6>
+          <a href="javascript:void(0)" *ngIf="selectedAgentId" (click)="selectedAgentId = null" style="font-size:13px">show everyone</a>
+        </div>
+
+        <div *ngIf="feedLoading" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div></div>
+
+        <div *ngIf="!feedLoading">
+          @for (e of visibleFeed; track $index) {
+          <div class="feed-item">
+            <div class="feed-icon" [class.added]="e.kind === entryKind.LeadAdded">
+              <i class="mdi" [ngClass]="e.kind === entryKind.LeadAdded ? 'mdi-account-plus-outline' : activityMeta(e.activityType).icon"></i>
+            </div>
+            <div class="feed-body">
+              <div class="feed-meta">
+                <strong class="text-dark">{{ e.agentName || '—' }}</strong>
+                {{ e.kind === entryKind.LeadAdded ? 'added' : activityMeta(e.activityType).label + ' on' }}
+                <a [routerLink]="['/crm/leads', e.leadId]">{{ e.leadName }}</a>
+                <span class="pill ms-1" [ngClass]="statusMeta(e.leadStatus).cls"><span class="pill-dot"></span>{{ statusMeta(e.leadStatus).label }}</span>
+                · <span [title]="e.at | date:'medium'">{{ relativeTime(e.at) }}</span>
+              </div>
+              <div class="feed-text" *ngIf="e.content">{{ e.content }}</div>
+            </div>
+          </div>
+          }
+          @if (!visibleFeed.length) {
+          <div class="empty-block">
+            <i class="mdi mdi-timeline-text-outline font-size-24 text-muted d-block mb-1"></i>
+            <div class="text-muted" style="font-size:13px">Nothing logged in this period.</div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
