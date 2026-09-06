@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { TenantService } from "./../../services/tenantService.service";
 import { SubscriptionService } from "./../../services/subscription.service";
 import { AnalyticsService } from "src/app/pages/dashboards/analytics.service";
@@ -71,7 +72,8 @@ export class TenantComponent implements OnInit {
     public tenantService: TenantService,
     public subscriptionService: SubscriptionService,
     private analyticsService: AnalyticsService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
   OnBeforeChange: Observable<boolean> = new Observable((observer) => {
     this.confirmModal.show();
@@ -79,8 +81,8 @@ export class TenantComponent implements OnInit {
 
   ngOnInit() {
     this.breadCrumbItems = [
-      { label: "Manage Tenant" },
-      { label: "List", active: true },
+      { label: "MENUITEMS.MANAGE_TENANT.TEXT" },
+      { label: "TENANT.LIST", active: true },
     ];
     this.getAllData(this.page, this.pageSize);
     this.loadStats();
@@ -183,13 +185,13 @@ export class TenantComponent implements OnInit {
   relativeCreated(creationTime?: string): string {
     if (!creationTime) return "-";
     const days = this.daysSinceCreation(creationTime);
-    if (days === 0) return "Today";
-    if (days === 1) return "Yesterday";
-    if (days < 30) return `${days} days ago`;
+    if (days === 0) return this.translate.instant("TENANT.TIME.TODAY");
+    if (days === 1) return this.translate.instant("TENANT.TIME.YESTERDAY");
+    if (days < 30) return this.translate.instant("TENANT.TIME.DAYS_AGO", { count: days });
     const months = Math.floor(days / 30);
-    if (months < 12) return `${months} month${months > 1 ? "s" : ""} ago`;
+    if (months < 12) return this.translate.instant("TENANT.TIME.MONTHS_AGO", { count: months });
     const years = Math.floor(days / 365);
-    return `${years} year${years > 1 ? "s" : ""} ago`;
+    return this.translate.instant("TENANT.TIME.YEARS_AGO", { count: years });
   }
 
   initials(name?: string): string {
@@ -237,16 +239,16 @@ export class TenantComponent implements OnInit {
   }
 
   subPillLabel(meta: SubscriptionMeta): string {
-    if (!meta.sub) return "No subscription";
+    if (!meta.sub) return this.translate.instant("TENANT.RENEWAL.NO_SUBSCRIPTION");
     switch (meta.bucket) {
       case "active":
-        return `${meta.daysRemaining} days left`;
+        return this.translate.instant("TENANT.RENEWAL.DAYS_LEFT", { days: meta.daysRemaining });
       case "expiring":
         return meta.daysRemaining <= 0
-          ? "Expires today"
-          : `Renew in ${meta.daysRemaining}d`;
+          ? this.translate.instant("TENANT.RENEWAL.EXPIRES_TODAY")
+          : this.translate.instant("TENANT.RENEWAL.RENEW_IN_DAYS", { days: meta.daysRemaining });
       case "expired":
-        return "Expired";
+        return this.translate.instant("TENANT.RENEWAL.EXPIRED");
       default:
         return "-";
     }
@@ -305,25 +307,26 @@ export class TenantComponent implements OnInit {
   }
 
   confirmActivation() {
+    const t = (key: string) => this.translate.instant(key);
     if (this.selectedTenant.isActive) {
       this.tenantService.deActivateTenant(this.selectedTenant.id).subscribe(
         () => {
-          this.toastr.success("Tenant DeActivated successfully");
+          this.toastr.success(t("TENANT.TOAST.DEACTIVATED"));
           this.getAllData(this.page, this.pageSize);
           this.loadStats();
           this.confirmModal.hide();
         },
-        () => this.toastr.error("Tenant DeActivated Failed")
+        () => this.toastr.error(t("TENANT.TOAST.DEACTIVATE_FAILED"))
       );
     } else {
       this.tenantService.activateTenant(this.selectedTenant.id).subscribe(
         () => {
-          this.toastr.success("Tenant Activated successfully");
+          this.toastr.success(t("TENANT.TOAST.ACTIVATED"));
           this.getAllData(this.page, this.pageSize);
           this.loadStats();
           this.confirmModal.hide();
         },
-        () => this.toastr.error("Tenant Activated Failed")
+        () => this.toastr.error(t("TENANT.TOAST.ACTIVATE_FAILED"))
       );
     }
   }
@@ -360,10 +363,10 @@ export class TenantComponent implements OnInit {
       .updateTenantQuota(this.tenantIdOfQuota, this.newQuota)
       .subscribe({
         next: () => {
-          this.toastr.success("Quota Updated successfully");
+          this.toastr.success(this.translate.instant("TENANT.TOAST.QUOTA_UPDATED"));
           this.getAllData(this.page, this.pageSize);
         },
-        error: () => this.toastr.error("Quota Updated Failed"),
+        error: () => this.toastr.error(this.translate.instant("TENANT.TOAST.QUOTA_UPDATE_FAILED")),
         complete: () => {
           this.updateQuota?.hide();
           this.isSubmitedNewQuota = false;
@@ -376,7 +379,7 @@ export class TenantComponent implements OnInit {
   }
   confirmDelete(id: any) {
     this.tenantService.deleteTenant(id).subscribe(() => {
-      this.toastr.success("deleted successfully", "Role");
+      this.toastr.success(this.translate.instant("TENANT.TOAST.DELETED"));
       this.getAllData(this.page, this.pageSize);
       this.loadStats();
     });
@@ -394,13 +397,13 @@ export class TenantComponent implements OnInit {
     if (this.fullDeleteConfirmText !== "delete") return;
     this.tenantService.fullDeleteTenant(this.fullDeleteId).subscribe(
       () => {
-        this.toastr.success("Tenant deleted permanently", "Tenant");
+        this.toastr.success(this.translate.instant("TENANT.TOAST.FULL_DELETED"));
         this.getAllData(this.page, this.pageSize);
         this.loadStats();
         this.fullDeleteModal?.hide();
       },
       () => {
-        this.toastr.error("Failed to delete tenant", "Tenant");
+        this.toastr.error(this.translate.instant("TENANT.TOAST.FULL_DELETE_FAILED"));
       }
     );
   }

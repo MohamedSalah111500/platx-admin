@@ -394,6 +394,102 @@
       }
     }
   },
+  "TENANT": {
+    "LIST": "List",
+    "TITLE": "Tenants",
+    "ADD": "Add Tenant",
+    "REFRESH": "Refresh",
+    "CLEAR": "clear",
+    "SHOWING_OF": "Showing {{shown}} of {{total}} tenants",
+    "FILTERED_BY": "filtered by {{filter}}",
+    "SEARCH_PLACEHOLDER": "Search name, domain, email...",
+    "PER_PAGE": "{{count}} / page",
+    "PAGINATION_RANGE": "Showing {{from}} – {{to}} of {{total}} tenants",
+    "NO_PLAN": "No plan",
+    "QUOTA": "Quota",
+    "QUOTA_INVALID": "Enter a valid quota.",
+    "CANCEL": "Cancel",
+    "CONFIRM_BTN": "Confirm",
+    "EMPTY_TITLE": "No tenants found",
+    "EMPTY_HINT": "Try adjusting the filter or search.",
+    "FILTER": {
+      "ALL": "All",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "EXPIRING": "Expiring soon",
+      "EXPIRED": "Expired"
+    },
+    "KPI": {
+      "TOTAL": "Total Tenants",
+      "TOTAL_SUB": "All registered workspaces",
+      "ACTIVE": "Active",
+      "ACTIVE_SUB": "Currently enabled",
+      "EXPIRING": "Expiring Soon",
+      "EXPIRING_SUB": "Renewal within 7 days",
+      "EXPIRED": "Expired",
+      "EXPIRED_SUB": "Needs renewal",
+      "INACTIVE": "Inactive",
+      "INACTIVE_SUB": "Disabled tenants"
+    },
+    "COL": {
+      "TENANT": "Tenant",
+      "CONTACT": "Contact",
+      "PLAN_QUOTA": "Plan & Quota",
+      "RENEWAL": "Renewal",
+      "CREATED": "Created",
+      "STATUS": "Status",
+      "ACTIONS": "Actions"
+    },
+    "TIME": {
+      "TODAY": "Today",
+      "YESTERDAY": "Yesterday",
+      "DAYS_AGO": "{{count}} days ago",
+      "MONTHS_AGO": "{{count}} months ago",
+      "YEARS_AGO": "{{count}} years ago"
+    },
+    "RENEWAL": {
+      "NO_SUBSCRIPTION": "No subscription",
+      "DAYS_LEFT": "{{days}} days left",
+      "EXPIRES_TODAY": "Expires today",
+      "RENEW_IN_DAYS": "Renew in {{days}}d",
+      "EXPIRED": "Expired",
+      "ENDS": "Ends"
+    },
+    "SWITCH": {
+      "ON": "On",
+      "OFF": "Off"
+    },
+    "ACTIONS": {
+      "EDIT": "Edit",
+      "MANAGE_SUBSCRIPTION": "Manage Subscription",
+      "MANAGE_DOMAINS": "Manage Domains",
+      "UPDATE_QUOTA": "Update Quota",
+      "SOFT_DELETE": "Soft Delete",
+      "FULL_DELETE": "Full Delete"
+    },
+    "CONFIRM": {
+      "REMOVE": "Are you sure you want to remove this row?",
+      "STATUS": "Are you sure you want to change the status?"
+    },
+    "FULL_DELETE": {
+      "BODY": "You are about to permanently delete tenant <strong>{{name}}</strong> and all its data.",
+      "WARNING": "This action cannot be undone.",
+      "CONFIRM_LABEL": "Type <strong>delete</strong> to confirm",
+      "PLACEHOLDER": "Type delete here",
+      "BUTTON": "Delete Permanently"
+    },
+    "TOAST": {
+      "ACTIVATED": "Tenant activated successfully",
+      "ACTIVATE_FAILED": "Failed to activate tenant",
+      "DEACTIVATED": "Tenant deactivated successfully",
+      "DEACTIVATE_FAILED": "Failed to deactivate tenant",
+      "QUOTA_UPDATED": "Quota updated successfully",
+      "QUOTA_UPDATE_FAILED": "Failed to update quota",
+      "DELETED": "Tenant deleted successfully",
+      "FULL_DELETED": "Tenant deleted permanently",
+      "FULL_DELETE_FAILED": "Failed to delete tenant"
+    }
+  },
   "CRM": {
     "MOVE_TO": "Move to",
     "STATUS": {

@@ -1,21 +1,100 @@
+// Vertical sidebar + main content flipping for RTL.
+// Without these rules the sidebar stays at left:0 and the content still has
+// margin-left, so the two overlap (see: user report of sidebar covering content).
 body[dir="rtl"] {
-  .navbar-nav .dropdown-menu {
-    text-align: right;
+  // ------------------------------------------------------------------
+  // Vertical sidebar (default expanded)
+  // ------------------------------------------------------------------
+  .vertical-menu {
+    left: auto;
+    right: 0;
   }
 
-  @include media-breakpoint-up(lg) {
-    .topnav .dropdown .dropdown-menu {
-      right: 0;
-      left: auto;
+  .main-content {
+    margin-left: 0;
+    margin-right: $sidebar-width;
+  }
 
-      .dropdown .dropdown-menu {
-        right: 100% !important;
-        left: auto !important;
-      }
+  // The topbar sits on top; its navbar-brand-box is the sidebar's "header".
+  .navbar-brand-box {
+    float: right;
+  }
+
+  // The little chevron next to expandable menu items — float should mirror
+  // and the rotate keyframe still points the arrow correctly on both sides,
+  // so we just swap the float here.
+  #sidebar-menu .has-arrow::after {
+    float: left;
+  }
+
+  // Sidebar menu links: icon should sit at the right in RTL, and text-align
+  // should be right so nested items don't drift.
+  #sidebar-menu ul li a {
+    text-align: right;
+
+    i {
+      margin-left: 10px;
+      margin-right: 0;
     }
   }
 
-  .topnav-menu .navbar-nav {
-    padding-right: 0;
+  // ------------------------------------------------------------------
+  // Collapsed sidebar (icon-only)
+  // ------------------------------------------------------------------
+  .vertical-collpsed .main-content {
+    margin-left: 0;
+    margin-right: $sidebar-collapsed-width;
+  }
+
+  .vertical-collpsed .vertical-menu #sidebar-menu > ul > li:hover > ul {
+    left: auto;
+    right: $sidebar-collapsed-width;
+  }
+
+  // ------------------------------------------------------------------
+  // Boxed layout
+  // ------------------------------------------------------------------
+  &[data-layout="boxed"] .main-content {
+    margin-left: 0;
+    margin-right: $sidebar-width;
+  }
+
+  // ------------------------------------------------------------------
+  // Mobile — the sidebar becomes an off-canvas panel from the right
+  // ------------------------------------------------------------------
+  @media (max-width: 992px) {
+    .main-content {
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // Topbar helpers
+  // ------------------------------------------------------------------
+  .navbar-header .float-end {
+    float: left !important;
+  }
+
+  #page-topbar .navbar-header > .d-flex:first-child {
+    // Left cluster (logo, menu button) stays on the right for RTL
+    float: right;
+  }
+
+  // Dropdown menus flip alignment
+  .dropdown-menu-end {
+    left: 0 !important;
+    right: auto !important;
+  }
+
+  // Search box search icon flips to the correct side
+  .app-search .position-relative .bx-search-alt,
+  .app-search .position-relative .search-icon {
+    left: 13px;
+    right: auto;
+  }
+  .app-search .form-control {
+    padding-right: 15px;
+    padding-left: 40px;
   }
 }

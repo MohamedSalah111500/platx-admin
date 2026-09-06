@@ -393,6 +393,102 @@
       }
     }
   },
+  "TENANT": {
+    "LIST": "القائمة",
+    "TITLE": "المنصات",
+    "ADD": "إضافة منصة",
+    "REFRESH": "تحديث",
+    "CLEAR": "مسح",
+    "SHOWING_OF": "عرض {{shown}} من إجمالي {{total}} منصة",
+    "FILTERED_BY": "مُصفَّى حسب {{filter}}",
+    "SEARCH_PLACEHOLDER": "بحث بالاسم، النطاق، البريد الإلكتروني...",
+    "PER_PAGE": "{{count}} / الصفحة",
+    "PAGINATION_RANGE": "عرض {{from}} – {{to}} من إجمالي {{total}} منصة",
+    "NO_PLAN": "بدون باقة",
+    "QUOTA": "الحصة",
+    "QUOTA_INVALID": "أدخل حصة صحيحة.",
+    "CANCEL": "إلغاء",
+    "CONFIRM_BTN": "تأكيد",
+    "EMPTY_TITLE": "لا توجد منصات",
+    "EMPTY_HINT": "جرب تعديل الفلتر أو البحث.",
+    "FILTER": {
+      "ALL": "الكل",
+      "ACTIVE": "نشطة",
+      "INACTIVE": "غير نشطة",
+      "EXPIRING": "على وشك الانتهاء",
+      "EXPIRED": "منتهية"
+    },
+    "KPI": {
+      "TOTAL": "إجمالي المنصات",
+      "TOTAL_SUB": "جميع المنصات المسجلة",
+      "ACTIVE": "نشطة",
+      "ACTIVE_SUB": "مفعّلة حالياً",
+      "EXPIRING": "على وشك الانتهاء",
+      "EXPIRING_SUB": "التجديد خلال 7 أيام",
+      "EXPIRED": "منتهية",
+      "EXPIRED_SUB": "تحتاج للتجديد",
+      "INACTIVE": "غير نشطة",
+      "INACTIVE_SUB": "منصات معطّلة"
+    },
+    "COL": {
+      "TENANT": "المنصة",
+      "CONTACT": "التواصل",
+      "PLAN_QUOTA": "الباقة والحصة",
+      "RENEWAL": "التجديد",
+      "CREATED": "تاريخ الإنشاء",
+      "STATUS": "الحالة",
+      "ACTIONS": "الإجراءات"
+    },
+    "TIME": {
+      "TODAY": "اليوم",
+      "YESTERDAY": "أمس",
+      "DAYS_AGO": "منذ {{count}} يوم",
+      "MONTHS_AGO": "منذ {{count}} شهر",
+      "YEARS_AGO": "منذ {{count}} سنة"
+    },
+    "RENEWAL": {
+      "NO_SUBSCRIPTION": "لا يوجد اشتراك",
+      "DAYS_LEFT": "متبقي {{days}} يوم",
+      "EXPIRES_TODAY": "تنتهي اليوم",
+      "RENEW_IN_DAYS": "التجديد خلال {{days}} يوم",
+      "EXPIRED": "منتهية",
+      "ENDS": "تنتهي في"
+    },
+    "SWITCH": {
+      "ON": "مفعّل",
+      "OFF": "متوقف"
+    },
+    "ACTIONS": {
+      "EDIT": "تعديل",
+      "MANAGE_SUBSCRIPTION": "إدارة الاشتراك",
+      "MANAGE_DOMAINS": "إدارة النطاقات",
+      "UPDATE_QUOTA": "تحديث الحصة",
+      "SOFT_DELETE": "حذف مؤقت",
+      "FULL_DELETE": "حذف نهائي"
+    },
+    "CONFIRM": {
+      "REMOVE": "هل أنت متأكد من حذف هذا العنصر؟",
+      "STATUS": "هل أنت متأكد من تغيير الحالة؟"
+    },
+    "FULL_DELETE": {
+      "BODY": "أنت على وشك حذف المنصة <strong>{{name}}</strong> نهائياً مع جميع بياناتها.",
+      "WARNING": "لا يمكن التراجع عن هذا الإجراء.",
+      "CONFIRM_LABEL": "اكتب <strong>delete</strong> للتأكيد",
+      "PLACEHOLDER": "اكتب delete هنا",
+      "BUTTON": "حذف نهائي"
+    },
+    "TOAST": {
+      "ACTIVATED": "تم تفعيل المنصة بنجاح",
+      "ACTIVATE_FAILED": "فشل تفعيل المنصة",
+      "DEACTIVATED": "تم إيقاف المنصة بنجاح",
+      "DEACTIVATE_FAILED": "فشل إيقاف المنصة",
+      "QUOTA_UPDATED": "تم تحديث الحصة بنجاح",
+      "QUOTA_UPDATE_FAILED": "فشل تحديث الحصة",
+      "DELETED": "تم حذف المنصة بنجاح",
+      "FULL_DELETED": "تم حذف المنصة نهائياً",
+      "FULL_DELETE_FAILED": "فشل حذف المنصة"
+    }
+  },
   "CRM": {
     "MOVE_TO": "نقل إلى",
     "STATUS": {

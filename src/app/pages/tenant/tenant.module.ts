@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { WidgetModule } from '../../shared/widget/widget.module';
 import { UIModule } from '../../shared/ui/ui.module';
@@ -37,7 +38,8 @@ import { TenantDomainsComponent } from './components/tenant-domains/tenant-domai
     BsDropdownModule,
     ModalModule,
     DropzoneModule,
-    UiSwitchModule
+    UiSwitchModule,
+    TranslateModule
   ]
 })
 export class TenantModule { }

@@ -1,5 +1,5 @@
 <div class="container-fluid tenant-page">
-  <app-page-title title="Tenant" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title [title]="'MENUITEMS.MANAGE_TENANT.TEXT' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <!-- KPI cards (wraps cleanly: 1 / 2 / 3 / 5 columns) -->
   <div class="row g-3 mb-3">
@@ -9,9 +9,9 @@
           <i class="mdi mdi-domain"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">Total Tenants</div>
+          <div class="kpi-label">{{ 'TENANT.KPI.TOTAL' | translate }}</div>
           <div class="kpi-value">{{ stats.total }}</div>
-          <div class="kpi-sub text-muted">All registered workspaces</div>
+          <div class="kpi-sub text-muted">{{ 'TENANT.KPI.TOTAL_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -21,9 +21,9 @@
           <i class="mdi mdi-check-decagram"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">Active</div>
+          <div class="kpi-label">{{ 'TENANT.KPI.ACTIVE' | translate }}</div>
           <div class="kpi-value">{{ stats.active }}</div>
-          <div class="kpi-sub text-success">Currently enabled</div>
+          <div class="kpi-sub text-success">{{ 'TENANT.KPI.ACTIVE_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -34,9 +34,9 @@
           <i class="mdi mdi-alarm-light"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">Expiring Soon</div>
+          <div class="kpi-label">{{ 'TENANT.KPI.EXPIRING' | translate }}</div>
           <div class="kpi-value">{{ stats.expiringSoon }}</div>
-          <div class="kpi-sub text-warning">Renewal within 7 days</div>
+          <div class="kpi-sub text-warning">{{ 'TENANT.KPI.EXPIRING_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -47,9 +47,9 @@
           <i class="mdi mdi-clock-alert-outline"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">Expired</div>
+          <div class="kpi-label">{{ 'TENANT.KPI.EXPIRED' | translate }}</div>
           <div class="kpi-value">{{ stats.expired }}</div>
-          <div class="kpi-sub text-danger">Needs renewal</div>
+          <div class="kpi-sub text-danger">{{ 'TENANT.KPI.EXPIRED_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -60,9 +60,9 @@
           <i class="mdi mdi-pause-circle-outline"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">Inactive</div>
+          <div class="kpi-label">{{ 'TENANT.KPI.INACTIVE' | translate }}</div>
           <div class="kpi-value">{{ stats.inactive }}</div>
-          <div class="kpi-sub text-muted">Disabled tenants</div>
+          <div class="kpi-sub text-muted">{{ 'TENANT.KPI.INACTIVE_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -75,35 +75,35 @@
         <div class="card-body">
           <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
             <div>
-              <h5 class="mb-0 fw-bold">Tenants</h5>
+              <h5 class="mb-0 fw-bold">{{ 'TENANT.TITLE' | translate }}</h5>
               <small class="text-muted">
-                Showing {{ list.length }} of {{ stats.total }} tenants
+                {{ 'TENANT.SHOWING_OF' | translate: { shown: list.length, total: stats.total } }}
                 <span *ngIf="statusFilter !== 'all'">·
-                  <span class="text-primary">filtered by {{ statusFilter }}</span>
-                  <a href="javascript:void(0)" class="ms-1" (click)="setFilter('all')">clear</a>
+                  <span class="text-primary">{{ 'TENANT.FILTERED_BY' | translate: { filter: (('TENANT.FILTER.' + statusFilter.toUpperCase()) | translate) } }}</span>
+                  <a href="javascript:void(0)" class="ms-1" (click)="setFilter('all')">{{ 'TENANT.CLEAR' | translate }}</a>
                 </span>
               </small>
             </div>
             <div class="d-flex flex-wrap gap-2 align-items-center">
               <div class="search-box">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Search name, domain, email..."
+                  <input type="text" class="form-control" [placeholder]="'TENANT.SEARCH_PLACEHOLDER' | translate"
                     [(ngModel)]="term" (ngModelChange)="search()" />
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
               <select class="form-select page-size-select" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
-                <option [ngValue]="10">10 / page</option>
-                <option [ngValue]="25">25 / page</option>
-                <option [ngValue]="50">50 / page</option>
-                <option [ngValue]="100">100 / page</option>
+                <option [ngValue]="10">{{ 'TENANT.PER_PAGE' | translate: { count: 10 } }}</option>
+                <option [ngValue]="25">{{ 'TENANT.PER_PAGE' | translate: { count: 25 } }}</option>
+                <option [ngValue]="50">{{ 'TENANT.PER_PAGE' | translate: { count: 50 } }}</option>
+                <option [ngValue]="100">{{ 'TENANT.PER_PAGE' | translate: { count: 100 } }}</option>
               </select>
               <button type="button" class="btn btn-outline-secondary" [disabled]="loading"
-                (click)="refresh()" title="Refresh">
+                (click)="refresh()" [title]="'TENANT.REFRESH' | translate">
                 <i class="mdi mdi-refresh" [class.mdi-spin]="loading"></i>
               </button>
               <button type="button" [routerLink]="['/tenant/add-edit']" class="btn btn-success">
-                <i class="mdi mdi-plus me-1"></i> Add Tenant
+                <i class="mdi mdi-plus me-1"></i> {{ 'TENANT.ADD' | translate }}
               </button>
             </div>
           </div>
@@ -117,13 +117,13 @@
               <thead>
                 <tr>
                   <th style="width:42px">#</th>
-                  <th>Tenant</th>
-                  <th>Contact</th>
-                  <th>Plan & Quota</th>
-                  <th>Renewal</th>
-                  <th>Created</th>
-                  <th>Status</th>
-                  <th style="width:80px" class="text-end">Actions</th>
+                  <th>{{ 'TENANT.COL.TENANT' | translate }}</th>
+                  <th>{{ 'TENANT.COL.CONTACT' | translate }}</th>
+                  <th>{{ 'TENANT.COL.PLAN_QUOTA' | translate }}</th>
+                  <th>{{ 'TENANT.COL.RENEWAL' | translate }}</th>
+                  <th>{{ 'TENANT.COL.CREATED' | translate }}</th>
+                  <th>{{ 'TENANT.COL.STATUS' | translate }}</th>
+                  <th style="width:80px" class="text-end">{{ 'TENANT.COL.ACTIONS' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -166,11 +166,11 @@
                       </div>
                     </ng-container>
                     <ng-template #noPlan>
-                      <div class="text-muted font-size-13">No plan</div>
+                      <div class="text-muted font-size-13">{{ 'TENANT.NO_PLAN' | translate }}</div>
                     </ng-template>
                     <div class="font-size-12 text-muted mt-1">
                       <i class="mdi mdi-alpha-k-circle text-secondary me-1"></i>
-                      Quota: <span class="fw-medium text-dark">{{ item.quotaAI || 0 }}</span>
+                      {{ 'TENANT.QUOTA' | translate }}: <span class="fw-medium text-dark">{{ item.quotaAI || 0 }}</span>
                     </div>
                   </td>
 
@@ -182,7 +182,7 @@
                         {{ subPillLabel(meta) }}
                       </span>
                       <div class="font-size-11 text-muted mt-1" *ngIf="meta.sub">
-                        Ends {{ meta.sub.endDate | date:'mediumDate' }}
+                        {{ 'TENANT.RENEWAL.ENDS' | translate }} {{ meta.sub.endDate | date:'mediumDate' }}
                       </div>
                     </ng-container>
                   </td>
@@ -199,7 +199,8 @@
 
                   <!-- Status switch -->
                   <td>
-                    <ui-switch id="isActive" uncheckedLabel="Off" checkedLabel="On" size="small"
+                    <ui-switch id="isActive" [uncheckedLabel]="'TENANT.SWITCH.OFF' | translate"
+                      [checkedLabel]="'TENANT.SWITCH.ON' | translate" size="small"
                       [beforeChange]="OnBeforeChange" (click)="onToggle($event, item)" [checked]="item.isActive">
                     </ui-switch>
                   </td>
@@ -214,25 +215,25 @@
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
                         <li>
                           <a href="javascript:void(0);" (click)="edit(item)" class="dropdown-item">
-                            <i class="mdi mdi-pencil-outline text-success me-2"></i> Edit
+                            <i class="mdi mdi-pencil-outline text-success me-2"></i> {{ 'TENANT.ACTIONS.EDIT' | translate }}
                           </a>
                         </li>
                         <li>
                           <a href="javascript:void(0);" (click)="manageSubscription(item)" class="dropdown-item">
                             <i class="mdi mdi-credit-card-refresh-outline text-primary me-2"></i>
-                            Manage Subscription
+                            {{ 'TENANT.ACTIONS.MANAGE_SUBSCRIPTION' | translate }}
                           </a>
                         </li>
                         <li>
                           <a href="javascript:void(0);" (click)="domainsModal.open(item)" class="dropdown-item">
                             <i class="mdi mdi-web text-info me-2"></i>
-                            Manage Domains
+                            {{ 'TENANT.ACTIONS.MANAGE_DOMAINS' | translate }}
                           </a>
                         </li>
                         <li>
                           <a href="javascript:void(0);" (click)="openUpgradeQuotaModal(item.id, item.quotaAI)"
                             class="dropdown-item">
-                            <i class="mdi mdi-alpha-k-circle text-secondary me-2"></i> Update Quota
+                            <i class="mdi mdi-alpha-k-circle text-secondary me-2"></i> {{ 'TENANT.ACTIONS.UPDATE_QUOTA' | translate }}
                           </a>
                         </li>
                         <li>
@@ -240,13 +241,13 @@
                         </li>
                         <li>
                           <a href="javascript:void(0);" (click)="openDeleteModel(item.id)" class="dropdown-item">
-                            <i class="mdi mdi-trash-can-outline text-warning me-2"></i> Soft Delete
+                            <i class="mdi mdi-trash-can-outline text-warning me-2"></i> {{ 'TENANT.ACTIONS.SOFT_DELETE' | translate }}
                           </a>
                         </li>
                         <li>
                           <a href="javascript:void(0);" (click)="openFullDeleteModel(item.id, item.title)"
                             class="dropdown-item">
-                            <i class="mdi mdi-delete-forever-outline text-danger me-2"></i> Full Delete
+                            <i class="mdi mdi-delete-forever-outline text-danger me-2"></i> {{ 'TENANT.ACTIONS.FULL_DELETE' | translate }}
                           </a>
                         </li>
                       </ul>
@@ -259,8 +260,8 @@
                   <td colspan="8">
                     <div class="empty-block">
                       <i class="mdi mdi-domain-off font-size-32 text-muted mb-2 d-block"></i>
-                      <div class="fw-semibold text-dark">No tenants found</div>
-                      <div class="text-muted font-size-13">Try adjusting the filter or search.</div>
+                      <div class="fw-semibold text-dark">{{ 'TENANT.EMPTY_TITLE' | translate }}</div>
+                      <div class="text-muted font-size-13">{{ 'TENANT.EMPTY_HINT' | translate }}</div>
                     </div>
                   </td>
                 </tr>
@@ -272,11 +273,7 @@
           <div class="row mt-3">
             <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2">
               <small class="text-muted">
-                Showing
-                <strong>{{ (page - 1) * pageSize + (list.length ? 1 : 0) }}</strong>
-                –
-                <strong>{{ (page - 1) * pageSize + list.length }}</strong>
-                of <strong>{{ stats.total }}</strong> tenants
+                {{ 'TENANT.PAGINATION_RANGE' | translate: { from: (page - 1) * pageSize + (list.length ? 1 : 0), to: (page - 1) * pageSize + list.length, total: stats.total } }}
               </small>
               <ul class="pagination pagination-rounded mb-0">
                 <pagination class="pagination-wrap hstack gap-2" [totalItems]="stats.total" [itemsPerPage]="pageSize"
@@ -292,13 +289,13 @@
 
 <!-- removeItemModal -->
 <div bsModal #removeItemModal="bs-modal" class="modal fade" id="removeItemModal" tabindex="-1" aria-hidden="true">
-  <platx-confirm-model [title]="'Are you sure you want to remove this row?'" (confirm)="confirmDelete(deleteId)"
+  <platx-confirm-model [title]="'TENANT.CONFIRM.REMOVE' | translate" (confirm)="confirmDelete(deleteId)"
     (cancel)="removeItemModal.hide()" />
 </div>
 
 <!-- confirmModal -->
 <div bsModal #confirmModal="bs-modal" class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
-  <platx-confirm-model [title]="'Are you sure you want to Change Status?'" (confirm)="confirmActivation()"
+  <platx-confirm-model [title]="'TENANT.CONFIRM.STATUS' | translate" (confirm)="confirmActivation()"
     (cancel)="confirmModal.hide()" />
 </div>
 
@@ -308,20 +305,20 @@
     <div class="modal-content">
       <div class="modal-body p-4 text-center">
         <i class="mdi mdi-alert-circle-outline text-danger" style="font-size: 48px;"></i>
-        <p class="text-muted font-size-16 mb-2 mt-2">
-          You are about to permanently delete tenant <strong>{{ fullDeleteTenantName }}</strong> and all its data.
+        <p class="text-muted font-size-16 mb-2 mt-2"
+          [innerHTML]="'TENANT.FULL_DELETE.BODY' | translate: { name: fullDeleteTenantName }">
         </p>
-        <p class="text-danger font-size-14 mb-3">This action cannot be undone.</p>
-        <label class="form-label">Type <strong>delete</strong> to confirm</label>
+        <p class="text-danger font-size-14 mb-3">{{ 'TENANT.FULL_DELETE.WARNING' | translate }}</p>
+        <label class="form-label" [innerHTML]="'TENANT.FULL_DELETE.CONFIRM_LABEL' | translate"></label>
         <input type="text" class="form-control text-center" [(ngModel)]="fullDeleteConfirmText"
-          placeholder="Type delete here" />
+          [placeholder]="'TENANT.FULL_DELETE.PLACEHOLDER' | translate" />
         <div class="hstack gap-2 justify-content-center mb-0 mt-3">
           <button type="button" class="btn btn-danger me-1" [disabled]="fullDeleteConfirmText !== 'delete'"
             (click)="confirmFullDelete()">
-            Delete Permanently
+            {{ 'TENANT.FULL_DELETE.BUTTON' | translate }}
           </button>
           <button type="button" class="btn btn-secondary" (click)="cancelFullDelete()">
-            Cancel
+            {{ 'TENANT.CANCEL' | translate }}
           </button>
         </div>
       </div>
@@ -336,18 +333,18 @@
   <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content">
       <div class="modal-body p-4 text-center">
-        <label for="quota">Quota *</label>
+        <label for="quota">{{ 'TENANT.QUOTA' | translate }} *</label>
         <input type="number" id="quota" class="form-control" [(ngModel)]="newQuota" placeholder="30" />
         <div *ngIf="isSubmitedNewQuota && !newQuota" class="text-danger text-start">
-          Enter a valid quota.
+          {{ 'TENANT.QUOTA_INVALID' | translate }}
         </div>
 
         <div class="hstack gap-2 justify-content-center mb-0 mt-2">
           <button type="button" class="btn btn-primary me-1" (click)="onConfirmChangeQuota()">
-            Confirm
+            {{ 'TENANT.CONFIRM_BTN' | translate }}
           </button>
           <button type="button" class="btn btn-secondary" (click)="onCancelChangeQuota()">
-            Cancel
+            {{ 'TENANT.CANCEL' | translate }}
           </button>
         </div>
       </div>
