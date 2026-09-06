@@ -3,8 +3,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <div>
-          <h5 class="modal-title mb-0"><i class="mdi mdi-whatsapp text-success me-1"></i> Import from WhatsApp</h5>
-          <small class="text-muted">Paste one customer per line — name and phone in any order.</small>
+          <h5 class="modal-title mb-0"><i class="mdi mdi-whatsapp text-success me-1"></i> {{ 'CRM.IMPORT.TITLE' | translate }}</h5>
+          <small class="text-muted">{{ 'CRM.IMPORT.SUBTITLE' | translate }}</small>
         </div>
         <button type="button" class="btn-close" (click)="close()"></button>
       </div>
@@ -12,20 +12,16 @@
       <div class="modal-body">
         <div class="row g-3">
           <div class="col-lg-5">
-            <label class="form-label">Paste contacts</label>
+            <label class="form-label">{{ 'CRM.IMPORT.PASTE_CONTACTS' | translate }}</label>
             <textarea class="form-control font-monospace" rows="14" [(ngModel)]="raw" (ngModelChange)="parse()"
-              name="raw" dir="ltr" placeholder="Ahmed Academy, +20 100 123 4567
-+966 50 123 4567, Sara Learning Center, sara@mail.com
-Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
+              name="raw" dir="ltr" [placeholder]="'CRM.IMPORT.PASTE_PLACEHOLDER' | translate"></textarea>
             <div class="form-hint mt-1">
-              Separate fields with comma, semicolon, tab or “|”. Lines without a valid phone are ignored.
-              Duplicate phones (already in the CRM) are skipped automatically.
-              A CSV with a header row (<code>Name, Phone, Status, Priority, Notes</code>) is also accepted — e.g. the output of the WhatsApp classifier script.
+              {{ 'CRM.IMPORT.HINT' | translate }}
             </div>
 
             <div class="row g-2 mt-2">
               <div class="col-sm-6">
-                <label class="form-label">Source</label>
+                <label class="form-label">{{ 'CRM.LEADS.COL.SOURCE' | translate }}</label>
                 <select class="form-select" [(ngModel)]="source" name="source">
                   @for (s of sources; track s.value) {
                   <option [ngValue]="s.value">{{ s.label | translate }}</option>
@@ -33,9 +29,9 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
                 </select>
               </div>
               <div class="col-sm-6" *ngIf="isSuperAdmin">
-                <label class="form-label">Assign to</label>
+                <label class="form-label">{{ 'CRM.IMPORT.ASSIGN_TO' | translate }}</label>
                 <select class="form-select" [(ngModel)]="assignedToUserId" name="assignedToUserId">
-                  <option [ngValue]="null">Unassigned</option>
+                  <option [ngValue]="null">{{ 'CRM.LEADS.UNASSIGNED' | translate }}</option>
                   @for (a of activeAgents; track a.id) {
                   <option [ngValue]="a.id">{{ a.firstName }} {{ a.lastName }}</option>
                   }
@@ -46,9 +42,9 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
 
           <div class="col-lg-7">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <label class="form-label mb-0">Preview</label>
+              <label class="form-label mb-0">{{ 'CRM.IMPORT.PREVIEW' | translate }}</label>
               <span class="pill" [ngClass]="rows.length ? 'st-won' : 'fu-none'">
-                {{ rows.length }} ready{{ rows.length > maxRows ? ' · first ' + maxRows + ' will be imported' : '' }}
+                {{ 'CRM.IMPORT.READY_COUNT' | translate: { count: rows.length } }}<span *ngIf="rows.length > maxRows"> · {{ 'CRM.IMPORT.FIRST_LIMIT' | translate: { count: maxRows } }}</span>
               </span>
             </div>
             <div class="table-responsive border rounded-3" style="max-height: 420px; overflow-y: auto;">
@@ -56,10 +52,10 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
                 <thead>
                   <tr>
                     <th style="width:40px">#</th>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th *ngIf="hasStatus">Status</th>
-                    <th>Email / Notes</th>
+                    <th>{{ 'CRM.IMPORT.COL.NAME' | translate }}</th>
+                    <th>{{ 'CRM.IMPORT.COL.PHONE' | translate }}</th>
+                    <th *ngIf="hasStatus">{{ 'CRM.LEADS.COL.STATUS' | translate }}</th>
+                    <th>{{ 'CRM.IMPORT.COL.EMAIL_NOTES' | translate }}</th>
                     <th style="width:44px"></th>
                   </tr>
                 </thead>
@@ -80,7 +76,7 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
                       <span *ngIf="!row.email && !row.notes">—</span>
                     </td>
                     <td class="text-end">
-                      <button type="button" class="icon-btn" title="Remove" (click)="remove(i)">
+                      <button type="button" class="icon-btn" [title]="'CRM.IMPORT.REMOVE' | translate" (click)="remove(i)">
                         <i class="mdi mdi-close"></i>
                       </button>
                     </td>
@@ -91,7 +87,7 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
                     <td [attr.colspan]="hasStatus ? 6 : 5">
                       <div class="empty-block">
                         <i class="mdi mdi-clipboard-text-outline font-size-24 text-muted d-block mb-1"></i>
-                        <div class="text-muted" style="font-size:13px">Parsed contacts will appear here.</div>
+                        <div class="text-muted" style="font-size:13px">{{ 'CRM.IMPORT.EMPTY_HINT' | translate }}</div>
                       </div>
                     </td>
                   </tr>
@@ -104,11 +100,11 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="close()">Cancel</button>
+        <button type="button" class="btn btn-light" (click)="close()">{{ 'COMMON.CANCEL' | translate }}</button>
         <button type="button" class="btn btn-success" (click)="submit()" [disabled]="saving || !rows.length">
           <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
           <i class="mdi mdi-database-import-outline me-1" *ngIf="!saving"></i>
-          Import {{ rows.length ? (rows.length > maxRows ? maxRows : rows.length) : '' }} leads
+          {{ 'CRM.IMPORT.IMPORT_BTN' | translate: { count: (rows.length ? (rows.length > maxRows ? maxRows : rows.length) : 0) } }}
         </button>
       </div>
     </div>

@@ -5,7 +5,7 @@
         <div class="modal-header">
           <h5 class="modal-title mb-0">
             <i class="mdi me-1" [ngClass]="editing ? 'mdi-account-edit-outline' : 'mdi-account-plus-outline'"></i>
-            {{ editing ? 'Edit Lead' : 'New Lead' }}
+            {{ (editing ? 'CRM.LEAD_FORM.EDIT_LEAD' : 'CRM.LEAD_FORM.NEW_LEAD') | translate }}
           </h5>
           <button type="button" class="btn-close" (click)="close()"></button>
         </div>
@@ -13,33 +13,33 @@
         <div class="modal-body">
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label">Name <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" formControlName="name" placeholder="Customer or academy name"
+              <label class="form-label">{{ 'CRM.LEAD_FORM.NAME' | translate }} <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="name" [placeholder]="'CRM.LEAD_FORM.NAME_PLACEHOLDER' | translate"
                 [class.is-invalid]="submitted && f['name'].errors" />
-              <div class="invalid-feedback" *ngIf="submitted && f['name'].errors">Name is required (max 150 chars).</div>
+              <div class="invalid-feedback" *ngIf="submitted && f['name'].errors">{{ 'CRM.LEAD_FORM.NAME_ERROR' | translate }}</div>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">WhatsApp / Phone <span class="text-danger">*</span></label>
+              <label class="form-label">{{ 'CRM.LEAD_FORM.PHONE' | translate }} <span class="text-danger">*</span></label>
               <input type="tel" class="form-control" formControlName="phone" placeholder="+20 10 1234 5678" dir="ltr"
                 [class.is-invalid]="submitted && f['phone'].errors" />
-              <div class="invalid-feedback" *ngIf="submitted && f['phone'].errors">Enter a valid phone (7–15 digits).</div>
+              <div class="invalid-feedback" *ngIf="submitted && f['phone'].errors">{{ 'CRM.LEAD_FORM.PHONE_ERROR' | translate }}</div>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Email</label>
+              <label class="form-label">{{ 'CRM.LEAD_FORM.EMAIL' | translate }}</label>
               <input type="email" class="form-control" formControlName="email" placeholder="name@example.com" dir="ltr"
                 [class.is-invalid]="submitted && f['email'].errors" />
-              <div class="invalid-feedback" *ngIf="submitted && f['email'].errors">Enter a valid email.</div>
+              <div class="invalid-feedback" *ngIf="submitted && f['email'].errors">{{ 'CRM.LEAD_FORM.EMAIL_ERROR' | translate }}</div>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Organization / Academy</label>
-              <input type="text" class="form-control" formControlName="organization" placeholder="Optional" />
+              <label class="form-label">{{ 'CRM.LEAD_FORM.ORGANIZATION' | translate }}</label>
+              <input type="text" class="form-control" formControlName="organization" [placeholder]="'CRM.LEAD_FORM.OPTIONAL' | translate" />
             </div>
 
             <div class="col-md-4">
-              <label class="form-label">Source</label>
+              <label class="form-label">{{ 'CRM.LEADS.COL.SOURCE' | translate }}</label>
               <select class="form-select" formControlName="source">
                 @for (s of sources; track s.value) {
                 <option [ngValue]="s.value">{{ s.label | translate }}</option>
@@ -48,7 +48,7 @@
             </div>
 
             <div class="col-md-4">
-              <label class="form-label">Priority</label>
+              <label class="form-label">{{ 'CRM.LEADS.COL.PRIORITY' | translate }}</label>
               <select class="form-select" formControlName="priority">
                 @for (p of priorities; track p.value) {
                 <option [ngValue]="p.value">{{ p.label | translate }}</option>
@@ -57,48 +57,48 @@
             </div>
 
             <div class="col-md-4">
-              <label class="form-label">Interested plan</label>
-              <input type="text" class="form-control" formControlName="interestedPlan" placeholder="e.g. Pro" />
+              <label class="form-label">{{ 'CRM.LEAD_FORM.INTERESTED_PLAN' | translate }}</label>
+              <input type="text" class="form-control" formControlName="interestedPlan" [placeholder]="'CRM.LEAD_FORM.INTERESTED_PLAN_PLACEHOLDER' | translate" />
             </div>
 
             <div class="col-md-4">
-              <label class="form-label">Country</label>
-              <input type="text" class="form-control" formControlName="country" placeholder="Optional" />
+              <label class="form-label">{{ 'CRM.LEAD_FORM.COUNTRY' | translate }}</label>
+              <input type="text" class="form-control" formControlName="country" [placeholder]="'CRM.LEAD_FORM.OPTIONAL' | translate" />
             </div>
 
             <div class="col-md-4">
-              <label class="form-label">City</label>
-              <input type="text" class="form-control" formControlName="city" placeholder="Optional" />
+              <label class="form-label">{{ 'CRM.LEAD_FORM.CITY' | translate }}</label>
+              <input type="text" class="form-control" formControlName="city" [placeholder]="'CRM.LEAD_FORM.OPTIONAL' | translate" />
             </div>
 
             <div class="col-md-4">
-              <label class="form-label">Next follow-up</label>
+              <label class="form-label">{{ 'CRM.LEAD_FORM.NEXT_FOLLOWUP' | translate }}</label>
               <input type="datetime-local" class="form-control" formControlName="nextFollowUpAt" />
             </div>
 
             <div class="col-md-12" *ngIf="isSuperAdmin">
-              <label class="form-label">Assigned to</label>
+              <label class="form-label">{{ 'CRM.LEAD_FORM.ASSIGNED_TO' | translate }}</label>
               <select class="form-select" formControlName="assignedToUserId">
-                <option [ngValue]="null">Unassigned</option>
+                <option [ngValue]="null">{{ 'CRM.LEADS.UNASSIGNED' | translate }}</option>
                 @for (a of activeAgents; track a.id) {
-                <option [ngValue]="a.id">{{ a.firstName }} {{ a.lastName }}{{ a.isSuperAdmin ? ' (Owner)' : '' }}</option>
+                <option [ngValue]="a.id">{{ a.firstName }} {{ a.lastName }}{{ a.isSuperAdmin ? (' (' + ('CRM.AGENTS.ROLE_OWNER' | translate) + ')') : '' }}</option>
                 }
               </select>
             </div>
 
             <div class="col-12">
-              <label class="form-label">Notes</label>
+              <label class="form-label">{{ 'CRM.LEAD_FORM.NOTES' | translate }}</label>
               <textarea class="form-control" rows="3" formControlName="notes"
-                placeholder="What did they ask about? Any context from the WhatsApp chat..."></textarea>
+                [placeholder]="'CRM.LEAD_FORM.NOTES_PLACEHOLDER' | translate"></textarea>
             </div>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-light" (click)="close()">Cancel</button>
+          <button type="button" class="btn btn-light" (click)="close()">{{ 'COMMON.CANCEL' | translate }}</button>
           <button type="submit" class="btn btn-primary" [disabled]="saving">
             <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
-            {{ editing ? 'Save changes' : 'Add lead' }}
+            {{ (editing ? 'CRM.LEAD_FORM.SAVE_CHANGES' : 'CRM.LEAD_FORM.ADD_LEAD') | translate }}
           </button>
         </div>
       </form>

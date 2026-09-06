@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <app-page-title
-    title="Plans"
+    [title]="'PLANS.TITLE' | translate"
     [breadcrumbItems]="breadCrumbItems"
   ></app-page-title>
 
@@ -16,7 +16,7 @@
                     type="text"
                     class="form-control"
                     id="searchTableList"
-                    placeholder="Search..."
+                    [placeholder]="'COMMON.SEARCH' | translate"
                     [(ngModel)]="term"
                     (ngModelChange)="search()"
                   />
@@ -32,26 +32,21 @@
                   [routerLink]="['/tenant/add-edit']"
                   class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"
                 >
-                  <i class="mdi mdi-plus me-1"></i> Add New
+                  <i class="mdi mdi-plus me-1"></i> {{ 'PLANS.ADD_NEW' | translate }}
                 </button>
               </div>
             </div>
-            <!-- end col-->
           </div>
-          <!-- end row -->
-          <!-- plans.component.html -->
-          <div *ngIf="loading">Loading plans...</div>
+
+          <div *ngIf="loading">{{ 'PLANS.LOADING' | translate }}</div>
           <div *ngIf="error">{{ error }}</div>
 
           <section class="pricing-plans text-center">
             <div class="container">
               <div class="row justify-content-md-center">
                 <div class="col-sm-12 col-md-8 col-md-offset-2">
-                  <h1 class="section-title">Pricing Plans</h1>
-                  <p class="lead">
-                    Our cloud hosting plans are designed for companies of all
-                    sizes.
-                  </p>
+                  <h1 class="section-title">{{ 'PLANS.HERO_TITLE' | translate }}</h1>
+                  <p class="lead">{{ 'PLANS.HERO_SUBTITLE' | translate }}</p>
                 </div>
               </div>
               <div class="row">
@@ -59,15 +54,11 @@
                 <div class="col-md-4 animated">
                   <div class="card pricing-box rounded">
                     <div class="card-block">
-                      <h4 class="card-title">
-                        {{ plan.name }}
-                      </h4>
+                      <h4 class="card-title">{{ plan.name }}</h4>
                       <h6 class="card-text">
                         <sup class="currency"> $ </sup>
-                        <span class="amount">
-                          {{ plan.price }}
-                        </span>
-                        <span class="month"> / mo </span>
+                        <span class="amount">{{ plan.price }}</span>
+                        <span class="month"> / {{ 'PLANS.PER_MONTH' | translate }} </span>
                       </h6>
                     </div>
                     <ul class="list-group list-group-flush">
@@ -81,16 +72,16 @@
                       <a
                         href="#"
                         class="btn btn-outline-start"
-                        title="Get Started"
+                        [title]="'PLANS.GET_STARTED' | translate"
                       >
-                        Get Started
+                        {{ 'PLANS.GET_STARTED' | translate }}
                       </a>
                       <button
                         type="button"
                         class="btn btn-sm btn-outline-secondary ms-2"
                         (click)="openLimitsModal(limitsTpl, plan)"
                       >
-                        <i class="mdi mdi-tune me-1"></i> Edit Limits
+                        <i class="mdi mdi-tune me-1"></i> {{ 'PLANS.EDIT_LIMITS' | translate }}
                       </button>
                     </div>
                   </div>
@@ -108,7 +99,7 @@
 <!-- Plan Limits Modal -->
 <ng-template #limitsTpl>
   <div class="modal-header">
-    <h5 class="modal-title">Edit Limits — {{ editingPlanName }}</h5>
+    <h5 class="modal-title">{{ 'PLANS.EDIT_LIMITS_FOR' | translate: { name: editingPlanName } }}</h5>
     <button type="button" class="btn-close" (click)="limitsModalRef?.hide()"></button>
   </div>
   <div class="modal-body">
@@ -116,9 +107,7 @@
       <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
     </div>
     <ng-container *ngIf="!limitsLoading">
-      <p class="text-muted mb-3" style="font-size:13px">
-        Use <strong>-1</strong> for unlimited. Boolean limits: <strong>1</strong> = enabled, <strong>0</strong> = disabled.
-      </p>
+      <p class="text-muted mb-3" style="font-size:13px" [innerHTML]="'PLANS.LIMITS_HINT' | translate"></p>
       <div class="mb-3" *ngFor="let def of definitions">
         <label class="form-label fw-semibold">
           {{ def.displayName }}
@@ -135,9 +124,9 @@
     </ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-light" (click)="limitsModalRef?.hide()">Cancel</button>
+    <button type="button" class="btn btn-light" (click)="limitsModalRef?.hide()">{{ 'COMMON.CANCEL' | translate }}</button>
     <button type="button" class="btn btn-primary" [disabled]="limitsLoading || limitsSaving" (click)="savePlanLimits()">
-      {{ limitsSaving ? 'Saving…' : 'Save Limits' }}
+      {{ (limitsSaving ? 'PLANS.SAVING' : 'PLANS.SAVE_LIMITS') | translate }}
     </button>
   </div>
 </ng-template>
@@ -152,14 +141,13 @@
   aria-hidden="true"
 >
   <platx-confirm-model
-    [title]="'Are you sure you want to remove this row?'"
+    [title]="'PLANS.CONFIRM_REMOVE' | translate"
     (confirm)="confirmDelete(deleteId)"
     (cancel)="removeItemModal.hide()"
   />
 </div>
-<!-- end removeItemModal -->
 
-<!-- removeItemModal -->
+<!-- confirmModal -->
 <div
   bsModal
   #confirmModal="bs-modal"
@@ -169,9 +157,8 @@
   aria-hidden="true"
 >
   <platx-confirm-model
-    [title]="'Are you sure you want to Cange Status?'"
+    [title]="'PLANS.CONFIRM_STATUS' | translate"
     (confirm)="confirmActivation()"
     (cancel)="confirmModal.hide()"
   />
 </div>
-<!-- end confirmModal -->

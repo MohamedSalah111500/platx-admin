@@ -1,18 +1,18 @@
 <div class="container-fluid crm-page">
-  <app-page-title title="CRM · Pipeline" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title [title]="'CRM.PIPELINE.PAGE_TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <div>
-      <h5 class="mb-0 fw-bold">Sales pipeline</h5>
-      <small class="text-muted">{{ openCount }} open lead{{ openCount === 1 ? '' : 's' }} · showing up to 30 per stage</small>
+      <h5 class="mb-0 fw-bold">{{ 'CRM.PIPELINE.TITLE' | translate }}</h5>
+      <small class="text-muted">{{ 'CRM.PIPELINE.OPEN_COUNT' | translate: { count: openCount } }}</small>
     </div>
     <div class="d-flex flex-wrap gap-2 align-items-center">
       <div class="form-check form-switch mb-0">
         <input class="form-check-input" type="checkbox" id="showClosed" [(ngModel)]="showClosed" />
-        <label class="form-check-label" for="showClosed" style="font-size:13px">Show Won / Lost</label>
+        <label class="form-check-label" for="showClosed" style="font-size:13px">{{ 'CRM.PIPELINE.SHOW_CLOSED' | translate }}</label>
       </div>
-      <button type="button" class="btn btn-light" (click)="load()"><i class="mdi mdi-refresh"></i></button>
-      <button type="button" class="btn btn-primary" (click)="leadForm.open()"><i class="mdi mdi-plus me-1"></i> New lead</button>
+      <button type="button" class="btn btn-light" (click)="load()" [title]="'COMMON.REFRESH' | translate"><i class="mdi mdi-refresh"></i></button>
+      <button type="button" class="btn btn-primary" (click)="leadForm.open()"><i class="mdi mdi-plus me-1"></i> {{ 'CRM.LEADS.NEW_LEAD' | translate }}</button>
     </div>
   </div>
 
@@ -36,30 +36,30 @@
               <div class="lead-org text-truncate" *ngIf="lead.organization">{{ lead.organization }}</div>
             </div>
             <div dropdown class="d-inline-block" container="body">
-              <button dropdownToggle type="button" class="icon-btn" title="Move to..."><i class="mdi mdi-dots-vertical"></i></button>
+              <button dropdownToggle type="button" class="icon-btn" [title]="'CRM.MOVE_TO' | translate"><i class="mdi mdi-dots-vertical"></i></button>
               <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
-                <li class="dropdown-header px-2 py-1 text-muted" style="font-size:12px">Move to</li>
+                <li class="dropdown-header px-2 py-1 text-muted" style="font-size:12px">{{ 'CRM.MOVE_TO' | translate }}</li>
                 @for (s of statuses; track s.value) {
                 <li *ngIf="s.value !== lead.status">
                   <a href="javascript:void(0)" class="dropdown-item" (click)="move(lead, s.value)"><i class="mdi {{ s.icon }} me-2"></i>{{ s.label | translate }}</a>
                 </li>
                 }
                 <li><hr class="dropdown-divider" /></li>
-                <li><a [routerLink]="['/crm/leads', lead.id]" class="dropdown-item"><i class="mdi mdi-eye-outline me-2"></i>Open</a></li>
+                <li><a [routerLink]="['/crm/leads', lead.id]" class="dropdown-item"><i class="mdi mdi-eye-outline me-2"></i>{{ 'CRM.PIPELINE.OPEN' | translate }}</a></li>
               </ul>
             </div>
           </div>
 
           <div class="d-flex align-items-center gap-2 mt-2">
-            <a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="wa-btn" title="WhatsApp"><i class="mdi mdi-whatsapp"></i></a>
+            <a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="wa-btn" [title]="'CRM.LEADS.ACTIONS.WHATSAPP' | translate"><i class="mdi mdi-whatsapp"></i></a>
             <span dir="ltr" style="font-size:13px" class="text-body">{{ lead.phone }}</span>
             <span class="pill ms-auto" [ngClass]="priorityMeta(lead.priority).cls"><i class="mdi {{ priorityMeta(lead.priority).icon }}"></i></span>
           </div>
 
           <div class="lead-meta">
-            <span class="d-inline-flex align-items-center gap-1 text-truncate" [title]="lead.assignedToName || 'Unassigned'">
+            <span class="d-inline-flex align-items-center gap-1 text-truncate" [title]="lead.assignedToName || ('CRM.LEADS.UNASSIGNED' | translate)">
               <span class="crm-avatar crm-avatar-sm" *ngIf="lead.assignedToName" [style.background]="avatarColor(lead.assignedToUserId)">{{ initials(lead.assignedToName) }}</span>
-              <span class="text-truncate">{{ lead.assignedToName || 'Unassigned' }}</span>
+              <span class="text-truncate">{{ lead.assignedToName || ('CRM.LEADS.UNASSIGNED' | translate) }}</span>
             </span>
             <span *ngIf="lead.nextFollowUpAt" class="pill" [ngClass]="'fu-' + (followUpState(lead.nextFollowUpAt) || 'none')">
               <i class="mdi mdi-bell-outline"></i>{{ relativeTime(lead.nextFollowUpAt) }}
@@ -68,7 +68,7 @@
         </div>
         }
         @if (!col.leads.length) {
-        <div class="column-empty">No leads here</div>
+        <div class="column-empty">{{ 'CRM.PIPELINE.NO_LEADS' | translate }}</div>
         }
       </div>
     </div>

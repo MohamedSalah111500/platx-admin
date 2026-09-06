@@ -5,20 +5,20 @@
     <div class="col-12">
       <div class="page-title-box d-sm-flex align-items-center justify-content-between">
         <div class="dashboard-header">
-          <h4 class="mb-1 font-size-18">Company Dashboard</h4>
-          <p class="text-muted mb-0 font-size-13">Cross-tenant analytics for the whole platform</p>
+          <h4 class="mb-1 font-size-18">{{ 'DASHBOARD.TITLE' | translate }}</h4>
+          <p class="text-muted mb-0 font-size-13">{{ 'DASHBOARD.SUBTITLE' | translate }}</p>
         </div>
         <div class="d-flex align-items-center gap-3">
           @if (growth?.mostActiveMonthLabel) {
           <div class="text-muted">
             <i class="bx bx-trophy text-warning me-1"></i>
-            Most active month:
+            {{ 'DASHBOARD.MOST_ACTIVE' | translate }}:
             <span class="fw-semibold">{{ growth.mostActiveMonthLabel }}</span>
-            ({{ growth.mostActiveMonthEnrollments }} enrollments)
+            ({{ 'DASHBOARD.ENROLLMENTS_COUNT' | translate: { count: growth.mostActiveMonthEnrollments } }})
           </div>
           }
           <button type="button" class="btn btn-outline-primary btn-sm" [disabled]="loading" (click)="refresh()">
-            <i class="bx bx-refresh" [class.bx-spin]="loading"></i> Refresh
+            <i class="bx bx-refresh" [class.bx-spin]="loading"></i> {{ 'COMMON.REFRESH' | translate }}
           </button>
         </div>
       </div>
@@ -31,7 +31,7 @@
       <div class="card revenue-hero">
         <div class="card-body d-flex flex-wrap align-items-center justify-content-between gap-3">
           <div>
-            <p class="text-muted mb-1 text-uppercase fw-semibold font-size-12">Total Money Coming In</p>
+            <p class="text-muted mb-1 text-uppercase fw-semibold font-size-12">{{ 'DASHBOARD.TOTAL_MONEY' | translate }}</p>
             <h1 class="revenue-hero-amount mb-0 fw-bold">
               {{ primaryRevenue().amount | number: '1.0-0' }}
               <span class="revenue-hero-currency text-muted fw-medium">{{ primaryRevenue().currency }}</span>
@@ -62,7 +62,7 @@
             <i class="bx {{ stat.icon }}"></i>
           </div>
           <div class="flex-grow-1">
-            <p class="text-muted mb-1">{{ stat.title }}</p>
+            <p class="text-muted mb-1">{{ stat.title | translate }}</p>
             <h4 class="mb-0">{{ stat.value }}</h4>
           </div>
         </div>
@@ -76,7 +76,7 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title mb-4"><i class="bx bx-line-chart text-primary me-1"></i> Growth — last 12 months</h4>
+          <h4 class="card-title mb-4"><i class="bx bx-line-chart text-primary me-1"></i> {{ 'DASHBOARD.GROWTH' | translate }}</h4>
           @if (growthChart) {
           <apx-chart dir="ltr" class="apex-charts"
             [chart]="growthChart.chart"
@@ -89,7 +89,7 @@
             [plotOptions]="growthChart.plotOptions">
           </apx-chart>
           } @else {
-          <div class="text-center py-5 text-muted">Loading…</div>
+          <div class="text-center py-5 text-muted">{{ 'COMMON.LOADING' | translate }}</div>
           }
         </div>
       </div>
@@ -105,7 +105,7 @@
             <i class="bx bx-wallet"></i>
           </div>
           <div class="flex-grow-1">
-            <p class="text-muted mb-1">Monthly Recurring Revenue</p>
+            <p class="text-muted mb-1">{{ 'DASHBOARD.MRR' | translate }}</p>
             @if ((revenue?.monthlyRecurringRevenue || []).length > 0) {
             @for (m of revenue.monthlyRecurringRevenue; track m.currency) {
             <h5 class="mb-0">{{ m.amount | currency: m.currency : 'symbol-narrow' : '1.0-0' }}</h5>
@@ -125,10 +125,10 @@
             <i class="bx bx-badge-check"></i>
           </div>
           <div class="flex-grow-1">
-            <p class="text-muted mb-1">Active Subscriptions</p>
+            <p class="text-muted mb-1">{{ 'DASHBOARD.ACTIVE_SUBS' | translate }}</p>
             <h4 class="mb-0">{{ revenue?.activeSubscriptions ?? 0 | number }}</h4>
             @if (revenue?.trialSubscriptions) {
-            <p class="text-muted mb-0 font-size-12">{{ revenue.trialSubscriptions }} on trial</p>
+            <p class="text-muted mb-0 font-size-12">{{ 'DASHBOARD.ON_TRIAL' | translate: { count: revenue.trialSubscriptions } }}</p>
             }
           </div>
         </div>
@@ -142,7 +142,7 @@
             <i class="bx bx-time-five"></i>
           </div>
           <div class="flex-grow-1">
-            <p class="text-muted mb-1">Expiring in 30 Days</p>
+            <p class="text-muted mb-1">{{ 'DASHBOARD.EXPIRING_30' | translate }}</p>
             <h4 class="mb-0">{{ revenue?.expiringSoon30d ?? 0 | number }}</h4>
           </div>
         </div>
@@ -157,7 +157,7 @@
               <i class="bx bx-error-circle"></i>
             </div>
             <div class="flex-grow-1">
-              <p class="text-muted mb-1">Pending Renewal Requests</p>
+              <p class="text-muted mb-1">{{ 'DASHBOARD.PENDING_RENEWALS' | translate }}</p>
               <h4 class="mb-0">{{ revenue?.pendingRenewalRequests ?? 0 | number }}</h4>
             </div>
             <i class="bx bx-chevron-right text-muted font-size-20"></i>
@@ -173,12 +173,12 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title mb-4"><i class="bx bx-pie-chart-alt-2 text-primary me-1"></i> Plan Distribution</h4>
+          <h4 class="card-title mb-4"><i class="bx bx-pie-chart-alt-2 text-primary me-1"></i> {{ 'DASHBOARD.PLAN_DIST' | translate }}</h4>
           @for (p of revenue.planDistribution; track p.planName) {
           <div class="mb-3">
             <div class="d-flex justify-content-between mb-1">
               <span class="fw-medium">{{ p.displayName || p.planName }}</span>
-              <span class="text-muted">{{ p.count | number }} tenant{{ p.count === 1 ? '' : 's' }}</span>
+              <span class="text-muted">{{ 'DASHBOARD.TENANTS_COUNT' | translate: { count: p.count } }}</span>
             </div>
             <div class="progress" style="height: 8px;">
               <div class="progress-bar bg-primary rounded" role="progressbar"
@@ -198,10 +198,10 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
-            <h4 class="card-title mb-0 me-auto"><i class="bx bx-money text-primary me-1"></i> Tenant Subscriptions</h4>
+            <h4 class="card-title mb-0 me-auto"><i class="bx bx-money text-primary me-1"></i> {{ 'DASHBOARD.TENANT_SUBS' | translate }}</h4>
             @for (t of revenue?.totalRevenue || []; track t.currency) {
             <span class="badge bg-soft-success text-success font-size-13">
-              Total: {{ t.amount | currency: t.currency : 'symbol-narrow' : '1.0-0' }}
+              {{ 'DASHBOARD.TOTAL' | translate }}: {{ t.amount | currency: t.currency : 'symbol-narrow' : '1.0-0' }}
             </span>
             }
           </div>
@@ -209,11 +209,11 @@
             <table class="table align-middle table-nowrap table-hover mb-0">
               <thead class="table-light">
                 <tr>
-                  <th>Academy</th>
-                  <th>Plan</th>
-                  <th class="text-end">Price</th>
-                  <th>Billing</th>
-                  <th>Renews On</th>
+                  <th>{{ 'DASHBOARD.COL.ACADEMY' | translate }}</th>
+                  <th>{{ 'DASHBOARD.COL.PLAN' | translate }}</th>
+                  <th class="text-end">{{ 'DASHBOARD.COL.PRICE' | translate }}</th>
+                  <th>{{ 'DASHBOARD.COL.BILLING' | translate }}</th>
+                  <th>{{ 'DASHBOARD.COL.RENEWS' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -224,7 +224,7 @@
                       <span class="avatar-initials">{{ initials(t.tenantTitle) }}</span>
                       <span class="fw-semibold">{{ t.tenantTitle }}</span>
                       @if (t.isTrialPeriod) {
-                      <span class="badge bg-soft-info text-info font-size-11">Trial</span>
+                      <span class="badge bg-soft-info text-info font-size-11">{{ 'DASHBOARD.TRIAL' | translate }}</span>
                       }
                     </div>
                   </td>
@@ -235,7 +235,7 @@
                 </tr>
                 }
                 @if ((revenue?.tenantRevenues || []).length === 0) {
-                <tr><td colspan="5" class="text-center text-muted py-3">No data</td></tr>
+                <tr><td colspan="5" class="text-center text-muted py-3">{{ 'DASHBOARD.NO_DATA' | translate }}</td></tr>
                 }
               </tbody>
             </table>
@@ -250,7 +250,7 @@
     <div class="col-xl-5">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title mb-4"><i class="bx bx-pulse text-primary me-1"></i> Actions Taken</h4>
+          <h4 class="card-title mb-4"><i class="bx bx-pulse text-primary me-1"></i> {{ 'DASHBOARD.ACTIONS_TAKEN' | translate }}</h4>
           <div class="table-responsive">
             <table class="table align-middle table-nowrap table-hover mb-0">
               <tbody>
@@ -263,7 +263,7 @@
                       </span>
                     </div>
                   </td>
-                  <td>{{ a.label }}</td>
+                  <td>{{ a.label | translate }}</td>
                   <td class="text-end fw-semibold">{{ a.value | number }}</td>
                 </tr>
                 }
@@ -279,18 +279,18 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="card-title mb-0"><i class="bx bx-buildings text-primary me-1"></i> Top Tenants</h4>
+            <h4 class="card-title mb-0"><i class="bx bx-buildings text-primary me-1"></i> {{ 'DASHBOARD.TOP_TENANTS' | translate }}</h4>
             <a routerLink="/tenant" class="text-primary font-size-13">
-              View All Tenants <i class="bx bx-right-arrow-alt"></i>
+              {{ 'DASHBOARD.VIEW_ALL' | translate }} <i class="bx bx-right-arrow-alt"></i>
             </a>
           </div>
           <div class="table-responsive">
             <table class="table align-middle table-nowrap table-hover mb-0">
               <thead class="table-light">
                 <tr>
-                  <th>Academy</th>
-                  <th class="text-end">Students</th>
-                  <th class="text-end">Enrollments</th>
+                  <th>{{ 'DASHBOARD.COL.ACADEMY' | translate }}</th>
+                  <th class="text-end">{{ 'DASHBOARD.COL.STUDENTS' | translate }}</th>
+                  <th class="text-end">{{ 'DASHBOARD.COL.ENROLLMENTS' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -307,7 +307,7 @@
                 </tr>
                 }
                 @if ((engagement?.topTenants || []).length === 0) {
-                <tr><td colspan="3" class="text-center text-muted py-3">No data</td></tr>
+                <tr><td colspan="3" class="text-center text-muted py-3">{{ 'DASHBOARD.NO_DATA' | translate }}</td></tr>
                 }
               </tbody>
             </table>
@@ -323,20 +323,20 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
-            <h4 class="card-title mb-0 me-auto"><i class="bx bx-user-circle text-primary me-1"></i> Recently Active Users</h4>
+            <h4 class="card-title mb-0 me-auto"><i class="bx bx-user-circle text-primary me-1"></i> {{ 'DASHBOARD.RECENT_USERS' | translate }}</h4>
             @if (engagement) {
-            <span class="badge bg-soft-success text-success font-size-12">Active 7d: {{ engagement.activeUsers7d }}</span>
-            <span class="badge bg-soft-primary text-primary font-size-12">Active 30d: {{ engagement.activeUsers30d }}</span>
+            <span class="badge bg-soft-success text-success font-size-12">{{ 'DASHBOARD.ACTIVE_7D' | translate }}: {{ engagement.activeUsers7d }}</span>
+            <span class="badge bg-soft-primary text-primary font-size-12">{{ 'DASHBOARD.ACTIVE_30D' | translate }}: {{ engagement.activeUsers30d }}</span>
             }
           </div>
           <div class="table-responsive">
             <table class="table align-middle table-nowrap table-hover mb-0">
               <thead class="table-light">
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Academy</th>
-                  <th>Last Active</th>
+                  <th>{{ 'DASHBOARD.COL.NAME' | translate }}</th>
+                  <th>{{ 'DASHBOARD.COL.EMAIL' | translate }}</th>
+                  <th>{{ 'DASHBOARD.COL.ACADEMY' | translate }}</th>
+                  <th>{{ 'DASHBOARD.COL.LAST_ACTIVE' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -354,7 +354,7 @@
                 </tr>
                 }
                 @if ((engagement?.recentActiveUsers || []).length === 0) {
-                <tr><td colspan="4" class="text-center text-muted py-3">No data</td></tr>
+                <tr><td colspan="4" class="text-center text-muted py-3">{{ 'DASHBOARD.NO_DATA' | translate }}</td></tr>
                 }
               </tbody>
             </table>

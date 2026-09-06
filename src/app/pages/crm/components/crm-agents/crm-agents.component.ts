@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { CrmService } from "../../services/crm.service";
 import { CrmAuthService } from "../../services/crm-auth.service";
 import { avatarColor, initials, relativeTime } from "../../crm-utils";
@@ -30,7 +31,15 @@ export class CrmAgentsComponent implements OnInit {
   @ViewChild("editModal") editModal?: ModalDirective;
   @ViewChild("resetModal") resetModal?: ModalDirective;
 
-  constructor(private crm: CrmService, private auth: CrmAuthService, private toastr: ToastrService) {}
+  constructor(
+    private crm: CrmService,
+    private auth: CrmAuthService,
+    private toastr: ToastrService,
+    private translate: TranslateService
+  ) {}
+
+  private t(key: string): string { return this.translate.instant(key); }
+  private crmTitle(): string { return this.translate.instant("MENUITEMS.CRM.TEXT"); }
 
   ngOnInit() {
     this.load();
@@ -69,7 +78,7 @@ export class CrmAgentsComponent implements OnInit {
     this.crm.createAgent({ ...m, email: m.email.trim() }).subscribe({
       next: () => {
         this.saving = false;
-        this.toastr.success("Agent account created", "CRM");
+        this.toastr.success(this.t("CRM.AGENTS.TOAST.CREATED"), this.crmTitle());
         this.createModal?.hide();
         this.load();
       },
@@ -91,7 +100,7 @@ export class CrmAgentsComponent implements OnInit {
     this.crm.updateAgent(this.editTarget.id, this.editModel).subscribe({
       next: () => {
         this.saving = false;
-        this.toastr.success("Agent updated", "CRM");
+        this.toastr.success(this.t("CRM.AGENTS.TOAST.UPDATED"), this.crmTitle());
         this.editModal?.hide();
         this.load();
       },
@@ -103,7 +112,10 @@ export class CrmAgentsComponent implements OnInit {
     this.crm
       .updateAgent(agent.id, { firstName: agent.firstName, lastName: agent.lastName, isActive: !agent.isActive })
       .subscribe(() => {
-        this.toastr.success(agent.isActive ? "Agent deactivated" : "Agent activated", "CRM");
+        this.toastr.success(
+          this.t(agent.isActive ? "CRM.AGENTS.TOAST.DEACTIVATED" : "CRM.AGENTS.TOAST.ACTIVATED"),
+          this.crmTitle()
+        );
         this.load();
       });
   }
@@ -122,7 +134,7 @@ export class CrmAgentsComponent implements OnInit {
     this.crm.resetAgentPassword(this.resetTarget.id, this.resetModel.newPassword).subscribe({
       next: () => {
         this.saving = false;
-        this.toastr.success("Password reset", "CRM");
+        this.toastr.success(this.t("CRM.AGENTS.TOAST.PASSWORD_RESET"), this.crmTitle());
         this.resetModal?.hide();
       },
       error: () => (this.saving = false),

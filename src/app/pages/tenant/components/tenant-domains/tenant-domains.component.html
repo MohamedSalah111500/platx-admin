@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <div>
-          <h5 class="modal-title mb-0">Custom Domains</h5>
+          <h5 class="modal-title mb-0">{{ 'DOMAINS.TITLE' | translate }}</h5>
           <div class="text-muted font-size-13" *ngIf="tenant">
             {{ tenant.title }} <span class="mx-1">·</span> platx.net/{{ tenant.domain }}
           </div>
@@ -14,24 +14,19 @@
       <div class="modal-body">
         <form [formGroup]="addForm" (ngSubmit)="addDomain()" class="add-row">
           <div class="flex-grow-1">
-            <input
-              type="text"
-              class="form-control"
-              formControlName="host"
-              placeholder="e.g. pathology-academy.online"
-              autocomplete="off"
-              (blur)="normalizeHostInput()"
-            />
+            <input type="text" class="form-control" formControlName="host"
+              [placeholder]="'DOMAINS.HOST_PLACEHOLDER' | translate" autocomplete="off"
+              (blur)="normalizeHostInput()" dir="ltr" />
             <div class="text-danger font-size-12 mt-1" *ngIf="addForm.get('host')?.touched && addForm.get('host')?.hasError('pattern')">
-              Not a valid domain name.
+              {{ 'DOMAINS.INVALID' | translate }}
             </div>
           </div>
           <button type="submit" class="btn btn-primary" [disabled]="saving">
             <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
-            <i *ngIf="!saving" class="mdi mdi-plus me-1"></i> Add
+            <i *ngIf="!saving" class="mdi mdi-plus me-1"></i> {{ 'DOMAINS.ADD' | translate }}
           </button>
         </form>
-        <div class="form-text mb-3">Bare domain only — no https:// or www. Both www and non-www will open this platform.</div>
+        <div class="form-text mb-3">{{ 'DOMAINS.BARE_HINT' | translate }}</div>
 
         <div *ngIf="loading" class="text-center py-4">
           <div class="spinner-border spinner-border-sm text-primary"></div>
@@ -40,32 +35,32 @@
         <ng-container *ngIf="!loading">
           <div class="empty-state text-center py-4" *ngIf="domains.length === 0">
             <i class="mdi mdi-web-off text-muted" style="font-size: 32px"></i>
-            <p class="text-muted mb-0 mt-2">No custom domain yet — add one above.</p>
+            <p class="text-muted mb-0 mt-2">{{ 'DOMAINS.EMPTY' | translate }}</p>
           </div>
 
           <div class="domain-list" *ngIf="domains.length > 0">
             <div class="domain-row" *ngFor="let d of domains">
               <div class="d-flex align-items-center gap-2 min-w-0">
-                <a [href]="'https://' + d.host" target="_blank" rel="noopener" class="host-link text-truncate">{{ d.host }}</a>
-                <button type="button" class="btn btn-link btn-xs p-0 text-muted" (click)="copy(d.host)" title="Copy">
+                <a [href]="'https://' + d.host" target="_blank" rel="noopener" class="host-link text-truncate" dir="ltr">{{ d.host }}</a>
+                <button type="button" class="btn btn-link btn-xs p-0 text-muted" (click)="copy(d.host)" [title]="'DOMAINS.COPY' | translate">
                   <i class="mdi mdi-content-copy"></i>
                 </button>
-                <span class="pill pill-primary" *ngIf="d.isPrimary"><span class="status-dot"></span> Primary</span>
+                <span class="pill pill-primary" *ngIf="d.isPrimary"><span class="status-dot"></span> {{ 'DOMAINS.PRIMARY' | translate }}</span>
               </div>
 
               <div class="d-flex align-items-center gap-3">
                 <ng-container *ngIf="domainToRemove?.id !== d.id">
                   <button type="button" class="btn btn-link btn-xs p-0" *ngIf="!d.isPrimary" (click)="setPrimary(d)">
-                    Make primary
+                    {{ 'DOMAINS.MAKE_PRIMARY' | translate }}
                   </button>
                   <button type="button" class="btn btn-link btn-xs p-0 text-danger" (click)="askRemove(d)">
-                    Unlink
+                    {{ 'DOMAINS.UNLINK' | translate }}
                   </button>
                 </ng-container>
                 <ng-container *ngIf="domainToRemove?.id === d.id">
-                  <span class="font-size-13 text-danger">Unlink?</span>
-                  <button type="button" class="btn btn-danger btn-sm" [disabled]="saving" (click)="confirmRemove()">Yes</button>
-                  <button type="button" class="btn btn-light btn-sm" (click)="cancelRemove()">No</button>
+                  <span class="font-size-13 text-danger">{{ 'DOMAINS.UNLINK_ASK' | translate }}</span>
+                  <button type="button" class="btn btn-danger btn-sm" [disabled]="saving" (click)="confirmRemove()">{{ 'DOMAINS.YES' | translate }}</button>
+                  <button type="button" class="btn btn-light btn-sm" (click)="cancelRemove()">{{ 'DOMAINS.NO' | translate }}</button>
                 </ng-container>
               </div>
             </div>
@@ -74,23 +69,23 @@
 
         <button type="button" class="btn btn-link btn-xs p-0 mt-3" (click)="showChecklist = !showChecklist">
           <i class="mdi" [ngClass]="showChecklist ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
-          DNS &amp; hosting setup for a new domain
+          {{ 'DOMAINS.SETUP_TITLE' | translate }}
         </button>
         <ol class="checklist mt-2" *ngIf="showChecklist">
           <li>
-            <strong>DNS</strong> — <code>A</code> record <code>&#64;</code> → <code>{{ dnsARecordIp }}</code>
+            <strong>{{ 'DOMAINS.STEP_DNS' | translate }}</strong> — <code>A</code> record <code>&#64;</code> → <code>{{ dnsARecordIp }}</code>
             <button type="button" class="btn btn-link btn-xs p-0" (click)="copy(dnsARecordIp)"><i class="mdi mdi-content-copy"></i></button>
-            and <code>CNAME</code> <code>www</code> → <code>{{ dnsCnameTarget }}</code>
+            {{ 'DOMAINS.AND' | translate }} <code>CNAME</code> <code>www</code> → <code>{{ dnsCnameTarget }}</code>
             <button type="button" class="btn btn-link btn-xs p-0" (click)="copy(dnsCnameTarget)"><i class="mdi mdi-content-copy"></i></button>
           </li>
-          <li><strong>Hosting</strong> — in MonsterASP add the domain (and www) to the portal site, issue Let's Encrypt, force HTTPS.</li>
-          <li><strong>Link</strong> — add the domain here.</li>
-          <li><strong>Google login</strong> (optional) — add <code>https://&lt;domain&gt;/auth/callback</code> to the OAuth client's redirect URIs.</li>
+          <li><strong>{{ 'DOMAINS.STEP_HOSTING' | translate }}</strong> — {{ 'DOMAINS.STEP_HOSTING_HINT' | translate }}</li>
+          <li><strong>{{ 'DOMAINS.STEP_LINK' | translate }}</strong> — {{ 'DOMAINS.STEP_LINK_HINT' | translate }}</li>
+          <li><strong>{{ 'DOMAINS.STEP_GOOGLE' | translate }}</strong> — {{ 'DOMAINS.STEP_GOOGLE_HINT' | translate }}</li>
         </ol>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="close()">Done</button>
+        <button type="button" class="btn btn-secondary" (click)="close()">{{ 'DOMAINS.DONE' | translate }}</button>
       </div>
     </div>
   </div>

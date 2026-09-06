@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { CrmService } from "../../services/crm.service";
 import { CrmAuthService } from "../../services/crm-auth.service";
 import { avatarColor, followUpState, fromInputDateTime, initials, relativeTime, waLink } from "../../crm-utils";
@@ -57,8 +58,14 @@ export class CrmLeadDetailsComponent implements OnInit {
     private router: Router,
     private crm: CrmService,
     private auth: CrmAuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private translate: TranslateService
   ) {}
+
+  private t(key: string, params?: object): string {
+    return this.translate.instant(key, params);
+  }
+  private crmTitle(): string { return this.translate.instant("MENUITEMS.CRM.TEXT"); }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -125,7 +132,7 @@ export class CrmLeadDetailsComponent implements OnInit {
           this.activities = [activity, ...this.activities];
           this.activitiesTotal++;
           this.newActivity = { type: this.newActivity.type, content: "", nextFollowUpAt: "", markAsContacted: false };
-          this.toastr.success("Activity logged", "CRM");
+          this.toastr.success(this.t("CRM.LEAD_DETAILS.TOAST.ACTIVITY_LOGGED"), this.crmTitle());
           this.loadLead();
         },
         error: () => (this.savingActivity = false),
@@ -151,7 +158,12 @@ export class CrmLeadDetailsComponent implements OnInit {
     if (!this.lead || (this.lead.assignedToUserId || null) === userId) return;
     this.crm.assign(this.lead.id, userId).subscribe((lead) => {
       this.lead = lead;
-      this.toastr.success(lead.assignedToName ? `Assigned to ${lead.assignedToName}` : "Unassigned", "CRM");
+      this.toastr.success(
+        lead.assignedToName
+          ? this.t("CRM.TOAST.ASSIGNED_TO", { name: lead.assignedToName })
+          : this.t("CRM.LEADS.UNASSIGNED"),
+        this.crmTitle()
+      );
       this.loadActivities(true);
     });
   }
@@ -159,7 +171,7 @@ export class CrmLeadDetailsComponent implements OnInit {
   confirmDelete() {
     if (!this.lead) return;
     this.crm.deleteLead(this.lead.id).subscribe(() => {
-      this.toastr.success("Lead deleted", "CRM");
+      this.toastr.success(this.t("CRM.LEADS.TOAST.DELETED"), this.crmTitle());
       this.router.navigate(["/crm/leads"]);
     });
     this.removeModal?.hide();

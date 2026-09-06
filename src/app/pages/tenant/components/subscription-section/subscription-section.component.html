@@ -4,20 +4,15 @@
     <div class="card-body sub-header">
       <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
         <div>
-          <h4 class="mb-1 fw-bold">Plan & Billing</h4>
-          <p class="text-muted mb-0">Manage subscription plan, expiry and renewals</p>
+          <h4 class="mb-1 fw-bold">{{ 'SUB_SECTION.TITLE' | translate }}</h4>
+          <p class="text-muted mb-0">{{ 'SUB_SECTION.SUBTITLE' | translate }}</p>
         </div>
         <div class="d-flex flex-wrap gap-2">
-          <button
-            type="button"
-            class="btn btn-action"
-            [disabled]="!current"
-            (click)="openExtendModal(extendTpl)"
-          >
-            <i class="mdi mdi-calendar-plus me-1"></i> Extend
+          <button type="button" class="btn btn-action" [disabled]="!current" (click)="openExtendModal(extendTpl)">
+            <i class="mdi mdi-calendar-plus me-1"></i> {{ 'SUB_SECTION.EXTEND' | translate }}
           </button>
           <button type="button" class="btn btn-primary" (click)="openAssignModal(assignTpl)">
-            <i class="mdi mdi-plus me-1"></i> Assign Plan
+            <i class="mdi mdi-plus me-1"></i> {{ 'SUB_SECTION.ASSIGN_PLAN' | translate }}
           </button>
         </div>
       </div>
@@ -26,7 +21,7 @@
     <!-- Current plan -->
     <div class="card-body sub-section">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6 class="fw-semibold mb-0">Current plan</h6>
+        <h6 class="fw-semibold mb-0">{{ 'SUB_SECTION.CURRENT_PLAN' | translate }}</h6>
       </div>
 
       <ng-container *ngIf="current; else noCurrent">
@@ -34,27 +29,27 @@
           <div class="col-md-6">
             <div class="info-tile h-100">
               <div class="d-flex justify-content-between align-items-start mb-2">
-                <span class="info-label">Plan</span>
+                <span class="info-label">{{ 'SUB_SECTION.PLAN' | translate }}</span>
                 <div class="d-flex gap-2 flex-wrap">
                   <span class="pill pill-soft">
                     {{ current.subscriptionPlan?.displayName || current.subscriptionPlan?.name }}
                   </span>
                   <span class="pill" [ngClass]="pillClass(current.status)">
                     <span class="status-dot" [ngClass]="dotClass(current.status)"></span>
-                    {{ statusLabel(current.status) }}
+                    {{ statusLabel(current.status) | translate }}
                   </span>
                 </div>
               </div>
               <div class="info-value">{{ current.amountPaid }} {{ current.currency }}</div>
-              <div class="info-sub">per period</div>
+              <div class="info-sub">{{ 'SUB_SECTION.PER_PERIOD' | translate }}</div>
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="info-tile h-100">
-              <span class="info-label d-block mb-2">Expiry date</span>
+              <span class="info-label d-block mb-2">{{ 'SUB_SECTION.EXPIRY_DATE' | translate }}</span>
               <div class="info-value">{{ current.endDate | date: "MMM d, yyyy" }}</div>
-              <div class="info-sub">{{ daysRemaining(current.endDate) }} days remaining</div>
+              <div class="info-sub">{{ 'SUB_SECTION.DAYS_REMAINING' | translate: { days: daysRemaining(current.endDate) } }}</div>
             </div>
           </div>
         </div>
@@ -65,45 +60,45 @@
           <div class="empty-icon mx-auto mb-3">
             <i class="mdi mdi-credit-card-outline"></i>
           </div>
-          <h6 class="fw-semibold mb-2">No active subscription</h6>
-          <p class="text-muted mb-3">Click "Assign Plan" above to set one for this tenant.</p>
+          <h6 class="fw-semibold mb-2">{{ 'SUB_SECTION.NO_ACTIVE' | translate }}</h6>
+          <p class="text-muted mb-3">{{ 'SUB_SECTION.NO_ACTIVE_HINT' | translate }}</p>
         </div>
       </ng-template>
     </div>
 
     <!-- Details -->
     <div class="card-body sub-section" *ngIf="current">
-      <h6 class="fw-semibold mb-2">Subscription details</h6>
-      <p class="text-muted mb-3">Information about the current subscription period</p>
+      <h6 class="fw-semibold mb-2">{{ 'SUB_SECTION.DETAILS' | translate }}</h6>
+      <p class="text-muted mb-3">{{ 'SUB_SECTION.DETAILS_HINT' | translate }}</p>
 
       <div class="row g-3">
         <div class="col-md-3">
           <div class="info-tile h-100">
-            <span class="info-label">Start date</span>
+            <span class="info-label">{{ 'SUB_SECTION.START_DATE' | translate }}</span>
             <div class="info-value-sm">{{ current.startDate | date: "MMM d, yyyy" }}</div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="info-tile h-100">
-            <span class="info-label">Status</span>
+            <span class="info-label">{{ 'SUB_SECTION.STATUS' | translate }}</span>
             <div class="info-value-sm">
               <span class="pill" [ngClass]="pillClass(current.status)">
                 <span class="status-dot" [ngClass]="dotClass(current.status)"></span>
-                {{ statusLabel(current.status) }}
+                {{ statusLabel(current.status) | translate }}
               </span>
             </div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="info-tile h-100">
-            <span class="info-label">Days remaining</span>
-            <div class="info-value-sm">{{ daysRemaining(current.endDate) }} days</div>
+            <span class="info-label">{{ 'SUB_SECTION.DAYS_REMAINING_LABEL' | translate }}</span>
+            <div class="info-value-sm">{{ 'SUB_SECTION.N_DAYS' | translate: { days: daysRemaining(current.endDate) } }}</div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="info-tile h-100">
-            <span class="info-label">Total history</span>
-            <div class="info-value-sm">{{ history.length }} entries</div>
+            <span class="info-label">{{ 'SUB_SECTION.TOTAL_HISTORY' | translate }}</span>
+            <div class="info-value-sm">{{ 'SUB_SECTION.N_ENTRIES' | translate: { count: history.length } }}</div>
           </div>
         </div>
       </div>
@@ -111,19 +106,19 @@
 
     <!-- History -->
     <div class="card-body sub-section">
-      <h6 class="fw-semibold mb-2">Subscription history</h6>
-      <p class="text-muted mb-3">All subscription periods for this tenant, newest first</p>
+      <h6 class="fw-semibold mb-2">{{ 'SUB_SECTION.HISTORY_TITLE' | translate }}</h6>
+      <p class="text-muted mb-3">{{ 'SUB_SECTION.HISTORY_HINT' | translate }}</p>
 
       <div class="history-table">
         <div class="history-row history-head">
-          <div>Plan</div>
-          <div>Start</div>
-          <div>End</div>
-          <div>Status</div>
-          <div class="text-end">Amount</div>
+          <div>{{ 'SUB_SECTION.PLAN' | translate }}</div>
+          <div>{{ 'SUB_SECTION.START' | translate }}</div>
+          <div>{{ 'SUB_SECTION.END' | translate }}</div>
+          <div>{{ 'SUB_SECTION.STATUS' | translate }}</div>
+          <div class="text-end">{{ 'SUB_SECTION.AMOUNT' | translate }}</div>
         </div>
         <div class="history-row" *ngIf="history.length === 0">
-          <div class="empty-row">No history yet</div>
+          <div class="empty-row">{{ 'SUB_SECTION.NO_HISTORY' | translate }}</div>
         </div>
         <div class="history-row" *ngFor="let h of history">
           <div class="fw-medium">{{ h.subscriptionPlan?.displayName || h.subscriptionPlan?.name }}</div>
@@ -132,7 +127,7 @@
           <div>
             <span class="pill" [ngClass]="pillClass(h.status)">
               <span class="status-dot" [ngClass]="dotClass(h.status)"></span>
-              {{ statusLabel(h.status) }}
+              {{ statusLabel(h.status) | translate }}
             </span>
           </div>
           <div class="text-end">{{ h.amountPaid }} {{ h.currency }}</div>
@@ -142,82 +137,72 @@
 
     <!-- Usage & Limits -->
     <div class="card-body sub-section limits-section">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-      <h6 class="fw-semibold mb-0">Usage &amp; Limits</h6>
-      <p class="text-muted mb-0" style="font-size:13px" *ngIf="dashboard?.planName">
-        Based on <strong>{{ dashboard.planName }}</strong> plan
-      </p>
-    </div>
-    <button type="button" class="btn btn-action btn-sm" (click)="loadDashboard()">
-      <i class="mdi mdi-refresh"></i>
-    </button>
-  </div>
-
-  <div *ngIf="limitsLoading" class="text-center py-4">
-    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-  </div>
-
-  <ng-container *ngIf="!limitsLoading && dashboard">
-    <div *ngIf="dashboard.items.length === 0" class="text-center text-muted py-4">
-      No limits configured for this tenant's plan.
-    </div>
-
-    <div class="limits-list">
-      <div class="limit-row" *ngFor="let item of dashboard.items">
-        <div class="limit-meta">
-          <span class="limit-name">{{ item.displayName }}</span>
-          <span class="limit-badge limit-badge-override" *ngIf="item.isOverridden">Override</span>
-          <span class="limit-badge limit-badge-period" *ngIf="item.period !== LimitPeriod.None">
-            {{ periodLabel(item.period) }}
-          </span>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h6 class="fw-semibold mb-0">{{ 'SUB_SECTION.USAGE_TITLE' | translate }}</h6>
+          <p class="text-muted mb-0" style="font-size:13px" *ngIf="dashboard?.planName">
+            {{ 'SUB_SECTION.USAGE_BASED_ON' | translate: { plan: dashboard.planName } }}
+          </p>
         </div>
-
-        <!-- Boolean limit -->
-        <div *ngIf="item.unit === 'bool'" class="mb-2">
-          <span class="pill" [ngClass]="item.limit >= 1 ? 'pill-active' : 'pill-cancelled'">
-            {{ item.limit >= 1 ? 'Enabled' : 'Disabled' }}
-          </span>
-        </div>
-
-        <!-- Numeric unlimited -->
-        <div *ngIf="item.unit !== 'bool' && item.isUnlimited" class="mb-2">
-          <span class="pill pill-soft">Unlimited</span>
-          <span class="ms-2" style="font-size:13px; color:#6b7280">Used: {{ item.used }} {{ item.unit }}</span>
-        </div>
-
-        <!-- Numeric with quota -->
-        <div *ngIf="item.unit !== 'bool' && !item.isUnlimited" class="mb-2">
-          <div class="limit-bar">
-            <div
-              class="limit-fill"
-              [style.width.%]="limitPercent(item)"
-              [class.limit-fill-warn]="limitPercent(item) >= 75"
-              [class.limit-fill-danger]="limitPercent(item) >= 90"
-            ></div>
-          </div>
-          <div class="limit-numbers">
-            <span>{{ item.used }} / {{ item.limit }} {{ item.unit }}</span>
-            <span *ngIf="item.remaining != null">{{ item.remaining }} remaining</span>
-          </div>
-        </div>
-
-        <div class="limit-actions">
-          <button type="button" class="btn btn-action btn-xs" (click)="openOverrideModal(overrideTpl, item)">
-            {{ item.isOverridden ? 'Edit Override' : 'Override' }}
-          </button>
-          <button
-            type="button"
-            class="btn btn-link btn-xs text-danger p-0"
-            *ngIf="item.isOverridden"
-            (click)="removeOverride(item.key)"
-          >
-            Remove
-          </button>
-        </div>
+        <button type="button" class="btn btn-action btn-sm" (click)="loadDashboard()">
+          <i class="mdi mdi-refresh"></i>
+        </button>
       </div>
-    </div>
-  </ng-container>
+
+      <div *ngIf="limitsLoading" class="text-center py-4">
+        <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+      </div>
+
+      <ng-container *ngIf="!limitsLoading && dashboard">
+        <div *ngIf="dashboard.items.length === 0" class="text-center text-muted py-4">
+          {{ 'SUB_SECTION.NO_LIMITS' | translate }}
+        </div>
+
+        <div class="limits-list">
+          <div class="limit-row" *ngFor="let item of dashboard.items">
+            <div class="limit-meta">
+              <span class="limit-name">{{ item.displayName }}</span>
+              <span class="limit-badge limit-badge-override" *ngIf="item.isOverridden">{{ 'SUB_SECTION.OVERRIDE_BADGE' | translate }}</span>
+              <span class="limit-badge limit-badge-period" *ngIf="item.period !== LimitPeriod.None">
+                {{ periodLabel(item.period) | translate }}
+              </span>
+            </div>
+
+            <div *ngIf="item.unit === 'bool'" class="mb-2">
+              <span class="pill" [ngClass]="item.limit >= 1 ? 'pill-active' : 'pill-cancelled'">
+                {{ (item.limit >= 1 ? 'SUB_SECTION.ENABLED' : 'SUB_SECTION.DISABLED') | translate }}
+              </span>
+            </div>
+
+            <div *ngIf="item.unit !== 'bool' && item.isUnlimited" class="mb-2">
+              <span class="pill pill-soft">{{ 'SUB_SECTION.UNLIMITED' | translate }}</span>
+              <span class="ms-2" style="font-size:13px; color:#6b7280">{{ 'SUB_SECTION.USED' | translate }}: {{ item.used }} {{ item.unit }}</span>
+            </div>
+
+            <div *ngIf="item.unit !== 'bool' && !item.isUnlimited" class="mb-2">
+              <div class="limit-bar">
+                <div class="limit-fill" [style.width.%]="limitPercent(item)"
+                  [class.limit-fill-warn]="limitPercent(item) >= 75"
+                  [class.limit-fill-danger]="limitPercent(item) >= 90"></div>
+              </div>
+              <div class="limit-numbers">
+                <span>{{ item.used }} / {{ item.limit }} {{ item.unit }}</span>
+                <span *ngIf="item.remaining != null">{{ 'SUB_SECTION.N_REMAINING' | translate: { count: item.remaining } }}</span>
+              </div>
+            </div>
+
+            <div class="limit-actions">
+              <button type="button" class="btn btn-action btn-xs" (click)="openOverrideModal(overrideTpl, item)">
+                {{ (item.isOverridden ? 'SUB_SECTION.EDIT_OVERRIDE' : 'SUB_SECTION.OVERRIDE') | translate }}
+              </button>
+              <button type="button" class="btn btn-link btn-xs text-danger p-0" *ngIf="item.isOverridden"
+                (click)="removeOverride(item.key)">
+                {{ 'SUB_SECTION.REMOVE' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>
@@ -225,7 +210,7 @@
 <!-- Override Modal -->
 <ng-template #overrideTpl>
   <div class="modal-header">
-    <h5 class="modal-title">Override: {{ overrideItem?.displayName }}</h5>
+    <h5 class="modal-title">{{ 'SUB_SECTION.OVERRIDE_FOR' | translate: { name: (overrideItem?.displayName || '') } }}</h5>
     <button type="button" class="btn-close" (click)="overrideModalRef?.hide()"></button>
   </div>
   <form [formGroup]="overrideForm" (ngSubmit)="submitOverride()">
@@ -235,15 +220,15 @@
       </p>
       <div class="mb-3">
         <label class="form-label">
-          Value ({{ overrideItem?.unit }})
-          <span class="text-muted ms-1" style="font-size:12px">— use -1 for unlimited</span>
+          {{ 'SUB_SECTION.VALUE' | translate }} ({{ overrideItem?.unit }})
+          <span class="text-muted ms-1" style="font-size:12px">— {{ 'SUB_SECTION.UNLIMITED_HINT' | translate }}</span>
         </label>
         <input type="number" class="form-control" formControlName="value" />
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-light" (click)="overrideModalRef?.hide()">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="overrideForm.invalid">Save Override</button>
+      <button type="button" class="btn btn-light" (click)="overrideModalRef?.hide()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="overrideForm.invalid">{{ 'SUB_SECTION.SAVE_OVERRIDE' | translate }}</button>
     </div>
   </form>
 </ng-template>
@@ -251,37 +236,33 @@
 <!-- Assign Modal -->
 <ng-template #assignTpl>
   <div class="modal-header">
-    <h5 class="modal-title">Assign Subscription Plan</h5>
+    <h5 class="modal-title">{{ 'SUB_SECTION.ASSIGN_MODAL_TITLE' | translate }}</h5>
     <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
   </div>
   <form [formGroup]="assignForm" (ngSubmit)="submitAssign()">
     <div class="modal-body">
       <div class="mb-3">
-        <label class="form-label">Plan <span class="text-danger">*</span></label>
+        <label class="form-label">{{ 'SUB_SECTION.PLAN' | translate }} <span class="text-danger">*</span></label>
         <select class="form-select" formControlName="subscriptionPlanId" (change)="onPlanChange()">
-          <option [ngValue]="null" disabled>Select a plan</option>
+          <option [ngValue]="null" disabled>{{ 'SUB_SECTION.SELECT_PLAN' | translate }}</option>
           <option *ngFor="let p of plans" [ngValue]="p.id">
-            {{ p.displayName || p.name }} — {{ p.monthlyPrice }} EGP
+            {{ p.displayName || p.name }} — {{ p.monthlyPrice }} {{ 'SUB_SECTION.EGP' | translate }}
           </option>
         </select>
       </div>
       <div class="mb-3">
-        <label class="form-label">Duration (days) <span class="text-danger">*</span></label>
+        <label class="form-label">{{ 'SUB_SECTION.DURATION' | translate }} <span class="text-danger">*</span></label>
         <input type="number" class="form-control" formControlName="durationDays" min="1" />
       </div>
       <div class="mb-3">
-        <label class="form-label">Amount (override)</label>
-        <input
-          type="number"
-          class="form-control"
-          formControlName="amount"
-          placeholder="Leave empty to use plan price"
-        />
+        <label class="form-label">{{ 'SUB_SECTION.AMOUNT_OVERRIDE' | translate }}</label>
+        <input type="number" class="form-control" formControlName="amount"
+          [placeholder]="'SUB_SECTION.AMOUNT_PLACEHOLDER' | translate" />
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-light" (click)="modalRef?.hide()">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="assignForm.invalid">Assign</button>
+      <button type="button" class="btn btn-light" (click)="modalRef?.hide()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="assignForm.invalid">{{ 'SUB_SECTION.ASSIGN' | translate }}</button>
     </div>
   </form>
 </ng-template>
@@ -289,19 +270,19 @@
 <!-- Extend Modal -->
 <ng-template #extendTpl>
   <div class="modal-header">
-    <h5 class="modal-title">Extend Subscription</h5>
+    <h5 class="modal-title">{{ 'SUB_SECTION.EXTEND_MODAL_TITLE' | translate }}</h5>
     <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
   </div>
   <form [formGroup]="extendForm" (ngSubmit)="submitExtend()">
     <div class="modal-body">
       <div class="mb-3">
-        <label class="form-label">Days to add <span class="text-danger">*</span></label>
+        <label class="form-label">{{ 'SUB_SECTION.DAYS_TO_ADD' | translate }} <span class="text-danger">*</span></label>
         <input type="number" class="form-control" formControlName="days" min="1" />
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-light" (click)="modalRef?.hide()">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="extendForm.invalid">Extend</button>
+      <button type="button" class="btn btn-light" (click)="modalRef?.hide()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="extendForm.invalid">{{ 'SUB_SECTION.EXTEND' | translate }}</button>
     </div>
   </form>
 </ng-template>

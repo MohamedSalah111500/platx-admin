@@ -14,8 +14,8 @@ export class TenantSubscriptionComponent implements OnInit {
   loading = false;
 
   breadCrumbItems = [
-    { label: "Manage Tenant" },
-    { label: "Subscription", active: true },
+    { label: "MENUITEMS.MANAGE_TENANT.TEXT" },
+    { label: "TENANT_SUB.BREADCRUMB", active: true },
   ];
 
   constructor(

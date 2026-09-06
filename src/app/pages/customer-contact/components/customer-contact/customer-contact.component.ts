@@ -3,6 +3,7 @@ import { ModalDirective } from "ngx-bootstrap/modal";
 
 import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { CustomerContact } from "../../types";
 import { CustomerContactService } from "../../services/customer-contact.service";
 
@@ -41,13 +42,14 @@ export class CustomerContactComponent implements OnInit {
 
   constructor(
     public toastr: ToastrService,
-    public customerContactService: CustomerContactService
+    public customerContactService: CustomerContactService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
     this.breadCrumbItems = [
-      { label: "Customer" },
-      { label: "Contacts", active: true },
+      { label: "MENUITEMS.CUSTOMER_CONTACT.TEXT" },
+      { label: "CONTACT.TITLE", active: true },
     ];
     this.getAllData(this.page, this.pageSize);
   }
@@ -103,10 +105,10 @@ export class CustomerContactComponent implements OnInit {
     return !!item?.preferredDate;
   }
 
-  /** Human label for the request "Type" column. */
+  /** Translation key for the request "Type" column — templates pipe it through `translate`. */
   typeLabel(item?: CustomerContact | null): string {
-    if (this.isConsultation(item)) return "Free Consultation";
-    return item?.isDemo ? "Demo Request" : "Inquiry";
+    if (this.isConsultation(item)) return "CONTACT.TYPE.CONSULTATION";
+    return item?.isDemo ? "CONTACT.TYPE.DEMO" : "CONTACT.TYPE.INQUIRY";
   }
 
   /** Pill CSS class for the request "Type" column. */
@@ -207,8 +209,8 @@ export class CustomerContactComponent implements OnInit {
   copy(value: string) {
     if (!value || !navigator?.clipboard) return;
     navigator.clipboard.writeText(value).then(
-      () => this.toastr.success("Copied to clipboard"),
-      () => this.toastr.error("Failed to copy")
+      () => this.toastr.success(this.translate.instant("CONTACT.TOAST.COPIED")),
+      () => this.toastr.error(this.translate.instant("CONTACT.TOAST.COPY_FAILED"))
     );
   }
 
@@ -224,8 +226,8 @@ export class CustomerContactComponent implements OnInit {
 
   // pagechanged
   pageChanged(event: PageChangedEvent): void {
-    if (event.page === this.page) return;
-    this.page = event.page;
+    // ngModel two-way binds page; equality guard would block pagination.
+    if (event.page) this.page = event.page;
     this.typeFilter = "all";
     this.term = "";
     this.getAllData(event.page, event.itemsPerPage);
@@ -245,7 +247,10 @@ export class CustomerContactComponent implements OnInit {
 
   confirmDelete(id: any) {
     this.customerContactService.deleteContact(id).subscribe(() => {
-      this.toastr.success("deleted successfully", "Contact");
+      this.toastr.success(
+        this.translate.instant("CONTACT.TOAST.DELETED"),
+        this.translate.instant("CONTACT.TITLE")
+      );
       this.getAllData(this.page, this.pageSize);
     });
     this.removeItemModal?.hide();

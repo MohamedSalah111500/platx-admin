@@ -1,14 +1,14 @@
 <div class="container-fluid crm-page">
-  <app-page-title title="CRM · Team" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title [title]="'CRM.AGENTS.PAGE_TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <div class="row g-3 mb-3">
     <div class="col-md-4">
       <div class="kpi-card">
         <div class="kpi-icon kpi-icon-primary"><i class="mdi mdi-account-tie-outline"></i></div>
         <div class="kpi-body">
-          <div class="kpi-label">Team members</div>
+          <div class="kpi-label">{{ 'CRM.AGENTS.KPI.MEMBERS' | translate }}</div>
           <div class="kpi-value">{{ agents.length }}</div>
-          <div class="kpi-sub text-muted">Owner + agents</div>
+          <div class="kpi-sub text-muted">{{ 'CRM.AGENTS.KPI.MEMBERS_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -16,9 +16,9 @@
       <div class="kpi-card">
         <div class="kpi-icon kpi-icon-success"><i class="mdi mdi-account-check-outline"></i></div>
         <div class="kpi-body">
-          <div class="kpi-label">Active agents</div>
+          <div class="kpi-label">{{ 'CRM.AGENTS.KPI.ACTIVE' | translate }}</div>
           <div class="kpi-value">{{ activeCount }}</div>
-          <div class="kpi-sub text-success">Can log in and manage leads</div>
+          <div class="kpi-sub text-success">{{ 'CRM.AGENTS.KPI.ACTIVE_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -26,9 +26,9 @@
       <div class="kpi-card">
         <div class="kpi-icon kpi-icon-info"><i class="mdi mdi-account-multiple-outline"></i></div>
         <div class="kpi-body">
-          <div class="kpi-label">Assigned leads</div>
+          <div class="kpi-label">{{ 'CRM.AGENTS.KPI.ASSIGNED' | translate }}</div>
           <div class="kpi-value">{{ totalAssigned }}</div>
-          <div class="kpi-sub text-muted">Across the whole team</div>
+          <div class="kpi-sub text-muted">{{ 'CRM.AGENTS.KPI.ASSIGNED_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -38,10 +38,10 @@
     <div class="card-body">
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
         <div>
-          <h5 class="mb-0 fw-bold">Team</h5>
-          <small class="text-muted">Agents see only the leads assigned to them or created by them.</small>
+          <h5 class="mb-0 fw-bold">{{ 'CRM.AGENTS.TITLE' | translate }}</h5>
+          <small class="text-muted">{{ 'CRM.AGENTS.SUBTITLE' | translate }}</small>
         </div>
-        <button type="button" class="btn btn-primary" (click)="openCreate()"><i class="mdi mdi-account-plus-outline me-1"></i> Add agent</button>
+        <button type="button" class="btn btn-primary" (click)="openCreate()"><i class="mdi mdi-account-plus-outline me-1"></i> {{ 'CRM.AGENTS.ADD_AGENT' | translate }}</button>
       </div>
 
       <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
@@ -50,14 +50,14 @@
         <table class="table align-middle smart-table mb-0">
           <thead>
             <tr>
-              <th>Member</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th class="text-center">Leads</th>
-              <th class="text-center">Open</th>
-              <th class="text-center">Won</th>
-              <th>Last login</th>
-              <th class="text-end" style="width:70px">Actions</th>
+              <th>{{ 'CRM.AGENTS.COL.MEMBER' | translate }}</th>
+              <th>{{ 'CRM.AGENTS.COL.ROLE' | translate }}</th>
+              <th>{{ 'CRM.AGENTS.COL.STATUS' | translate }}</th>
+              <th class="text-center">{{ 'CRM.AGENTS.COL.LEADS' | translate }}</th>
+              <th class="text-center">{{ 'CRM.AGENTS.COL.OPEN' | translate }}</th>
+              <th class="text-center">{{ 'CRM.STATUS.WON' | translate }}</th>
+              <th>{{ 'CRM.AGENTS.COL.LAST_LOGIN' | translate }}</th>
+              <th class="text-end" style="width:70px">{{ 'CRM.AGENTS.COL.ACTIONS' | translate }}</th>
             </tr>
           </thead>
           <tbody>
@@ -67,31 +67,31 @@
                 <div class="d-flex align-items-center gap-2">
                   <div class="crm-avatar" [style.background]="avatarColor(a.id)">{{ initials(a.firstName + ' ' + a.lastName) }}</div>
                   <div class="min-w-0">
-                    <div class="fw-semibold text-dark">{{ a.firstName }} {{ a.lastName }} <span class="text-muted fw-normal" *ngIf="a.id === currentUserId">(you)</span></div>
+                    <div class="fw-semibold text-dark">{{ a.firstName }} {{ a.lastName }} <span class="text-muted fw-normal" *ngIf="a.id === currentUserId">({{ 'CRM.AGENTS.YOU' | translate }})</span></div>
                     <div class="text-muted" style="font-size:12px" dir="ltr">{{ a.email }}</div>
                   </div>
                 </div>
               </td>
-              <td><span class="pill" [ngClass]="a.isSuperAdmin ? 'st-negotiation' : 'st-new'"><span class="pill-dot"></span>{{ a.isSuperAdmin ? 'Owner' : 'CRM Agent' }}</span></td>
-              <td><span class="pill" [ngClass]="a.isActive ? 'st-won' : 'st-lost'"><span class="pill-dot"></span>{{ a.isActive ? 'Active' : 'Inactive' }}</span></td>
+              <td><span class="pill" [ngClass]="a.isSuperAdmin ? 'st-negotiation' : 'st-new'"><span class="pill-dot"></span>{{ (a.isSuperAdmin ? 'CRM.AGENTS.ROLE_OWNER' : 'CRM.AGENTS.ROLE_AGENT') | translate }}</span></td>
+              <td><span class="pill" [ngClass]="a.isActive ? 'st-won' : 'st-lost'"><span class="pill-dot"></span>{{ (a.isActive ? 'CRM.AGENTS.STATUS_ACTIVE' : 'CRM.AGENTS.STATUS_INACTIVE') | translate }}</span></td>
               <td class="text-center"><span class="stat-mini"><span class="v">{{ a.leadsCount }}</span></span></td>
               <td class="text-center"><span class="stat-mini"><span class="v">{{ a.openLeadsCount }}</span></span></td>
               <td class="text-center"><span class="stat-mini"><span class="v text-success">{{ a.wonLeadsCount }}</span></span></td>
               <td>
                 <span style="font-size:13px" *ngIf="a.lastLoginAt; else never" [title]="a.lastLoginAt | date:'medium'">{{ relativeTime(a.lastLoginAt) }}</span>
-                <ng-template #never><span class="text-muted">Never</span></ng-template>
+                <ng-template #never><span class="text-muted">{{ 'CRM.AGENTS.NEVER' | translate }}</span></ng-template>
               </td>
               <td class="text-end">
                 <div dropdown class="dropdown d-inline-block" container="body" *ngIf="!a.isSuperAdmin">
                   <a dropdownToggle href="javascript:void(0);" class="btn btn-sm btn-light action-btn"><i class="mdi mdi-dots-horizontal font-size-18"></i></a>
                   <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
-                    <li><a href="javascript:void(0);" class="dropdown-item" (click)="openEdit(a)"><i class="mdi mdi-pencil-outline text-info me-2"></i> Edit</a></li>
-                    <li><a href="javascript:void(0);" class="dropdown-item" (click)="openReset(a)"><i class="mdi mdi-lock-reset text-warning me-2"></i> Reset password</a></li>
+                    <li><a href="javascript:void(0);" class="dropdown-item" (click)="openEdit(a)"><i class="mdi mdi-pencil-outline text-info me-2"></i> {{ 'CRM.AGENTS.ACTIONS.EDIT' | translate }}</a></li>
+                    <li><a href="javascript:void(0);" class="dropdown-item" (click)="openReset(a)"><i class="mdi mdi-lock-reset text-warning me-2"></i> {{ 'CRM.AGENTS.ACTIONS.RESET_PASSWORD' | translate }}</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                       <a href="javascript:void(0);" class="dropdown-item" (click)="toggleActive(a)">
                         <i class="mdi me-2" [ngClass]="a.isActive ? 'mdi-account-off-outline text-danger' : 'mdi-account-check-outline text-success'"></i>
-                        {{ a.isActive ? 'Deactivate' : 'Activate' }}
+                        {{ (a.isActive ? 'CRM.AGENTS.ACTIONS.DEACTIVATE' : 'CRM.AGENTS.ACTIONS.ACTIVATE') | translate }}
                       </a>
                     </li>
                   </ul>
@@ -111,33 +111,33 @@
     <div class="modal-content">
       <form (ngSubmit)="create()" novalidate>
         <div class="modal-header">
-          <h5 class="modal-title mb-0">Add agent</h5>
+          <h5 class="modal-title mb-0">{{ 'CRM.AGENTS.ADD_AGENT' | translate }}</h5>
           <button type="button" class="btn-close" (click)="createModal.hide()"></button>
         </div>
         <div class="modal-body">
           <div class="row g-3">
             <div class="col-6">
-              <label class="form-label">First name <span class="text-danger">*</span></label>
+              <label class="form-label">{{ 'CRM.AGENTS.FIELD.FIRST_NAME' | translate }} <span class="text-danger">*</span></label>
               <input class="form-control" [(ngModel)]="createModel.firstName" name="firstName" [class.is-invalid]="submitted && !createModel.firstName.trim()" />
             </div>
             <div class="col-6">
-              <label class="form-label">Last name <span class="text-danger">*</span></label>
+              <label class="form-label">{{ 'CRM.AGENTS.FIELD.LAST_NAME' | translate }} <span class="text-danger">*</span></label>
               <input class="form-control" [(ngModel)]="createModel.lastName" name="lastName" [class.is-invalid]="submitted && !createModel.lastName.trim()" />
             </div>
             <div class="col-12">
-              <label class="form-label">Email (login) <span class="text-danger">*</span></label>
+              <label class="form-label">{{ 'CRM.AGENTS.FIELD.EMAIL_LOGIN' | translate }} <span class="text-danger">*</span></label>
               <input type="email" class="form-control" dir="ltr" [(ngModel)]="createModel.email" name="email" [class.is-invalid]="submitted && !createModel.email.trim()" />
             </div>
             <div class="col-12">
-              <label class="form-label">Password <span class="text-danger">*</span></label>
+              <label class="form-label">{{ 'CRM.AGENTS.FIELD.PASSWORD' | translate }} <span class="text-danger">*</span></label>
               <input type="password" class="form-control" dir="ltr" [(ngModel)]="createModel.password" name="password" [class.is-invalid]="submitted && createModel.password.length < 8" />
-              <div class="form-hint mt-1">At least 8 characters. Share it with the agent — they can change it later.</div>
+              <div class="form-hint mt-1">{{ 'CRM.AGENTS.PASSWORD_HINT' | translate }}</div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-light" (click)="createModal.hide()">Cancel</button>
-          <button type="submit" class="btn btn-primary" [disabled]="saving"><span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span> Create account</button>
+          <button type="button" class="btn btn-light" (click)="createModal.hide()">{{ 'CRM.AGENTS.CANCEL' | translate }}</button>
+          <button type="submit" class="btn btn-primary" [disabled]="saving"><span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span> {{ 'CRM.AGENTS.CREATE_ACCOUNT' | translate }}</button>
         </div>
       </form>
     </div>
@@ -149,30 +149,30 @@
     <div class="modal-content">
       <form (ngSubmit)="saveEdit()" novalidate>
         <div class="modal-header">
-          <h5 class="modal-title mb-0">Edit agent</h5>
+          <h5 class="modal-title mb-0">{{ 'CRM.AGENTS.EDIT_AGENT' | translate }}</h5>
           <button type="button" class="btn-close" (click)="editModal.hide()"></button>
         </div>
         <div class="modal-body">
           <div class="row g-3">
             <div class="col-6">
-              <label class="form-label">First name <span class="text-danger">*</span></label>
+              <label class="form-label">{{ 'CRM.AGENTS.FIELD.FIRST_NAME' | translate }} <span class="text-danger">*</span></label>
               <input class="form-control" [(ngModel)]="editModel.firstName" name="editFirstName" [class.is-invalid]="submitted && !editModel.firstName.trim()" />
             </div>
             <div class="col-6">
-              <label class="form-label">Last name <span class="text-danger">*</span></label>
+              <label class="form-label">{{ 'CRM.AGENTS.FIELD.LAST_NAME' | translate }} <span class="text-danger">*</span></label>
               <input class="form-control" [(ngModel)]="editModel.lastName" name="editLastName" [class.is-invalid]="submitted && !editModel.lastName.trim()" />
             </div>
             <div class="col-12">
               <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="editActive" [(ngModel)]="editModel.isActive" name="editActive" />
-                <label class="form-check-label" for="editActive">Active (can log in)</label>
+                <label class="form-check-label" for="editActive">{{ 'CRM.AGENTS.ACTIVE_CAN_LOGIN' | translate }}</label>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-light" (click)="editModal.hide()">Cancel</button>
-          <button type="submit" class="btn btn-primary" [disabled]="saving"><span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span> Save</button>
+          <button type="button" class="btn btn-light" (click)="editModal.hide()">{{ 'CRM.AGENTS.CANCEL' | translate }}</button>
+          <button type="submit" class="btn btn-primary" [disabled]="saving"><span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span> {{ 'CRM.AGENTS.SAVE' | translate }}</button>
         </div>
       </form>
     </div>
@@ -184,18 +184,18 @@
     <div class="modal-content">
       <form (ngSubmit)="resetPassword()" novalidate>
         <div class="modal-header">
-          <h5 class="modal-title mb-0">Reset password</h5>
+          <h5 class="modal-title mb-0">{{ 'CRM.AGENTS.RESET_PASSWORD' | translate }}</h5>
           <button type="button" class="btn-close" (click)="resetModal.hide()"></button>
         </div>
         <div class="modal-body">
-          <p class="text-muted mb-3" style="font-size:13px">Set a new password for <strong>{{ resetTarget?.firstName }} {{ resetTarget?.lastName }}</strong>.</p>
-          <label class="form-label">New password <span class="text-danger">*</span></label>
+          <p class="text-muted mb-3" style="font-size:13px" [innerHTML]="'CRM.AGENTS.RESET_FOR' | translate: { name: (resetTarget?.firstName || '') + ' ' + (resetTarget?.lastName || '') }"></p>
+          <label class="form-label">{{ 'CRM.AGENTS.FIELD.NEW_PASSWORD' | translate }} <span class="text-danger">*</span></label>
           <input type="password" class="form-control" dir="ltr" [(ngModel)]="resetModel.newPassword" name="newPassword" [class.is-invalid]="submitted && resetModel.newPassword.length < 8" />
-          <div class="form-hint mt-1">At least 8 characters.</div>
+          <div class="form-hint mt-1">{{ 'CRM.AGENTS.PASSWORD_MIN' | translate }}</div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-light" (click)="resetModal.hide()">Cancel</button>
-          <button type="submit" class="btn btn-warning" [disabled]="saving"><span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span> Reset</button>
+          <button type="button" class="btn btn-light" (click)="resetModal.hide()">{{ 'CRM.AGENTS.CANCEL' | translate }}</button>
+          <button type="submit" class="btn btn-warning" [disabled]="saving"><span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span> {{ 'CRM.AGENTS.RESET' | translate }}</button>
         </div>
       </form>
     </div>

@@ -106,14 +106,10 @@ export class InstallmentsSectionComponent implements OnChanges {
 
   statusLabel(status: InstallmentStatus): string {
     switch (status) {
-      case InstallmentStatus.Paid:
-        return "Paid";
-      case InstallmentStatus.Overdue:
-        return "Overdue";
-      case InstallmentStatus.Upcoming:
-        return "Upcoming";
-      default:
-        return "-";
+      case InstallmentStatus.Paid: return "INST.STATUS.PAID";
+      case InstallmentStatus.Overdue: return "INST.STATUS.OVERDUE";
+      case InstallmentStatus.Upcoming: return "INST.STATUS.UPCOMING";
+      default: return "-";
     }
   }
 

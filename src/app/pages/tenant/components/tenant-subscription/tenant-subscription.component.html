@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <app-page-title title="Tenant Subscription" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title [title]="'TENANT_SUB.PAGE_TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <!-- Tenant header -->
   <div class="card tenant-header" *ngIf="tenant">
@@ -18,7 +18,7 @@
         </div>
       </div>
       <button class="btn btn-light back-btn" (click)="back()">
-        <i class="mdi mdi-arrow-left me-1"></i> Back to tenants
+        <i class="mdi mdi-arrow-left me-1"></i> {{ 'TENANT_SUB.BACK' | translate }}
       </button>
     </div>
   </div>

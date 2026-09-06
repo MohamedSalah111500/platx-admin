@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { CrmService } from "../../services/crm.service";
 import { CrmAuthService } from "../../services/crm-auth.service";
 import { parseImportText } from "../../crm-utils";
@@ -26,7 +27,12 @@ export class CrmImportModalComponent {
   assignedToUserId: string | null = null;
   saving = false;
 
-  constructor(private crm: CrmService, private auth: CrmAuthService, private toastr: ToastrService) {}
+  constructor(
+    private crm: CrmService,
+    private auth: CrmAuthService,
+    private toastr: ToastrService,
+    private translate: TranslateService
+  ) {}
 
   get activeAgents(): CrmAgent[] {
     return this.agents.filter((a) => a.isActive);
@@ -69,8 +75,12 @@ export class CrmImportModalComponent {
         next: (result) => {
           this.saving = false;
           this.toastr.success(
-            `${result.created} added · ${result.skippedDuplicates} duplicates · ${result.skippedInvalid} invalid`,
-            "Import finished"
+            this.translate.instant("CRM.IMPORT.TOAST.SUMMARY", {
+              added: result.created,
+              duplicates: result.skippedDuplicates,
+              invalid: result.skippedInvalid,
+            }),
+            this.translate.instant("CRM.IMPORT.TOAST.FINISHED")
           );
           this.imported.emit(result);
           this.close();

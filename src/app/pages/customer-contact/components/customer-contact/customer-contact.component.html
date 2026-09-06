@@ -1,5 +1,5 @@
 <div class="container-fluid contact-page">
-  <app-page-title title="Customer Contact" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title [title]="'CONTACT.TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <!-- KPI cards -->
   <div class="row g-3 mb-3">
@@ -9,9 +9,9 @@
           <i class="mdi mdi-account-multiple-outline"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">Total Contacts</div>
+          <div class="kpi-label">{{ 'CONTACT.KPI.TOTAL' | translate }}</div>
           <div class="kpi-value">{{ stats.total }}</div>
-          <div class="kpi-sub text-muted">All received messages</div>
+          <div class="kpi-sub text-muted">{{ 'CONTACT.KPI.TOTAL_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -21,9 +21,9 @@
           <i class="mdi mdi-rocket-launch-outline"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">Demo Requests</div>
+          <div class="kpi-label">{{ 'CONTACT.KPI.DEMO' | translate }}</div>
           <div class="kpi-value">{{ stats.demo }}</div>
-          <div class="kpi-sub text-success">Leads to follow up</div>
+          <div class="kpi-sub text-success">{{ 'CONTACT.KPI.DEMO_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -34,9 +34,9 @@
           <i class="mdi mdi-calendar-clock-outline"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">Free Consultations</div>
+          <div class="kpi-label">{{ 'CONTACT.KPI.CONSULTATION' | translate }}</div>
           <div class="kpi-value">{{ stats.consultation }}</div>
-          <div class="kpi-sub text-warning">Scheduled by date &amp; time</div>
+          <div class="kpi-sub text-warning">{{ 'CONTACT.KPI.CONSULTATION_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -46,9 +46,9 @@
           <i class="mdi mdi-email-outline"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">General Inquiries</div>
+          <div class="kpi-label">{{ 'CONTACT.KPI.GENERAL' | translate }}</div>
           <div class="kpi-value">{{ stats.general }}</div>
-          <div class="kpi-sub text-info">Support &amp; questions</div>
+          <div class="kpi-sub text-info">{{ 'CONTACT.KPI.GENERAL_SUB' | translate }}</div>
         </div>
       </div>
     </div>
@@ -58,9 +58,9 @@
           <i class="mdi mdi-calendar-week-outline"></i>
         </div>
         <div class="kpi-body">
-          <div class="kpi-label">New This Week</div>
+          <div class="kpi-label">{{ 'CONTACT.KPI.THIS_WEEK' | translate }}</div>
           <div class="kpi-value">{{ stats.thisWeek }}</div>
-          <div class="kpi-sub text-warning">Last 7 days · {{ stats.uniqueDomains }} domains</div>
+          <div class="kpi-sub text-warning">{{ 'CONTACT.KPI.THIS_WEEK_SUB' | translate: { count: stats.uniqueDomains } }}</div>
         </div>
       </div>
     </div>
@@ -73,28 +73,28 @@
         <div class="card-body">
           <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
             <div>
-              <h5 class="mb-0 fw-bold">Contact Messages</h5>
+              <h5 class="mb-0 fw-bold">{{ 'CONTACT.MESSAGES_TITLE' | translate }}</h5>
               <small class="text-muted">
-                Showing {{ list.length }} of {{ stats.total }} contacts
+                {{ 'CONTACT.SHOWING_OF' | translate: { shown: list.length, total: stats.total } }}
                 <span *ngIf="typeFilter !== 'all'">·
-                  <span class="text-primary">filtered by {{ typeFilter }}</span>
-                  <a href="javascript:void(0)" class="ms-1" (click)="setFilter('all')">clear</a>
+                  <span class="text-primary">{{ 'CONTACT.FILTERED_BY' | translate: { filter: (('CONTACT.FILTER.' + typeFilter.toUpperCase()) | translate) } }}</span>
+                  <a href="javascript:void(0)" class="ms-1" (click)="setFilter('all')">{{ 'CONTACT.CLEAR' | translate }}</a>
                 </span>
               </small>
             </div>
             <div class="d-flex flex-wrap gap-2 align-items-center">
               <div class="search-box">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Search name, email, phone, message..."
+                  <input type="text" class="form-control" [placeholder]="'CONTACT.SEARCH_PLACEHOLDER' | translate"
                     [(ngModel)]="term" (ngModelChange)="search()" />
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
               <select class="form-select page-size-select" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
-                <option [ngValue]="10">10 / page</option>
-                <option [ngValue]="25">25 / page</option>
-                <option [ngValue]="50">50 / page</option>
-                <option [ngValue]="100">100 / page</option>
+                <option [ngValue]="10">{{ 'COMMON.PER_PAGE' | translate: { count: 10 } }}</option>
+                <option [ngValue]="25">{{ 'COMMON.PER_PAGE' | translate: { count: 25 } }}</option>
+                <option [ngValue]="50">{{ 'COMMON.PER_PAGE' | translate: { count: 50 } }}</option>
+                <option [ngValue]="100">{{ 'COMMON.PER_PAGE' | translate: { count: 100 } }}</option>
               </select>
             </div>
           </div>
@@ -108,12 +108,12 @@
               <thead>
                 <tr>
                   <th style="width:42px">#</th>
-                  <th>Customer</th>
-                  <th>Contact</th>
-                  <th>Message</th>
-                  <th>Type</th>
-                  <th>Received</th>
-                  <th style="width:80px" class="text-end">Actions</th>
+                  <th>{{ 'CONTACT.COL.CUSTOMER' | translate }}</th>
+                  <th>{{ 'CONTACT.COL.CONTACT' | translate }}</th>
+                  <th>{{ 'CONTACT.COL.MESSAGE' | translate }}</th>
+                  <th>{{ 'CONTACT.COL.TYPE' | translate }}</th>
+                  <th>{{ 'CONTACT.COL.RECEIVED' | translate }}</th>
+                  <th style="width:80px" class="text-end">{{ 'CONTACT.COL.ACTIONS' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,14 +143,14 @@
                           style="max-width:200px;">
                           {{ item.email }}
                         </a>
-                        <button type="button" class="icon-btn" title="Copy email" (click)="copy(item.email)">
+                        <button type="button" class="icon-btn" [title]="'CONTACT.COPY_EMAIL' | translate" (click)="copy(item.email)">
                           <i class="mdi mdi-content-copy"></i>
                         </button>
                       </div>
                       <div class="d-flex align-items-center gap-2 mt-1" *ngIf="item.phone">
                         <i class="mdi mdi-phone-outline text-success"></i>
                         <a href="tel:{{ item.phone }}" class="text-body font-size-13">{{ item.phone }}</a>
-                        <button type="button" class="icon-btn" title="Copy phone" (click)="copy(item.phone)">
+                        <button type="button" class="icon-btn" [title]="'CONTACT.COPY_PHONE' | translate" (click)="copy(item.phone)">
                           <i class="mdi mdi-content-copy"></i>
                         </button>
                       </div>
@@ -163,7 +163,7 @@
                       <span class="text-body font-size-13">{{ truncate(item.massage, 70) }}</span>
                       <a href="javascript:void(0)" class="ms-1 font-size-12" (click)="openMessage(item)"
                         *ngIf="item.massage && item.massage.length > 70">
-                        Read more
+                        {{ 'CONTACT.READ_MORE' | translate }}
                       </a>
                     </div>
                     <ng-template #noMsg><span class="text-muted">—</span></ng-template>
@@ -172,7 +172,7 @@
                   <td>
                     <span class="pill" [ngClass]="typePillClass(item)">
                       <span class="pill-dot"></span>
-                      {{ typeLabel(item) }}
+                      {{ typeLabel(item) | translate }}
                     </span>
                     <div class="font-size-11 text-warning fw-medium mt-1" *ngIf="isConsultation(item)">
                       <i class="mdi mdi-calendar-clock me-1"></i>
@@ -185,7 +185,7 @@
                       <span class="font-size-13 fw-medium text-dark">
                         {{ relativeCreated(item.createdAt) }}
                       </span>
-                      <span *ngIf="isNew(item.createdAt)" class="pill pill-success new-badge">NEW</span>
+                      <span *ngIf="isNew(item.createdAt)" class="pill pill-success new-badge">{{ 'CONTACT.NEW_BADGE' | translate }}</span>
                     </div>
                     <div class="font-size-11 text-muted" *ngIf="item.createdAt">
                       {{ item.createdAt | date:'medium' }}
@@ -201,17 +201,17 @@
                       <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
                         <li>
                           <a href="javascript:void(0);" (click)="openMessage(item)" class="dropdown-item">
-                            <i class="mdi mdi-eye-outline text-primary me-2"></i> View Message
+                            <i class="mdi mdi-eye-outline text-primary me-2"></i> {{ 'CONTACT.ACTIONS.VIEW_MESSAGE' | translate }}
                           </a>
                         </li>
                         <li *ngIf="item.email">
                           <a href="mailto:{{ item.email }}" class="dropdown-item">
-                            <i class="mdi mdi-reply-outline text-success me-2"></i> Reply by Email
+                            <i class="mdi mdi-reply-outline text-success me-2"></i> {{ 'CONTACT.ACTIONS.REPLY_EMAIL' | translate }}
                           </a>
                         </li>
                         <li *ngIf="item.phone">
                           <a href="tel:{{ item.phone }}" class="dropdown-item">
-                            <i class="mdi mdi-phone-outline text-info me-2"></i> Call
+                            <i class="mdi mdi-phone-outline text-info me-2"></i> {{ 'CONTACT.ACTIONS.CALL' | translate }}
                           </a>
                         </li>
                         <li>
@@ -219,7 +219,7 @@
                         </li>
                         <li>
                           <a href="javascript:void(0);" (click)="openDeleteModel(item.id)" class="dropdown-item">
-                            <i class="mdi mdi-trash-can-outline text-danger me-2"></i> Delete
+                            <i class="mdi mdi-trash-can-outline text-danger me-2"></i> {{ 'CONTACT.ACTIONS.DELETE' | translate }}
                           </a>
                         </li>
                       </ul>
@@ -232,8 +232,8 @@
                   <td colspan="7">
                     <div class="empty-block">
                       <i class="mdi mdi-email-search-outline font-size-32 text-muted mb-2 d-block"></i>
-                      <div class="fw-semibold text-dark">No contacts found</div>
-                      <div class="text-muted font-size-13">Try adjusting your search or filter.</div>
+                      <div class="fw-semibold text-dark">{{ 'CONTACT.EMPTY_TITLE' | translate }}</div>
+                      <div class="text-muted font-size-13">{{ 'CONTACT.EMPTY_HINT' | translate }}</div>
                     </div>
                   </td>
                 </tr>
@@ -245,11 +245,7 @@
           <div class="row mt-3">
             <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2">
               <small class="text-muted">
-                Showing
-                <strong>{{ (page - 1) * pageSize + (list.length ? 1 : 0) }}</strong>
-                –
-                <strong>{{ (page - 1) * pageSize + list.length }}</strong>
-                of <strong>{{ stats.total }}</strong> contacts
+                {{ 'CONTACT.PAGINATION_RANGE' | translate: { from: (page - 1) * pageSize + (list.length ? 1 : 0), to: (page - 1) * pageSize + list.length, total: stats.total } }}
               </small>
               <ul class="pagination pagination-rounded mb-0">
                 <pagination class="pagination-wrap hstack gap-2" [totalItems]="stats.total" [itemsPerPage]="pageSize"
@@ -283,30 +279,30 @@
         <div class="row g-3 mb-3">
           <div class="col-md-6" *ngIf="selectedMessage.email">
             <div class="info-row">
-              <div class="info-row-label">Email</div>
+              <div class="info-row-label">{{ 'CONTACT.LABEL.EMAIL' | translate }}</div>
               <div class="info-row-value">{{ selectedMessage.email }}</div>
             </div>
           </div>
           <div class="col-md-6" *ngIf="selectedMessage.phone">
             <div class="info-row">
-              <div class="info-row-label">Phone</div>
+              <div class="info-row-label">{{ 'CONTACT.LABEL.PHONE' | translate }}</div>
               <div class="info-row-value">{{ selectedMessage.phone }}</div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="info-row">
-              <div class="info-row-label">Type</div>
+              <div class="info-row-label">{{ 'CONTACT.LABEL.TYPE' | translate }}</div>
               <div class="info-row-value">
                 <span class="pill" [ngClass]="typePillClass(selectedMessage)">
                   <span class="pill-dot"></span>
-                  {{ typeLabel(selectedMessage) }}
+                  {{ typeLabel(selectedMessage) | translate }}
                 </span>
               </div>
             </div>
           </div>
           <div class="col-md-6" *ngIf="isConsultation(selectedMessage)">
             <div class="info-row">
-              <div class="info-row-label">Preferred date &amp; time</div>
+              <div class="info-row-label">{{ 'CONTACT.LABEL.PREFERRED_DATE' | translate }}</div>
               <div class="info-row-value">
                 <i class="mdi mdi-calendar-clock text-warning me-1"></i>
                 <span class="fw-semibold">
@@ -317,7 +313,7 @@
           </div>
           <div class="col-md-6" *ngIf="selectedMessage.createdAt">
             <div class="info-row">
-              <div class="info-row-label">Received</div>
+              <div class="info-row-label">{{ 'CONTACT.LABEL.RECEIVED' | translate }}</div>
               <div class="info-row-value">
                 <i class="mdi mdi-clock-outline text-muted me-1"></i>
                 {{ relativeCreated(selectedMessage.createdAt) }}
@@ -329,18 +325,18 @@
           </div>
         </div>
         <div class="info-row">
-          <div class="info-row-label">Message</div>
+          <div class="info-row-label">{{ 'CONTACT.LABEL.MESSAGE' | translate }}</div>
           <div class="message-box">{{ selectedMessage.massage }}</div>
         </div>
       </div>
       <div class="modal-footer">
         <a *ngIf="selectedMessage.email" href="mailto:{{ selectedMessage.email }}" class="btn btn-primary">
-          <i class="mdi mdi-reply-outline me-1"></i> Reply by Email
+          <i class="mdi mdi-reply-outline me-1"></i> {{ 'CONTACT.ACTIONS.REPLY_EMAIL' | translate }}
         </a>
         <a *ngIf="selectedMessage.phone" href="tel:{{ selectedMessage.phone }}" class="btn btn-info text-white">
-          <i class="mdi mdi-phone-outline me-1"></i> Call
+          <i class="mdi mdi-phone-outline me-1"></i> {{ 'CONTACT.ACTIONS.CALL' | translate }}
         </a>
-        <button type="button" class="btn btn-light" (click)="closeMessage()">Close</button>
+        <button type="button" class="btn btn-light" (click)="closeMessage()">{{ 'COMMON.CLOSE' | translate }}</button>
       </div>
     </div>
   </div>
@@ -348,6 +344,6 @@
 
 <!-- removeItemModal -->
 <div bsModal #removeItemModal="bs-modal" class="modal fade" id="removeItemModal" tabindex="-1" aria-hidden="true">
-  <platx-confirm-model [title]="'Are you sure you want to remove this row?'" (confirm)="confirmDelete(deleteId)"
+  <platx-confirm-model [title]="'CONTACT.CONFIRM_REMOVE' | translate" (confirm)="confirmDelete(deleteId)"
     (cancel)="removeItemModal.hide()" />
 </div>

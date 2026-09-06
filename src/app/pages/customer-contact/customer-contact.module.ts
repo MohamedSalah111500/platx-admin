@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -33,6 +34,7 @@ import { CustomerContactComponent } from './components/customer-contact/customer
     BsDropdownModule,
     ModalModule,
     DropzoneModule,
+    TranslateModule,
   ]
 })
 export class CustomerContactModule { }

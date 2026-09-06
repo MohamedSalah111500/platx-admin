@@ -99,16 +99,11 @@ export class SubscriptionSectionComponent implements OnChanges {
 
   statusLabel(status: SubscriptionStatus): string {
     switch (status) {
-      case SubscriptionStatus.Active:
-        return "Active";
-      case SubscriptionStatus.Grace:
-        return "Grace";
-      case SubscriptionStatus.Expired:
-        return "Expired";
-      case SubscriptionStatus.Cancelled:
-        return "Cancelled";
-      default:
-        return "-";
+      case SubscriptionStatus.Active: return "SUB_SECTION.STATUS_ACTIVE";
+      case SubscriptionStatus.Grace: return "SUB_SECTION.STATUS_GRACE";
+      case SubscriptionStatus.Expired: return "SUB_SECTION.STATUS_EXPIRED";
+      case SubscriptionStatus.Cancelled: return "SUB_SECTION.STATUS_CANCELLED";
+      default: return "-";
     }
   }
 
@@ -246,9 +241,9 @@ export class SubscriptionSectionComponent implements OnChanges {
 
   periodLabel(p: LimitPeriod): string {
     switch (p) {
-      case LimitPeriod.Monthly: return "monthly";
-      case LimitPeriod.Daily: return "daily";
-      case LimitPeriod.Total: return "total";
+      case LimitPeriod.Monthly: return "SUB_SECTION.PERIOD_MONTHLY";
+      case LimitPeriod.Daily: return "SUB_SECTION.PERIOD_DAILY";
+      case LimitPeriod.Total: return "SUB_SECTION.PERIOD_TOTAL";
       default: return "";
     }
   }

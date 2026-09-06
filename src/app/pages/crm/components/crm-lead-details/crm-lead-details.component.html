@@ -1,5 +1,5 @@
 <div class="container-fluid crm-page">
-  <app-page-title title="CRM · Lead" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title [title]="'CRM.LEAD_DETAILS.PAGE_TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
 
@@ -17,19 +17,19 @@
             </div>
             <div class="text-muted mt-1" style="font-size:13px">
               <span *ngIf="lead.organization">{{ lead.organization }} · </span>
-              Added {{ relativeTime(lead.creationTime) }} by {{ lead.createdByName || '—' }}
-              <span *ngIf="lead.lastContactedAt"> · Last contact {{ relativeTime(lead.lastContactedAt) }}</span>
+              {{ 'CRM.LEAD_DETAILS.ADDED_BY' | translate: { time: relativeTime(lead.creationTime), by: (lead.createdByName || '—') } }}
+              <span *ngIf="lead.lastContactedAt"> · {{ 'CRM.LEAD_DETAILS.LAST_CONTACT' | translate: { time: relativeTime(lead.lastContactedAt) } }}</span>
             </div>
           </div>
           <div class="d-flex flex-wrap gap-2">
-            <a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="btn btn-success"><i class="mdi mdi-whatsapp me-1"></i> WhatsApp</a>
-            <a href="tel:{{ lead.phone }}" class="btn btn-light"><i class="mdi mdi-phone-outline me-1"></i> Call</a>
-            <a *ngIf="lead.email" href="mailto:{{ lead.email }}" class="btn btn-light"><i class="mdi mdi-email-outline me-1"></i> Email</a>
-            <button type="button" class="btn btn-primary" (click)="leadForm.open(lead)"><i class="mdi mdi-pencil-outline me-1"></i> Edit</button>
+            <a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="btn btn-success"><i class="mdi mdi-whatsapp me-1"></i> {{ 'CRM.LEAD_DETAILS.WHATSAPP' | translate }}</a>
+            <a href="tel:{{ lead.phone }}" class="btn btn-light"><i class="mdi mdi-phone-outline me-1"></i> {{ 'CRM.LEAD_DETAILS.CALL' | translate }}</a>
+            <a *ngIf="lead.email" href="mailto:{{ lead.email }}" class="btn btn-light"><i class="mdi mdi-email-outline me-1"></i> {{ 'CRM.LEAD_DETAILS.EMAIL' | translate }}</a>
+            <button type="button" class="btn btn-primary" (click)="leadForm.open(lead)"><i class="mdi mdi-pencil-outline me-1"></i> {{ 'CRM.LEADS.ACTIONS.EDIT' | translate }}</button>
             <div dropdown class="d-inline-block" *ngIf="isSuperAdmin">
               <button dropdownToggle type="button" class="btn btn-light action-btn py-2"><i class="mdi mdi-dots-horizontal font-size-18"></i></button>
               <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
-                <li><a href="javascript:void(0)" class="dropdown-item" (click)="removeModal.show()"><i class="mdi mdi-trash-can-outline text-danger me-2"></i> Delete lead</a></li>
+                <li><a href="javascript:void(0)" class="dropdown-item" (click)="removeModal.show()"><i class="mdi mdi-trash-can-outline text-danger me-2"></i> {{ 'CRM.LEAD_DETAILS.DELETE_LEAD' | translate }}</a></li>
               </ul>
             </div>
           </div>
@@ -49,11 +49,11 @@
             }
           </div>
           <button type="button" class="btn btn-sm btn-outline-secondary" (click)="statusModal.open(lead)">
-            <i class="mdi mdi-swap-horizontal me-1"></i> Change status with note
+            <i class="mdi mdi-swap-horizontal me-1"></i> {{ 'CRM.LEAD_DETAILS.CHANGE_STATUS_NOTE' | translate }}
           </button>
         </div>
         <div class="text-danger mt-2" style="font-size:13px" *ngIf="lead.status === 7 && lead.lostReason">
-          <i class="mdi mdi-information-outline me-1"></i> Lost reason: {{ lead.lostReason }}
+          <i class="mdi mdi-information-outline me-1"></i> {{ 'CRM.LEAD_DETAILS.LOST_REASON' | translate }}: {{ lead.lostReason }}
         </div>
       </div>
     </div>
@@ -62,34 +62,34 @@
       <div class="col-lg-4">
         <div class="card crm-card mb-3">
           <div class="card-body">
-            <h6 class="fw-bold mb-3">Contact details</h6>
+            <h6 class="fw-bold mb-3">{{ 'CRM.LEAD_DETAILS.CONTACT_DETAILS' | translate }}</h6>
             <div class="info-row">
-              <div class="info-row-label">WhatsApp / Phone</div>
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.PHONE' | translate }}</div>
               <div class="info-row-value d-flex align-items-center gap-2">
                 <a href="tel:{{ lead.phone }}" dir="ltr" class="text-body">{{ lead.phone }}</a>
                 <a [href]="waLink(lead.phone)" target="_blank" rel="noopener" class="wa-btn"><i class="mdi mdi-whatsapp"></i></a>
               </div>
             </div>
             <div class="info-row">
-              <div class="info-row-label">Email</div>
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.EMAIL' | translate }}</div>
               <div class="info-row-value"><a *ngIf="lead.email; else dash" href="mailto:{{ lead.email }}" class="text-body">{{ lead.email }}</a></div>
             </div>
             <div class="info-row">
-              <div class="info-row-label">Organization</div>
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.ORGANIZATION' | translate }}</div>
               <div class="info-row-value">{{ lead.organization || '—' }}</div>
             </div>
             <div class="row">
               <div class="col-6 info-row">
-                <div class="info-row-label">Country</div>
+                <div class="info-row-label">{{ 'CRM.LEAD_FORM.COUNTRY' | translate }}</div>
                 <div class="info-row-value">{{ lead.country || '—' }}</div>
               </div>
               <div class="col-6 info-row">
-                <div class="info-row-label">City</div>
+                <div class="info-row-label">{{ 'CRM.LEAD_FORM.CITY' | translate }}</div>
                 <div class="info-row-value">{{ lead.city || '—' }}</div>
               </div>
             </div>
             <div class="info-row">
-              <div class="info-row-label">Interested plan</div>
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.INTERESTED_PLAN' | translate }}</div>
               <div class="info-row-value">{{ lead.interestedPlan || '—' }}</div>
             </div>
           </div>
@@ -97,19 +97,19 @@
 
         <div class="card crm-card mb-3">
           <div class="card-body">
-            <h6 class="fw-bold mb-3">Ownership & follow-up</h6>
+            <h6 class="fw-bold mb-3">{{ 'CRM.LEAD_DETAILS.OWNERSHIP_FOLLOWUP' | translate }}</h6>
             <div class="info-row">
-              <div class="info-row-label">Assigned to</div>
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.ASSIGNED_TO' | translate }}</div>
               <div class="info-row-value">
                 <ng-container *ngIf="isSuperAdmin; else assigneeReadonly">
                   <div dropdown class="d-inline-block">
                     <a dropdownToggle href="javascript:void(0)" class="text-body d-inline-flex align-items-center gap-2">
                       <span class="crm-avatar crm-avatar-sm" *ngIf="lead.assignedToName" [style.background]="avatarColor(lead.assignedToUserId)">{{ initials(lead.assignedToName) }}</span>
-                      <span [class.text-muted]="!lead.assignedToName">{{ lead.assignedToName || 'Unassigned' }}</span>
+                      <span [class.text-muted]="!lead.assignedToName">{{ lead.assignedToName || ('CRM.LEADS.UNASSIGNED' | translate) }}</span>
                       <i class="mdi mdi-chevron-down text-muted"></i>
                     </a>
                     <ul *dropdownMenu class="dropdown-menu">
-                      <li><a href="javascript:void(0)" class="dropdown-item" [class.active]="!lead.assignedToUserId" (click)="assign(null)">Unassigned</a></li>
+                      <li><a href="javascript:void(0)" class="dropdown-item" [class.active]="!lead.assignedToUserId" (click)="assign(null)">{{ 'CRM.LEADS.UNASSIGNED' | translate }}</a></li>
                       <li><hr class="dropdown-divider" /></li>
                       @for (a of activeAgents; track a.id) {
                       <li><a href="javascript:void(0)" class="dropdown-item" [class.active]="a.id === lead.assignedToUserId" (click)="assign(a.id)">{{ a.firstName }} {{ a.lastName }}</a></li>
@@ -117,11 +117,11 @@
                     </ul>
                   </div>
                 </ng-container>
-                <ng-template #assigneeReadonly><span [class.text-muted]="!lead.assignedToName">{{ lead.assignedToName || 'Unassigned' }}</span></ng-template>
+                <ng-template #assigneeReadonly><span [class.text-muted]="!lead.assignedToName">{{ lead.assignedToName || ('CRM.LEADS.UNASSIGNED' | translate) }}</span></ng-template>
               </div>
             </div>
             <div class="info-row">
-              <div class="info-row-label">Next follow-up</div>
+              <div class="info-row-label">{{ 'CRM.LEAD_FORM.NEXT_FOLLOWUP' | translate }}</div>
               <div class="info-row-value">
                 <ng-container *ngIf="lead.nextFollowUpAt; else dash">
                   <span class="pill" [ngClass]="'fu-' + (followUpState(lead.nextFollowUpAt) || 'none')"><i class="mdi mdi-bell-outline"></i>{{ relativeTime(lead.nextFollowUpAt) }}</span>
@@ -130,7 +130,7 @@
               </div>
             </div>
             <div class="info-row mb-0">
-              <div class="info-row-label">Last contacted</div>
+              <div class="info-row-label">{{ 'CRM.LEAD_DETAILS.LAST_CONTACTED' | translate }}</div>
               <div class="info-row-value">{{ lead.lastContactedAt ? (lead.lastContactedAt | date:'MMM d, y · h:mm a') : '—' }}</div>
             </div>
           </div>
@@ -138,7 +138,7 @@
 
         <div class="card crm-card" *ngIf="lead.notes">
           <div class="card-body">
-            <h6 class="fw-bold mb-2">Notes</h6>
+            <h6 class="fw-bold mb-2">{{ 'CRM.LEAD_FORM.NOTES' | translate }}</h6>
             <div class="notes-box">{{ lead.notes }}</div>
           </div>
         </div>
@@ -147,7 +147,7 @@
       <div class="col-lg-8">
         <div class="card crm-card mb-3">
           <div class="card-body">
-            <h6 class="fw-bold mb-3">Log activity</h6>
+            <h6 class="fw-bold mb-3">{{ 'CRM.LEAD_DETAILS.LOG_ACTIVITY' | translate }}</h6>
             <div class="type-chips mb-2">
               @for (t of activityTypes; track t.value) {
               <button type="button" class="chip" [class.active]="newActivity.type === t.value" (click)="newActivity.type = t.value">
@@ -156,33 +156,33 @@
               }
             </div>
             <textarea class="form-control" rows="3" [(ngModel)]="newActivity.content" name="content" maxlength="2000"
-              placeholder="What happened? e.g. Sent pricing on WhatsApp, they will decide next week..."></textarea>
+              [placeholder]="'CRM.LEAD_DETAILS.ACTIVITY_PLACEHOLDER' | translate"></textarea>
             <div class="row g-2 align-items-end mt-1">
               <div class="col-md-5">
-                <label class="form-label mb-1">Schedule next follow-up</label>
+                <label class="form-label mb-1">{{ 'CRM.LEAD_DETAILS.SCHEDULE_FOLLOWUP' | translate }}</label>
                 <input type="datetime-local" class="form-control" [(ngModel)]="newActivity.nextFollowUpAt" name="nextFollowUpAt" />
               </div>
               <div class="col-md-4">
                 <div class="form-check mb-2">
                   <input class="form-check-input" type="checkbox" id="markContacted" [(ngModel)]="newActivity.markAsContacted" name="markAsContacted" />
-                  <label class="form-check-label" for="markContacted" style="font-size:13px">Mark as contacted</label>
+                  <label class="form-check-label" for="markContacted" style="font-size:13px">{{ 'CRM.LEAD_DETAILS.MARK_CONTACTED' | translate }}</label>
                 </div>
               </div>
               <div class="col-md-3 text-md-end">
                 <button type="button" class="btn btn-primary w-100" (click)="addActivity()" [disabled]="savingActivity || !newActivity.content.trim()">
-                  <span *ngIf="savingActivity" class="spinner-border spinner-border-sm me-1"></span> Log
+                  <span *ngIf="savingActivity" class="spinner-border spinner-border-sm me-1"></span> {{ 'CRM.LEAD_DETAILS.LOG' | translate }}
                 </button>
               </div>
             </div>
-            <div class="form-hint mt-2">Calls, WhatsApp, meetings and emails automatically update “last contacted” and move a New lead to Contacted.</div>
+            <div class="form-hint mt-2">{{ 'CRM.LEAD_DETAILS.ACTIVITY_HINT' | translate }}</div>
           </div>
         </div>
 
         <div class="card crm-card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="fw-bold mb-0">Timeline</h6>
-              <small class="text-muted">{{ activitiesTotal }} entries</small>
+              <h6 class="fw-bold mb-0">{{ 'CRM.LEAD_DETAILS.TIMELINE' | translate }}</h6>
+              <small class="text-muted">{{ 'CRM.LEAD_DETAILS.ENTRIES_COUNT' | translate: { count: activitiesTotal } }}</small>
             </div>
             <ul class="timeline">
               @for (a of activities; track a.id) {
@@ -201,13 +201,13 @@
               @if (!activities.length && !activitiesLoading) {
               <li class="empty-block">
                 <i class="mdi mdi-timeline-text-outline font-size-24 text-muted d-block mb-1"></i>
-                <div class="text-muted" style="font-size:13px">No activity yet. Log your first call or note above.</div>
+                <div class="text-muted" style="font-size:13px">{{ 'CRM.LEAD_DETAILS.NO_ACTIVITY' | translate }}</div>
               </li>
               }
             </ul>
             <div class="text-center mt-2" *ngIf="activitiesLoading"><div class="spinner-border spinner-border-sm text-primary"></div></div>
             <div class="text-center mt-2" *ngIf="hasMoreActivities && !activitiesLoading">
-              <button type="button" class="btn btn-sm btn-light" (click)="loadMoreActivities()">Load more</button>
+              <button type="button" class="btn btn-sm btn-light" (click)="loadMoreActivities()">{{ 'CRM.LEAD_DETAILS.LOAD_MORE' | translate }}</button>
             </div>
           </div>
         </div>
@@ -222,5 +222,5 @@
 <app-crm-status-modal #statusModal (changed)="onStatusChanged($event)"></app-crm-status-modal>
 
 <div bsModal #removeModal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true">
-  <platx-confirm-model [title]="'Delete this lead and its whole timeline?'" (confirm)="confirmDelete()" (cancel)="removeModal.hide()" />
+  <platx-confirm-model [title]="'CRM.LEAD_DETAILS.CONFIRM_DELETE' | translate" (confirm)="confirmDelete()" (cancel)="removeModal.hide()" />
 </div>

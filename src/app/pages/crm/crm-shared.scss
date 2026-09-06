@@ -275,7 +275,63 @@
 .form-label { font-size: 13px; font-weight: 600; color: #374151; }
 .form-hint { font-size: 12px; color: #6b7280; }
 
+// -------------------------------------------------------------------------
+// Responsive — phones and small tablets
+// -------------------------------------------------------------------------
+@media (max-width: 991px) {
+  // Toolbars stack the action buttons on tablets
+  .crm-page .toolbar-actions { width: 100%; justify-content: flex-end; }
+
+  // Tables scroll horizontally instead of squishing
+  .crm-page .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .crm-page .smart-table {
+    min-width: 720px; // guarantees pills/buttons don't overlap
+  }
+
+  // Pipeline board scrolls horizontally instead of wrapping (kanban feel)
+  .crm-page .board {
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x proximity;
+    .board-column { scroll-snap-align: start; min-width: 280px; }
+  }
+}
+
 @media (max-width: 575px) {
-  .search-box { min-width: 100%; }
-  .filter-select { width: 100%; }
+  .search-box { min-width: 100%; width: 100%; }
+  .filter-select { width: 100%; min-width: 0; }
+
+  // KPI cards stack full width and shrink internals
+  .crm-page .kpi-card { padding: 12px 14px; }
+  .crm-page .kpi-icon { width: 40px; height: 40px; font-size: 18px; }
+  .crm-page .kpi-value { font-size: 20px; }
+
+  // Toolbar actions become full-width buttons
+  .crm-page .toolbar-actions { flex-direction: column; align-items: stretch; }
+  .crm-page .toolbar-actions .btn { width: 100%; }
+
+  // Pagination — smaller buttons, allow wrap
+  .crm-page .pagination-wrap .page-link { padding: 4px 8px; font-size: 12px; }
+  .crm-page .pagination { flex-wrap: wrap; justify-content: center; }
+
+  // Lead header stacks vertically
+  .crm-page .lead-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+
+  // Modals get full-width on phones
+  .modal-dialog { margin: 0.5rem; }
+
+  // Status strip becomes horizontally scrollable so it never overflows
+  .crm-page .status-strip {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+  .crm-page .status-strip .step { flex-shrink: 0; }
+
+  // Tables — smaller cell padding on phones
+  .crm-page .smart-table th,
+  .crm-page .smart-table td { padding: 10px 8px; }
 }

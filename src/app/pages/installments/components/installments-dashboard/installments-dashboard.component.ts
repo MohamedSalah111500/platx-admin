@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { TenantInstallmentService } from "src/app/pages/tenant/services/tenant-installment.service";
 import { InstallmentStatus, TenantInstallment } from "src/app/pages/tenant/types/installment.types";
 
@@ -10,7 +11,7 @@ import { InstallmentStatus, TenantInstallment } from "src/app/pages/tenant/types
 })
 export class InstallmentsDashboardComponent implements OnInit {
   InstallmentStatus = InstallmentStatus;
-  breadCrumbItems = [{ label: "Payments Due", active: true }];
+  breadCrumbItems = [{ label: "PAYMENTS.TITLE", active: true }];
 
   items: TenantInstallment[] = [];
   totalCount = 0;
@@ -21,7 +22,8 @@ export class InstallmentsDashboardComponent implements OnInit {
 
   constructor(
     private installmentService: TenantInstallmentService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -52,14 +54,10 @@ export class InstallmentsDashboardComponent implements OnInit {
 
   statusLabel(status: InstallmentStatus): string {
     switch (status) {
-      case InstallmentStatus.Paid:
-        return "Paid";
-      case InstallmentStatus.Overdue:
-        return "Overdue";
-      case InstallmentStatus.Upcoming:
-        return "Upcoming";
-      default:
-        return "-";
+      case InstallmentStatus.Paid: return "INST.STATUS.PAID";
+      case InstallmentStatus.Overdue: return "INST.STATUS.OVERDUE";
+      case InstallmentStatus.Upcoming: return "INST.STATUS.UPCOMING";
+      default: return "-";
     }
   }
 
@@ -92,10 +90,10 @@ export class InstallmentsDashboardComponent implements OnInit {
   markPaid(item: TenantInstallment): void {
     this.installmentService.markPaid(item.id, {}).subscribe({
       next: () => {
-        this.toastr.success("Marked as paid");
+        this.toastr.success(this.translate.instant("PAYMENTS.TOAST.MARKED_PAID"));
         this.load();
       },
-      error: (err) => this.toastr.error(err?.error?.message ?? "Failed to mark as paid"),
+      error: (err) => this.toastr.error(err?.error?.message ?? this.translate.instant("PAYMENTS.TOAST.MARK_FAILED")),
     });
   }
 }

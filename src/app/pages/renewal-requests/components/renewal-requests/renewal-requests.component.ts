@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { SubscriptionService } from "src/app/pages/tenant/services/subscription.service";
 import {
   RenewalRequest,
@@ -15,7 +16,7 @@ import {
 })
 export class RenewalRequestsComponent implements OnInit {
   RenewalRequestStatus = RenewalRequestStatus;
-  breadCrumbItems = [{ label: "Renewal Requests", active: true }];
+  breadCrumbItems = [{ label: "MENUITEMS.RENEWAL_REQUESTS.TEXT", active: true }];
 
   items: RenewalRequest[] = [];
   totalCount = 0;
@@ -32,7 +33,8 @@ export class RenewalRequestsComponent implements OnInit {
     private subService: SubscriptionService,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private translate: TranslateService
   ) {
     this.handleForm = this.fb.group({
       status: [RenewalRequestStatus.Handled, Validators.required],
@@ -67,7 +69,12 @@ export class RenewalRequestsComponent implements OnInit {
   }
 
   statusLabel(s: RenewalRequestStatus): string {
-    return RenewalRequestStatus[s] ?? "-";
+    switch (s) {
+      case RenewalRequestStatus.Pending: return "RENEWAL.STATUS.PENDING";
+      case RenewalRequestStatus.Handled: return "RENEWAL.STATUS.HANDLED";
+      case RenewalRequestStatus.Rejected: return "RENEWAL.STATUS.REJECTED";
+      default: return "-";
+    }
   }
 
   pillClass(s: RenewalRequestStatus): string {
@@ -115,11 +122,11 @@ export class RenewalRequestsComponent implements OnInit {
       })
       .subscribe({
         next: () => {
-          this.toastr.success("Request updated");
+          this.toastr.success(this.translate.instant("RENEWAL.TOAST.UPDATED"));
           this.modalRef?.hide();
           this.load();
         },
-        error: (err) => this.toastr.error(err?.error?.message ?? "Failed"),
+        error: (err) => this.toastr.error(err?.error?.message ?? this.translate.instant("RENEWAL.TOAST.FAILED")),
       });
   }
 }

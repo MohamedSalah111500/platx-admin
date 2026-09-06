@@ -79,15 +79,16 @@ export class DefaultComponent implements OnInit {
   }
 
   private buildStats(o: CompanyOverview): void {
+    // titles are translation keys — rendered via `| translate` in the template
     this.statData = [
-      { title: 'Total Tenants', value: `${o.totalTenants}`, icon: 'bx-buildings' },
-      { title: 'Active Tenants', value: `${o.activeTenants}`, icon: 'bx-check-shield' },
-      { title: 'Total Users', value: `${o.totalUsers}`, icon: 'bx-group' },
-      { title: 'Active Users (30d)', value: `${o.activeUsers30d}`, icon: 'bx-user-check' },
-      { title: 'Students', value: `${o.totalStudents}`, icon: 'bx-user' },
-      { title: 'Courses', value: `${o.totalCourses}`, icon: 'bx-book-open' },
-      { title: 'Enrollments', value: `${o.totalEnrollments}`, icon: 'bx-collection' },
-      { title: 'New Users This Month', value: `${o.newUsersThisMonth}`, icon: 'bx-trending-up' },
+      { title: 'DASHBOARD.STAT.TOTAL_TENANTS', value: `${o.totalTenants}`, icon: 'bx-buildings' },
+      { title: 'DASHBOARD.STAT.ACTIVE_TENANTS', value: `${o.activeTenants}`, icon: 'bx-check-shield' },
+      { title: 'DASHBOARD.STAT.TOTAL_USERS', value: `${o.totalUsers}`, icon: 'bx-group' },
+      { title: 'DASHBOARD.STAT.ACTIVE_USERS_30D', value: `${o.activeUsers30d}`, icon: 'bx-user-check' },
+      { title: 'DASHBOARD.STAT.STUDENTS', value: `${o.totalStudents}`, icon: 'bx-user' },
+      { title: 'DASHBOARD.STAT.COURSES', value: `${o.totalCourses}`, icon: 'bx-book-open' },
+      { title: 'DASHBOARD.STAT.ENROLLMENTS', value: `${o.totalEnrollments}`, icon: 'bx-collection' },
+      { title: 'DASHBOARD.STAT.NEW_USERS_MONTH', value: `${o.newUsersThisMonth}`, icon: 'bx-trending-up' },
     ];
   }
 
@@ -111,14 +112,15 @@ export class DefaultComponent implements OnInit {
   }
 
   private buildActivity(a: CompanyActivity): void {
+    // labels are translation keys — rendered via `| translate` in the template
     this.activityStats = [
-      { label: 'Enrollments', value: a.enrollments, icon: 'bx-collection' },
-      { label: 'Exams Taken', value: a.examsTaken, icon: 'bx-edit-alt' },
-      { label: 'Homework Submissions', value: a.homeworkSubmissions, icon: 'bx-task' },
-      { label: 'Lessons Completed', value: a.lessonsCompleted, icon: 'bx-check-circle' },
-      { label: 'Live Classes', value: a.liveClasses, icon: 'bx-video' },
-      { label: 'QR Redemptions', value: a.qrRedemptions, icon: 'bx-qr-scan' },
-      { label: 'Messages', value: a.messagesSent, icon: 'bx-message-dots' },
+      { label: 'DASHBOARD.ACTIVITY.ENROLLMENTS', value: a.enrollments, icon: 'bx-collection' },
+      { label: 'DASHBOARD.ACTIVITY.EXAMS', value: a.examsTaken, icon: 'bx-edit-alt' },
+      { label: 'DASHBOARD.ACTIVITY.HOMEWORK', value: a.homeworkSubmissions, icon: 'bx-task' },
+      { label: 'DASHBOARD.ACTIVITY.LESSONS', value: a.lessonsCompleted, icon: 'bx-check-circle' },
+      { label: 'DASHBOARD.ACTIVITY.LIVE', value: a.liveClasses, icon: 'bx-video' },
+      { label: 'DASHBOARD.ACTIVITY.QR', value: a.qrRedemptions, icon: 'bx-qr-scan' },
+      { label: 'DASHBOARD.ACTIVITY.MESSAGES', value: a.messagesSent, icon: 'bx-message-dots' },
     ];
   }
 

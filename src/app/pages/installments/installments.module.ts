@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ModalModule } from "ngx-bootstrap/modal";
 import { PaginationModule } from "ngx-bootstrap/pagination";
+import { TranslateModule } from "@ngx-translate/core";
 import { UIModule } from "../../shared/ui/ui.module";
 import { InstallmentsRoutingModule } from "./installments-routing.module";
 import { InstallmentsDashboardComponent } from "./components/installments-dashboard/installments-dashboard.component";
@@ -16,6 +17,7 @@ import { InstallmentsDashboardComponent } from "./components/installments-dashbo
     UIModule,
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
+    TranslateModule,
     InstallmentsRoutingModule,
   ],
 })

@@ -151,8 +151,10 @@ export class CrmLeadsComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event: PageChangedEvent) {
-    if (event.page === this.filter.page) return;
-    this.filter.page = event.page;
+    // ngModel already wrote event.page into filter.page; just refetch.
+    // (Previously we guarded on `event.page === this.filter.page` which was
+    // always true here and silently blocked pagination.)
+    if (event.page) this.filter.page = event.page;
     this.load();
   }
 
@@ -205,7 +207,12 @@ export class CrmLeadsComponent implements OnInit, OnDestroy {
   assign(lead: CrmLead, userId: string | null) {
     if ((lead.assignedToUserId || null) === userId) return;
     this.crm.assign(lead.id, userId).subscribe((updated) => {
-      this.toastr.success(updated.assignedToName ? `Assigned to ${updated.assignedToName}` : "Unassigned", "CRM");
+      this.toastr.success(
+        updated.assignedToName
+          ? this.translate.instant("CRM.TOAST.ASSIGNED_TO", { name: updated.assignedToName })
+          : this.translate.instant("CRM.LEADS.UNASSIGNED"),
+        this.translate.instant("MENUITEMS.CRM.TEXT")
+      );
       this.replace(updated);
       this.loadStats();
     });
@@ -219,7 +226,10 @@ export class CrmLeadsComponent implements OnInit, OnDestroy {
   confirmDelete() {
     if (!this.deleteTarget) return;
     this.crm.deleteLead(this.deleteTarget.id).subscribe(() => {
-      this.toastr.success("Lead deleted", "CRM");
+      this.toastr.success(
+        this.translate.instant("CRM.LEADS.TOAST.DELETED"),
+        this.translate.instant("MENUITEMS.CRM.TEXT")
+      );
       this.removeModal?.hide();
       this.deleteTarget = null;
       this.refreshAll();

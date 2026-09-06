@@ -3,6 +3,7 @@ import { ModalDirective } from "ngx-bootstrap/modal";
 import { FormBuilder } from "@angular/forms";
 
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { PlansService } from "../../services/plansService.service";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
@@ -55,13 +56,14 @@ export class PlansComponent implements OnInit {
     public plansService: PlansService,
     private subService: SubscriptionService,
     private modalService: BsModalService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
     this.breadCrumbItems = [
-      { label: "Manage Plans" },
-      { label: "List", active: true },
+      { label: "MENUITEMS.PLANS.TEXT" },
+      { label: "TENANT.LIST", active: true },
     ];
     this.getAllData(this.page, this.pageSize);
   }
@@ -155,7 +157,7 @@ export class PlansComponent implements OnInit {
         this.limitsLoading = false;
       },
       error: () => {
-        this.toastr.error("Failed to load limits");
+        this.toastr.error(this.translate.instant("PLANS.TOAST.LOAD_FAILED"));
         this.limitsLoading = false;
       },
     });
@@ -169,12 +171,12 @@ export class PlansComponent implements OnInit {
     );
     this.subService.setPlanLimits(this.editingPlanId, payload).subscribe({
       next: () => {
-        this.toastr.success("Plan limits saved");
+        this.toastr.success(this.translate.instant("PLANS.TOAST.SAVED"));
         this.limitsModalRef?.hide();
         this.limitsSaving = false;
       },
       error: (err) => {
-        this.toastr.error(err?.error?.message ?? "Failed to save limits");
+        this.toastr.error(err?.error?.message ?? this.translate.instant("PLANS.TOAST.SAVE_FAILED"));
         this.limitsSaving = false;
       },
     });

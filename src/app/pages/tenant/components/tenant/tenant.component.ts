@@ -332,8 +332,9 @@ export class TenantComponent implements OnInit {
   }
   // pagechanged
   pageChanged(event: PageChangedEvent): void {
-    if (event.page === this.page) return;
-    this.page = event.page;
+    // Two-way bound ngModel already sets `page` before this fires — guarding on
+    // equality would silently block pagination. Just refetch the requested page.
+    if (event.page) this.page = event.page;
     // page-scope filters are reset when paginating — server-side filtering would be a separate endpoint
     this.statusFilter = "all";
     this.term = "";

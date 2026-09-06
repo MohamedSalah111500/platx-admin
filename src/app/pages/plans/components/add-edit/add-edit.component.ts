@@ -17,8 +17,8 @@ import { PlansService } from "../../services/plansService.service";
 export class AddEditComponent {
   errorMapper = errorMapper;
   breadCrumbItems: Array<{}> = [
-    { label: "Manage Tenant" },
-    { label: "List", active: true },
+    { label: "MENUITEMS.MANAGE_TENANT.TEXT" },
+    { label: "TENANT.LIST", active: true },
   ];
   submitted = false;
   mode: string = "create";

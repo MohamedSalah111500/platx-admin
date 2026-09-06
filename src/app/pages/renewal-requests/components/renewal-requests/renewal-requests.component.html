@@ -1,17 +1,17 @@
 <div class="container-fluid renewal-page">
-  <app-page-title title="Renewal Requests" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title [title]="'RENEWAL.TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <div class="card sub-shell">
     <!-- Header -->
     <div class="card-body sub-header">
       <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
         <div>
-          <h4 class="mb-1 fw-bold">Renewal Requests</h4>
-          <p class="text-muted mb-0">Review and handle subscription renewal requests from tenants</p>
+          <h4 class="mb-1 fw-bold">{{ 'RENEWAL.TITLE' | translate }}</h4>
+          <p class="text-muted mb-0">{{ 'RENEWAL.SUBTITLE' | translate }}</p>
         </div>
         <div class="d-flex flex-wrap gap-2">
           <span class="pill pill-soft">
-            Total <strong class="ms-1">{{ totalCount }}</strong>
+            {{ 'RENEWAL.TOTAL' | translate }} <strong class="ms-1">{{ totalCount }}</strong>
           </span>
         </div>
       </div>
@@ -21,12 +21,12 @@
     <div class="card-body sub-section">
       <div class="row g-3 align-items-end">
         <div class="col-md-4">
-          <label class="info-label d-block mb-2">Filter by status</label>
+          <label class="info-label d-block mb-2">{{ 'RENEWAL.FILTER_BY_STATUS' | translate }}</label>
           <select class="form-select form-select-clean" [(ngModel)]="filterStatus" (change)="onFilterChange()">
-            <option [ngValue]="null">All</option>
-            <option [ngValue]="RenewalRequestStatus.Pending">Pending</option>
-            <option [ngValue]="RenewalRequestStatus.Handled">Handled</option>
-            <option [ngValue]="RenewalRequestStatus.Rejected">Rejected</option>
+            <option [ngValue]="null">{{ 'RENEWAL.FILTER.ALL' | translate }}</option>
+            <option [ngValue]="RenewalRequestStatus.Pending">{{ 'RENEWAL.STATUS.PENDING' | translate }}</option>
+            <option [ngValue]="RenewalRequestStatus.Handled">{{ 'RENEWAL.STATUS.HANDLED' | translate }}</option>
+            <option [ngValue]="RenewalRequestStatus.Rejected">{{ 'RENEWAL.STATUS.REJECTED' | translate }}</option>
           </select>
         </div>
       </div>
@@ -42,11 +42,11 @@
       <div class="history-table">
         <div class="history-row history-head">
           <div>#</div>
-          <div>Tenant</div>
-          <div>Requested</div>
-          <div>Status</div>
-          <div>Notes</div>
-          <div class="text-end">Action</div>
+          <div>{{ 'RENEWAL.COL.TENANT' | translate }}</div>
+          <div>{{ 'RENEWAL.COL.REQUESTED' | translate }}</div>
+          <div>{{ 'RENEWAL.COL.STATUS' | translate }}</div>
+          <div>{{ 'RENEWAL.COL.NOTES' | translate }}</div>
+          <div class="text-end">{{ 'RENEWAL.COL.ACTION' | translate }}</div>
         </div>
 
         <div class="history-row" *ngIf="items.length === 0">
@@ -54,7 +54,7 @@
             <div class="empty-icon mx-auto mb-2">
               <i class="mdi mdi-inbox-outline"></i>
             </div>
-            No renewal requests found
+            {{ 'RENEWAL.EMPTY' | translate }}
           </div>
         </div>
 
@@ -68,7 +68,7 @@
           <div>
             <span class="pill" [ngClass]="pillClass(item.status)">
               <span class="status-dot" [ngClass]="dotClass(item.status)"></span>
-              {{ statusLabel(item.status) }}
+              {{ statusLabel(item.status) | translate }}
             </span>
           </div>
           <div class="text-muted notes-cell">{{ item.adminNotes || "—" }}</div>
@@ -79,10 +79,10 @@
               *ngIf="item.status === RenewalRequestStatus.Pending"
               (click)="openHandle(handleTpl, item)"
             >
-              Handle
+              {{ 'RENEWAL.HANDLE' | translate }}
             </button>
             <span class="text-muted font-size-12" *ngIf="item.status !== RenewalRequestStatus.Pending">
-              Handled {{ item.handledAt | date: "MMM d, yyyy" }}
+              {{ 'RENEWAL.HANDLED_AT' | translate }} {{ item.handledAt | date: "MMM d, yyyy" }}
             </span>
           </div>
         </div>
@@ -110,30 +110,30 @@
 <!-- Handle Modal -->
 <ng-template #handleTpl>
   <div class="modal-header">
-    <h5 class="modal-title">Handle Renewal Request</h5>
+    <h5 class="modal-title">{{ 'RENEWAL.HANDLE_MODAL.TITLE' | translate }}</h5>
     <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
   </div>
   <form [formGroup]="handleForm" (ngSubmit)="submitHandle()">
     <div class="modal-body">
       <div class="info-tile mb-3">
-        <span class="info-label">Tenant</span>
+        <span class="info-label">{{ 'RENEWAL.COL.TENANT' | translate }}</span>
         <div class="info-value-sm">{{ selected?.tenantTitle || selected?.tenantId }}</div>
       </div>
       <div class="mb-3">
-        <label class="form-label">Decision <span class="text-danger">*</span></label>
+        <label class="form-label">{{ 'RENEWAL.HANDLE_MODAL.DECISION' | translate }} <span class="text-danger">*</span></label>
         <select class="form-select" formControlName="status">
-          <option [ngValue]="RenewalRequestStatus.Handled">Handled</option>
-          <option [ngValue]="RenewalRequestStatus.Rejected">Rejected</option>
+          <option [ngValue]="RenewalRequestStatus.Handled">{{ 'RENEWAL.STATUS.HANDLED' | translate }}</option>
+          <option [ngValue]="RenewalRequestStatus.Rejected">{{ 'RENEWAL.STATUS.REJECTED' | translate }}</option>
         </select>
       </div>
       <div class="mb-3">
-        <label class="form-label">Notes</label>
-        <textarea class="form-control" formControlName="adminNotes" rows="3" placeholder="Optional notes..."></textarea>
+        <label class="form-label">{{ 'RENEWAL.COL.NOTES' | translate }}</label>
+        <textarea class="form-control" formControlName="adminNotes" rows="3" [placeholder]="'RENEWAL.HANDLE_MODAL.NOTES_PLACEHOLDER' | translate"></textarea>
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-light" (click)="modalRef?.hide()">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="handleForm.invalid">Submit</button>
+      <button type="button" class="btn btn-light" (click)="modalRef?.hide()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="handleForm.invalid">{{ 'RENEWAL.HANDLE_MODAL.SUBMIT' | translate }}</button>
     </div>
   </form>
 </ng-template>

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChild } from "@angular/core
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { CrmService } from "../../services/crm.service";
 import { CrmAuthService } from "../../services/crm-auth.service";
 import { fromInputDateTime, phoneDigits, toInputDateTime } from "../../crm-utils";
@@ -43,7 +44,8 @@ export class CrmLeadFormComponent {
     private fb: FormBuilder,
     private crm: CrmService,
     private auth: CrmAuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private translate: TranslateService
   ) {
     this.form = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(150)]],
@@ -121,7 +123,10 @@ export class CrmLeadFormComponent {
     request.subscribe({
       next: (lead) => {
         this.saving = false;
-        this.toastr.success(this.editing ? "Lead updated" : "Lead added", "CRM");
+        this.toastr.success(
+          this.translate.instant(this.editing ? "CRM.LEAD_FORM.TOAST.UPDATED" : "CRM.LEAD_FORM.TOAST.ADDED"),
+          this.translate.instant("MENUITEMS.CRM.TEXT")
+        );
         this.saved.emit(lead);
         this.close();
       },

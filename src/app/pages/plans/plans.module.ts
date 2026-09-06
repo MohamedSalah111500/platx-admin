@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -37,7 +38,8 @@ import { PlansComponent } from './components/plans/plans.component';
     BsDropdownModule,
     ModalModule,
     DropzoneModule,
-    UiSwitchModule
+    UiSwitchModule,
+    TranslateModule
   ]
 })
 export class PlansModule { }

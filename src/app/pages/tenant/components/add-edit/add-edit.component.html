@@ -1,119 +1,119 @@
 <div class="container-fluid">
-  <app-page-title title="Tenant" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title [title]="'MENUITEMS.MANAGE_TENANT.TEXT' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
   <div class="card">
     <div class="card-body">
       <form [formGroup]="tenantForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="row">
           <div class="col-lg-4 mb-3">
-            <label for="firstName">First Name *</label>
+            <label for="firstName">{{ 'TENANT_FORM.FIRST_NAME' | translate }} *</label>
             <input type="text" id="firstName" class="form-control" formControlName="FirstName"
-              placeholder="example: Mohamed" />
+              [placeholder]="'TENANT_FORM.EX_FIRST' | translate" />
             <div *ngIf="submitted && tenantForm.controls.FirstName.invalid" class="text-danger">
-              First Name is required.
+              {{ 'TENANT_FORM.FIRST_NAME_REQ' | translate }}
             </div>
           </div>
           <div class="col-lg-4 mb-3">
-            <label for="lastName">Last Name *</label>
+            <label for="lastName">{{ 'TENANT_FORM.LAST_NAME' | translate }} *</label>
             <input type="text" id="lastName" class="form-control" formControlName="LastName"
-              placeholder="example: Yassir" />
+              [placeholder]="'TENANT_FORM.EX_LAST' | translate" />
             <div *ngIf="submitted && tenantForm.controls.LastName.invalid" class="text-danger">
-              Last Name is required.
+              {{ 'TENANT_FORM.LAST_NAME_REQ' | translate }}
             </div>
           </div>
           <div class="col-lg-4 mb-3">
-            <label for="title">Title *</label>
+            <label for="title">{{ 'TENANT_FORM.PLATFORM_TITLE' | translate }} *</label>
             <input type="text" id="title" class="form-control" formControlName="Title"
-              placeholder="example: My Platform" />
+              [placeholder]="'TENANT_FORM.EX_TITLE' | translate" />
             <div *ngIf="submitted && tenantForm.controls.Title.invalid" class="text-danger">
-              Title is required.
+              {{ 'TENANT_FORM.TITLE_REQ' | translate }}
             </div>
           </div>
 
           <div class="col-lg-4 mb-3">
-            <label for="domain">Domain *</label>
+            <label for="domain">{{ 'TENANT_FORM.DOMAIN' | translate }} *</label>
             <input type="text" id="domain" class="form-control" formControlName="Domain"
-              placeholder="example: my-platform" />
+              [placeholder]="'TENANT_FORM.EX_DOMAIN' | translate" />
             <div *ngIf="submitted && tenantForm.controls.Domain.invalid" class="text-danger">
-              Domain is required.
+              {{ 'TENANT_FORM.DOMAIN_REQ' | translate }}
             </div>
           </div>
 
           <div class="col-lg-4 mb-3">
-            <label for="email">Email *</label>
+            <label for="email">{{ 'TENANT_FORM.EMAIL' | translate }} *</label>
             <input type="email" id="email" class="form-control" formControlName="Email"
-              placeholder="example: WQWQW@example.com" />
+              placeholder="example@domain.com" dir="ltr" />
             <div *ngIf="submitted && tenantForm.controls.Email.invalid" class="text-danger">
-              Enter a valid email.
+              {{ 'TENANT_FORM.EMAIL_INVALID' | translate }}
             </div>
           </div>
 
           <div class="col-lg-4 mb-3">
-            <label for="PhoneNumber">Phone Number *</label>
+            <label for="PhoneNumber">{{ 'TENANT_FORM.PHONE' | translate }} *</label>
             <input type="text" id="PhoneNumber" class="form-control" formControlName="PhoneNumber"
-              placeholder="example: +1234567890" />
+              placeholder="+1234567890" dir="ltr" />
             <div *ngIf="submitted && tenantForm.controls.PhoneNumber.invalid" class="text-danger">
-              Phone Number is required.
+              {{ 'TENANT_FORM.PHONE_REQ' | translate }}
             </div>
           </div>
           <div class="col-lg-6 mb-3">
-            <label for="quota">AI Quota *</label>
-            <input type="number" id="quota" class="form-control" formControlName="QuotaAI"
-              placeholder="30" />
+            <label for="quota">{{ 'TENANT_FORM.AI_QUOTA' | translate }} *</label>
+            <input type="number" id="quota" class="form-control" formControlName="QuotaAI" placeholder="30" />
             <div *ngIf="submitted && tenantForm.controls.QuotaAI.invalid" class="text-danger">
-              Enter a valid quota.
+              {{ 'TENANT_FORM.QUOTA_INVALID' | translate }}
             </div>
           </div>
 
           <div class="col-lg-6 mb-3" *ngIf="mode !== 'edit'">
-            <label for="subscriptionPlan">Plan *</label>
+            <label for="subscriptionPlan">{{ 'TENANT_FORM.PLAN' | translate }} *</label>
             <select id="subscriptionPlan" class="form-control" formControlName="SubscriptionPlanId">
-              <option [ngValue]="null" disabled>Select a plan</option>
+              <option [ngValue]="null" disabled>{{ 'TENANT_FORM.SELECT_PLAN' | translate }}</option>
               <option *ngFor="let plan of plans" [ngValue]="plan.id">
-                {{ plan.displayName }} — {{ plan.monthlyPrice }} EGP/month
+                {{ plan.displayName }} — {{ plan.monthlyPrice }} {{ 'TENANT_FORM.EGP_MONTH' | translate }}
               </option>
             </select>
             <div *ngIf="submitted && tenantForm.controls.SubscriptionPlanId.invalid" class="text-danger">
-              Plan is required.
+              {{ 'TENANT_FORM.PLAN_REQ' | translate }}
             </div>
           </div>
           <hr class="text-gray" />
 
           <div class="col-lg-6 mb-3">
-            <label for="logoFile">Logo File <span class="text-muted">(optional)</span></label>
+            <label for="logoFile">{{ 'TENANT_FORM.LOGO_FILE' | translate }} <span class="text-muted">({{ 'TENANT_FORM.OPTIONAL' | translate }})</span></label>
             <platx-file-upload [imageFile]="tenantForm.controls.LogoFile.value"
               (fileUploadSuccess)="onFileUploadSuccess('LogoFile', $event)"></platx-file-upload>
             <div *ngIf="submitted && tenantForm.controls.LogoFile.invalid" class="text-danger">
-              Logo file is required.
+              {{ 'TENANT_FORM.LOGO_REQ' | translate }}
             </div>
           </div>
 
           <div class="col-lg-6 mb-3">
-            <label for="coverFile">Cover File <span class="text-muted">(optional)</span></label>
+            <label for="coverFile">{{ 'TENANT_FORM.COVER_FILE' | translate }} <span class="text-muted">({{ 'TENANT_FORM.OPTIONAL' | translate }})</span></label>
             <platx-file-upload [imageFile]="tenantForm.controls.CoverFile.value"
               (fileUploadSuccess)="onFileUploadSuccess('CoverFile', $event)"></platx-file-upload>
             <div *ngIf="submitted && tenantForm.controls.CoverFile.invalid" class="text-danger">
-              Cover file is required.
+              {{ 'TENANT_FORM.COVER_REQ' | translate }}
             </div>
           </div>
 
           <div class="col-lg-6 mb-3">
             <div>
-              <label for="isActive d-block">Is Platform Active</label>
+              <label for="isActive d-block">{{ 'TENANT_FORM.IS_ACTIVE' | translate }}</label>
             </div>
-            <ui-switch id="isActive" uncheckedLabel="InActive" checkedLabel="Active" size="small" class="me-1"
+            <ui-switch id="isActive" [uncheckedLabel]="'TENANT_FORM.INACTIVE' | translate"
+              [checkedLabel]="'TENANT_FORM.ACTIVE' | translate" size="small" class="me-1"
               formControlName="IsActive"></ui-switch>
           </div>
 
           <div class="col-lg-12 mb-3">
-            <label for="description">Description <span class="text-muted">(optional)</span></label>
+            <label for="description">{{ 'TENANT_FORM.DESCRIPTION' | translate }} <span class="text-muted">({{ 'TENANT_FORM.OPTIONAL' | translate }})</span></label>
             <textarea id="description" class="form-control" formControlName="Description"></textarea>
             <div *ngIf="submitted && tenantForm.controls.Description.invalid" class="text-danger">
-              Description is required.
+              {{ 'TENANT_FORM.DESCRIPTION_REQ' | translate }}
             </div>
           </div>
           <div class="col-lg-12">
             <button type="submit" class="btn btn-primary w-100" [disabled]="submitted">
-              {{ mode == "edit" ? "Update" : "Create" }}
+              {{ (mode == "edit" ? "TENANT_FORM.UPDATE" : "TENANT_FORM.CREATE") | translate }}
             </button>
           </div>
         </div>
