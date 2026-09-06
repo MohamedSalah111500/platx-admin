@@ -94,19 +94,19 @@
         </div>
         <select class="form-select filter-select" [(ngModel)]="filter.status" (ngModelChange)="applyFilters()">
           <option [ngValue]="null">All statuses</option>
-          @for (s of statuses; track s.value) {<option [ngValue]="s.value">{{ s.label }}</option>}
+          @for (s of statuses; track s.value) {<option [ngValue]="s.value">{{ s.label | translate }}</option>}
         </select>
         <select class="form-select filter-select" [(ngModel)]="filter.followUp" (ngModelChange)="applyFilters()">
           <option [ngValue]="null">Any follow-up</option>
-          @for (f of followUps; track f.value) {<option [ngValue]="f.value">{{ f.label }}</option>}
+          @for (f of followUps; track f.value) {<option [ngValue]="f.value">{{ f.label | translate }}</option>}
         </select>
         <select class="form-select filter-select" [(ngModel)]="filter.source" (ngModelChange)="applyFilters()">
           <option [ngValue]="null">All sources</option>
-          @for (s of sources; track s.value) {<option [ngValue]="s.value">{{ s.label }}</option>}
+          @for (s of sources; track s.value) {<option [ngValue]="s.value">{{ s.label | translate }}</option>}
         </select>
         <select class="form-select filter-select" [(ngModel)]="filter.priority" (ngModelChange)="applyFilters()">
           <option [ngValue]="null">Any priority</option>
-          @for (p of priorities; track p.value) {<option [ngValue]="p.value">{{ p.label }}</option>}
+          @for (p of priorities; track p.value) {<option [ngValue]="p.value">{{ p.label | translate }}</option>}
         </select>
         <select class="form-select filter-select" *ngIf="isSuperAdmin" [(ngModel)]="filter.assignedToUserId"
           (ngModelChange)="filter.unassigned = null; applyFilters()">
@@ -171,7 +171,7 @@
               <td>
                 <div dropdown class="d-inline-block" container="body">
                   <button dropdownToggle type="button" class="pill pill-btn" [ngClass]="statusMeta(lead.status).cls">
-                    <span class="pill-dot"></span> {{ statusMeta(lead.status).label }}
+                    <span class="pill-dot"></span> {{ statusMeta(lead.status).label | translate }}
                     <i class="mdi mdi-chevron-down"></i>
                   </button>
                   <ul *dropdownMenu class="dropdown-menu">
@@ -179,7 +179,7 @@
                     <li>
                       <a href="javascript:void(0)" class="dropdown-item" [class.active]="s.value === lead.status"
                         (click)="quickStatus(lead, s.value)">
-                        <i class="mdi {{ s.icon }} me-2"></i>{{ s.label }}
+                        <i class="mdi {{ s.icon }} me-2"></i>{{ s.label | translate }}
                       </a>
                     </li>
                     }
@@ -189,13 +189,13 @@
 
               <td>
                 <span class="pill" [ngClass]="priorityMeta(lead.priority).cls">
-                  <i class="mdi {{ priorityMeta(lead.priority).icon }}"></i>{{ priorityMeta(lead.priority).label }}
+                  <i class="mdi {{ priorityMeta(lead.priority).icon }}"></i>{{ priorityMeta(lead.priority).label | translate }}
                 </span>
               </td>
 
               <td>
                 <span class="pill" [ngClass]="sourceMeta(lead.source).cls">
-                  <i class="mdi {{ sourceMeta(lead.source).icon }}"></i>{{ sourceMeta(lead.source).label }}
+                  <i class="mdi {{ sourceMeta(lead.source).icon }}"></i>{{ sourceMeta(lead.source).label | translate }}
                 </span>
               </td>
 

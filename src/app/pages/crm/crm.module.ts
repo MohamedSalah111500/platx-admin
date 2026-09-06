@@ -6,6 +6,7 @@ import { PaginationModule } from "ngx-bootstrap/pagination";
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { ModalModule } from "ngx-bootstrap/modal";
 import { TooltipModule } from "ngx-bootstrap/tooltip";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { UIModule } from "../../shared/ui/ui.module";
 import { CrmRoutingModule } from "./crm-routing.module";
@@ -40,6 +41,7 @@ import { CrmImportModalComponent } from "./components/crm-import-modal/crm-impor
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
+    TranslateModule,
   ],
 })
 export class CrmModule {}

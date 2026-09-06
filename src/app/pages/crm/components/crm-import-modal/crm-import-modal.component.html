@@ -28,7 +28,7 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
                 <label class="form-label">Source</label>
                 <select class="form-select" [(ngModel)]="source" name="source">
                   @for (s of sources; track s.value) {
-                  <option [ngValue]="s.value">{{ s.label }}</option>
+                  <option [ngValue]="s.value">{{ s.label | translate }}</option>
                   }
                 </select>
               </div>
@@ -71,7 +71,7 @@ Omar Tutor | 01012345678 | asked about Pro plan"></textarea>
                     <td><input class="form-control form-control-sm" dir="ltr" [(ngModel)]="row.phone" name="phone{{ i }}" /></td>
                     <td *ngIf="hasStatus">
                       <select class="form-select form-select-sm" [(ngModel)]="row.status" name="status{{ i }}">
-                        @for (s of statuses; track s.value) {<option [ngValue]="s.value">{{ s.label }}</option>}
+                        @for (s of statuses; track s.value) {<option [ngValue]="s.value">{{ s.label | translate }}</option>}
                       </select>
                     </td>
                     <td class="text-muted" style="font-size:13px; max-width: 260px;">

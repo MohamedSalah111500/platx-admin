@@ -14,7 +14,7 @@
           <label class="form-label">New status</label>
           <select class="form-select" [(ngModel)]="model.status" name="status">
             @for (s of statuses; track s.value) {
-            <option [ngValue]="s.value">{{ s.label }}</option>
+            <option [ngValue]="s.value">{{ s.label | translate }}</option>
             }
           </select>
         </div>

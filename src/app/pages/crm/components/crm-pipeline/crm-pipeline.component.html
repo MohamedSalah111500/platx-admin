@@ -23,7 +23,7 @@
     <div class="board-column">
       <div class="column-header">
         <span class="d-inline-flex align-items-center gap-2">
-          <span class="pill" [ngClass]="statusMeta(col.status).cls"><span class="pill-dot"></span>{{ statusMeta(col.status).label }}</span>
+          <span class="pill" [ngClass]="statusMeta(col.status).cls"><span class="pill-dot"></span>{{ statusMeta(col.status).label | translate }}</span>
         </span>
         <span class="count">{{ col.total }}</span>
       </div>
@@ -41,7 +41,7 @@
                 <li class="dropdown-header px-2 py-1 text-muted" style="font-size:12px">Move to</li>
                 @for (s of statuses; track s.value) {
                 <li *ngIf="s.value !== lead.status">
-                  <a href="javascript:void(0)" class="dropdown-item" (click)="move(lead, s.value)"><i class="mdi {{ s.icon }} me-2"></i>{{ s.label }}</a>
+                  <a href="javascript:void(0)" class="dropdown-item" (click)="move(lead, s.value)"><i class="mdi {{ s.icon }} me-2"></i>{{ s.label | translate }}</a>
                 </li>
                 }
                 <li><hr class="dropdown-divider" /></li>

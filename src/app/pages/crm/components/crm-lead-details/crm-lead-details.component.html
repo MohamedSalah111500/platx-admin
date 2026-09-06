@@ -11,9 +11,9 @@
           <div class="flex-grow-1 min-w-0">
             <div class="d-flex flex-wrap align-items-center gap-2">
               <h4 class="mb-0 fw-bold">{{ lead.name }}</h4>
-              <span class="pill" [ngClass]="statusMeta(lead.status).cls"><span class="pill-dot"></span>{{ statusMeta(lead.status).label }}</span>
-              <span class="pill" [ngClass]="priorityMeta(lead.priority).cls"><i class="mdi {{ priorityMeta(lead.priority).icon }}"></i>{{ priorityMeta(lead.priority).label }}</span>
-              <span class="pill" [ngClass]="sourceMeta(lead.source).cls"><i class="mdi {{ sourceMeta(lead.source).icon }}"></i>{{ sourceMeta(lead.source).label }}</span>
+              <span class="pill" [ngClass]="statusMeta(lead.status).cls"><span class="pill-dot"></span>{{ statusMeta(lead.status).label | translate }}</span>
+              <span class="pill" [ngClass]="priorityMeta(lead.priority).cls"><i class="mdi {{ priorityMeta(lead.priority).icon }}"></i>{{ priorityMeta(lead.priority).label | translate }}</span>
+              <span class="pill" [ngClass]="sourceMeta(lead.source).cls"><i class="mdi {{ sourceMeta(lead.source).icon }}"></i>{{ sourceMeta(lead.source).label | translate }}</span>
             </div>
             <div class="text-muted mt-1" style="font-size:13px">
               <span *ngIf="lead.organization">{{ lead.organization }} · </span>
@@ -43,8 +43,8 @@
             <button type="button" class="step" [class.lost]="s.value === 7"
               [class.current]="s.value === lead.status"
               [class.done]="s.value < lead.status && lead.status !== 7"
-              (click)="quickStatus(s.value)" [title]="'Move to ' + s.label">
-              <i class="mdi {{ s.icon }}"></i>{{ s.label }}
+              (click)="quickStatus(s.value)" [title]="('CRM.MOVE_TO' | translate) + ' ' + (s.label | translate)">
+              <i class="mdi {{ s.icon }}"></i>{{ s.label | translate }}
             </button>
             }
           </div>
@@ -151,7 +151,7 @@
             <div class="type-chips mb-2">
               @for (t of activityTypes; track t.value) {
               <button type="button" class="chip" [class.active]="newActivity.type === t.value" (click)="newActivity.type = t.value">
-                <i class="mdi {{ t.icon }}"></i>{{ t.label }}
+                <i class="mdi {{ t.icon }}"></i>{{ t.label | translate }}
               </button>
               }
             </div>
@@ -190,7 +190,7 @@
                 <div class="timeline-icon" [ngClass]="activityMeta(a.type).cls"><i class="mdi {{ activityMeta(a.type).icon }}"></i></div>
                 <div class="timeline-body">
                   <div class="timeline-meta">
-                    <strong class="text-dark">{{ activityMeta(a.type).label }}</strong>
+                    <strong class="text-dark">{{ activityMeta(a.type).label | translate }}</strong>
                     · {{ a.createdByName || '—' }}
                     · <span [title]="a.creationTime | date:'medium'">{{ relativeTime(a.creationTime) }}</span>
                   </div>

@@ -42,7 +42,7 @@
               <label class="form-label">Source</label>
               <select class="form-select" formControlName="source">
                 @for (s of sources; track s.value) {
-                <option [ngValue]="s.value">{{ s.label }}</option>
+                <option [ngValue]="s.value">{{ s.label | translate }}</option>
                 }
               </select>
             </div>
@@ -51,7 +51,7 @@
               <label class="form-label">Priority</label>
               <select class="form-select" formControlName="priority">
                 @for (p of priorities; track p.value) {
-                <option [ngValue]="p.value">{{ p.label }}</option>
+                <option [ngValue]="p.value">{{ p.label | translate }}</option>
                 }
               </select>
             </div>

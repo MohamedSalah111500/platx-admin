@@ -49,41 +49,43 @@ export interface EnumMeta {
   icon: string;
 }
 
+// Labels are i18n keys — resolved via the translate pipe in templates. Brand
+// names (WhatsApp, Facebook, ...) stay as-is because they are not translated.
 export const LEAD_STATUSES: EnumMeta[] = [
-  { value: CrmLeadStatus.New, label: "New", cls: "st-new", icon: "mdi-star-outline" },
-  { value: CrmLeadStatus.Contacted, label: "Contacted", cls: "st-contacted", icon: "mdi-message-text-outline" },
-  { value: CrmLeadStatus.Interested, label: "Interested", cls: "st-interested", icon: "mdi-heart-outline" },
-  { value: CrmLeadStatus.DemoScheduled, label: "Demo Scheduled", cls: "st-demo", icon: "mdi-calendar-clock-outline" },
-  { value: CrmLeadStatus.Negotiation, label: "Negotiation", cls: "st-negotiation", icon: "mdi-handshake-outline" },
-  { value: CrmLeadStatus.Won, label: "Won", cls: "st-won", icon: "mdi-trophy-outline" },
-  { value: CrmLeadStatus.Lost, label: "Lost", cls: "st-lost", icon: "mdi-close-circle-outline" },
+  { value: CrmLeadStatus.New, label: "CRM.STATUS.NEW", cls: "st-new", icon: "mdi-star-outline" },
+  { value: CrmLeadStatus.Contacted, label: "CRM.STATUS.CONTACTED", cls: "st-contacted", icon: "mdi-message-text-outline" },
+  { value: CrmLeadStatus.Interested, label: "CRM.STATUS.INTERESTED", cls: "st-interested", icon: "mdi-heart-outline" },
+  { value: CrmLeadStatus.DemoScheduled, label: "CRM.STATUS.DEMO_SCHEDULED", cls: "st-demo", icon: "mdi-calendar-clock-outline" },
+  { value: CrmLeadStatus.Negotiation, label: "CRM.STATUS.NEGOTIATION", cls: "st-negotiation", icon: "mdi-handshake-outline" },
+  { value: CrmLeadStatus.Won, label: "CRM.STATUS.WON", cls: "st-won", icon: "mdi-trophy-outline" },
+  { value: CrmLeadStatus.Lost, label: "CRM.STATUS.LOST", cls: "st-lost", icon: "mdi-close-circle-outline" },
 ];
 
 export const LEAD_SOURCES: EnumMeta[] = [
   { value: CrmLeadSource.WhatsApp, label: "WhatsApp", cls: "src-whatsapp", icon: "mdi-whatsapp" },
   { value: CrmLeadSource.Facebook, label: "Facebook", cls: "src-facebook", icon: "mdi-facebook" },
   { value: CrmLeadSource.Instagram, label: "Instagram", cls: "src-instagram", icon: "mdi-instagram" },
-  { value: CrmLeadSource.Website, label: "Website", cls: "src-website", icon: "mdi-web" },
-  { value: CrmLeadSource.Referral, label: "Referral", cls: "src-referral", icon: "mdi-account-arrow-right-outline" },
-  { value: CrmLeadSource.PhoneCall, label: "Phone Call", cls: "src-phone", icon: "mdi-phone-outline" },
-  { value: CrmLeadSource.Other, label: "Other", cls: "src-other", icon: "mdi-dots-horizontal-circle-outline" },
+  { value: CrmLeadSource.Website, label: "CRM.SOURCE.WEBSITE", cls: "src-website", icon: "mdi-web" },
+  { value: CrmLeadSource.Referral, label: "CRM.SOURCE.REFERRAL", cls: "src-referral", icon: "mdi-account-arrow-right-outline" },
+  { value: CrmLeadSource.PhoneCall, label: "CRM.SOURCE.PHONE_CALL", cls: "src-phone", icon: "mdi-phone-outline" },
+  { value: CrmLeadSource.Other, label: "CRM.SOURCE.OTHER", cls: "src-other", icon: "mdi-dots-horizontal-circle-outline" },
 ];
 
 export const LEAD_PRIORITIES: EnumMeta[] = [
-  { value: CrmLeadPriority.Low, label: "Low", cls: "pr-low", icon: "mdi-arrow-down" },
-  { value: CrmLeadPriority.Medium, label: "Medium", cls: "pr-medium", icon: "mdi-minus" },
-  { value: CrmLeadPriority.High, label: "High", cls: "pr-high", icon: "mdi-arrow-up" },
+  { value: CrmLeadPriority.Low, label: "CRM.PRIORITY.LOW", cls: "pr-low", icon: "mdi-arrow-down" },
+  { value: CrmLeadPriority.Medium, label: "CRM.PRIORITY.MEDIUM", cls: "pr-medium", icon: "mdi-minus" },
+  { value: CrmLeadPriority.High, label: "CRM.PRIORITY.HIGH", cls: "pr-high", icon: "mdi-arrow-up" },
 ];
 
 export const ACTIVITY_TYPES: EnumMeta[] = [
-  { value: CrmActivityType.Note, label: "Note", cls: "act-note", icon: "mdi-note-text-outline" },
-  { value: CrmActivityType.Call, label: "Call", cls: "act-call", icon: "mdi-phone-outline" },
+  { value: CrmActivityType.Note, label: "CRM.ACTIVITY.NOTE", cls: "act-note", icon: "mdi-note-text-outline" },
+  { value: CrmActivityType.Call, label: "CRM.ACTIVITY.CALL", cls: "act-call", icon: "mdi-phone-outline" },
   { value: CrmActivityType.WhatsApp, label: "WhatsApp", cls: "act-whatsapp", icon: "mdi-whatsapp" },
-  { value: CrmActivityType.Meeting, label: "Meeting", cls: "act-meeting", icon: "mdi-account-group-outline" },
-  { value: CrmActivityType.Email, label: "Email", cls: "act-email", icon: "mdi-email-outline" },
-  { value: CrmActivityType.StatusChange, label: "Status Change", cls: "act-status", icon: "mdi-swap-horizontal" },
-  { value: CrmActivityType.Assignment, label: "Assignment", cls: "act-assign", icon: "mdi-account-switch-outline" },
-  { value: CrmActivityType.FollowUp, label: "Follow-up", cls: "act-followup", icon: "mdi-bell-outline" },
+  { value: CrmActivityType.Meeting, label: "CRM.ACTIVITY.MEETING", cls: "act-meeting", icon: "mdi-account-group-outline" },
+  { value: CrmActivityType.Email, label: "CRM.ACTIVITY.EMAIL", cls: "act-email", icon: "mdi-email-outline" },
+  { value: CrmActivityType.StatusChange, label: "CRM.ACTIVITY.STATUS_CHANGE", cls: "act-status", icon: "mdi-swap-horizontal" },
+  { value: CrmActivityType.Assignment, label: "CRM.ACTIVITY.ASSIGNMENT", cls: "act-assign", icon: "mdi-account-switch-outline" },
+  { value: CrmActivityType.FollowUp, label: "CRM.ACTIVITY.FOLLOW_UP", cls: "act-followup", icon: "mdi-bell-outline" },
 ];
 
 export const LOGGABLE_ACTIVITY_TYPES: EnumMeta[] = ACTIVITY_TYPES.filter(
@@ -91,10 +93,10 @@ export const LOGGABLE_ACTIVITY_TYPES: EnumMeta[] = ACTIVITY_TYPES.filter(
 );
 
 export const FOLLOW_UP_FILTERS: EnumMeta[] = [
-  { value: CrmFollowUpFilter.Overdue, label: "Overdue", cls: "fu-overdue", icon: "mdi-alert-circle-outline" },
-  { value: CrmFollowUpFilter.Today, label: "Due today", cls: "fu-today", icon: "mdi-calendar-today" },
-  { value: CrmFollowUpFilter.Upcoming, label: "Upcoming", cls: "fu-upcoming", icon: "mdi-calendar-arrow-right" },
-  { value: CrmFollowUpFilter.NotScheduled, label: "Not scheduled", cls: "fu-none", icon: "mdi-calendar-remove-outline" },
+  { value: CrmFollowUpFilter.Overdue, label: "CRM.FOLLOW_UP.OVERDUE", cls: "fu-overdue", icon: "mdi-alert-circle-outline" },
+  { value: CrmFollowUpFilter.Today, label: "CRM.FOLLOW_UP.DUE_TODAY", cls: "fu-today", icon: "mdi-calendar-today" },
+  { value: CrmFollowUpFilter.Upcoming, label: "CRM.FOLLOW_UP.UPCOMING", cls: "fu-upcoming", icon: "mdi-calendar-arrow-right" },
+  { value: CrmFollowUpFilter.NotScheduled, label: "CRM.FOLLOW_UP.NOT_SCHEDULED", cls: "fu-none", icon: "mdi-calendar-remove-outline" },
 ];
 
 export function metaOf(list: EnumMeta[], value?: number | null): EnumMeta {

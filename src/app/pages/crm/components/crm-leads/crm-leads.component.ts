@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from "rxjs";
 import { CrmService } from "../../services/crm.service";
 import { CrmAuthService } from "../../services/crm-auth.service";
@@ -58,7 +59,12 @@ export class CrmLeadsComponent implements OnInit, OnDestroy {
   private search$ = new Subject<string>();
   private destroy$ = new Subject<void>();
 
-  constructor(private crm: CrmService, private auth: CrmAuthService, private toastr: ToastrService) {}
+  constructor(
+    private crm: CrmService,
+    private auth: CrmAuthService,
+    private toastr: ToastrService,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit() {
     this.search$
@@ -187,7 +193,11 @@ export class CrmLeadsComponent implements OnInit, OnDestroy {
       return;
     }
     this.crm.updateStatus(lead.id, { status }).subscribe((updated) => {
-      this.toastr.success(`Status set to ${this.statusMeta(updated.status).label}`, "CRM");
+      const statusText = this.translate.instant(this.statusMeta(updated.status).label);
+      this.toastr.success(
+        this.translate.instant("CRM.TOAST.STATUS_SET", { status: statusText }),
+        this.translate.instant("MENUITEMS.CRM.TEXT")
+      );
       this.onStatusChanged(updated);
     });
   }

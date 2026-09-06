@@ -1,22 +1,20 @@
 <div class="container-fluid crm-page">
-  <app-page-title title="CRM · Reports" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title [title]="'CRM.REPORTS.PAGE_TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <div>
-      <h5 class="mb-0 fw-bold">{{ isSuperAdmin ? 'Sales team performance' : 'My performance' }}</h5>
-      <small class="text-muted">
-        Who added which leads, what they did, and what is still waiting on them.
-      </small>
+      <h5 class="mb-0 fw-bold">{{ (isSuperAdmin ? 'CRM.REPORTS.TEAM_PERFORMANCE' : 'CRM.REPORTS.MY_PERFORMANCE') | translate }}</h5>
+      <small class="text-muted">{{ 'CRM.REPORTS.PAGE_SUBTITLE' | translate }}</small>
     </div>
     <div class="d-flex flex-wrap gap-2 align-items-center">
       <div class="range-tabs">
-        <button type="button" class="tab" [class.active]="preset === 'today'" (click)="setPreset('today')">Today</button>
-        <button type="button" class="tab" [class.active]="preset === 'week'" (click)="setPreset('week')">Last 7 days</button>
-        <button type="button" class="tab" [class.active]="preset === 'month'" (click)="setPreset('month')">This month</button>
+        <button type="button" class="tab" [class.active]="preset === 'today'" (click)="setPreset('today')">{{ 'CRM.REPORTS.TODAY' | translate }}</button>
+        <button type="button" class="tab" [class.active]="preset === 'week'" (click)="setPreset('week')">{{ 'CRM.REPORTS.LAST_7_DAYS' | translate }}</button>
+        <button type="button" class="tab" [class.active]="preset === 'month'" (click)="setPreset('month')">{{ 'CRM.REPORTS.THIS_MONTH' | translate }}</button>
       </div>
       <input type="date" class="form-control filter-select" [(ngModel)]="from" (ngModelChange)="onCustomRange()" />
       <input type="date" class="form-control filter-select" [(ngModel)]="to" (ngModelChange)="onCustomRange()" />
-      <button type="button" class="btn btn-light" (click)="load()" title="Refresh"><i class="mdi mdi-refresh"></i></button>
+      <button type="button" class="btn btn-light" (click)="load()" [title]="'CRM.REPORTS.REFRESH' | translate"><i class="mdi mdi-refresh"></i></button>
     </div>
   </div>
 
@@ -28,9 +26,9 @@
         <div class="kpi-card">
           <div class="kpi-icon kpi-icon-primary"><i class="mdi mdi-account-plus-outline"></i></div>
           <div class="kpi-body">
-            <div class="kpi-label">Leads added</div>
+            <div class="kpi-label">{{ 'CRM.REPORTS.LEADS_ADDED' | translate }}</div>
             <div class="kpi-value">{{ report.totals.leadsAdded }}</div>
-            <div class="kpi-sub text-muted">In the selected period</div>
+            <div class="kpi-sub text-muted">{{ 'CRM.REPORTS.IN_SELECTED_PERIOD' | translate }}</div>
           </div>
         </div>
       </div>
@@ -38,9 +36,9 @@
         <div class="kpi-card">
           <div class="kpi-icon kpi-icon-info"><i class="mdi mdi-message-text-outline"></i></div>
           <div class="kpi-body">
-            <div class="kpi-label">Activities logged</div>
+            <div class="kpi-label">{{ 'CRM.REPORTS.ACTIVITIES_LOGGED' | translate }}</div>
             <div class="kpi-value">{{ report.totals.activitiesLogged }}</div>
-            <div class="kpi-sub text-info">{{ report.totals.leadsContacted }} different leads touched</div>
+            <div class="kpi-sub text-info">{{ 'CRM.REPORTS.LEADS_TOUCHED' | translate: { count: report.totals.leadsContacted } }}</div>
           </div>
         </div>
       </div>
@@ -48,9 +46,9 @@
         <div class="kpi-card">
           <div class="kpi-icon kpi-icon-success"><i class="mdi mdi-trophy-outline"></i></div>
           <div class="kpi-body">
-            <div class="kpi-label">Won</div>
+            <div class="kpi-label">{{ 'CRM.STATUS.WON' | translate }}</div>
             <div class="kpi-value">{{ report.totals.won }}</div>
-            <div class="kpi-sub text-success">Win rate {{ report.totals.winRate }}%</div>
+            <div class="kpi-sub text-success">{{ 'CRM.REPORTS.WIN_RATE' | translate: { rate: report.totals.winRate } }}</div>
           </div>
         </div>
       </div>
@@ -58,9 +56,9 @@
         <div class="kpi-card">
           <div class="kpi-icon kpi-icon-danger"><i class="mdi mdi-alert-circle-outline"></i></div>
           <div class="kpi-body">
-            <div class="kpi-label">Overdue follow-ups</div>
+            <div class="kpi-label">{{ 'CRM.REPORTS.OVERDUE_FOLLOW_UPS' | translate }}</div>
             <div class="kpi-value">{{ report.totals.overdueFollowUps }}</div>
-            <div class="kpi-sub text-danger">{{ report.totals.dueTodayFollowUps }} due today</div>
+            <div class="kpi-sub text-danger">{{ 'CRM.REPORTS.DUE_TODAY_COUNT' | translate: { count: report.totals.dueTodayFollowUps } }}</div>
           </div>
         </div>
       </div>
@@ -68,9 +66,9 @@
         <div class="kpi-card">
           <div class="kpi-icon kpi-icon-muted"><i class="mdi mdi-account-clock-outline"></i></div>
           <div class="kpi-body">
-            <div class="kpi-label">Never contacted</div>
+            <div class="kpi-label">{{ 'CRM.REPORTS.NEVER_CONTACTED' | translate }}</div>
             <div class="kpi-value">{{ report.totals.untouchedLeads }}</div>
-            <div class="kpi-sub text-muted">Still sitting as New</div>
+            <div class="kpi-sub text-muted">{{ 'CRM.REPORTS.STILL_AS_NEW' | translate }}</div>
           </div>
         </div>
       </div>
@@ -79,15 +77,15 @@
     <div class="card crm-card mb-3" *ngIf="report.daily.length">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <h6 class="fw-bold mb-0">Daily activity</h6>
+          <h6 class="fw-bold mb-0">{{ 'CRM.REPORTS.DAILY_ACTIVITY' | translate }}</h6>
           <div class="legend">
-            <span><span class="dot added"></span>Leads added</span>
-            <span><span class="dot acts"></span>Activities</span>
+            <span><span class="dot added"></span>{{ 'CRM.REPORTS.LEADS_ADDED' | translate }}</span>
+            <span><span class="dot acts"></span>{{ 'CRM.REPORTS.ACTIVITIES' | translate }}</span>
           </div>
         </div>
         <div class="trend">
           @for (d of report.daily; track d.day) {
-          <div class="col" [title]="d.leadsAdded + ' leads · ' + d.activitiesLogged + ' activities · ' + d.won + ' won'">
+          <div class="col" [title]="d.leadsAdded + ' ' + ('CRM.REPORTS.LEADS' | translate) + ' · ' + d.activitiesLogged + ' ' + ('CRM.REPORTS.ACTIVITIES' | translate) + ' · ' + d.won + ' ' + ('CRM.STATUS.WON' | translate)">
             <div class="bars">
               <div class="bar added" [style.height]="barWidth(d.leadsAdded, maxDaily)"></div>
               <div class="bar acts" [style.height]="barWidth(d.activitiesLogged, maxDaily)"></div>
@@ -97,7 +95,7 @@
           }
         </div>
         <div class="form-hint mt-2" *ngIf="busiestDay">
-          Busiest day: <strong>{{ busiestDay.day | date:'EEEE, d MMM' }}</strong> with {{ busiestDay.leadsAdded }} new leads.
+          {{ 'CRM.REPORTS.BUSIEST_DAY' | translate }}: <strong>{{ busiestDay.day | date:'EEEE, d MMM' }}</strong> {{ 'CRM.REPORTS.WITH_NEW_LEADS' | translate: { count: busiestDay.leadsAdded } }}
         </div>
       </div>
     </div>
@@ -105,24 +103,24 @@
     <div class="card crm-card mb-3">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <h6 class="fw-bold mb-0">Per agent</h6>
-          <small class="text-muted">Click a row to see exactly what they did</small>
+          <h6 class="fw-bold mb-0">{{ 'CRM.REPORTS.PER_AGENT' | translate }}</h6>
+          <small class="text-muted">{{ 'CRM.REPORTS.CLICK_ROW_HINT' | translate }}</small>
         </div>
         <div class="table-responsive">
           <table class="table align-middle smart-table mb-0">
             <thead>
               <tr>
-                <th>Agent</th>
-                <th class="text-center">Leads added</th>
-                <th class="text-center">Activities</th>
-                <th class="text-center">Leads touched</th>
-                <th class="text-center">Open</th>
-                <th class="text-center">Won</th>
-                <th class="text-center">Lost</th>
-                <th class="text-center">Win rate</th>
-                <th class="text-center">Overdue</th>
-                <th class="text-center">Never contacted</th>
-                <th>Last action</th>
+                <th>{{ 'CRM.REPORTS.AGENT' | translate }}</th>
+                <th class="text-center">{{ 'CRM.REPORTS.LEADS_ADDED' | translate }}</th>
+                <th class="text-center">{{ 'CRM.REPORTS.ACTIVITIES' | translate }}</th>
+                <th class="text-center">{{ 'CRM.REPORTS.LEADS_TOUCHED_SHORT' | translate }}</th>
+                <th class="text-center">{{ 'CRM.REPORTS.OPEN' | translate }}</th>
+                <th class="text-center">{{ 'CRM.STATUS.WON' | translate }}</th>
+                <th class="text-center">{{ 'CRM.STATUS.LOST' | translate }}</th>
+                <th class="text-center">{{ 'CRM.REPORTS.WIN_RATE_SHORT' | translate }}</th>
+                <th class="text-center">{{ 'CRM.FOLLOW_UP.OVERDUE' | translate }}</th>
+                <th class="text-center">{{ 'CRM.REPORTS.NEVER_CONTACTED' | translate }}</th>
+                <th>{{ 'CRM.REPORTS.LAST_ACTION' | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -134,7 +132,7 @@
                     <div class="min-w-0">
                       <div class="fw-semibold text-dark">{{ a.name }}</div>
                       <div class="text-muted" style="font-size:12px">
-                        {{ a.isSuperAdmin ? 'Owner' : 'CRM Agent' }}<span *ngIf="!a.isActive"> · inactive</span>
+                        {{ (a.isSuperAdmin ? 'CRM.REPORTS.OWNER' : 'CRM.REPORTS.CRM_AGENT') | translate }}<span *ngIf="!a.isActive"> · {{ 'CRM.REPORTS.INACTIVE' | translate }}</span>
                       </div>
                     </div>
                   </div>
@@ -152,7 +150,7 @@
                   <span style="font-size:13px" *ngIf="a.lastActivityAt; else never" [title]="a.lastActivityAt | date:'medium'">
                     {{ relativeTime(a.lastActivityAt) }}
                   </span>
-                  <ng-template #never><span class="text-muted">No activity</span></ng-template>
+                  <ng-template #never><span class="text-muted">{{ 'CRM.REPORTS.NO_ACTIVITY' | translate }}</span></ng-template>
                 </td>
               </tr>
               }
@@ -161,7 +159,7 @@
                 <td colspan="11">
                   <div class="empty-block">
                     <i class="mdi mdi-account-search-outline font-size-24 text-muted d-block mb-1"></i>
-                    <div class="text-muted" style="font-size:13px">No agents yet — add them from CRM → Team.</div>
+                    <div class="text-muted" style="font-size:13px">{{ 'CRM.REPORTS.NO_AGENTS_YET' | translate }}</div>
                   </div>
                 </td>
               </tr>
@@ -176,10 +174,10 @@
       <div class="card-body">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
           <h6 class="fw-bold mb-0">
-            What happened
+            {{ 'CRM.REPORTS.WHAT_HAPPENED' | translate }}
             <span class="text-muted fw-normal" style="font-size:13px" *ngIf="selectedAgentId">· {{ selectedAgentName }}</span>
           </h6>
-          <a href="javascript:void(0)" *ngIf="selectedAgentId" (click)="selectedAgentId = null" style="font-size:13px">show everyone</a>
+          <a href="javascript:void(0)" *ngIf="selectedAgentId" (click)="selectedAgentId = null" style="font-size:13px">{{ 'CRM.REPORTS.SHOW_EVERYONE' | translate }}</a>
         </div>
 
         <div *ngIf="feedLoading" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div></div>
@@ -193,9 +191,9 @@
             <div class="feed-body">
               <div class="feed-meta">
                 <strong class="text-dark">{{ e.agentName || '—' }}</strong>
-                {{ e.kind === entryKind.LeadAdded ? 'added' : activityMeta(e.activityType).label + ' on' }}
+                {{ e.kind === entryKind.LeadAdded ? ('CRM.REPORTS.ADDED' | translate) : ((activityMeta(e.activityType).label | translate) + ' ' + ('CRM.REPORTS.ON' | translate)) }}
                 <a [routerLink]="['/crm/leads', e.leadId]">{{ e.leadName }}</a>
-                <span class="pill ms-1" [ngClass]="statusMeta(e.leadStatus).cls"><span class="pill-dot"></span>{{ statusMeta(e.leadStatus).label }}</span>
+                <span class="pill ms-1" [ngClass]="statusMeta(e.leadStatus).cls"><span class="pill-dot"></span>{{ statusMeta(e.leadStatus).label | translate }}</span>
                 · <span [title]="e.at | date:'medium'">{{ relativeTime(e.at) }}</span>
               </div>
               <div class="feed-text" *ngIf="e.content">{{ e.content }}</div>
@@ -205,7 +203,7 @@
           @if (!visibleFeed.length) {
           <div class="empty-block">
             <i class="mdi mdi-timeline-text-outline font-size-24 text-muted d-block mb-1"></i>
-            <div class="text-muted" style="font-size:13px">Nothing logged in this period.</div>
+            <div class="text-muted" style="font-size:13px">{{ 'CRM.REPORTS.NOTHING_LOGGED' | translate }}</div>
           </div>
           }
         </div>

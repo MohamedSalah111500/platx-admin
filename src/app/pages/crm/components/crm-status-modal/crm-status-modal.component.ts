@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, ViewChild } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "@ngx-translate/core";
 import { CrmService } from "../../services/crm.service";
 import { fromInputDateTime, toInputDateTime } from "../../crm-utils";
 import { CrmLead, CrmLeadStatus, LEAD_STATUSES, metaOf } from "../../types";
@@ -19,7 +20,11 @@ export class CrmStatusModalComponent {
   saving = false;
   model = { status: CrmLeadStatus.New, note: "", lostReason: "", nextFollowUpAt: "" };
 
-  constructor(private crm: CrmService, private toastr: ToastrService) {}
+  constructor(
+    private crm: CrmService,
+    private toastr: ToastrService,
+    private translate: TranslateService
+  ) {}
 
   get isLost(): boolean {
     return Number(this.model.status) === CrmLeadStatus.Lost;
@@ -62,7 +67,11 @@ export class CrmStatusModalComponent {
       .subscribe({
         next: (lead) => {
           this.saving = false;
-          this.toastr.success(`Status set to ${this.label(lead.status)}`, "CRM");
+          const statusText = this.translate.instant(this.label(lead.status));
+          this.toastr.success(
+            this.translate.instant("CRM.TOAST.STATUS_SET", { status: statusText }),
+            this.translate.instant("MENUITEMS.CRM.TEXT")
+          );
           this.changed.emit(lead);
           this.close();
         },

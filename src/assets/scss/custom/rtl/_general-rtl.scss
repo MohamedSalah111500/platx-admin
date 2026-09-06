@@ -3,11 +3,30 @@
 //
 
 body[dir="rtl"] {
-  html {
-    direction: rtl;
+  direction: rtl;
+  text-align: right;
+
+  // Arabic-friendly web font — loaded in index.html via Google Fonts.
+  // Falls back to system fonts so English text still renders normally.
+  &,
+  h1, h2, h3, h4, h5, h6,
+  .btn, .form-control, .form-select,
+  .nav-link, .dropdown-item,
+  .breadcrumb, .card, table, li {
+    font-family: 'Cairo', 'Segoe UI', 'Tahoma', system-ui, -apple-system, sans-serif;
   }
 
-  body {
-    text-align: right;
+  // Bootstrap's default breadcrumb separator ("/") sits BEFORE each item,
+  // which reads backwards in RTL and can also visually collapse when items
+  // are ordered right-to-left. Push it to after the item and give it air.
+  .breadcrumb-item + .breadcrumb-item {
+    padding-right: 0.5rem;
+    padding-left: 0;
+
+    &::before {
+      float: right;
+      padding-left: 0.5rem;
+      padding-right: 0;
+    }
   }
 }

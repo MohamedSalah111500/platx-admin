@@ -392,5 +392,87 @@
         }
       }
     }
+  },
+  "CRM": {
+    "MOVE_TO": "نقل إلى",
+    "STATUS": {
+      "NEW": "جديد",
+      "CONTACTED": "تم التواصل",
+      "INTERESTED": "مهتم",
+      "DEMO_SCHEDULED": "تم تحديد موعد عرض",
+      "NEGOTIATION": "تفاوض",
+      "WON": "تم الكسب",
+      "LOST": "خسر"
+    },
+    "SOURCE": {
+      "WEBSITE": "الموقع الإلكتروني",
+      "REFERRAL": "توصية",
+      "PHONE_CALL": "مكالمة هاتفية",
+      "OTHER": "أخرى"
+    },
+    "PRIORITY": {
+      "LOW": "منخفض",
+      "MEDIUM": "متوسط",
+      "HIGH": "مرتفع"
+    },
+    "ACTIVITY": {
+      "NOTE": "ملاحظة",
+      "CALL": "مكالمة",
+      "MEETING": "اجتماع",
+      "EMAIL": "بريد إلكتروني",
+      "STATUS_CHANGE": "تغيير الحالة",
+      "ASSIGNMENT": "تعيين",
+      "FOLLOW_UP": "متابعة"
+    },
+    "FOLLOW_UP": {
+      "OVERDUE": "متأخر",
+      "DUE_TODAY": "مستحق اليوم",
+      "UPCOMING": "قادم",
+      "NOT_SCHEDULED": "غير محدد"
+    },
+    "TOAST": {
+      "STATUS_SET": "تم تغيير الحالة إلى {{status}}"
+    },
+    "REPORTS": {
+      "PAGE_TITLE": "إدارة علاقات العملاء · التقارير",
+      "PAGE_SUBTITLE": "من أضاف أي عملاء محتملين، وماذا فعلوا، وما الذي لا يزال ينتظرهم.",
+      "TEAM_PERFORMANCE": "أداء فريق المبيعات",
+      "MY_PERFORMANCE": "أدائي",
+      "TODAY": "اليوم",
+      "LAST_7_DAYS": "آخر 7 أيام",
+      "THIS_MONTH": "هذا الشهر",
+      "REFRESH": "تحديث",
+      "LEADS_ADDED": "عملاء محتملون مضافون",
+      "IN_SELECTED_PERIOD": "خلال الفترة المحددة",
+      "ACTIVITIES_LOGGED": "الأنشطة المسجلة",
+      "ACTIVITIES": "أنشطة",
+      "LEADS": "عملاء محتملون",
+      "LEADS_TOUCHED": "{{count}} عملاء محتملون مختلفون تم التواصل معهم",
+      "LEADS_TOUCHED_SHORT": "عملاء محتملون تم التواصل معهم",
+      "WIN_RATE": "معدل النجاح {{rate}}%",
+      "WIN_RATE_SHORT": "معدل النجاح",
+      "OVERDUE_FOLLOW_UPS": "متابعات متأخرة",
+      "DUE_TODAY_COUNT": "{{count}} مستحقة اليوم",
+      "NEVER_CONTACTED": "لم يتم التواصل",
+      "STILL_AS_NEW": "لا يزال بحالة جديد",
+      "DAILY_ACTIVITY": "النشاط اليومي",
+      "BUSIEST_DAY": "أكثر يوم نشاطاً",
+      "WITH_NEW_LEADS": "بعدد {{count}} عملاء محتملين جدد.",
+      "PER_AGENT": "لكل موظف",
+      "CLICK_ROW_HINT": "اضغط على الصف لرؤية ما فعله بالضبط",
+      "AGENT": "الموظف",
+      "OPEN": "مفتوح",
+      "LAST_ACTION": "آخر إجراء",
+      "OWNER": "المالك",
+      "CRM_AGENT": "موظف مبيعات",
+      "INACTIVE": "غير نشط",
+      "NO_ACTIVITY": "لا يوجد نشاط",
+      "NO_AGENTS_YET": "لا يوجد موظفون حتى الآن — أضفهم من إدارة علاقات العملاء ← الفريق.",
+      "WHAT_HAPPENED": "ما الذي حدث",
+      "SHOW_EVERYONE": "عرض الجميع",
+      "NOTHING_LOGGED": "لم يتم تسجيل أي شيء في هذه الفترة.",
+      "ADDED": "أضاف",
+      "ON": "على"
+    }
   }
 }

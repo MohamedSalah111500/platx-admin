@@ -393,5 +393,87 @@
         }
       }
     }
+  },
+  "CRM": {
+    "MOVE_TO": "Move to",
+    "STATUS": {
+      "NEW": "New",
+      "CONTACTED": "Contacted",
+      "INTERESTED": "Interested",
+      "DEMO_SCHEDULED": "Demo Scheduled",
+      "NEGOTIATION": "Negotiation",
+      "WON": "Won",
+      "LOST": "Lost"
+    },
+    "SOURCE": {
+      "WEBSITE": "Website",
+      "REFERRAL": "Referral",
+      "PHONE_CALL": "Phone Call",
+      "OTHER": "Other"
+    },
+    "PRIORITY": {
+      "LOW": "Low",
+      "MEDIUM": "Medium",
+      "HIGH": "High"
+    },
+    "ACTIVITY": {
+      "NOTE": "Note",
+      "CALL": "Call",
+      "MEETING": "Meeting",
+      "EMAIL": "Email",
+      "STATUS_CHANGE": "Status Change",
+      "ASSIGNMENT": "Assignment",
+      "FOLLOW_UP": "Follow-up"
+    },
+    "FOLLOW_UP": {
+      "OVERDUE": "Overdue",
+      "DUE_TODAY": "Due today",
+      "UPCOMING": "Upcoming",
+      "NOT_SCHEDULED": "Not scheduled"
+    },
+    "TOAST": {
+      "STATUS_SET": "Status set to {{status}}"
+    },
+    "REPORTS": {
+      "PAGE_TITLE": "CRM · Reports",
+      "PAGE_SUBTITLE": "Who added which leads, what they did, and what is still waiting on them.",
+      "TEAM_PERFORMANCE": "Sales team performance",
+      "MY_PERFORMANCE": "My performance",
+      "TODAY": "Today",
+      "LAST_7_DAYS": "Last 7 days",
+      "THIS_MONTH": "This month",
+      "REFRESH": "Refresh",
+      "LEADS_ADDED": "Leads added",
+      "IN_SELECTED_PERIOD": "In the selected period",
+      "ACTIVITIES_LOGGED": "Activities logged",
+      "ACTIVITIES": "Activities",
+      "LEADS": "leads",
+      "LEADS_TOUCHED": "{{count}} different leads touched",
+      "LEADS_TOUCHED_SHORT": "Leads touched",
+      "WIN_RATE": "Win rate {{rate}}%",
+      "WIN_RATE_SHORT": "Win rate",
+      "OVERDUE_FOLLOW_UPS": "Overdue follow-ups",
+      "DUE_TODAY_COUNT": "{{count}} due today",
+      "NEVER_CONTACTED": "Never contacted",
+      "STILL_AS_NEW": "Still sitting as New",
+      "DAILY_ACTIVITY": "Daily activity",
+      "BUSIEST_DAY": "Busiest day",
+      "WITH_NEW_LEADS": "with {{count}} new leads.",
+      "PER_AGENT": "Per agent",
+      "CLICK_ROW_HINT": "Click a row to see exactly what they did",
+      "AGENT": "Agent",
+      "OPEN": "Open",
+      "LAST_ACTION": "Last action",
+      "OWNER": "Owner",
+      "CRM_AGENT": "CRM Agent",
+      "INACTIVE": "inactive",
+      "NO_ACTIVITY": "No activity",
+      "NO_AGENTS_YET": "No agents yet — add them from CRM → Team.",
+      "WHAT_HAPPENED": "What happened",
+      "SHOW_EVERYONE": "show everyone",
+      "NOTHING_LOGGED": "Nothing logged in this period.",
+      "ADDED": "added",
+      "ON": "on"
+    }
   }
 }
