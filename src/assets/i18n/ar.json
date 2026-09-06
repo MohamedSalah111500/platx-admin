@@ -1,0 +1,390 @@
+{
+  "HEADER": {
+    "SEARCH": "بحث...",
+    "MEGA_MENU": "القائمة الرئيسية",
+    "NOTIFICATIONS": {
+      "TITLE": "الإشعارات",
+      "VIEW_ALL": "عرض الكل",
+      "LOAD_MORE": "عرض المزيد..",
+      "FIRST": {
+        "TITLE": "تم تسجيل طلبك",
+        "TEXT": "إذا اجتمعت عدة لغات لتتوحد قواعدها",
+        "TIME": "منذ 3 دقائق"
+      },
+      "SECOND": {
+        "TITLE": "جيمس ليمير",
+        "TEXT": "ستبدو كأنها لغة إنجليزية مبسطة.",
+        "TIME": "منذ ساعة"
+      },
+      "THIRD": {
+        "TITLE": "تم شحن طلبك",
+        "TEXT": "إذا اجتمعت عدة لغات لتتوحد قواعدها",
+        "TIME": "منذ 3 دقائق"
+      },
+      "FOUR": {
+        "TITLE": "سالينا لايفيلد",
+        "TEXT": "كصديق متشكك من كامبريدج، غربي.",
+        "TIME": "منذ ساعة"
+      }
+    },
+    "SETTINGS": "الإعدادات",
+    "UI": {
+      "TITLE": "مكونات الواجهة",
+      "LIGHTBOX": "معرض الصور",
+      "RANGE_SLIDER": "شريط النطاق",
+      "SWEET_ALERT": "تنبيه سويت",
+      "RATING": "التقييم",
+      "FORMS": "النماذج",
+      "TABLES": "الجداول",
+      "CHARTS": "الرسوم البيانية"
+    },
+    "APPLICATIONS": {
+      "TITLE": "التطبيقات",
+      "ECOMMERCE": "التجارة الإلكترونية",
+      "CALENDAR": "التقويم",
+      "EMAIL": "البريد الإلكتروني",
+      "PROJECTS": "المشاريع",
+      "TASKS": "المهام",
+      "CONTACTS": "جهات الاتصال"
+    },
+    "EXTRA_PAGES": {
+      "TITLE": "صفحات إضافية",
+      "LIGHT_SIDEBAR": "الشريط الجانبي الفاتح",
+      "COMPACT_SIDEBAR": "الشريط الجانبي المضغوط",
+      "HORIZONTAL_LAYOUT": "التخطيط الأفقي",
+      "MAINTENANCE": "الصيانة",
+      "COMING SOON": "قريباً",
+      "TIMELINE": "الجدول الزمني",
+      "FAQ": "الأسئلة الشائعة"
+    },
+    "LOGIN": {
+      "PROFILE": "الملف الشخصي",
+      "MY_WALLET": "محفظتي",
+      "SETTINGS": "الإعدادات",
+      "LOCK_SCREEN": "قفل الشاشة",
+      "LOGOUT": "تسجيل الخروج"
+    }
+  },
+  "MENUITEMS": {
+    "MENU": {
+      "TEXT": "القائمة"
+    },
+    "DASHBOARDS": {
+      "TEXT": "لوحات التحكم",
+      "BADGE": "04",
+      "LIST": {
+        "DEFAULT": "الافتراضية",
+        "SAAS": "ساس",
+        "CRYPTO": "العملات الرقمية",
+        "BLOG": "المدونة",
+        "JOBS": "الوظائف"
+      }
+    },
+    "MANAGE_INSTANCE": {
+      "TEXT": "إدارة المثيلات",
+      "BADGE": "04",
+      "LIST": {
+        "DEFAULT": "الافتراضية"
+      }
+    },
+    "MANAGE_TENANT": {
+      "TEXT": "إدارة المنصات",
+      "BADGE": "04",
+      "LIST": {
+        "DEFAULT": "الافتراضية"
+      }
+    },
+    "CUSTOMER_CONTACT": {
+      "TEXT": "تواصل العملاء",
+      "BADGE": "04",
+      "LIST": {
+        "DEFAULT": "الافتراضية"
+      }
+    },
+    "CRM": {
+      "TEXT": "إدارة علاقات العملاء"
+    },
+    "CRM_LEADS": {
+      "TEXT": "العملاء المحتملون"
+    },
+    "CRM_PIPELINE": {
+      "TEXT": "مسار المبيعات"
+    },
+    "CRM_TEAM": {
+      "TEXT": "الفريق"
+    },
+    "MANAGEMENT": {
+      "TEXT": "الإدارة"
+    },
+    "PLANS": {
+      "TEXT": "باقات الاشتراك",
+      "BADGE": "04",
+      "LIST": {
+        "DEFAULT": "الافتراضية"
+      }
+    },
+    "RENEWAL_REQUESTS": {
+      "TEXT": "طلبات التجديد"
+    },
+    "PAYMENTS_DUE": {
+      "TEXT": "المدفوعات المستحقة"
+    },
+    "LAYOUTS": {
+      "TEXT": "التخطيطات",
+      "LIST": {
+        "HORIZONTAL": "أفقي",
+        "LIGHTSIDEBAR": "شريط جانبي فاتح",
+        "COMPACTSIDEBAR": "شريط جانبي مضغوط",
+        "ICONSIDEBAR": "شريط أيقونات",
+        "BOXED": "تخطيط داخل إطار",
+        "COLOREDSIDEBAR": "شريط جانبي ملون",
+        "VERTICAL": "عمودي",
+        "LIGHTTOPBAR": "شريط علوي فاتح",
+        "COLOREDHEADER": "رأس ملون",
+        "SCROLLABLE": "قابل للتمرير"
+      }
+    },
+    "APPS": {
+      "TEXT": "التطبيقات"
+    },
+    "CALENDAR": {
+      "TEXT": "التقويم"
+    },
+    "CHAT": {
+      "TEXT": "المحادثة",
+      "BADGE": "جديد"
+    },
+    "FILEMANAGER": {
+      "TEXT": "مدير الملفات",
+      "BADGE": "جديد"
+    },
+    "ECOMMERCE": {
+      "TEXT": "التجارة الإلكترونية",
+      "LIST": {
+        "PRODUCTS": "المنتجات",
+        "PRODUCTDETAIL": "تفاصيل المنتج",
+        "ORDERS": "الطلبات",
+        "CUSTOMERS": "العملاء",
+        "CART": "السلة",
+        "CHECKOUT": "الدفع",
+        "SHOPS": "المتاجر",
+        "ADDPRODUCT": "إضافة منتج"
+      }
+    },
+    "CRYPTO": {
+      "TEXT": "العملات الرقمية",
+      "LIST": {
+        "WALLET": "المحفظة",
+        "BUY/SELL": "شراء/بيع",
+        "EXCHANGE": "المبادلة",
+        "LENDING": "الإقراض",
+        "ORDERS": "الطلبات",
+        "KYCAPPLICATION": "طلب التحقق من الهوية",
+        "ICOLANDING": "صفحة العرض الأولي"
+      }
+    },
+    "EMAIL": {
+      "TEXT": "البريد الإلكتروني",
+      "LIST": {
+        "INBOX": "صندوق الوارد",
+        "READEMAIL": "قراءة البريد",
+        "TEMPLATE": {
+          "BADGE": "جديد",
+          "TEXT": "القوالب",
+          "LIST": {
+            "BASIC": "إجراء أساسي",
+            "ALERT": "بريد تنبيه",
+            "BILLING": "بريد الفواتير"
+          }
+        }
+      }
+    },
+    "INVOICES": {
+      "TEXT": "الفواتير",
+      "LIST": {
+        "INVOICELIST": "قائمة الفواتير",
+        "INVOICEDETAIL": "تفاصيل الفاتورة"
+      }
+    },
+    "PROJECTS": {
+      "TEXT": "المشاريع",
+      "LIST": {
+        "GRID": "شبكة المشاريع",
+        "PROJECTLIST": "قائمة المشاريع",
+        "OVERVIEW": "نظرة عامة على المشروع",
+        "CREATE": "إنشاء جديد"
+      }
+    },
+    "TASKS": {
+      "TEXT": "المهام",
+      "LIST": {
+        "TASKLIST": "قائمة المهام",
+        "KANBAN": "لوحة كانبان",
+        "CREATETASK": "إنشاء مهمة"
+      }
+    },
+    "CONTACTS": {
+      "TEXT": "جهات الاتصال",
+      "LIST": {
+        "USERGRID": "شبكة المستخدمين",
+        "USERLIST": "قائمة المستخدمين",
+        "PROFILE": "الملف الشخصي"
+      }
+    },
+    "BLOG": {
+      "TEXT": "المدونة",
+      "BADGE": "جديد",
+      "LIST": {
+        "BLOGLIST": "قائمة المقالات",
+        "BLOGGRID": "شبكة المقالات",
+        "DETAIL": "تفاصيل المقال"
+      }
+    },
+    "JOBS": {
+      "TEXT": "الوظائف",
+      "BADGE": "جديد",
+      "LIST": {
+        "JOBLIST": "قائمة الوظائف",
+        "JOBGRID": "شبكة الوظائف",
+        "APPLYJOB": "تقديم على وظيفة",
+        "JOBDETAILS": "تفاصيل الوظيفة",
+        "JOBCATEGORIES": "فئات الوظائف",
+        "CANDIDATE": {
+          "TEXT": "المرشحون",
+          "LIST": {
+            "LIST": "القائمة",
+            "OVERVIEW": "نظرة عامة"
+          }
+        }
+      }
+    },
+    "PAGES": {
+      "TEXT": "الصفحات"
+    },
+    "AUTHENTICATION": {
+      "TEXT": "المصادقة",
+      "BADGE": "جديد",
+      "LIST": {
+        "LOGIN": "تسجيل الدخول",
+        "LOGIN2": "تسجيل الدخول 2",
+        "REGISTER": "إنشاء حساب",
+        "REGISTER2": "إنشاء حساب 2",
+        "RECOVERPWD": "استعادة كلمة المرور",
+        "RECOVERPWD2": "استعادة كلمة المرور 2",
+        "LOCKSCREEN": "قفل الشاشة",
+        "LOCKSCREEN2": "قفل الشاشة 2",
+        "CONFIRMMAIL": "تأكيد البريد",
+        "CONFIRMMAIL2": "تأكيد البريد 2",
+        "EMAILVERIFICATION": "التحقق من البريد",
+        "EMAILVERIFICATION2": "التحقق من البريد 2",
+        "TWOSTEPVERIFICATION": "التحقق بخطوتين",
+        "TWOSTEPVERIFICATION2": "التحقق بخطوتين 2"
+      }
+    },
+    "UTILITY": {
+      "TEXT": "أدوات مساعدة",
+      "LIST": {
+        "STARTER": "صفحة البداية",
+        "MAINTENANCE": "الصيانة",
+        "TIMELINE": "الجدول الزمني",
+        "FAQS": "الأسئلة الشائعة",
+        "PRICING": "الأسعار",
+        "ERROR404": "خطأ 404",
+        "ERROR500": "خطأ 500"
+      }
+    },
+    "COMPONENTS": {
+      "TEXT": "المكونات"
+    },
+    "UIELEMENTS": {
+      "TEXT": "عناصر الواجهة",
+      "LIST": {
+        "ALERTS": "التنبيهات",
+        "BUTTONS": "الأزرار",
+        "CARDS": "البطاقات",
+        "CAROUSEL": "الشرائح المتحركة",
+        "DROPDOWNS": "القوائم المنسدلة",
+        "GRID": "الشبكة",
+        "IMAGES": "الصور",
+        "LIGHTBOX": "معرض الصور",
+        "MODALS": "النوافذ المنبثقة",
+        "RANGESLIDER": "شريط النطاق",
+        "PROGRESSBAR": "أشرطة التقدم",
+        "PLACEHOLDER": "العنصر النائب",
+        "SWEETALERT": "تنبيه سويت",
+        "TABS": "التبويبات والأكورديون",
+        "TYPOGRAPHY": "الطباعة",
+        "TOASTS": "الإشعارات المنبثقة",
+        "VIDEO": "الفيديو",
+        "GENERAL": "عام",
+        "COLORS": "الألوان",
+        "RATING": "التقييم",
+        "NOTIFICATION": "الإشعارات",
+        "UTILITIES": "الأدوات المساعدة",
+        "CROPPER": "قص الصورة"
+      }
+    },
+    "FORMS": {
+      "TEXT": "النماذج",
+      "BADGE": "09",
+      "LIST": {
+        "ELEMENTS": "عناصر النموذج",
+        "VALIDATION": "التحقق من النموذج",
+        "ADVANCED": "نموذج متقدم",
+        "EDITOR": "محرر النموذج",
+        "FILEUPLOAD": "رفع الملفات",
+        "REPEATER": "نموذج متكرر",
+        "WIZARD": "معالج النموذج",
+        "MASK": "قناع النموذج",
+        "LAYOUTS": "تخطيطات النموذج"
+      }
+    },
+    "TABLES": {
+      "TEXT": "الجداول",
+      "LIST": {
+        "BASIC": "جداول أساسية",
+        "DataTables": "جداول البيانات",
+        "EditTableTables": "جدول قابل للتحرير"
+      }
+    },
+    "CHARTS": {
+      "TEXT": "الرسوم البيانية",
+      "LIST": {
+        "APEX": "رسم Apex",
+        "CHARTJS": "رسم Chartjs",
+        "CHARTIST": "رسم Chartist",
+        "ECHART": "رسم E Chart"
+      }
+    },
+    "ICONS": {
+      "TEXT": "الأيقونات",
+      "LIST": {
+        "BOXICONS": "Boxicons",
+        "MATERIALDESIGN": "Material Design",
+        "DRIPICONS": "Dripicons",
+        "FONTAWESOME": "Font Awesome"
+      }
+    },
+    "MAPS": {
+      "TEXT": "الخرائط",
+      "LIST": {
+        "GOOGLEMAP": "خرائط جوجل",
+        "LEAFLETMAP": "خرائط Leaflet",
+        "AMCHARTS": "AmCharts"
+      }
+    },
+    "MULTILEVEL": {
+      "TEXT": "متعدد المستويات",
+      "LIST": {
+        "LEVEL1": {
+          "1": "المستوى 1.1",
+          "2": "المستوى 1.2",
+          "LEVEL2": {
+            "1": "المستوى 2.1",
+            "2": "المستوى 2.2"
+          }
+        }
+      }
+    }
+  }
+}

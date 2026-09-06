@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
 import { TranslateService } from '@ngx-translate/core';
+import { CurrentUserService } from '../../core/services/current-user.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -28,7 +29,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
 
   @ViewChild('sideMenu') sideMenu: ElementRef;
 
-  constructor(private eventService: EventService, private router: Router, public translate: TranslateService, private http: HttpClient) {
+  constructor(private eventService: EventService, private router: Router, public translate: TranslateService, private http: HttpClient, private currentUser: CurrentUserService) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         this._activateMenuDropdown();
@@ -139,24 +140,14 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
    * Initialize
    */
   initialize(): void {
-    const roles = this.currentRoles();
-    const isSuperAdmin = roles.includes("SuperAdmin");
+    const isSuperAdmin = this.currentUser.isSuperAdmin;
     const visible = (item: MenuItem) =>
-      isSuperAdmin ? true : !!item.roles?.some((r) => roles.includes(r));
+      isSuperAdmin || item.isTitle || this.currentUser.hasAnyRole(item.roles);
     this.menuItems = MENU.filter(visible).map((item) =>
       item.subItems
         ? { ...item, subItems: item.subItems.filter(visible) }
         : item
     );
-  }
-
-  private currentRoles(): string[] {
-    try {
-      const roles = JSON.parse(localStorage.getItem("roles") || "[]");
-      return Array.isArray(roles) ? roles : [];
-    } catch {
-      return [];
-    }
   }
 
   /**

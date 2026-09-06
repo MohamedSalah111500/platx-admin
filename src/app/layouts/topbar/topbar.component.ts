@@ -7,9 +7,6 @@ import { CookieService } from "ngx-cookie-service";
 import { LanguageService } from "../../core/services/language.service";
 import { TranslateService } from "@ngx-translate/core";
 import { Store } from "@ngrx/store";
-import { Observable, map } from "rxjs";
-import { changesLayout } from "src/app/store/layouts/layout.actions";
-import { getLayoutMode } from "src/app/store/layouts/layout.selector";
 import { RootReducerState } from "src/app/store";
 import { User } from "src/app/store/Authentication/auth.models";
 import { AuthenticationService } from "src/app/auth/services/auth.service";
@@ -25,16 +22,12 @@ import { AuthenticationService } from "src/app/auth/services/auth.service";
  */
 export class TopbarComponent implements OnInit {
   user: User;
-  mode: any;
   element: any;
   cookieValue: any;
   flagvalue: any;
   countryName: any;
   valueset: any;
   theme: any;
-  layout: string;
-  dataLayout$: Observable<string>;
-  // Define layoutMode as a property
 
   constructor(
     @Inject(DOCUMENT) private document: any,
@@ -49,6 +42,7 @@ export class TopbarComponent implements OnInit {
 
   listLang: any = [
     { text: "English", flag: "assets/images/flags/us.jpg", lang: "en" },
+    { text: "العربية", flag: "assets/images/flags/ar.svg", lang: "ar" },
     { text: "Spanish", flag: "assets/images/flags/spain.jpg", lang: "es" },
     { text: "German", flag: "assets/images/flags/germany.jpg", lang: "de" },
     { text: "Italian", flag: "assets/images/flags/italy.jpg", lang: "it" },
@@ -153,11 +147,4 @@ export class TopbarComponent implements OnInit {
     }
   }
 
-  changeLayout(layoutMode: string) {
-    this.theme = layoutMode;
-    this.store.dispatch(changesLayout({ layoutMode }));
-    this.store.select(getLayoutMode).subscribe((layout) => {
-      document.documentElement.setAttribute("data-layout", layout);
-    });
-  }
 }

@@ -1,26 +1,19 @@
 import { Injectable } from "@angular/core";
+import { CurrentUserService } from "src/app/core/services/current-user.service";
 
 @Injectable({ providedIn: "root" })
 export class CrmAuthService {
+  constructor(private currentUser: CurrentUserService) {}
+
   get roles(): string[] {
-    try {
-      const roles = JSON.parse(localStorage.getItem("roles") || "[]");
-      return Array.isArray(roles) ? roles : [];
-    } catch {
-      return [];
-    }
+    return this.currentUser.roles;
   }
 
   get isSuperAdmin(): boolean {
-    return this.roles.includes("SuperAdmin");
+    return this.currentUser.isSuperAdmin;
   }
 
   get userId(): string | null {
-    try {
-      const user = JSON.parse(localStorage.getItem("currentUser") || "null");
-      return user?.userId || null;
-    } catch {
-      return null;
-    }
+    return this.currentUser.userId;
   }
 }

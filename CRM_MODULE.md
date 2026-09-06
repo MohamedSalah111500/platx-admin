@@ -22,7 +22,11 @@ Backend lives in `portal-backend/Platx` (`CrmController`, `CrmService`, `CrmLead
 
 - `SuperAdmin` (owner): sees everything, can assign, delete leads, manage agents.
 - `CrmAgent`: sees only leads **assigned to them or created by them**; cannot delete or reassign; new leads are auto-assigned to themselves.
-- Agents log into the same admin panel with their email + password; the sidebar only shows the CRM section for them and login lands on `/crm/leads`.
+- Agents log into the same admin panel with their email + password; the sidebar only shows the CRM section for them, login lands on `/crm/leads`, and `superAdminGuard` bounces them back to the CRM if they type any other admin URL directly.
+
+## Backend layout
+
+`ICrmLeadService` (leads, status, assign, import), `ICrmActivityService` (+ `ICrmActivityLog` for internal writes), `ICrmInsightsService` (stats, pipeline) and `ICrmTeamService` (agents) each own one concern; `ICrmAccessResolver` is the single place that resolves the caller's scope, enforces owner-only actions, loads a lead the caller may see, and validates an assignee. Implementations live in `PlatX.Application/Services/Crm/`, exposed by `CrmLeadsController`, `CrmController` and `CrmTeamController`.
 
 ## Backend
 
