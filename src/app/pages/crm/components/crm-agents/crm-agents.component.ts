@@ -12,7 +12,7 @@ import { CrmAgent } from "../../types";
   styleUrls: ["../../crm-shared.scss", "./crm-agents.component.scss"],
 })
 export class CrmAgentsComponent implements OnInit {
-  breadCrumbItems = [{ label: "CRM" }, { label: "Team", active: true }];
+  breadCrumbItems = [{ label: "MENUITEMS.CRM.TEXT" }, { label: "MENUITEMS.CRM_TEAM.TEXT", active: true }];
 
   agents: CrmAgent[] = [];
   loading = true;

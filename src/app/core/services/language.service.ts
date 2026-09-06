@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
-  public languages: string[] = ['en', 'es', 'de', 'it', 'ru', 'ar'];
+  public languages: string[] = ['en', 'ar'];
   private readonly rtlLanguages: string[] = ['ar'];
 
   constructor(public translate: TranslateService, private cookieService: CookieService) {
@@ -12,12 +12,11 @@ export class LanguageService {
     this.translate.addLangs(this.languages);
     if (this.cookieService.check('lang')) {
       browserLang = this.cookieService.get('lang');
-    }
-    else {
+    } else {
       this.setLanguage('en');
       browserLang = translate.getBrowserLang();
     }
-    const resolved = browserLang?.match(/en|es|de|it|ru|ar/) ? browserLang : 'en';
+    const resolved = browserLang?.match(/en|ar/) ? browserLang : 'en';
     translate.use(resolved);
     this.applyDirection(resolved);
   }
@@ -29,14 +28,15 @@ export class LanguageService {
   }
 
   /**
-   * Sets <html dir="rtl"|"ltr"> and toggles a body-level `.rtl-mode` hook so
-   * component styles can react without each one importing the language service.
+   * Sets `<body dir>` (which is what the compiled RTL CSS bundle targets:
+   * `body[dir="rtl"] …`) and mirrors it on `<html>` for browser primitives
+   * like form controls. Also stamps `lang` for a11y.
    */
   private applyDirection(lang: string): void {
     if (typeof document === 'undefined') return;
-    const isRtl = this.rtlLanguages.includes(lang);
-    document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    const dir = this.rtlLanguages.includes(lang) ? 'rtl' : 'ltr';
+    document.body.setAttribute('dir', dir);
+    document.documentElement.setAttribute('dir', dir);
     document.documentElement.setAttribute('lang', lang);
-    document.body.classList.toggle('rtl-mode', isRtl);
   }
 }

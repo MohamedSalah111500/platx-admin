@@ -1,0 +1,4 @@
+// Loaded alongside styles.scss. The generated .css bundle is inserted into
+// <head>, but every rule is scoped to `body[dir="rtl"]` in the partials it
+// pulls, so the sheet is inert until the language service flips the dir.
+@import "./assets/scss/custom/rtl/";

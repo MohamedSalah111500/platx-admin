@@ -20,7 +20,7 @@ import {
   styleUrls: ["../../crm-shared.scss", "./crm-pipeline.component.scss"],
 })
 export class CrmPipelineComponent implements OnInit {
-  breadCrumbItems = [{ label: "CRM" }, { label: "Pipeline", active: true }];
+  breadCrumbItems = [{ label: "MENUITEMS.CRM.TEXT" }, { label: "MENUITEMS.CRM_PIPELINE.TEXT", active: true }];
 
   statuses = LEAD_STATUSES;
   columns: CrmPipelineColumn[] = [];

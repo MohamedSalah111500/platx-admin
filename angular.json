@@ -59,7 +59,8 @@
               "src/assets/scss/icons.scss",
               "./node_modules/ngx-toastr/toastr.css",
               "./node_modules/ngx-toastr/toastr-old.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/styles-rtl.scss"
             ],
             "scripts": []
           },

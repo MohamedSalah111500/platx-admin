@@ -114,6 +114,9 @@
     "CRM_REPORTS": {
       "TEXT": "Reports"
     },
+    "CRM_LEAD_DETAILS": {
+      "BREADCRUMB": "Details"
+    },
     "CRM_TEAM": {
       "TEXT": "Team"
     },

@@ -1,0 +1,14 @@
+@import "../../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+@import "../../variables";
+@import "../../variables-dark";
+@import "../../../../../node_modules/bootstrap/scss/mixins";
+
+@import "./general-rtl";
+@import "./spacing-rtl";
+@import "./float-rtl";
+@import "./text-rtl";
+@import "./structure-rtl";
+@import "./plugins-rtl";
+@import "./bootstrap-rtl";
+@import "./components-rtl";

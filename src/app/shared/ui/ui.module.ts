@@ -5,6 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { TimepickerModule } from "ngx-bootstrap/timepicker";
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { PagetitleComponent } from "./pagetitle/pagetitle.component";
 import { LoaderComponent } from "./loader/loader.component";
@@ -27,6 +28,7 @@ import { EnvSwitcherComponent } from "./env-switcher/env-switcher.component";
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
+    TranslateModule,
   ],
   exports: [
     PagetitleComponent,

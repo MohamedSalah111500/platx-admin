@@ -28,7 +28,7 @@ import {
   styleUrls: ["../../crm-shared.scss", "./crm-lead-details.component.scss"],
 })
 export class CrmLeadDetailsComponent implements OnInit {
-  breadCrumbItems = [{ label: "CRM" }, { label: "Leads", link: "/crm/leads" }, { label: "Details", active: true }];
+  breadCrumbItems = [{ label: "MENUITEMS.CRM.TEXT" }, { label: "MENUITEMS.CRM_LEADS.TEXT", link: "/crm/leads" }, { label: "CRM_LEAD_DETAILS.BREADCRUMB", active: true }];
 
   statuses = LEAD_STATUSES;
   activityTypes = LOGGABLE_ACTIVITY_TYPES;

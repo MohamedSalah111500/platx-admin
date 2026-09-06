@@ -21,7 +21,7 @@ type PresetKey = "today" | "week" | "month" | "custom";
   styleUrls: ["../../crm-shared.scss", "./crm-reports.component.scss"],
 })
 export class CrmReportsComponent implements OnInit {
-  breadCrumbItems = [{ label: "CRM" }, { label: "Reports", active: true }];
+  breadCrumbItems = [{ label: "MENUITEMS.CRM.TEXT" }, { label: "MENUITEMS.CRM_REPORTS.TEXT", active: true }];
 
   readonly entryKind = CrmDayEntryKind;
   isSuperAdmin = this.auth.isSuperAdmin;

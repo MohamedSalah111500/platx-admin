@@ -110,6 +110,12 @@
     "CRM_PIPELINE": {
       "TEXT": "مسار المبيعات"
     },
+    "CRM_REPORTS": {
+      "TEXT": "التقارير"
+    },
+    "CRM_LEAD_DETAILS": {
+      "BREADCRUMB": "التفاصيل"
+    },
     "CRM_TEAM": {
       "TEXT": "الفريق"
     },

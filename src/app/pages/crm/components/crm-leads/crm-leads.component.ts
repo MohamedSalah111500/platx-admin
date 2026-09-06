@@ -32,7 +32,7 @@ type KpiKey = "all" | "new" | "overdue" | "today" | "won" | "unassigned";
   styleUrls: ["../../crm-shared.scss", "./crm-leads.component.scss"],
 })
 export class CrmLeadsComponent implements OnInit, OnDestroy {
-  breadCrumbItems = [{ label: "CRM" }, { label: "Leads", active: true }];
+  breadCrumbItems = [{ label: "MENUITEMS.CRM.TEXT" }, { label: "MENUITEMS.CRM_LEADS.TEXT", active: true }];
 
   statuses = LEAD_STATUSES;
   sources = LEAD_SOURCES;

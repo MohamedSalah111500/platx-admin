@@ -1,11 +1,13 @@
-// 
+//
 // general-rtl.scss
 //
 
-html {
+body[dir="rtl"] {
+  html {
     direction: rtl;
-}
+  }
 
-body {
+  body {
     text-align: right;
+  }
 }
