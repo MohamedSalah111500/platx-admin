@@ -29,6 +29,16 @@ export class TopbarComponent implements OnInit {
   valueset: any;
   theme: any;
 
+  /** First two letters of the user's name for the avatar bubble. */
+  get userInitials(): string {
+    const first = (this.user?.firstName || "").trim();
+    const last = (this.user?.lastName || "").trim();
+    if (first && last) return (first[0] + last[0]).toUpperCase();
+    const only = first || last;
+    if (only) return only.substring(0, 2).toUpperCase();
+    return "?";
+  }
+
   constructor(
     @Inject(DOCUMENT) private document: any,
     private router: Router,

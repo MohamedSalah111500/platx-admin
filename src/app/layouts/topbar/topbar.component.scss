@@ -22,3 +22,21 @@
     display: none;
   }
 }
+
+// Circular initials replacing the old <img> avatar in the topbar user menu.
+// Matches the .header-profile-user size so nothing else in the topbar shifts.
+.header-profile-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  line-height: 1;
+  text-transform: uppercase;
+  user-select: none;
+}

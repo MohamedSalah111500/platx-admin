@@ -10,12 +10,13 @@ export interface LayoutState {
     TOPBAR_TYPE: string;
 }
 
-// INIT_STATE
+// INIT_STATE — dark theme is the app default. The sidebar/topbar are also
+// switched to their dark variants so the whole chrome matches on first paint.
 export const initialState: LayoutState = {
-    LAYOUT_MODE: LAYOUT_MODE_TYPES.LIGHTMODE,
+    LAYOUT_MODE: LAYOUT_MODE_TYPES.DARKMODE,
     DATA_LAYOUT: DATA_LAYOUT_MODE.VERTICAL,
     LAYOUT_WIDTH: LAYOUT_WIDTH_TYPES.FLUID,
-    SIDEBAR_MODE: SIDEBAR_TYPE.LIGHT,
+    SIDEBAR_MODE: SIDEBAR_TYPE.DARK,
     TOPBAR_TYPE: TOPBAR_MODE_TYPES.DARK,
 }
 

@@ -6,19 +6,27 @@ import { CookieService } from 'ngx-cookie-service';
 export class LanguageService {
   public languages: string[] = ['en', 'ar'];
   private readonly rtlLanguages: string[] = ['ar'];
+  /** Default language for first-time visitors — Arabic. */
+  private readonly defaultLang = 'ar';
 
   constructor(public translate: TranslateService, private cookieService: CookieService) {
-    let browserLang;
     this.translate.addLangs(this.languages);
-    if (this.cookieService.check('lang')) {
-      browserLang = this.cookieService.get('lang');
-    } else {
-      this.setLanguage('en');
-      browserLang = translate.getBrowserLang();
-    }
-    const resolved = browserLang?.match(/en|ar/) ? browserLang : 'en';
-    translate.use(resolved);
-    this.applyDirection(resolved);
+
+    // Respect a saved preference first; otherwise fall back to the app default
+    // (Arabic). The browser language is intentionally ignored — the product is
+    // Arabic-first, so an English-locale browser should still open in Arabic
+    // until the user picks otherwise.
+    let lang = this.cookieService.check('lang')
+      ? this.cookieService.get('lang')
+      : this.defaultLang;
+
+    if (!lang?.match(/^(en|ar)$/)) lang = this.defaultLang;
+
+    // Persist so subsequent visits skip the fallback branch.
+    this.cookieService.set('lang', lang);
+    this.translate.setDefaultLang(this.defaultLang);
+    this.translate.use(lang);
+    this.applyDirection(lang);
   }
 
   public setLanguage(lang) {

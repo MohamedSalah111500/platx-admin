@@ -85,6 +85,9 @@ File: Main Css File
 
 @import "./custom";
 
+// Dark-mode overrides for our custom cards/tables — loaded last so it wins.
+@import "custom/dark-overrides";
+
 // rtl
 // @import "custom/rtl/general-rtl";
 // @import "custom/rtl/spacing-rtl";

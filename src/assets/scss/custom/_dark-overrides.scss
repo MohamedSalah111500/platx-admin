@@ -1,0 +1,256 @@
+// Dark-mode overrides for the custom pages I built (tenant, customer contact,
+// CRM, subscription section, installments, renewal-requests, dashboards).
+//
+// These pages were originally styled with hardcoded light colors (#fff cards,
+// #111827 text, #e5e7eb borders). Bootstrap 5.3 switches CSS variables on
+// `[data-bs-theme="dark"]` but those custom rules bypass the variables, so we
+// re-declare them here inside a dark-theme guard.
+
+[data-bs-theme="dark"] {
+  // ------------------------------------------------------------------
+  // Cards & tiles (KPI cards, info tiles, sub-shells)
+  // ------------------------------------------------------------------
+  .kpi-card,
+  .tenant-table-card,
+  .contact-table-card,
+  .crm-card,
+  .sub-shell,
+  .inst-shell,
+  .info-tile,
+  .plan-card,
+  .env-card,
+  .env-menu,
+  .dropdown-menu.env-menu,
+  .message-box {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+  }
+
+  .kpi-card.kpi-clickable:hover,
+  .plan-card:hover {
+    background-color: #232f42 !important;
+    border-color: #4b5563 !important;
+  }
+
+  // ------------------------------------------------------------------
+  // Table chrome — headers, hover row, borders, empty cells
+  // ------------------------------------------------------------------
+  .smart-table thead th,
+  .history-row.history-head,
+  .inst-row.inst-head {
+    background-color: #111827 !important;
+    color: #9ca3af !important;
+    border-color: #374151 !important;
+  }
+
+  .smart-table tbody td,
+  .history-row,
+  .inst-row {
+    border-color: #2d3748 !important;
+    color: #e5e7eb;
+  }
+  .smart-table tbody tr:hover {
+    background-color: #232f42 !important;
+  }
+
+  .smart-table tbody td .fw-semibold.text-dark,
+  .smart-table tbody td .fw-medium.text-dark,
+  .tenant-page .fw-semibold.text-dark,
+  .contact-page .fw-semibold.text-dark,
+  .crm-page .fw-semibold.text-dark {
+    color: #f3f4f6 !important;
+  }
+
+  // ------------------------------------------------------------------
+  // Text tokens
+  // ------------------------------------------------------------------
+  .kpi-label,
+  .info-label,
+  .info-row-label,
+  .plan-desc,
+  .env-card-host {
+    color: #9ca3af !important;
+  }
+  .kpi-value,
+  .info-value,
+  .info-value-sm,
+  .plan-name,
+  .env-option-title {
+    color: #f9fafb !important;
+  }
+  .kpi-sub,
+  .info-sub,
+  .form-hint,
+  .plan-price-currency,
+  .plan-price-period,
+  .plan-price-secondary,
+  small.text-muted {
+    color: #9ca3af !important;
+  }
+
+  // ------------------------------------------------------------------
+  // Form controls (search boxes, filter selects, page-size selects,
+  // date inputs, textareas). Bootstrap already tints these via variables
+  // — the custom rules below just prevent the hardcoded borders/backgrounds
+  // from leaking through.
+  // ------------------------------------------------------------------
+  .search-box .form-control,
+  .filter-select,
+  .page-size-select,
+  .form-select-clean {
+    background-color: #111827 !important;
+    color: #e5e7eb !important;
+    border-color: #374151 !important;
+    &::placeholder { color: #6b7280 !important; }
+  }
+  .search-box .search-icon { color: #6b7280 !important; }
+
+  // ------------------------------------------------------------------
+  // Dropdown menus (action menus, status dropdowns, env switcher)
+  // ------------------------------------------------------------------
+  .tenant-page .dropdown-menu,
+  .contact-page .dropdown-menu,
+  .crm-page .dropdown-menu,
+  .env-menu {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+
+    .dropdown-item {
+      color: #e5e7eb !important;
+      &:hover, &:focus {
+        background-color: #232f42 !important;
+        color: #ffffff !important;
+      }
+    }
+    .dropdown-divider {
+      border-color: #374151 !important;
+    }
+  }
+
+  // Env-switcher options
+  .env-option {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+    small { color: #9ca3af !important; }
+    &:hover {
+      background-color: #232f42 !important;
+      border-color: #4b5563 !important;
+    }
+    &.active {
+      background-color: rgba(99, 102, 241, 0.18) !important;
+      border-color: #6366f1 !important;
+      color: #c7d2fe !important;
+      small { color: #a5b4fc !important; }
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // Pagination
+  // ------------------------------------------------------------------
+  .pagination-wrap .page-link {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+    &:hover { background-color: #2d3748 !important; }
+  }
+  .pagination-wrap .page-item.active .page-link {
+    background-color: #4f46e5 !important;
+    border-color: #4f46e5 !important;
+    color: #fff !important;
+  }
+  .pagination-wrap .page-item.disabled .page-link {
+    background-color: #1f2937 !important;
+    color: #4b5563 !important;
+  }
+
+  // ------------------------------------------------------------------
+  // Pills (status, priority, etc.) — keep the soft-color scheme but darken
+  // the background just enough so it reads on the dark card
+  // ------------------------------------------------------------------
+  .pill.pill-soft,
+  .pill.pill-muted {
+    background-color: #374151 !important;
+    color: #d1d5db !important;
+    .pill-dot { background-color: #9ca3af; }
+  }
+  .pill.pill-success   { background-color: rgba(16, 185, 129, 0.18) !important; color: #6ee7b7 !important; }
+  .pill.pill-warning   { background-color: rgba(245, 158, 11, 0.18) !important; color: #fcd34d !important; }
+  .pill.pill-danger    { background-color: rgba(239, 68, 68, 0.18)  !important; color: #fca5a5 !important; }
+  .pill.pill-info      { background-color: rgba(6, 182, 212, 0.18)  !important; color: #67e8f9 !important; }
+  .pill.pill-active    { background-color: rgba(16, 185, 129, 0.18) !important; color: #6ee7b7 !important; }
+  .pill.pill-grace     { background-color: rgba(245, 158, 11, 0.18) !important; color: #fcd34d !important; }
+  .pill.pill-expired,
+  .pill.pill-cancelled { background-color: rgba(239, 68, 68, 0.18)  !important; color: #fca5a5 !important; }
+
+  // ------------------------------------------------------------------
+  // Env chip in the topbar — pull it toward dark tones
+  // ------------------------------------------------------------------
+  .env-chip.env-chip-production,
+  .env-chip.env-chip-production:hover,
+  .env-chip.env-chip-production:focus,
+  .env-chip.env-chip-production.show {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: #6ee7b7 !important;
+    border-color: rgba(16, 185, 129, 0.45) !important;
+  }
+  .env-chip.env-chip-testing,
+  .env-chip.env-chip-testing:hover,
+  .env-chip.env-chip-testing:focus,
+  .env-chip.env-chip-testing.show {
+    background: rgba(245, 158, 11, 0.15) !important;
+    color: #fcd34d !important;
+    border-color: rgba(245, 158, 11, 0.45) !important;
+  }
+
+  // ------------------------------------------------------------------
+  // Icon buttons + action buttons
+  // ------------------------------------------------------------------
+  .smart-table .action-btn,
+  a.action-btn,
+  .btn-action {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+    &:hover, &:focus {
+      background-color: #2d3748 !important;
+      border-color: #4b5563 !important;
+      color: #ffffff !important;
+    }
+  }
+  .icon-btn {
+    color: #9ca3af !important;
+    &:hover { background-color: #2d3748 !important; color: #a5b4fc !important; }
+  }
+
+  // ------------------------------------------------------------------
+  // Empty state text
+  // ------------------------------------------------------------------
+  .empty-block .fw-semibold.text-dark { color: #f3f4f6 !important; }
+  .empty-block i.text-muted { color: #6b7280 !important; }
+
+  // ------------------------------------------------------------------
+  // Section separators inside sub-shells (subscription, installments)
+  // ------------------------------------------------------------------
+  .sub-section, .sub-header, .inst-section, .inst-header {
+    border-color: #2d3748 !important;
+  }
+  .history-table { border-color: #374151 !important; }
+
+  // ------------------------------------------------------------------
+  // Modal content when used from body-portal (env menu, etc.)
+  // ------------------------------------------------------------------
+  .modal-content {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+  }
+  .modal-header, .modal-footer { border-color: #2d3748 !important; }
+
+  // ------------------------------------------------------------------
+  // Cairo font stays crisp on dark bg
+  // ------------------------------------------------------------------
+  body { color: #e5e7eb; }
+}
