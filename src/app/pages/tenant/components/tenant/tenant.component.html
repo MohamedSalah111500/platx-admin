@@ -84,25 +84,31 @@
                 </span>
               </small>
             </div>
-            <div class="d-flex flex-wrap gap-2 align-items-center">
-              <div class="search-box">
-                <div class="position-relative">
-                  <input type="text" class="form-control" [placeholder]="'TENANT.SEARCH_PLACEHOLDER' | translate"
-                    [(ngModel)]="term" (ngModelChange)="search()" />
-                  <i class="bx bx-search-alt search-icon"></i>
+            <div class="d-flex flex-wrap gap-2 filter-toolbar">
+              <div class="filter-group filter-group-grow">
+                <label class="filter-label">{{ 'TENANT.SEARCH_LABEL' | translate }}</label>
+                <div class="search-box">
+                  <div class="position-relative">
+                    <input type="text" class="form-control" [placeholder]="'TENANT.SEARCH_PLACEHOLDER' | translate"
+                      [(ngModel)]="term" (ngModelChange)="search()" />
+                    <i class="bx bx-search-alt search-icon"></i>
+                  </div>
                 </div>
               </div>
-              <select class="form-select page-size-select" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
-                <option [ngValue]="10">{{ 'TENANT.PER_PAGE' | translate: { count: 10 } }}</option>
-                <option [ngValue]="25">{{ 'TENANT.PER_PAGE' | translate: { count: 25 } }}</option>
-                <option [ngValue]="50">{{ 'TENANT.PER_PAGE' | translate: { count: 50 } }}</option>
-                <option [ngValue]="100">{{ 'TENANT.PER_PAGE' | translate: { count: 100 } }}</option>
-              </select>
-              <button type="button" class="btn btn-outline-secondary" [disabled]="loading"
+              <div class="filter-group">
+                <label class="filter-label">{{ 'TENANT.PER_PAGE_LABEL' | translate }}</label>
+                <select class="form-select page-size-select" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+                  <option [ngValue]="10">{{ 'TENANT.PER_PAGE' | translate: { count: 10 } }}</option>
+                  <option [ngValue]="25">{{ 'TENANT.PER_PAGE' | translate: { count: 25 } }}</option>
+                  <option [ngValue]="50">{{ 'TENANT.PER_PAGE' | translate: { count: 50 } }}</option>
+                  <option [ngValue]="100">{{ 'TENANT.PER_PAGE' | translate: { count: 100 } }}</option>
+                </select>
+              </div>
+              <button type="button" class="btn btn-outline-secondary align-self-end" [disabled]="loading"
                 (click)="refresh()" [title]="'TENANT.REFRESH' | translate">
                 <i class="mdi mdi-refresh" [class.mdi-spin]="loading"></i>
               </button>
-              <button type="button" [routerLink]="['/tenant/add-edit']" class="btn btn-success">
+              <button type="button" [routerLink]="['/tenant/add-edit']" class="btn btn-success align-self-end">
                 <i class="mdi mdi-plus me-1"></i> {{ 'TENANT.ADD' | translate }}
               </button>
             </div>

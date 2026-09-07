@@ -344,3 +344,34 @@ a.ck.ck-button.ck-on {
     margin-bottom: 20px;
   }
 }
+
+// Filter-toolbar utilities — used everywhere a page shows a horizontal
+// row of dropdowns/inputs above a table so each control announces what
+// it filters (previously the row was a wall of unlabeled selects).
+.filter-toolbar {
+  align-items: flex-end;
+}
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+}
+.filter-group.filter-group-grow {
+  flex: 1 1 220px;
+  min-width: 220px;
+}
+.filter-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+[data-bs-theme="dark"] .filter-label {
+  color: #9ca3af;
+}
+[dir="rtl"] .filter-label {
+  letter-spacing: 0;
+}

@@ -699,6 +699,8 @@
     "FILTERED_BY": "مُصفَّى حسب {{filter}}",
     "CLEAR": "مسح",
     "SEARCH_PLACEHOLDER": "بحث بالاسم، البريد، الهاتف، الرسالة...",
+    "SEARCH_LABEL": "بحث",
+    "PER_PAGE_LABEL": "عدد الصفوف",
     "READ_MORE": "قراءة المزيد",
     "NEW_BADGE": "جديد",
     "COPY_EMAIL": "نسخ البريد الإلكتروني",
@@ -767,6 +769,8 @@
     "SHOWING_OF": "عرض {{shown}} من إجمالي {{total}} منصة",
     "FILTERED_BY": "مُصفَّى حسب {{filter}}",
     "SEARCH_PLACEHOLDER": "بحث بالاسم، النطاق، البريد الإلكتروني...",
+    "SEARCH_LABEL": "بحث",
+    "PER_PAGE_LABEL": "عدد الصفوف",
     "PER_PAGE": "{{count}} / الصفحة",
     "PAGINATION_RANGE": "عرض {{from}} – {{to}} من إجمالي {{total}} منصة",
     "NO_PLAN": "بدون باقة",
@@ -980,7 +984,14 @@
         "ANY_FOLLOWUP": "أي متابعة",
         "ALL_SOURCES": "كل المصادر",
         "ANY_PRIORITY": "أي أولوية",
-        "ALL_AGENTS": "كل الموظفين"
+        "ALL_AGENTS": "كل الموظفين",
+        "SEARCH_LABEL": "بحث",
+        "STATUS_LABEL": "الحالة",
+        "FOLLOWUP_LABEL": "المتابعة",
+        "SOURCE_LABEL": "المصدر",
+        "PRIORITY_LABEL": "الأولوية",
+        "AGENT_LABEL": "الموظف المسؤول",
+        "PER_PAGE_LABEL": "عدد الصفوف"
       },
       "COL": {
         "LEAD": "العميل",

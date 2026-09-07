@@ -700,6 +700,8 @@
     "FILTERED_BY": "filtered by {{filter}}",
     "CLEAR": "clear",
     "SEARCH_PLACEHOLDER": "Search name, email, phone, message...",
+    "SEARCH_LABEL": "Search",
+    "PER_PAGE_LABEL": "Rows per page",
     "READ_MORE": "Read more",
     "NEW_BADGE": "NEW",
     "COPY_EMAIL": "Copy email",
@@ -768,6 +770,8 @@
     "SHOWING_OF": "Showing {{shown}} of {{total}} tenants",
     "FILTERED_BY": "filtered by {{filter}}",
     "SEARCH_PLACEHOLDER": "Search name, domain, email...",
+    "SEARCH_LABEL": "Search",
+    "PER_PAGE_LABEL": "Rows per page",
     "PER_PAGE": "{{count}} / page",
     "PAGINATION_RANGE": "Showing {{from}} – {{to}} of {{total}} tenants",
     "NO_PLAN": "No plan",
@@ -981,7 +985,14 @@
         "ANY_FOLLOWUP": "Any follow-up",
         "ALL_SOURCES": "All sources",
         "ANY_PRIORITY": "Any priority",
-        "ALL_AGENTS": "All agents"
+        "ALL_AGENTS": "All agents",
+        "SEARCH_LABEL": "Search",
+        "STATUS_LABEL": "Status",
+        "FOLLOWUP_LABEL": "Follow-up",
+        "SOURCE_LABEL": "Source",
+        "PRIORITY_LABEL": "Priority",
+        "AGENT_LABEL": "Assigned agent",
+        "PER_PAGE_LABEL": "Rows per page"
       },
       "COL": {
         "LEAD": "Lead",

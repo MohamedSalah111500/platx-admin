@@ -84,41 +84,62 @@
         </div>
       </div>
 
-      <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-        <div class="search-box">
-          <div class="position-relative">
-            <input type="text" class="form-control" [placeholder]="'CRM.LEADS.SEARCH_PLACEHOLDER' | translate"
-              [(ngModel)]="filter.search" (ngModelChange)="onSearch($event)" />
-            <i class="bx bx-search-alt search-icon"></i>
+      <div class="d-flex flex-wrap gap-2 filter-toolbar mb-3">
+        <div class="filter-group filter-group-grow">
+          <label class="filter-label">{{ 'CRM.LEADS.FILTER.SEARCH_LABEL' | translate }}</label>
+          <div class="search-box">
+            <div class="position-relative">
+              <input type="text" class="form-control" [placeholder]="'CRM.LEADS.SEARCH_PLACEHOLDER' | translate"
+                [(ngModel)]="filter.search" (ngModelChange)="onSearch($event)" />
+              <i class="bx bx-search-alt search-icon"></i>
+            </div>
           </div>
         </div>
-        <select class="form-select filter-select" [(ngModel)]="filter.status" (ngModelChange)="applyFilters()">
-          <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ALL_STATUSES' | translate }}</option>
-          @for (s of statuses; track s.value) {<option [ngValue]="s.value">{{ s.label | translate }}</option>}
-        </select>
-        <select class="form-select filter-select" [(ngModel)]="filter.followUp" (ngModelChange)="applyFilters()">
-          <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ANY_FOLLOWUP' | translate }}</option>
-          @for (f of followUps; track f.value) {<option [ngValue]="f.value">{{ f.label | translate }}</option>}
-        </select>
-        <select class="form-select filter-select" [(ngModel)]="filter.source" (ngModelChange)="applyFilters()">
-          <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ALL_SOURCES' | translate }}</option>
-          @for (s of sources; track s.value) {<option [ngValue]="s.value">{{ s.label | translate }}</option>}
-        </select>
-        <select class="form-select filter-select" [(ngModel)]="filter.priority" (ngModelChange)="applyFilters()">
-          <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ANY_PRIORITY' | translate }}</option>
-          @for (p of priorities; track p.value) {<option [ngValue]="p.value">{{ p.label | translate }}</option>}
-        </select>
-        <select class="form-select filter-select" *ngIf="isSuperAdmin" [(ngModel)]="filter.assignedToUserId"
-          (ngModelChange)="filter.unassigned = null; applyFilters()">
-          <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ALL_AGENTS' | translate }}</option>
-          @for (a of agents; track a.id) {<option [ngValue]="a.id">{{ a.firstName }} {{ a.lastName }}</option>}
-        </select>
-        <select class="form-select filter-select ms-auto" [(ngModel)]="filter.size" (ngModelChange)="onPageSizeChange()">
-          <option [ngValue]="10">{{ 'COMMON.PER_PAGE' | translate: { count: 10 } }}</option>
-          <option [ngValue]="20">{{ 'COMMON.PER_PAGE' | translate: { count: 20 } }}</option>
-          <option [ngValue]="50">{{ 'COMMON.PER_PAGE' | translate: { count: 50 } }}</option>
-          <option [ngValue]="100">{{ 'COMMON.PER_PAGE' | translate: { count: 100 } }}</option>
-        </select>
+        <div class="filter-group">
+          <label class="filter-label">{{ 'CRM.LEADS.FILTER.STATUS_LABEL' | translate }}</label>
+          <select class="form-select filter-select" [(ngModel)]="filter.status" (ngModelChange)="applyFilters()">
+            <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ALL_STATUSES' | translate }}</option>
+            @for (s of statuses; track s.value) {<option [ngValue]="s.value">{{ s.label | translate }}</option>}
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">{{ 'CRM.LEADS.FILTER.FOLLOWUP_LABEL' | translate }}</label>
+          <select class="form-select filter-select" [(ngModel)]="filter.followUp" (ngModelChange)="applyFilters()">
+            <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ANY_FOLLOWUP' | translate }}</option>
+            @for (f of followUps; track f.value) {<option [ngValue]="f.value">{{ f.label | translate }}</option>}
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">{{ 'CRM.LEADS.FILTER.SOURCE_LABEL' | translate }}</label>
+          <select class="form-select filter-select" [(ngModel)]="filter.source" (ngModelChange)="applyFilters()">
+            <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ALL_SOURCES' | translate }}</option>
+            @for (s of sources; track s.value) {<option [ngValue]="s.value">{{ s.label | translate }}</option>}
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">{{ 'CRM.LEADS.FILTER.PRIORITY_LABEL' | translate }}</label>
+          <select class="form-select filter-select" [(ngModel)]="filter.priority" (ngModelChange)="applyFilters()">
+            <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ANY_PRIORITY' | translate }}</option>
+            @for (p of priorities; track p.value) {<option [ngValue]="p.value">{{ p.label | translate }}</option>}
+          </select>
+        </div>
+        <div class="filter-group" *ngIf="isSuperAdmin">
+          <label class="filter-label">{{ 'CRM.LEADS.FILTER.AGENT_LABEL' | translate }}</label>
+          <select class="form-select filter-select" [(ngModel)]="filter.assignedToUserId"
+            (ngModelChange)="filter.unassigned = null; applyFilters()">
+            <option [ngValue]="null">{{ 'CRM.LEADS.FILTER.ALL_AGENTS' | translate }}</option>
+            @for (a of agents; track a.id) {<option [ngValue]="a.id">{{ a.firstName }} {{ a.lastName }}</option>}
+          </select>
+        </div>
+        <div class="filter-group ms-auto">
+          <label class="filter-label">{{ 'CRM.LEADS.FILTER.PER_PAGE_LABEL' | translate }}</label>
+          <select class="form-select filter-select" [(ngModel)]="filter.size" (ngModelChange)="onPageSizeChange()">
+            <option [ngValue]="10">{{ 'COMMON.PER_PAGE' | translate: { count: 10 } }}</option>
+            <option [ngValue]="20">{{ 'COMMON.PER_PAGE' | translate: { count: 20 } }}</option>
+            <option [ngValue]="50">{{ 'COMMON.PER_PAGE' | translate: { count: 50 } }}</option>
+            <option [ngValue]="100">{{ 'COMMON.PER_PAGE' | translate: { count: 100 } }}</option>
+          </select>
+        </div>
       </div>
 
       <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
