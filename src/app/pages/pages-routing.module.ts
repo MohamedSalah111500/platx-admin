@@ -3,6 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { DefaultComponent } from "./dashboards/default/default.component";
 import { superAdminGuard } from "../core/guards/super-admin.guard";
+import { customerContactAccessGuard } from "../core/guards/customer-contact-access.guard";
 
 const routes: Routes = [
   { path: "dashboard", component: DefaultComponent, canActivate: [superAdminGuard] },
@@ -21,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: "customer-contact",
-    canActivate: [superAdminGuard],
+    canActivate: [customerContactAccessGuard],
     loadChildren: () =>
       import("./customer-contact/customer-contact.module").then(
         (m) => m.CustomerContactModule

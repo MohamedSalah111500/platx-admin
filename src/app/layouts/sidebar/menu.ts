@@ -23,6 +23,11 @@ export const MENU: MenuItem[] = [
     label: "MENUITEMS.CUSTOMER_CONTACT.TEXT",
     icon: "bx-user",
     link: "/customer-contact",
+    // Sales team (CrmAgent) needs to see incoming website leads too, not
+    // just SuperAdmin. The visibility filter is (isSuperAdmin || hasAnyRole),
+    // so listing SuperAdmin here keeps the row visible when the app doesn't
+    // auto-grant it via isSuperAdmin.
+    roles: ["SuperAdmin", "CrmAgent"],
   },
   {
     id: 4,
