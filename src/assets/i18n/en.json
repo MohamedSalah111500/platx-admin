@@ -94,14 +94,13 @@
         "DEFAULT": "Default"
       }
     },
-      "CUSTOMER_CONTACT": {
+    "CUSTOMER_CONTACT": {
       "TEXT": "Customer Contact",
       "BADGE": "04",
       "LIST": {
         "DEFAULT": "Default"
       }
     },
-
     "CRM": {
       "TEXT": "CRM"
     },
@@ -669,7 +668,9 @@
     "EMPTY": "No renewal requests found",
     "HANDLE": "Handle",
     "HANDLED_AT": "Handled",
-    "FILTER": { "ALL": "All" },
+    "FILTER": {
+      "ALL": "All"
+    },
     "STATUS": {
       "PENDING": "Pending",
       "HANDLED": "Handled",
@@ -1175,21 +1176,34 @@
         "LAST_NAME": "Last name",
         "EMAIL_LOGIN": "Email (login)",
         "PASSWORD": "Password",
-        "NEW_PASSWORD": "New password"
+        "NEW_PASSWORD": "New password",
+        "ROLE": "Role"
       },
       "ACTIONS": {
         "EDIT": "Edit",
         "RESET_PASSWORD": "Reset password",
         "DEACTIVATE": "Deactivate",
-        "ACTIVATE": "Activate"
+        "ACTIVATE": "Activate",
+        "PAGES": "Page permissions"
       },
       "TOAST": {
         "CREATED": "Agent account created",
         "UPDATED": "Agent updated",
         "ACTIVATED": "Agent activated",
         "DEACTIVATED": "Agent deactivated",
-        "PASSWORD_RESET": "Password reset"
-      }
+        "PASSWORD_RESET": "Password reset",
+        "PAGES_UPDATED": "Page permissions updated"
+      },
+      "ROLE_SUPERVISOR": "Supervisor",
+      "ROLE_AGENT_HINT": "Sees and follows up only the leads assigned to them.",
+      "ROLE_SUPERVISOR_HINT": "Sees the whole team's leads, appointments and reports and assigns leads — without managing staff accounts.",
+      "PAGES_TITLE": "Page permissions",
+      "PAGES_FOR": "Pages <b>{{name}}</b> can open outside the CRM (read only).",
+      "PAGES_HINT": "The member sees the selected pages in the sidebar after the next refresh or login."
+    },
+    "PAGES": {
+      "CUSTOMER_CONTACT": "Customer contact",
+      "PLANS": "Plans & pricing"
     }
   }
 }

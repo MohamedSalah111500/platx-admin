@@ -13,6 +13,15 @@ export class CrmAuthService {
     return this.currentUser.isSuperAdmin;
   }
 
+  get isSupervisor(): boolean {
+    return this.currentUser.isCrmSupervisor;
+  }
+
+  /** Sees the whole team's work and hands leads out: the owner and a supervisor. */
+  get canManageTeam(): boolean {
+    return this.isSuperAdmin || this.isSupervisor;
+  }
+
   get userId(): string | null {
     return this.currentUser.userId;
   }

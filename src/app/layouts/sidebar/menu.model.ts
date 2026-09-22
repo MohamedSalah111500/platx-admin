@@ -9,4 +9,6 @@ export interface MenuItem {
     parentId?: number;
     isLayout?: boolean;
     roles?: string[];
+    /** CrmPage value: shown to a CRM user only when the owner granted that page. */
+    page?: number;
 }

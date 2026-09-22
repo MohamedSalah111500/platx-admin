@@ -4,6 +4,7 @@ import { AuthenticationService } from "../services/auth.service";
 
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { CrmPageAccessService } from "src/app/core/services/crm-page-access.service";
 import { LoginForm } from "../types";
 import { el } from "@fullcalendar/core/internal-common";
 import { UserService } from "src/app/core/services/user.service";
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private authenticationService: AuthenticationService,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    private pageAccess: CrmPageAccessService
   ) {}
 
   ngOnInit() {}
@@ -55,7 +57,9 @@ export class LoginComponent implements OnInit {
             this.userService.saveUserDataInLocalStorage(response);
             const roles: string[] = response.roles || [];
             const landing = roles.includes("SuperAdmin") ? "/dashboard" : "/crm/leads";
-            this.router.navigate([landing]);
+            // The menu and the guards read the granted pages, so they have to be in
+            // place before the first screen renders.
+            this.pageAccess.load().subscribe(() => this.router.navigate([landing]));
         },
         (error) => {
           const firstErrorMessage =

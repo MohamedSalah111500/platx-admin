@@ -41,7 +41,7 @@
           <h5 class="mb-0 fw-bold">{{ 'CRM.AGENTS.TITLE' | translate }}</h5>
           <small class="text-muted">{{ 'CRM.AGENTS.SUBTITLE' | translate }}</small>
         </div>
-        <button type="button" class="btn btn-primary" (click)="openCreate()"><i class="mdi mdi-account-plus-outline me-1"></i> {{ 'CRM.AGENTS.ADD_AGENT' | translate }}</button>
+        <button type="button" class="btn btn-primary" *ngIf="isSuperAdmin" (click)="openCreate()"><i class="mdi mdi-account-plus-outline me-1"></i> {{ 'CRM.AGENTS.ADD_AGENT' | translate }}</button>
       </div>
 
       <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
@@ -72,7 +72,12 @@
                   </div>
                 </div>
               </td>
-              <td><span class="pill" [ngClass]="a.isSuperAdmin ? 'st-negotiation' : 'st-new'"><span class="pill-dot"></span>{{ (a.isSuperAdmin ? 'CRM.AGENTS.ROLE_OWNER' : 'CRM.AGENTS.ROLE_AGENT') | translate }}</span></td>
+              <td>
+                <span class="pill" [ngClass]="a.isSuperAdmin ? 'st-negotiation' : a.isSupervisor ? 'st-qualified' : 'st-new'"><span class="pill-dot"></span>{{ (a.isSuperAdmin ? 'CRM.AGENTS.ROLE_OWNER' : a.isSupervisor ? 'CRM.AGENTS.ROLE_SUPERVISOR' : 'CRM.AGENTS.ROLE_AGENT') | translate }}</span>
+                <div class="text-muted mt-1" style="font-size:12px" *ngIf="!a.isSuperAdmin && a.pages?.length">
+                  <i class="mdi mdi-shield-key-outline me-1"></i>@for (p of a.pages; track p; let last = $last) {{{ pageLabels[p] | translate }}{{ last ? '' : '، ' }}}
+                </div>
+              </td>
               <td><span class="pill" [ngClass]="a.isActive ? 'st-won' : 'st-lost'"><span class="pill-dot"></span>{{ (a.isActive ? 'CRM.AGENTS.STATUS_ACTIVE' : 'CRM.AGENTS.STATUS_INACTIVE') | translate }}</span></td>
               <td class="text-center"><span class="stat-mini"><span class="v">{{ a.leadsCount }}</span></span></td>
               <td class="text-center"><span class="stat-mini"><span class="v">{{ a.openLeadsCount }}</span></span></td>
@@ -82,10 +87,11 @@
                 <ng-template #never><span class="text-muted">{{ 'CRM.AGENTS.NEVER' | translate }}</span></ng-template>
               </td>
               <td class="text-end">
-                <div dropdown class="dropdown d-inline-block" container="body" *ngIf="!a.isSuperAdmin">
+                <div dropdown class="dropdown d-inline-block" container="body" *ngIf="isSuperAdmin && !a.isSuperAdmin">
                   <a dropdownToggle href="javascript:void(0);" class="btn btn-sm btn-light action-btn"><i class="mdi mdi-dots-horizontal font-size-18"></i></a>
                   <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
                     <li><a href="javascript:void(0);" class="dropdown-item" (click)="openEdit(a)"><i class="mdi mdi-pencil-outline text-info me-2"></i> {{ 'CRM.AGENTS.ACTIONS.EDIT' | translate }}</a></li>
+                    <li><a href="javascript:void(0);" class="dropdown-item" (click)="openPages(a)"><i class="mdi mdi-shield-key-outline text-primary me-2"></i> {{ 'CRM.AGENTS.ACTIONS.PAGES' | translate }}</a></li>
                     <li><a href="javascript:void(0);" class="dropdown-item" (click)="openReset(a)"><i class="mdi mdi-lock-reset text-warning me-2"></i> {{ 'CRM.AGENTS.ACTIONS.RESET_PASSWORD' | translate }}</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
@@ -132,6 +138,25 @@
               <label class="form-label">{{ 'CRM.AGENTS.FIELD.PASSWORD' | translate }} <span class="text-danger">*</span></label>
               <input type="password" class="form-control" dir="ltr" [(ngModel)]="createModel.password" name="password" [class.is-invalid]="submitted && createModel.password.length < 8" />
               <div class="form-hint mt-1">{{ 'CRM.AGENTS.PASSWORD_HINT' | translate }}</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label">{{ 'CRM.AGENTS.FIELD.ROLE' | translate }}</label>
+              <div class="d-flex flex-column gap-2">
+                <label class="form-check d-flex align-items-start gap-2 mb-0">
+                  <input class="form-check-input mt-1" type="radio" name="role" [value]="false" [(ngModel)]="createModel.isSupervisor" />
+                  <span>
+                    <span class="d-block fw-semibold">{{ 'CRM.AGENTS.ROLE_AGENT' | translate }}</span>
+                    <span class="text-muted" style="font-size:13px">{{ 'CRM.AGENTS.ROLE_AGENT_HINT' | translate }}</span>
+                  </span>
+                </label>
+                <label class="form-check d-flex align-items-start gap-2 mb-0">
+                  <input class="form-check-input mt-1" type="radio" name="role" [value]="true" [(ngModel)]="createModel.isSupervisor" />
+                  <span>
+                    <span class="d-block fw-semibold">{{ 'CRM.AGENTS.ROLE_SUPERVISOR' | translate }}</span>
+                    <span class="text-muted" style="font-size:13px">{{ 'CRM.AGENTS.ROLE_SUPERVISOR_HINT' | translate }}</span>
+                  </span>
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -196,6 +221,35 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-light" (click)="resetModal.hide()">{{ 'CRM.AGENTS.CANCEL' | translate }}</button>
           <button type="submit" class="btn btn-warning" [disabled]="saving"><span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span> {{ 'CRM.AGENTS.RESET' | translate }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div bsModal #pagesModal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form (ngSubmit)="savePages()" novalidate>
+        <div class="modal-header">
+          <h5 class="modal-title mb-0">{{ 'CRM.AGENTS.PAGES_TITLE' | translate }}</h5>
+          <button type="button" class="btn-close" (click)="pagesModal.hide()"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted mb-3" style="font-size:13px" [innerHTML]="'CRM.AGENTS.PAGES_FOR' | translate: { name: (pagesTarget?.firstName || '') + ' ' + (pagesTarget?.lastName || '') }"></p>
+          <div class="d-flex flex-column gap-2">
+            @for (page of allPages; track page) {
+            <label class="form-check d-flex align-items-center gap-2 mb-0">
+              <input class="form-check-input" type="checkbox" [checked]="isPageGranted(page)" (change)="togglePage(page)" />
+              <span>{{ pageLabels[page] | translate }}</span>
+            </label>
+            }
+          </div>
+          <div class="form-hint mt-3">{{ 'CRM.AGENTS.PAGES_HINT' | translate }}</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" (click)="pagesModal.hide()">{{ 'CRM.AGENTS.CANCEL' | translate }}</button>
+          <button type="submit" class="btn btn-primary" [disabled]="saving"><span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span> {{ 'CRM.AGENTS.SAVE' | translate }}</button>
         </div>
       </form>
     </div>

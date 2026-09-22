@@ -3,7 +3,7 @@
 
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <div>
-      <h5 class="mb-0 fw-bold">{{ (isSuperAdmin ? 'CRM.REPORTS.TEAM_PERFORMANCE' : 'CRM.REPORTS.MY_PERFORMANCE') | translate }}</h5>
+      <h5 class="mb-0 fw-bold">{{ (canManageTeam ? 'CRM.REPORTS.TEAM_PERFORMANCE' : 'CRM.REPORTS.MY_PERFORMANCE') | translate }}</h5>
       <small class="text-muted">{{ 'CRM.REPORTS.PAGE_SUBTITLE' | translate }}</small>
     </div>
     <div class="d-flex flex-wrap gap-2 align-items-center">

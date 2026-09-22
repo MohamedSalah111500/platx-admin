@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4 col-xl" *ngIf="isSuperAdmin">
+    <div class="col-md-4 col-xl" *ngIf="canManageTeam">
       <div class="kpi-card kpi-clickable" [class.kpi-active]="activeKpi === 'unassigned'" (click)="setKpi('unassigned')">
         <div class="kpi-icon kpi-icon-muted"><i class="mdi mdi-account-question-outline"></i></div>
         <div class="kpi-body">
@@ -123,7 +123,7 @@
             @for (p of priorities; track p.value) {<option [ngValue]="p.value">{{ p.label | translate }}</option>}
           </select>
         </div>
-        <div class="filter-group" *ngIf="isSuperAdmin">
+        <div class="filter-group" *ngIf="canManageTeam">
           <label class="filter-label">{{ 'CRM.LEADS.FILTER.AGENT_LABEL' | translate }}</label>
           <select class="form-select filter-select" [(ngModel)]="filter.assignedToUserId"
             (ngModelChange)="filter.unassigned = null; applyFilters()">
@@ -221,7 +221,7 @@
               </td>
 
               <td>
-                <ng-container *ngIf="isSuperAdmin; else assigneeReadonly">
+                <ng-container *ngIf="canManageTeam; else assigneeReadonly">
                   <div dropdown class="d-inline-block" container="body">
                     <a dropdownToggle href="javascript:void(0)" class="text-body d-inline-flex align-items-center gap-1">
                       <span class="crm-avatar crm-avatar-sm" *ngIf="lead.assignedToName" [style.background]="avatarColor(lead.assignedToUserId)">{{ initials(lead.assignedToName) }}</span>

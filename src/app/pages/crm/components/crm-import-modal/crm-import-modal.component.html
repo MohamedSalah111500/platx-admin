@@ -28,7 +28,7 @@
                   }
                 </select>
               </div>
-              <div class="col-sm-6" *ngIf="isSuperAdmin">
+              <div class="col-sm-6" *ngIf="canManageTeam">
                 <label class="form-label">{{ 'CRM.IMPORT.ASSIGN_TO' | translate }}</label>
                 <select class="form-select" [(ngModel)]="assignedToUserId" name="assignedToUserId">
                   <option [ngValue]="null">{{ 'CRM.LEADS.UNASSIGNED' | translate }}</option>

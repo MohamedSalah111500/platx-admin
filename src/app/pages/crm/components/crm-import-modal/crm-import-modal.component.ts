@@ -20,6 +20,7 @@ export class CrmImportModalComponent {
   readonly maxRows = 500;
   sources = LEAD_SOURCES;
   statuses = LEAD_STATUSES;
+  canManageTeam = this.auth.canManageTeam;
   isSuperAdmin = this.auth.isSuperAdmin;
   raw = "";
   rows: CrmImportRow[] = [];
@@ -46,7 +47,7 @@ export class CrmImportModalComponent {
     this.raw = "";
     this.rows = [];
     this.source = CrmLeadSource.WhatsApp;
-    this.assignedToUserId = this.isSuperAdmin ? this.auth.userId : null;
+    this.assignedToUserId = this.canManageTeam ? this.auth.userId : null;
     this.modal?.show();
   }
 

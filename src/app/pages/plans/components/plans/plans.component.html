@@ -27,6 +27,7 @@
             <div class="col-sm-8">
               <div class="text-sm-end">
                 <button
+                  *ngIf="canManage"
                   type="button"
                   data-bs-toggle="modal"
                   [routerLink]="['/tenant/add-edit']"
@@ -77,6 +78,7 @@
                         {{ 'PLANS.GET_STARTED' | translate }}
                       </a>
                       <button
+                        *ngIf="canManage"
                         type="button"
                         class="btn btn-sm btn-outline-secondary ms-2"
                         (click)="openLimitsModal(limitsTpl, plan)"

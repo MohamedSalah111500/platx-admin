@@ -24,6 +24,7 @@ export class CrmReportsComponent implements OnInit {
   breadCrumbItems = [{ label: "MENUITEMS.CRM.TEXT" }, { label: "MENUITEMS.CRM_REPORTS.TEXT", active: true }];
 
   readonly entryKind = CrmDayEntryKind;
+  canManageTeam = this.auth.canManageTeam;
   isSuperAdmin = this.auth.isSuperAdmin;
 
   preset: PresetKey = "today";

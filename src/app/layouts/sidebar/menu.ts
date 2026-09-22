@@ -1,4 +1,5 @@
 import { MenuItem } from "./menu.model";
+import { CrmPage } from "src/app/core/services/crm-page-access.service";
 
 export const MENU: MenuItem[] = [
   {
@@ -23,52 +24,51 @@ export const MENU: MenuItem[] = [
     label: "MENUITEMS.CUSTOMER_CONTACT.TEXT",
     icon: "bx-user",
     link: "/customer-contact",
-    // Sales team (CrmAgent) needs to see incoming website leads too, not
-    // just SuperAdmin. The visibility filter is (isSuperAdmin || hasAnyRole),
-    // so listing SuperAdmin here keeps the row visible when the app doesn't
-    // auto-grant it via isSuperAdmin.
-    roles: ["SuperAdmin", "CrmAgent"],
+    // Shared with the sales team, but per person: the row shows for a CRM user
+    // only when the owner granted him this page.
+    roles: ["SuperAdmin", "CrmSupervisor", "CrmAgent"],
+    page: CrmPage.CustomerContact,
   },
   {
     id: 4,
     label: "MENUITEMS.CRM.TEXT",
     icon: "bx-briefcase-alt-2",
-    roles: ["SuperAdmin", "CrmAgent"],
+    roles: ["SuperAdmin", "CrmSupervisor", "CrmAgent"],
     subItems: [
       {
         id: 41,
         label: "MENUITEMS.CRM_LEADS.TEXT",
         link: "/crm/leads",
         parentId: 4,
-        roles: ["SuperAdmin", "CrmAgent"],
+        roles: ["SuperAdmin", "CrmSupervisor", "CrmAgent"],
       },
       {
         id: 42,
         label: "MENUITEMS.CRM_PIPELINE.TEXT",
         link: "/crm/pipeline",
         parentId: 4,
-        roles: ["SuperAdmin", "CrmAgent"],
+        roles: ["SuperAdmin", "CrmSupervisor", "CrmAgent"],
       },
       {
         id: 45,
         label: "MENUITEMS.CRM_APPOINTMENTS.TEXT",
         link: "/crm/appointments",
         parentId: 4,
-        roles: ["SuperAdmin", "CrmAgent"],
+        roles: ["SuperAdmin", "CrmSupervisor", "CrmAgent"],
       },
       {
         id: 43,
         label: "MENUITEMS.CRM_REPORTS.TEXT",
         link: "/crm/reports",
         parentId: 4,
-        roles: ["SuperAdmin", "CrmAgent"],
+        roles: ["SuperAdmin", "CrmSupervisor", "CrmAgent"],
       },
       {
         id: 44,
         label: "MENUITEMS.CRM_TEAM.TEXT",
         link: "/crm/team",
         parentId: 4,
-        roles: ["SuperAdmin"],
+        roles: ["SuperAdmin", "CrmSupervisor"],
       },
     ],
   },
@@ -76,12 +76,18 @@ export const MENU: MenuItem[] = [
     id: 3,
     label: "MENUITEMS.MANAGEMENT.TEXT",
     icon: "bx-cog",
+    // Plans is the one row here the owner can share, so the section opens for a
+    // CRM user who was granted it; the other rows stay owner-only.
+    roles: ["SuperAdmin", "CrmSupervisor", "CrmAgent"],
+    page: CrmPage.Plans,
     subItems: [
       {
         id: 31,
         label: "MENUITEMS.PLANS.TEXT",
         link: "/plans",
         parentId: 3,
+        roles: ["SuperAdmin", "CrmSupervisor", "CrmAgent"],
+        page: CrmPage.Plans,
       },
       {
         id: 32,

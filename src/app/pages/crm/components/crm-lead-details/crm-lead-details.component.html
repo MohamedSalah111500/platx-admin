@@ -26,7 +26,7 @@
             <a href="tel:{{ lead.phone }}" class="btn btn-light"><i class="mdi mdi-phone-outline me-1"></i> {{ 'CRM.LEAD_DETAILS.CALL' | translate }}</a>
             <a *ngIf="lead.email" href="mailto:{{ lead.email }}" class="btn btn-light"><i class="mdi mdi-email-outline me-1"></i> {{ 'CRM.LEAD_DETAILS.EMAIL' | translate }}</a>
             <button type="button" class="btn btn-primary" (click)="leadForm.open(lead)"><i class="mdi mdi-pencil-outline me-1"></i> {{ 'CRM.LEADS.ACTIONS.EDIT' | translate }}</button>
-            <div dropdown class="d-inline-block" *ngIf="isSuperAdmin">
+            <div dropdown class="d-inline-block" *ngIf="canManageTeam">
               <button dropdownToggle type="button" class="btn btn-light action-btn py-2"><i class="mdi mdi-dots-horizontal font-size-18"></i></button>
               <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
                 <li><a href="javascript:void(0)" class="dropdown-item" (click)="removeModal.show()"><i class="mdi mdi-trash-can-outline text-danger me-2"></i> {{ 'CRM.LEAD_DETAILS.DELETE_LEAD' | translate }}</a></li>
@@ -101,7 +101,7 @@
             <div class="info-row">
               <div class="info-row-label">{{ 'CRM.LEAD_FORM.ASSIGNED_TO' | translate }}</div>
               <div class="info-row-value">
-                <ng-container *ngIf="isSuperAdmin; else assigneeReadonly">
+                <ng-container *ngIf="canManageTeam; else assigneeReadonly">
                   <div dropdown class="d-inline-block">
                     <a dropdownToggle href="javascript:void(0)" class="text-body d-inline-flex align-items-center gap-2">
                       <span class="crm-avatar crm-avatar-sm" *ngIf="lead.assignedToName" [style.background]="avatarColor(lead.assignedToUserId)">{{ initials(lead.assignedToName) }}</span>

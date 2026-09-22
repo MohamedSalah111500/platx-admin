@@ -33,6 +33,7 @@ export class CrmLeadDetailsComponent implements OnInit {
 
   statuses = LEAD_STATUSES;
   activityTypes = LOGGABLE_ACTIVITY_TYPES;
+  canManageTeam = this.auth.canManageTeam;
   isSuperAdmin = this.auth.isSuperAdmin;
 
   leadId = 0;

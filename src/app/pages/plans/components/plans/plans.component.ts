@@ -4,6 +4,7 @@ import { FormBuilder } from "@angular/forms";
 
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
+import { CurrentUserService } from "src/app/core/services/current-user.service";
 import { PlansService } from "../../services/plansService.service";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
@@ -57,8 +58,14 @@ export class PlansComponent implements OnInit {
     private subService: SubscriptionService,
     private modalService: BsModalService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private currentUser: CurrentUserService
   ) {}
+
+  // Sales members may be granted this page to read prices; changing plans stays with the owner.
+  get canManage(): boolean {
+    return this.currentUser.isSuperAdmin;
+  }
 
   ngOnInit() {
     this.breadCrumbItems = [

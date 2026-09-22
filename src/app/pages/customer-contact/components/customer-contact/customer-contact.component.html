@@ -220,10 +220,10 @@
                             <i class="mdi mdi-phone-outline text-info me-2"></i> {{ 'CONTACT.ACTIONS.CALL' | translate }}
                           </a>
                         </li>
-                        <li>
+                        <li *ngIf="canDelete">
                           <hr class="dropdown-divider" />
                         </li>
-                        <li>
+                        <li *ngIf="canDelete">
                           <a href="javascript:void(0);" (click)="openDeleteModel(item.id)" class="dropdown-item">
                             <i class="mdi mdi-trash-can-outline text-danger me-2"></i> {{ 'CONTACT.ACTIONS.DELETE' | translate }}
                           </a>

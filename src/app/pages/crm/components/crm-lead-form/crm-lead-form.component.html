@@ -76,7 +76,7 @@
               <input type="datetime-local" class="form-control" formControlName="nextFollowUpAt" />
             </div>
 
-            <div class="col-md-12" *ngIf="isSuperAdmin">
+            <div class="col-md-12" *ngIf="canManageTeam">
               <label class="form-label">{{ 'CRM.LEAD_FORM.ASSIGNED_TO' | translate }}</label>
               <select class="form-select" formControlName="assignedToUserId">
                 <option [ngValue]="null">{{ 'CRM.LEADS.UNASSIGNED' | translate }}</option>

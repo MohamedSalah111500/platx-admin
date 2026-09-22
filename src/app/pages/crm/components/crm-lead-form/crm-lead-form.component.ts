@@ -34,6 +34,7 @@ export class CrmLeadFormComponent {
 
   sources = LEAD_SOURCES;
   priorities = LEAD_PRIORITIES;
+  canManageTeam = this.auth.canManageTeam;
   isSuperAdmin = this.auth.isSuperAdmin;
   editing: CrmLead | null = null;
   submitted = false;
@@ -85,7 +86,7 @@ export class CrmLeadFormComponent {
       priority: lead?.priority ?? CrmLeadPriority.Medium,
       interestedPlan: lead?.interestedPlan || "",
       notes: lead?.notes || "",
-      assignedToUserId: lead?.assignedToUserId ?? (this.isSuperAdmin ? this.auth.userId : null),
+      assignedToUserId: lead?.assignedToUserId ?? (this.canManageTeam ? this.auth.userId : null),
       nextFollowUpAt: toInputDateTime(lead?.nextFollowUpAt),
     });
     this.modal?.show();

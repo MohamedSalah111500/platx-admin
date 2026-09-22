@@ -4,6 +4,7 @@ import { ModalDirective } from "ngx-bootstrap/modal";
 import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
+import { CurrentUserService } from "src/app/core/services/current-user.service";
 import { CustomerContact } from "../../types";
 import { CustomerContactService } from "../../services/customer-contact.service";
 
@@ -43,8 +44,14 @@ export class CustomerContactComponent implements OnInit {
   constructor(
     public toastr: ToastrService,
     public customerContactService: CustomerContactService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private currentUser: CurrentUserService
   ) {}
+
+  // Sales members read and answer submissions; removing one stays with the owner.
+  get canDelete(): boolean {
+    return this.currentUser.isSuperAdmin;
+  }
 
   ngOnInit() {
     this.breadCrumbItems = [

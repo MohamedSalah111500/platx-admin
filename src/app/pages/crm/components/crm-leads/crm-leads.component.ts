@@ -40,6 +40,7 @@ export class CrmLeadsComponent implements OnInit, OnDestroy {
   priorities = LEAD_PRIORITIES;
   followUps = FOLLOW_UP_FILTERS;
 
+  canManageTeam = this.auth.canManageTeam;
   isSuperAdmin = this.auth.isSuperAdmin;
   filter: CrmLeadFilter = { page: 1, size: 20 };
   activeKpi: KpiKey = "all";

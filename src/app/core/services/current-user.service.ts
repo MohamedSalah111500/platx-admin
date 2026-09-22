@@ -19,6 +19,15 @@ export class CurrentUserService {
     return this.roles.includes("CrmAgent");
   }
 
+  /** Watches the whole sales team's work without owning the rest of the portal. */
+  get isCrmSupervisor(): boolean {
+    return this.roles.includes("CrmSupervisor");
+  }
+
+  get isCrmUser(): boolean {
+    return this.isCrmAgent || this.isCrmSupervisor;
+  }
+
   get userId(): string | null {
     try {
       const user = JSON.parse(localStorage.getItem("currentUser") || "null");

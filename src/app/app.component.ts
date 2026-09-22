@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { SpinnerService } from "./shared/ui/spinner/spinner.service";
+import { CrmPageAccessService } from "./core/services/crm-page-access.service";
+import { CurrentUserService } from "./core/services/current-user.service";
 
 @Component({
   selector: "app-root",
@@ -9,7 +11,11 @@ import { SpinnerService } from "./shared/ui/spinner/spinner.service";
 export class AppComponent implements OnInit {
   isSpinnerVisible = false;
 
-  constructor(private spinnerService: SpinnerService) {}
+  constructor(
+    private spinnerService: SpinnerService,
+    private pageAccess: CrmPageAccessService,
+    private currentUser: CurrentUserService
+  ) {}
 
   userData = {
     // token:"Basic MTExNzk4ODU6NjAtZGF5ZnJlZXRyaWFs",
@@ -28,5 +34,10 @@ export class AppComponent implements OnInit {
     this.spinnerService.visibility$.subscribe((isVisible) => {
       this.isSpinnerVisible = isVisible;
     });
+
+    // Picks up a grant the owner changed while this session was open.
+    if (this.currentUser.isCrmUser) {
+      this.pageAccess.load().subscribe();
+    }
   }
 }

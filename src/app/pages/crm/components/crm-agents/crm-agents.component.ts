@@ -6,6 +6,7 @@ import { CrmService } from "../../services/crm.service";
 import { CrmAuthService } from "../../services/crm-auth.service";
 import { avatarColor, initials, relativeTime } from "../../crm-utils";
 import { CrmAgent } from "../../types";
+import { CRM_PAGES, CRM_PAGE_LABELS } from "src/app/core/services/crm-page-access.service";
 
 @Component({
   selector: "app-crm-agents",
@@ -18,18 +19,24 @@ export class CrmAgentsComponent implements OnInit {
   agents: CrmAgent[] = [];
   loading = true;
   currentUserId = this.auth.userId;
+  isSuperAdmin = this.auth.isSuperAdmin;
 
-  createModel = { firstName: "", lastName: "", email: "", password: "" };
+  createModel = { firstName: "", lastName: "", email: "", password: "", isSupervisor: false };
   editTarget: CrmAgent | null = null;
   editModel = { firstName: "", lastName: "", isActive: true };
   resetTarget: CrmAgent | null = null;
   resetModel = { newPassword: "" };
+  pagesTarget: CrmAgent | null = null;
+  pagesModel: number[] = [];
+  readonly allPages = CRM_PAGES;
+  readonly pageLabels = CRM_PAGE_LABELS;
   submitted = false;
   saving = false;
 
   @ViewChild("createModal") createModal?: ModalDirective;
   @ViewChild("editModal") editModal?: ModalDirective;
   @ViewChild("resetModal") resetModal?: ModalDirective;
+  @ViewChild("pagesModal") pagesModal?: ModalDirective;
 
   constructor(
     private crm: CrmService,
@@ -65,7 +72,7 @@ export class CrmAgentsComponent implements OnInit {
   }
 
   openCreate() {
-    this.createModel = { firstName: "", lastName: "", email: "", password: "" };
+    this.createModel = { firstName: "", lastName: "", email: "", password: "", isSupervisor: false };
     this.submitted = false;
     this.createModal?.show();
   }
@@ -118,6 +125,36 @@ export class CrmAgentsComponent implements OnInit {
         );
         this.load();
       });
+  }
+
+  openPages(agent: CrmAgent) {
+    this.pagesTarget = agent;
+    this.pagesModel = [...(agent.pages ?? [])];
+    this.pagesModal?.show();
+  }
+
+  isPageGranted(page: number): boolean {
+    return this.pagesModel.includes(page);
+  }
+
+  togglePage(page: number) {
+    this.pagesModel = this.isPageGranted(page)
+      ? this.pagesModel.filter((p) => p !== page)
+      : [...this.pagesModel, page];
+  }
+
+  savePages() {
+    if (!this.pagesTarget || this.saving) return;
+    this.saving = true;
+    this.crm.setAgentPages(this.pagesTarget.id, this.pagesModel).subscribe({
+      next: () => {
+        this.saving = false;
+        this.toastr.success(this.t("CRM.AGENTS.TOAST.PAGES_UPDATED"), this.crmTitle());
+        this.pagesModal?.hide();
+        this.load();
+      },
+      error: () => (this.saving = false),
+    });
   }
 
   openReset(agent: CrmAgent) {

@@ -234,6 +234,8 @@ export interface CrmAgent {
   email: string;
   isActive: boolean;
   isSuperAdmin: boolean;
+  isSupervisor: boolean;
+  pages: number[];
   lastLoginAt?: string | null;
   leadsCount: number;
   openLeadsCount: number;
@@ -245,6 +247,7 @@ export interface CrmAgentCreatePayload {
   lastName: string;
   email: string;
   password: string;
+  isSupervisor: boolean;
 }
 
 export interface CrmAgentUpdatePayload {

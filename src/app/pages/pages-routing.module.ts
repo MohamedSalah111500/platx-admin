@@ -3,7 +3,8 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { DefaultComponent } from "./dashboards/default/default.component";
 import { superAdminGuard } from "../core/guards/super-admin.guard";
-import { customerContactAccessGuard } from "../core/guards/customer-contact-access.guard";
+import { crmPageGuard } from "../core/guards/crm-page.guard";
+import { CrmPage } from "../core/services/crm-page-access.service";
 
 const routes: Routes = [
   { path: "dashboard", component: DefaultComponent, canActivate: [superAdminGuard] },
@@ -22,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: "customer-contact",
-    canActivate: [customerContactAccessGuard],
+    canActivate: [crmPageGuard(CrmPage.CustomerContact)],
     loadChildren: () =>
       import("./customer-contact/customer-contact.module").then(
         (m) => m.CustomerContactModule
@@ -31,7 +32,7 @@ const routes: Routes = [
 
   {
     path: "plans",
-    canActivate: [superAdminGuard],
+    canActivate: [crmPageGuard(CrmPage.Plans)],
     loadChildren: () =>
       import("./plans/plans.module").then((m) => m.PlansModule),
   },

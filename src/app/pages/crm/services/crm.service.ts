@@ -117,6 +117,10 @@ export class CrmService {
       .pipe(map((entries) => entries.map((e) => ({ ...e, at: normalizeServerDate(e.at) as string }))));
   }
 
+  setAgentPages(id: string, pages: number[]): Observable<IGeneralSuccessMessageResponse> {
+    return this.http.put<IGeneralSuccessMessageResponse>(CRM_URLS.AGENT_PAGES(id), { pages });
+  }
+
   resetAgentPassword(id: string, newPassword: string): Observable<IGeneralSuccessMessageResponse> {
     return this.http.post<IGeneralSuccessMessageResponse>(CRM_URLS.AGENT_RESET_PASSWORD(id), { newPassword });
   }
