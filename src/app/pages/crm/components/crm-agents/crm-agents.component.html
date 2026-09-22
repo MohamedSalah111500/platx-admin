@@ -188,6 +188,26 @@
               <input class="form-control" [(ngModel)]="editModel.lastName" name="editLastName" [class.is-invalid]="submitted && !editModel.lastName.trim()" />
             </div>
             <div class="col-12">
+              <label class="form-label">{{ 'CRM.AGENTS.FIELD.ROLE' | translate }}</label>
+              <div class="d-flex flex-column gap-2">
+                <label class="form-check d-flex align-items-start gap-2 mb-0">
+                  <input class="form-check-input mt-1" type="radio" name="editRole" [value]="false" [(ngModel)]="editModel.isSupervisor" />
+                  <span>
+                    <span class="d-block fw-semibold">{{ 'CRM.AGENTS.ROLE_AGENT' | translate }}</span>
+                    <span class="text-muted" style="font-size:13px">{{ 'CRM.AGENTS.ROLE_AGENT_HINT' | translate }}</span>
+                  </span>
+                </label>
+                <label class="form-check d-flex align-items-start gap-2 mb-0">
+                  <input class="form-check-input mt-1" type="radio" name="editRole" [value]="true" [(ngModel)]="editModel.isSupervisor" />
+                  <span>
+                    <span class="d-block fw-semibold">{{ 'CRM.AGENTS.ROLE_SUPERVISOR' | translate }}</span>
+                    <span class="text-muted" style="font-size:13px">{{ 'CRM.AGENTS.ROLE_SUPERVISOR_HINT' | translate }}</span>
+                  </span>
+                </label>
+              </div>
+              <div class="form-hint mt-2" *ngIf="editTarget && editModel.isSupervisor !== editTarget.isSupervisor">{{ 'CRM.AGENTS.ROLE_CHANGE_HINT' | translate }}</div>
+            </div>
+            <div class="col-12">
               <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="editActive" [(ngModel)]="editModel.isActive" name="editActive" />
                 <label class="form-check-label" for="editActive">{{ 'CRM.AGENTS.ACTIVE_CAN_LOGIN' | translate }}</label>

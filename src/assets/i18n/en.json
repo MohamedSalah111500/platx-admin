@@ -1199,7 +1199,8 @@
       "ROLE_SUPERVISOR_HINT": "Sees the whole team's leads, appointments and reports and assigns leads — without managing staff accounts.",
       "PAGES_TITLE": "Page permissions",
       "PAGES_FOR": "Pages <b>{{name}}</b> can open outside the CRM (read only).",
-      "PAGES_HINT": "The member sees the selected pages in the sidebar after the next refresh or login."
+      "PAGES_HINT": "The member sees the selected pages in the sidebar after the next refresh or login.",
+      "ROLE_CHANGE_HINT": "The change takes effect at the member's next login."
     },
     "PAGES": {
       "CUSTOMER_CONTACT": "Customer contact",

@@ -23,7 +23,7 @@ export class CrmAgentsComponent implements OnInit {
 
   createModel = { firstName: "", lastName: "", email: "", password: "", isSupervisor: false };
   editTarget: CrmAgent | null = null;
-  editModel = { firstName: "", lastName: "", isActive: true };
+  editModel = { firstName: "", lastName: "", isActive: true, isSupervisor: false };
   resetTarget: CrmAgent | null = null;
   resetModel = { newPassword: "" };
   pagesTarget: CrmAgent | null = null;
@@ -95,7 +95,7 @@ export class CrmAgentsComponent implements OnInit {
 
   openEdit(agent: CrmAgent) {
     this.editTarget = agent;
-    this.editModel = { firstName: agent.firstName, lastName: agent.lastName, isActive: agent.isActive };
+    this.editModel = { firstName: agent.firstName, lastName: agent.lastName, isActive: agent.isActive, isSupervisor: agent.isSupervisor };
     this.submitted = false;
     this.editModal?.show();
   }

@@ -254,6 +254,8 @@ export interface CrmAgentUpdatePayload {
   firstName: string;
   lastName: string;
   isActive: boolean;
+  /** Omit to keep the current role. */
+  isSupervisor?: boolean;
 }
 
 export interface CrmAgentPerformance {
