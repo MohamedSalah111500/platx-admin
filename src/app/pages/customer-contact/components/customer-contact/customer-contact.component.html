@@ -16,6 +16,18 @@
       </div>
     </div>
     <div class="col-md-6 col-xl">
+      <div class="kpi-card kpi-clickable" [class.kpi-active]="typeFilter === 'platform'" (click)="setFilter('platform')">
+        <div class="kpi-icon kpi-icon-primary">
+          <i class="mdi mdi-tune-variant"></i>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-label">{{ 'CONTACT.KPI.PLATFORM' | translate }}</div>
+          <div class="kpi-value">{{ stats.platform }}</div>
+          <div class="kpi-sub text-primary">{{ 'CONTACT.KPI.PLATFORM_SUB' | translate }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl">
       <div class="kpi-card kpi-clickable" [class.kpi-active]="typeFilter === 'demo'" (click)="setFilter('demo')">
         <div class="kpi-icon kpi-icon-success">
           <i class="mdi mdi-rocket-launch-outline"></i>
@@ -184,6 +196,17 @@
                       <i class="mdi mdi-calendar-clock me-1"></i>
                       {{ item.preferredDate | date:'EEE, MMM d, y · h:mm a' }}
                     </div>
+                    @if (item.platformRequest) {
+                    <div class="font-size-11 fw-semibold text-primary mt-1">
+                      {{ item.platformRequest.monthlyTotal | number }} {{ 'CONTACT.PLATFORM.CURRENCY' | translate }} / {{ 'CONTACT.PLATFORM.PER_MONTH' | translate }}
+                    </div>
+                    @if (item.createdSubscriptionPlanId) {
+                    <span class="pill pill-success mt-1">
+                      <span class="pill-dot"></span>
+                      {{ 'CONTACT.PLATFORM.PLAN_CREATED' | translate }}
+                    </span>
+                    }
+                    }
                   </td>
 
                   <td>
@@ -210,6 +233,13 @@
                             <i class="mdi mdi-eye-outline text-primary me-2"></i> {{ 'CONTACT.ACTIONS.VIEW_MESSAGE' | translate }}
                           </a>
                         </li>
+                        @if (canCreatePlan && item.platformRequest && !item.createdSubscriptionPlanId) {
+                        <li>
+                          <a href="javascript:void(0);" (click)="createPlanFromRequest(item)" class="dropdown-item">
+                            <i class="mdi mdi-package-variant-plus text-primary me-2"></i> {{ 'CONTACT.ACTIONS.CREATE_PLAN' | translate }}
+                          </a>
+                        </li>
+                        }
                         <li *ngIf="item.email">
                           <a href="mailto:{{ item.email }}" class="dropdown-item">
                             <i class="mdi mdi-reply-outline text-success me-2"></i> {{ 'CONTACT.ACTIONS.REPLY_EMAIL' | translate }}
@@ -330,12 +360,78 @@
             </div>
           </div>
         </div>
+        @if (selectedMessage.platformRequest; as request) {
+        <div class="platform-request mb-3">
+          <div class="platform-request-head">
+            <div>
+              <div class="info-row-label mb-0">{{ 'CONTACT.PLATFORM.TITLE' | translate }}</div>
+              <div class="platform-request-total">
+                {{ request.monthlyTotal | number }}
+                <small>{{ 'CONTACT.PLATFORM.CURRENCY' | translate }} / {{ 'CONTACT.PLATFORM.PER_MONTH' | translate }}</small>
+              </div>
+            </div>
+            <div class="text-end">
+              <span class="pill pill-primary">
+                <span class="pill-dot"></span>
+                {{ (request.billingCycle === PLATFORM_BILLING_CYCLE.Annual ? 'CONTACT.PLATFORM.BILLING.ANNUAL' : 'CONTACT.PLATFORM.BILLING.SEMI_ANNUAL') | translate }}
+              </span>
+              <div class="font-size-12 text-muted mt-1">
+                {{ 'CONTACT.PLATFORM.PERIOD_TOTAL' | translate: { months: billingPaidMonths(request) } }}:
+                <strong class="text-dark">{{ billingTotal(request) | number }} {{ 'CONTACT.PLATFORM.CURRENCY' | translate }}</strong>
+              </div>
+            </div>
+          </div>
+          <div class="platform-request-grid">
+            <div class="platform-request-item">
+              <span>{{ 'CONTACT.PLATFORM.STUDENTS' | translate }}</span>
+              <strong>{{ request.students === PLATFORM_UNLIMITED ? ('CONTACT.PLATFORM.UNLIMITED' | translate) : (request.students | number) }}</strong>
+            </div>
+            <div class="platform-request-item">
+              <span>{{ 'CONTACT.PLATFORM.COURSES' | translate }}</span>
+              <strong>{{ request.courses === PLATFORM_UNLIMITED ? ('CONTACT.PLATFORM.UNLIMITED' | translate) : (request.courses | number) }}</strong>
+            </div>
+            <div class="platform-request-item">
+              <span>{{ 'CONTACT.PLATFORM.VIDEO' | translate }}</span>
+              <strong>{{ request.videoStorageGb | number }} GB</strong>
+            </div>
+            <div class="platform-request-item">
+              <span>{{ 'CONTACT.PLATFORM.FILES' | translate }}</span>
+              <strong>{{ request.fileStorageGb | number }} GB</strong>
+            </div>
+            <div class="platform-request-item">
+              <span>{{ 'CONTACT.PLATFORM.AI' | translate }}</span>
+              <strong>{{ request.aiCredits | number }}</strong>
+            </div>
+            <div class="platform-request-item">
+              <span>{{ 'CONTACT.PLATFORM.ADDONS' | translate }}</span>
+              <div class="d-flex flex-wrap gap-1">
+                @for (addon of request.addons; track addon) {
+                <span class="pill pill-info">{{ ('CONTACT.PLATFORM.ADDON.' + addon) | translate }}</span>
+                } @empty {
+                <strong>—</strong>
+                }
+              </div>
+            </div>
+          </div>
+          @if (selectedMessage.createdSubscriptionPlanId) {
+          <div class="platform-request-done">
+            <i class="mdi mdi-check-circle-outline"></i>
+            {{ 'CONTACT.PLATFORM.PLAN_CREATED_HINT' | translate: { id: selectedMessage.createdSubscriptionPlanId } }}
+          </div>
+          }
+        </div>
+        }
         <div class="info-row">
           <div class="info-row-label">{{ 'CONTACT.LABEL.MESSAGE' | translate }}</div>
           <div class="message-box">{{ selectedMessage.massage }}</div>
         </div>
       </div>
       <div class="modal-footer">
+        @if (canCreatePlan && selectedMessage.platformRequest && !selectedMessage.createdSubscriptionPlanId) {
+        <button type="button" class="btn btn-success" (click)="createPlanFromRequest(selectedMessage)">
+          <i class="mdi mdi-package-variant-plus me-1"></i> {{ 'CONTACT.ACTIONS.CREATE_PLAN' | translate }}
+        </button>
+        }
         <a *ngIf="selectedMessage.email" href="mailto:{{ selectedMessage.email }}" class="btn btn-primary">
           <i class="mdi mdi-reply-outline me-1"></i> {{ 'CONTACT.ACTIONS.REPLY_EMAIL' | translate }}
         </a>

@@ -148,31 +148,6 @@
     .pill-dot { display: none; }
   }
 
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
-    white-space: nowrap;
-
-    .pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    &.pill-success { background: #ecfdf5; color: #047857;
-      .pill-dot { background: #10b981; } }
-    &.pill-info { background: #ecfeff; color: #0e7490;
-      .pill-dot { background: #06b6d4; } }
-    &.pill-warning { background: #fffbeb; color: #b45309;
-      .pill-dot { background: #f59e0b; } }
-  }
 
   .smart-table .action-btn,
   a.action-btn {
@@ -310,4 +285,100 @@
   white-space: pre-wrap;
   word-break: break-word;
   line-height: 1.55;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  &.pill-success { background: #ecfdf5; color: #047857;
+    .pill-dot { background: #10b981; } }
+  &.pill-info { background: #ecfeff; color: #0e7490;
+    .pill-dot { background: #06b6d4; } }
+  &.pill-primary { background: #f1eeff; color: #5b45e0;
+    .pill-dot { background: #7c63fd; } }
+  &.pill-warning { background: #fffbeb; color: #b45309;
+    .pill-dot { background: #f59e0b; } }
+}
+
+.platform-request {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fafaff;
+}
+
+.platform-request-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.platform-request-total {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+
+  small {
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b7280;
+  }
+}
+
+.platform-request-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.platform-request-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #eef0f4;
+
+  span {
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  strong {
+    font-size: 15px;
+    color: #111827;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.platform-request-done {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  color: #047857;
+  font-size: 13px;
+  font-weight: 600;
 }

@@ -50,4 +50,11 @@ export class CustomerContactService {
       );
     });
   }
+
+  linkSubscriptionPlan(id: string, planId: number): Observable<IGeneralSuccessMessageResponse> {
+    return this.http.put<IGeneralSuccessMessageResponse>(
+      PLATX_CONTACT_URLS.LINK_SUBSCRIPTION_PLAN(id, planId),
+      null
+    );
+  }
 }

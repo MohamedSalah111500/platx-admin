@@ -85,7 +85,40 @@ export interface SubscriptionPlan {
   isActive: boolean;
   isFeatured: boolean;
   isPopular: boolean;
+  isCustom?: boolean;
   sortOrder: number;
+  features?: PlanFeature[];
+}
+
+export interface PlanFeature {
+  key: string;
+  unit: string;
+  valueType: LimitValueType;
+  value: number;
+  sortOrder: number;
+}
+
+export interface SaveSubscriptionPlanPayload {
+  name: string;
+  displayName: string;
+  description?: string | null;
+  monthlyPrice: number;
+  yearlyPrice: number;
+  originalPrice?: number | null;
+  maxStudents: number;
+  maxCourses: number;
+  maxVideoSizeGB: number;
+  hasSpecializedOptions: boolean;
+  hasCustomUI: boolean;
+  hasQuizAndAssignments: boolean;
+  hasTechnicalSupport: boolean;
+  hasDocumentAndMedia: boolean;
+  hasLifelongAccess: boolean;
+  hasAdvancedReports: boolean;
+  sortOrder: number;
+  isFeatured: boolean;
+  isPopular: boolean;
+  isCustom: boolean;
 }
 
 export interface TenantSubscription {

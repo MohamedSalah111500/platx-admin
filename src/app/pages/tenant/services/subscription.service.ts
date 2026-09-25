@@ -10,6 +10,7 @@ import {
   PlanLimitDto,
   RenewalRequest,
   RenewalRequestStatus,
+  SaveSubscriptionPlanPayload,
   SetTenantOverridePayload,
   SubscriptionPlan,
   TenantLimitsDashboard,
@@ -28,7 +29,23 @@ export class SubscriptionService {
 
   // Plans
   getAllPlans(): Observable<SubscriptionPlan[]> {
+    return this.http.get<SubscriptionPlan[]>(SUBSCRIPTION_PLANS_URLS.GET_ALL_INCLUDING_CUSTOM);
+  }
+
+  getPublicPlans(): Observable<SubscriptionPlan[]> {
     return this.http.get<SubscriptionPlan[]>(SUBSCRIPTION_PLANS_URLS.GET_ALL);
+  }
+
+  getPlan(id: number): Observable<SubscriptionPlan> {
+    return this.http.get<SubscriptionPlan>(SUBSCRIPTION_PLANS_URLS.GET_BY_ID(id));
+  }
+
+  createPlan(payload: SaveSubscriptionPlanPayload): Observable<SubscriptionPlan> {
+    return this.http.post<SubscriptionPlan>(SUBSCRIPTION_PLANS_URLS.CREATE, payload);
+  }
+
+  updatePlan(id: number, payload: SaveSubscriptionPlanPayload): Observable<SubscriptionPlan> {
+    return this.http.put<SubscriptionPlan>(SUBSCRIPTION_PLANS_URLS.UPDATE(id), payload);
   }
 
   // Tenant subscriptions

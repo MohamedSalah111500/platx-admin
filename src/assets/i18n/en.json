@@ -602,8 +602,8 @@
     }
   },
   "PLANS": {
-    "TITLE": "Plans",
-    "ADD_NEW": "Add New",
+    "TITLE": "Subscription Plans",
+    "ADD_NEW": "New Plan",
     "LOADING": "Loading plans...",
     "HERO_TITLE": "Pricing Plans",
     "HERO_SUBTITLE": "Our cloud hosting plans are designed for companies of all sizes.",
@@ -619,7 +619,43 @@
     "TOAST": {
       "LOAD_FAILED": "Failed to load limits",
       "SAVED": "Plan limits saved",
-      "SAVE_FAILED": "Failed to save limits"
+      "SAVE_FAILED": "Failed to save limits",
+      "LIST_FAILED": "Failed to load plans"
+    },
+    "EDIT": "Edit",
+    "YEARLY": "Yearly",
+    "CUSTOM_BADGE": "Custom",
+    "POPULAR_BADGE": "Popular",
+    "EMPTY": "No plans found",
+    "FORM": {
+      "CREATE_TITLE": "Create Plan",
+      "EDIT_TITLE": "Edit Plan",
+      "FROM_REQUEST": "Custom plan for",
+      "FROM_REQUEST_HINT": "Pre-filled from the teacher's platform request. Review the price and limits before saving.",
+      "DEFAULT_NAME": "Custom plan · {{name}}",
+      "DETAILS": "Plan details",
+      "DISPLAY_NAME": "Plan name",
+      "DISPLAY_NAME_REQ": "Plan name is required",
+      "DESCRIPTION": "Description",
+      "MONTHLY_PRICE": "Monthly price (EGP)",
+      "YEARLY_PRICE": "Yearly price (EGP)",
+      "YEARLY_HINT": "Annual billing charges 11 months (one month free).",
+      "APPLY_ANNUAL": "11 × monthly",
+      "PRICE_INVALID": "Enter a valid price",
+      "IS_CUSTOM": "Custom plan",
+      "IS_CUSTOM_HINT": "Hidden from the public pricing page; assign it to the teacher manually.",
+      "MAX_STUDENTS": "Students",
+      "MAX_COURSES": "Courses",
+      "MAX_VIDEO": "Video storage (GB)",
+      "ZERO_UNLIMITED_HINT": "Use 0 for unlimited.",
+      "LIMITS": "Limits & features",
+      "LIMITS_HINT": "These are the values enforced on the teacher's platform.",
+      "UNLIMITED": "Unlimited",
+      "CREATE": "Create plan",
+      "SAVE_CHANGES": "Save changes",
+      "CREATED": "Plan created successfully",
+      "UPDATED": "Plan updated successfully",
+      "SAVE_FAILED": "Failed to save the plan"
     }
   },
   "TENANT_FORM": {
@@ -721,13 +757,16 @@
       "GENERAL": "General Inquiries",
       "GENERAL_SUB": "Support & questions",
       "THIS_WEEK": "New This Week",
-      "THIS_WEEK_SUB": "Last 7 days · {{count}} domains"
+      "THIS_WEEK_SUB": "Last 7 days · {{count}} domains",
+      "PLATFORM": "Platform Requests",
+      "PLATFORM_SUB": "Built on the configurator"
     },
     "FILTER": {
       "ALL": "All",
       "DEMO": "Demo",
       "CONSULTATION": "Consultation",
-      "GENERAL": "General"
+      "GENERAL": "General",
+      "PLATFORM": "Platform request"
     },
     "COL": {
       "CUSTOMER": "Customer",
@@ -740,13 +779,15 @@
     "TYPE": {
       "CONSULTATION": "Free Consultation",
       "DEMO": "Demo Request",
-      "INQUIRY": "Inquiry"
+      "INQUIRY": "Inquiry",
+      "PLATFORM": "Custom Platform"
     },
     "ACTIONS": {
       "VIEW_MESSAGE": "View Message",
       "REPLY_EMAIL": "Reply by Email",
       "CALL": "Call",
-      "DELETE": "Delete"
+      "DELETE": "Delete",
+      "CREATE_PLAN": "Create plan from request"
     },
     "LABEL": {
       "EMAIL": "Email",
@@ -760,6 +801,31 @@
       "COPIED": "Copied to clipboard",
       "COPY_FAILED": "Failed to copy",
       "DELETED": "Contact deleted"
+    },
+    "PLATFORM": {
+      "TITLE": "Requested platform",
+      "CURRENCY": "EGP",
+      "PER_MONTH": "month",
+      "UNLIMITED": "Unlimited",
+      "STUDENTS": "Students",
+      "COURSES": "Courses",
+      "VIDEO": "Video storage",
+      "FILES": "File storage",
+      "AI": "AI credits / month",
+      "ADDONS": "Add-ons",
+      "ADDON": {
+        "exams": "Exams",
+        "certificates": "Certificates",
+        "live": "Live sessions",
+        "attendance": "Attendance"
+      },
+      "BILLING": {
+        "ANNUAL": "Annual billing",
+        "SEMI_ANNUAL": "Semi-annual billing"
+      },
+      "PERIOD_TOTAL": "Amount for {{months}} months",
+      "PLAN_CREATED": "Plan created",
+      "PLAN_CREATED_HINT": "A plan was created from this request (plan #{{id}}). Assign it to the teacher from their tenant page."
     }
   },
   "TENANT": {

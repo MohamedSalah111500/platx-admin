@@ -1,98 +1,154 @@
 <div class="container-fluid">
   <app-page-title
-    [title]="'TENANT.TITLE' | translate"
+    [title]="(isEdit ? 'PLANS.FORM.EDIT_TITLE' : 'PLANS.FORM.CREATE_TITLE') | translate"
     [breadcrumbItems]="breadCrumbItems"
   ></app-page-title>
+
+  @if (loading) {
   <div class="card">
-    <div class="card-body">
-      <form [formGroup]="tenantForm" (ngSubmit)="onSubmit()" novalidate>
-        <div class="row">
-          <div class="col-lg-4 mb-3">
-            <label for="firstName">{{ 'TENANT_FORM.FIRST_NAME' | translate }}</label>
-            <input type="text" id="firstName" class="form-control" formControlName="FirstName" />
-            <div *ngIf="submitted && tenantForm.controls.FirstName.invalid" class="text-danger">
-              {{ 'TENANT_FORM.FIRST_NAME_REQ' | translate }}
-            </div>
-          </div>
-          <div class="col-lg-4 mb-3">
-            <label for="lastName">{{ 'TENANT_FORM.LAST_NAME' | translate }}</label>
-            <input type="text" id="lastName" class="form-control" formControlName="LastName" />
-            <div *ngIf="submitted && tenantForm.controls.LastName.invalid" class="text-danger">
-              {{ 'TENANT_FORM.LAST_NAME_REQ' | translate }}
-            </div>
-          </div>
-          <div class="col-lg-4 mb-3">
-            <label for="domain">{{ 'TENANT_FORM.DOMAIN' | translate }}</label>
-            <input type="text" id="domain" class="form-control" formControlName="Domain" />
-            <div *ngIf="submitted && tenantForm.controls.Domain.invalid" class="text-danger">
-              {{ 'TENANT_FORM.DOMAIN_REQ' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3">
-            <label for="title">{{ 'TENANT_FORM.PLATFORM_TITLE' | translate }}</label>
-            <input type="text" id="title" class="form-control" formControlName="Title" />
-            <div *ngIf="submitted && tenantForm.controls.Title.invalid" class="text-danger">
-              {{ 'TENANT_FORM.TITLE_REQ' | translate }}
-            </div>
-          </div>
-          <div class="col-lg-4 mb-3">
-            <label for="email">{{ 'TENANT_FORM.EMAIL' | translate }}</label>
-            <input type="email" id="email" class="form-control" formControlName="Email" />
-            <div *ngIf="submitted && tenantForm.controls.Email.invalid" class="text-danger">
-              {{ 'TENANT_FORM.EMAIL_INVALID' | translate }}
-            </div>
-          </div>
-          <div class="col-lg-4 mb-3">
-            <label for="password">{{ 'TENANT_FORM.PASSWORD' | translate }}</label>
-            <input type="text" id="password" class="form-control" formControlName="Password" />
-            <div *ngIf="submitted && tenantForm.controls.Password.invalid" class="text-danger">
-              {{ 'TENANT_FORM.PASSWORD_MIN' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-12 mb-3">
-            <label for="logoFile">{{ 'TENANT_FORM.LOGO_FILE' | translate }}</label>
-            <div *ngIf="submitted && tenantForm.controls.LogoFile.invalid" class="text-danger">
-              {{ 'TENANT_FORM.LOGO_REQ' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-12 mb-3">
-            <label for="coverFile">{{ 'TENANT_FORM.COVER_FILE' | translate }}</label>
-            <div *ngIf="submitted && tenantForm.controls.CoverFile.invalid" class="text-danger">
-              {{ 'TENANT_FORM.COVER_REQ' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-6 mb-3">
-            <div>
-              <label for="isActive d-block">{{ 'TENANT_FORM.IS_ACTIVE' | translate }}</label>
-            </div>
-            <ui-switch
-              id="isActive"
-              [uncheckedLabel]="'TENANT_FORM.INACTIVE' | translate"
-              [checkedLabel]="'TENANT_FORM.ACTIVE' | translate"
-              size="small"
-              class="me-1"
-              formControlName="IsActive"
-            ></ui-switch>
-          </div>
-
-          <div class="col-lg-12 mb-3">
-            <label for="description">{{ 'TENANT_FORM.DESCRIPTION' | translate }}</label>
-            <textarea id="description" class="form-control" formControlName="Description"></textarea>
-            <div *ngIf="submitted && tenantForm.controls.Description.invalid" class="text-danger">
-              {{ 'TENANT_FORM.DESCRIPTION_REQ' | translate }}
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <button type="submit" class="btn btn-primary w-100">
-              {{ (mode == "edit" ? "TENANT_FORM.UPDATE" : "TENANT_FORM.CREATE") | translate }}
-            </button>
-          </div>
-        </div>
-      </form>
+    <div class="card-body text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
     </div>
   </div>
+  } @else {
+  <form [formGroup]="planForm" (ngSubmit)="save()" novalidate>
+    @if (source) {
+    <div class="card source-card">
+      <div class="card-body">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+          <div>
+            <div class="text-muted font-size-12 fw-semibold">{{ 'PLANS.FORM.FROM_REQUEST' | translate }}</div>
+            <h5 class="mb-1">{{ source.contactName }}</h5>
+            <div class="text-muted font-size-13">{{ 'PLANS.FORM.FROM_REQUEST_HINT' | translate }}</div>
+          </div>
+          <div class="text-end">
+            <div class="source-total">
+              {{ source.platformRequest.monthlyTotal | number }}
+              <small>{{ 'CONTACT.PLATFORM.CURRENCY' | translate }} / {{ 'CONTACT.PLATFORM.PER_MONTH' | translate }}</small>
+            </div>
+            <span class="badge bg-primary-subtle text-primary">{{ sourceBillingLabel() | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title mb-3">{{ 'PLANS.FORM.DETAILS' | translate }}</h5>
+        <div class="row">
+          <div class="col-lg-6 mb-3">
+            <label class="form-label" for="displayName">{{ 'PLANS.FORM.DISPLAY_NAME' | translate }} *</label>
+            <input id="displayName" type="text" class="form-control" formControlName="displayName"
+              [class.is-invalid]="isInvalid(planForm.controls.displayName)" />
+            @if (isInvalid(planForm.controls.displayName)) {
+            <div class="invalid-feedback">{{ 'PLANS.FORM.DISPLAY_NAME_REQ' | translate }}</div>
+            }
+          </div>
+          <div class="col-lg-6 mb-3">
+            <label class="form-label" for="description">{{ 'PLANS.FORM.DESCRIPTION' | translate }}</label>
+            <input id="description" type="text" class="form-control" formControlName="description" />
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label class="form-label" for="monthlyPrice">{{ 'PLANS.FORM.MONTHLY_PRICE' | translate }} *</label>
+            <input id="monthlyPrice" type="number" min="0" class="form-control" formControlName="monthlyPrice"
+              [class.is-invalid]="isInvalid(planForm.controls.monthlyPrice)" />
+            @if (isInvalid(planForm.controls.monthlyPrice)) {
+            <div class="invalid-feedback">{{ 'PLANS.FORM.PRICE_INVALID' | translate }}</div>
+            }
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label" for="yearlyPrice">{{ 'PLANS.FORM.YEARLY_PRICE' | translate }} *</label>
+            <div class="input-group">
+              <input id="yearlyPrice" type="number" min="0" class="form-control" formControlName="yearlyPrice"
+                [class.is-invalid]="isInvalid(planForm.controls.yearlyPrice)" />
+              <button type="button" class="btn btn-light" (click)="applyAnnualPrice()">
+                {{ 'PLANS.FORM.APPLY_ANNUAL' | translate }}
+              </button>
+            </div>
+            <div class="form-text">{{ 'PLANS.FORM.YEARLY_HINT' | translate }}</div>
+          </div>
+          <div class="col-lg-4 mb-3 d-flex align-items-center">
+            <div class="form-check form-switch mt-lg-4">
+              <input id="isCustom" class="form-check-input" type="checkbox" formControlName="isCustom" />
+              <label class="form-check-label" for="isCustom">{{ 'PLANS.FORM.IS_CUSTOM' | translate }}</label>
+              <div class="form-text">{{ 'PLANS.FORM.IS_CUSTOM_HINT' | translate }}</div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label class="form-label" for="maxStudents">{{ 'PLANS.FORM.MAX_STUDENTS' | translate }} *</label>
+            <input id="maxStudents" type="number" min="0" class="form-control" formControlName="maxStudents"
+              [class.is-invalid]="isInvalid(planForm.controls.maxStudents)" />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label" for="maxCourses">{{ 'PLANS.FORM.MAX_COURSES' | translate }} *</label>
+            <input id="maxCourses" type="number" min="0" class="form-control" formControlName="maxCourses"
+              [class.is-invalid]="isInvalid(planForm.controls.maxCourses)" />
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label" for="maxVideoSizeGB">{{ 'PLANS.FORM.MAX_VIDEO' | translate }} *</label>
+            <input id="maxVideoSizeGB" type="number" min="0" class="form-control" formControlName="maxVideoSizeGB"
+              [class.is-invalid]="isInvalid(planForm.controls.maxVideoSizeGB)" />
+          </div>
+          <div class="col-12">
+            <div class="form-text mt-0">{{ 'PLANS.FORM.ZERO_UNLIMITED_HINT' | translate }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title mb-1">{{ 'PLANS.FORM.LIMITS' | translate }}</h5>
+        <p class="text-muted font-size-13 mb-3">{{ 'PLANS.FORM.LIMITS_HINT' | translate }}</p>
+        <div class="row" [formGroup]="limitsForm">
+          @for (def of definitions; track def.key) {
+          <div class="col-md-6 col-xl-4 mb-3">
+            <div class="limit-item">
+              @if (def.valueType === LimitValueType.Boolean) {
+              <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" [id]="'limit-' + def.key"
+                  [checked]="limitControl(def.key).value !== 0"
+                  (change)="toggleFeature(def.key, $any($event.target).checked)" />
+                <label class="form-check-label fw-semibold" [for]="'limit-' + def.key">{{ def.displayName }}</label>
+              </div>
+              } @else {
+              <label class="form-label fw-semibold" [for]="'limit-' + def.key">
+                {{ def.displayName }}
+                <span class="text-muted fw-normal font-size-12">({{ def.unit }})</span>
+              </label>
+              <input type="number" class="form-control" [id]="'limit-' + def.key" [formControlName]="def.key"
+                [readonly]="isLimitUnlimited(def.key)" [class.is-invalid]="submitted && limitControl(def.key).invalid" />
+              <div class="form-check mt-1">
+                <input class="form-check-input" type="checkbox" [id]="'unlimited-' + def.key"
+                  [checked]="isLimitUnlimited(def.key)"
+                  (change)="toggleUnlimited(def.key, $any($event.target).checked)" />
+                <label class="form-check-label font-size-12" [for]="'unlimited-' + def.key">
+                  {{ 'PLANS.FORM.UNLIMITED' | translate }}
+                </label>
+              </div>
+              }
+              @if (def.description) {
+              <div class="form-text">{{ def.description }}</div>
+              }
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mb-4">
+      <button type="button" class="btn btn-light" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="saving">
+        @if (saving) {
+        <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+        }
+        {{ (isEdit ? 'PLANS.FORM.SAVE_CHANGES' : 'PLANS.FORM.CREATE') | translate }}
+      </button>
+    </div>
+  </form>
+  }
 </div>

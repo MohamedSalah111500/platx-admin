@@ -5,7 +5,14 @@ import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
 import { CurrentUserService } from "src/app/core/services/current-user.service";
-import { CustomerContact } from "../../types";
+import { CreatePlanFromContactState, CustomerContact } from "../../types";
+import { Router } from "@angular/router";
+import {
+  PLATFORM_BILLING_CYCLE,
+  PLATFORM_BILLING_MONTHS,
+  PLATFORM_UNLIMITED,
+  PlatformRequest,
+} from "src/app/shared/platform-request";
 import { CustomerContactService } from "../../services/customer-contact.service";
 
 @Component({
@@ -29,11 +36,14 @@ export class CustomerContactComponent implements OnInit {
   page: number = 1;
   pageSize: number = 10;
 
-  typeFilter: "all" | "demo" | "consultation" | "general" = "all";
+  typeFilter: "all" | "platform" | "demo" | "consultation" | "general" = "all";
+  readonly PLATFORM_UNLIMITED = PLATFORM_UNLIMITED;
+  readonly PLATFORM_BILLING_CYCLE = PLATFORM_BILLING_CYCLE;
   selectedMessage: CustomerContact | null = null;
 
   stats = {
     total: 0,
+    platform: 0,
     demo: 0,
     consultation: 0,
     general: 0,
@@ -45,8 +55,13 @@ export class CustomerContactComponent implements OnInit {
     public toastr: ToastrService,
     public customerContactService: CustomerContactService,
     private translate: TranslateService,
-    private currentUser: CurrentUserService
+    private currentUser: CurrentUserService,
+    private router: Router
   ) {}
+
+  get canCreatePlan(): boolean {
+    return this.currentUser.isSuperAdmin;
+  }
 
   // Sales members read and answer submissions; removing one stays with the owner.
   get canDelete(): boolean {
@@ -83,10 +98,11 @@ export class CustomerContactComponent implements OnInit {
     const consultation = this.returnedArray.filter((c) =>
       this.isConsultation(c)
     ).length;
+    const platform = this.returnedArray.filter((c) => this.isPlatformRequest(c)).length;
     const demo = this.returnedArray.filter(
-      (c) => c.isDemo && !this.isConsultation(c)
+      (c) => c.isDemo && !this.isConsultation(c) && !this.isPlatformRequest(c)
     ).length;
-    const general = this.returnedArray.length - demo - consultation;
+    const general = this.returnedArray.length - platform - demo - consultation;
     const domains = new Set(
       this.returnedArray
         .map((c) => (c.email || "").split("@")[1])
@@ -99,6 +115,7 @@ export class CustomerContactComponent implements OnInit {
     }).length;
     this.stats = {
       total: this.totalCount || this.returnedArray.length,
+      platform,
       demo,
       consultation,
       general,
@@ -113,13 +130,19 @@ export class CustomerContactComponent implements OnInit {
   }
 
   /** Translation key for the request "Type" column — templates pipe it through `translate`. */
+  isPlatformRequest(item?: CustomerContact | null): boolean {
+    return !!item?.platformRequest;
+  }
+
   typeLabel(item?: CustomerContact | null): string {
+    if (this.isPlatformRequest(item)) return "CONTACT.TYPE.PLATFORM";
     if (this.isConsultation(item)) return "CONTACT.TYPE.CONSULTATION";
     return item?.isDemo ? "CONTACT.TYPE.DEMO" : "CONTACT.TYPE.INQUIRY";
   }
 
   /** Pill CSS class for the request "Type" column. */
   typePillClass(item?: CustomerContact | null): string {
+    if (this.isPlatformRequest(item)) return "pill-primary";
     if (this.isConsultation(item)) return "pill-warning";
     return item?.isDemo ? "pill-success" : "pill-info";
   }
@@ -160,9 +183,10 @@ export class CustomerContactComponent implements OnInit {
     let result = [...this.returnedArray];
     if (this.typeFilter !== "all") {
       result = result.filter((c) => {
+        if (this.typeFilter === "platform") return this.isPlatformRequest(c);
         if (this.typeFilter === "consultation") return this.isConsultation(c);
         if (this.typeFilter === "demo")
-          return c.isDemo && !this.isConsultation(c);
+          return c.isDemo && !this.isConsultation(c) && !this.isPlatformRequest(c);
         return !c.isDemo && !this.isConsultation(c);
       });
     }
@@ -219,6 +243,25 @@ export class CustomerContactComponent implements OnInit {
       () => this.toastr.success(this.translate.instant("CONTACT.TOAST.COPIED")),
       () => this.toastr.error(this.translate.instant("CONTACT.TOAST.COPY_FAILED"))
     );
+  }
+
+  billingTotal(request: PlatformRequest): number {
+    return request.monthlyTotal * PLATFORM_BILLING_MONTHS[request.billingCycle].paidMonths;
+  }
+
+  billingPaidMonths(request: PlatformRequest): number {
+    return PLATFORM_BILLING_MONTHS[request.billingCycle].paidMonths;
+  }
+
+  createPlanFromRequest(item: CustomerContact) {
+    if (!item.id || !item.platformRequest) return;
+    const state: CreatePlanFromContactState = {
+      contactId: item.id,
+      contactName: item.name,
+      platformRequest: item.platformRequest,
+    };
+    this.messageModal?.hide();
+    this.router.navigate(["/plans/add-edit"], { state });
   }
 
   openMessage(item: CustomerContact) {

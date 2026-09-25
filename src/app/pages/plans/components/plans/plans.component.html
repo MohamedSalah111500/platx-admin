@@ -1,129 +1,126 @@
 <div class="container-fluid">
-  <app-page-title
-    [title]="'PLANS.TITLE' | translate"
-    [breadcrumbItems]="breadCrumbItems"
-  ></app-page-title>
+  <app-page-title [title]="'PLANS.TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
-          <div class="row mb-2">
+          <div class="row mb-3">
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="searchTableList"
-                    [placeholder]="'COMMON.SEARCH' | translate"
-                    [(ngModel)]="term"
-                    (ngModelChange)="search()"
-                  />
+                  <input type="text" class="form-control" [placeholder]="'COMMON.SEARCH' | translate"
+                    [(ngModel)]="term" (ngModelChange)="search()" />
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
             </div>
             <div class="col-sm-8">
+              @if (canManage) {
               <div class="text-sm-end">
-                <button
-                  *ngIf="canManage"
-                  type="button"
-                  data-bs-toggle="modal"
-                  [routerLink]="['/tenant/add-edit']"
-                  class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"
-                >
+                <button type="button" class="btn btn-success btn-rounded mb-2" (click)="addPlan()">
                   <i class="mdi mdi-plus me-1"></i> {{ 'PLANS.ADD_NEW' | translate }}
                 </button>
               </div>
+              }
             </div>
           </div>
 
-          <div *ngIf="loading">{{ 'PLANS.LOADING' | translate }}</div>
-          <div *ngIf="error">{{ error }}</div>
-
-          <section class="pricing-plans text-center">
-            <div class="container">
-              <div class="row justify-content-md-center">
-                <div class="col-sm-12 col-md-8 col-md-offset-2">
-                  <h1 class="section-title">{{ 'PLANS.HERO_TITLE' | translate }}</h1>
-                  <p class="lead">{{ 'PLANS.HERO_SUBTITLE' | translate }}</p>
-                </div>
-              </div>
-              <div class="row">
-                @for(plan of plans;track $index){
-                <div class="col-md-4 animated">
-                  <div class="card pricing-box rounded">
-                    <div class="card-block">
-                      <h4 class="card-title">{{ plan.name }}</h4>
-                      <h6 class="card-text">
-                        <sup class="currency"> $ </sup>
-                        <span class="amount">{{ plan.price }}</span>
-                        <span class="month"> / {{ 'PLANS.PER_MONTH' | translate }} </span>
-                      </h6>
+          @if (loading) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+          } @else {
+          <div class="row">
+            @for (plan of filteredPlans; track plan.id) {
+            <div class="col-md-6 col-xl-4 mb-3">
+              <div class="card plan-card mb-0" [class.is-custom]="plan.isCustom">
+                <div class="card-body">
+                  <div class="d-flex align-items-start justify-content-between gap-2">
+                    <div>
+                      <h5 class="mb-1">{{ plan.displayName || plan.name }}</h5>
+                      <div class="text-muted font-size-12" dir="ltr">{{ plan.name }}</div>
                     </div>
-                    <ul class="list-group list-group-flush">
-                      @for(feature of plan.features;track $index){
-                      <li class="list-group-item text-center d-inline-block">
-                        {{ feature.content }}
-                      </li>
-                      }
-                    </ul>
-                    <div class="card-block">
-                      <a
-                        href="#"
-                        class="btn btn-outline-start"
-                        [title]="'PLANS.GET_STARTED' | translate"
-                      >
-                        {{ 'PLANS.GET_STARTED' | translate }}
-                      </a>
-                      <button
-                        *ngIf="canManage"
-                        type="button"
-                        class="btn btn-sm btn-outline-secondary ms-2"
-                        (click)="openLimitsModal(limitsTpl, plan)"
-                      >
-                        <i class="mdi mdi-tune me-1"></i> {{ 'PLANS.EDIT_LIMITS' | translate }}
-                      </button>
-                    </div>
+                    @if (plan.isCustom) {
+                    <span class="badge bg-primary-subtle text-primary">{{ 'PLANS.CUSTOM_BADGE' | translate }}</span>
+                    } @else if (plan.isPopular) {
+                    <span class="badge bg-success-subtle text-success">{{ 'PLANS.POPULAR_BADGE' | translate }}</span>
+                    }
                   </div>
+
+                  <div class="plan-price mt-3">
+                    {{ plan.monthlyPrice | number }}
+                    <small>{{ 'CONTACT.PLATFORM.CURRENCY' | translate }} / {{ 'CONTACT.PLATFORM.PER_MONTH' | translate }}</small>
+                  </div>
+                  <div class="text-muted font-size-12">
+                    {{ 'PLANS.YEARLY' | translate }}: {{ plan.yearlyPrice | number }} {{ 'CONTACT.PLATFORM.CURRENCY' | translate }}
+                  </div>
+
+                  <ul class="plan-limits">
+                    <li>
+                      <span>{{ 'PLANS.FORM.MAX_STUDENTS' | translate }}</span>
+                      <strong>{{ plan.maxStudents ? (plan.maxStudents | number) : ('PLANS.FORM.UNLIMITED' | translate) }}</strong>
+                    </li>
+                    <li>
+                      <span>{{ 'PLANS.FORM.MAX_COURSES' | translate }}</span>
+                      <strong>{{ plan.maxCourses ? (plan.maxCourses | number) : ('PLANS.FORM.UNLIMITED' | translate) }}</strong>
+                    </li>
+                    <li>
+                      <span>{{ 'PLANS.FORM.MAX_VIDEO' | translate }}</span>
+                      <strong>{{ plan.maxVideoSizeGB ? plan.maxVideoSizeGB + ' GB' : ('PLANS.FORM.UNLIMITED' | translate) }}</strong>
+                    </li>
+                  </ul>
+
+                  @if (canManage) {
+                  <div class="d-flex flex-wrap gap-2">
+                    @if (plan.isCustom) {
+                    <button type="button" class="btn btn-sm btn-primary" (click)="edit(plan)">
+                      <i class="mdi mdi-pencil-outline me-1"></i> {{ 'PLANS.EDIT' | translate }}
+                    </button>
+                    }
+                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openLimitsModal(limitsTpl, plan)">
+                      <i class="mdi mdi-tune me-1"></i> {{ 'PLANS.EDIT_LIMITS' | translate }}
+                    </button>
+                  </div>
+                  }
                 </div>
-                }
               </div>
             </div>
-          </section>
+            } @empty {
+            <div class="col-12">
+              <platx-empty-state [message]="'PLANS.EMPTY' | translate"></platx-empty-state>
+            </div>
+            }
+          </div>
+          }
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Plan Limits Modal -->
 <ng-template #limitsTpl>
   <div class="modal-header">
     <h5 class="modal-title">{{ 'PLANS.EDIT_LIMITS_FOR' | translate: { name: editingPlanName } }}</h5>
     <button type="button" class="btn-close" (click)="limitsModalRef?.hide()"></button>
   </div>
   <div class="modal-body">
-    <div *ngIf="limitsLoading" class="text-center py-4">
+    @if (limitsLoading) {
+    <div class="text-center py-4">
       <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
     </div>
-    <ng-container *ngIf="!limitsLoading">
-      <p class="text-muted mb-3" style="font-size:13px" [innerHTML]="'PLANS.LIMITS_HINT' | translate"></p>
-      <div class="mb-3" *ngFor="let def of definitions">
-        <label class="form-label fw-semibold">
-          {{ def.displayName }}
-          <span class="text-muted fw-normal ms-1" style="font-size:12px">
-            ({{ def.unit }}<ng-container *ngIf="def.description"> — {{ def.description }}</ng-container>)
-          </span>
-        </label>
-        <input
-          type="number"
-          class="form-control"
-          [(ngModel)]="planLimitValues[def.key]"
-        />
-      </div>
-    </ng-container>
+    } @else {
+    <p class="text-muted mb-3 font-size-13" [innerHTML]="'PLANS.LIMITS_HINT' | translate"></p>
+    @for (def of definitions; track def.key) {
+    <div class="mb-3">
+      <label class="form-label fw-semibold">
+        {{ def.displayName }}
+        <span class="text-muted fw-normal ms-1 font-size-12">({{ def.unit }}@if (def.description) { — {{ def.description }}})</span>
+      </label>
+      <input type="number" class="form-control" [(ngModel)]="planLimitValues[def.key]" />
+    </div>
+    }
+    }
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light" (click)="limitsModalRef?.hide()">{{ 'COMMON.CANCEL' | translate }}</button>
@@ -132,35 +129,3 @@
     </button>
   </div>
 </ng-template>
-
-<!-- removeItemModal -->
-<div
-  bsModal
-  #removeItemModal="bs-modal"
-  class="modal fade"
-  id="removeItemModal"
-  tabindex="-1"
-  aria-hidden="true"
->
-  <platx-confirm-model
-    [title]="'PLANS.CONFIRM_REMOVE' | translate"
-    (confirm)="confirmDelete(deleteId)"
-    (cancel)="removeItemModal.hide()"
-  />
-</div>
-
-<!-- confirmModal -->
-<div
-  bsModal
-  #confirmModal="bs-modal"
-  class="modal fade"
-  id="confirmModal"
-  tabindex="-1"
-  aria-hidden="true"
->
-  <platx-confirm-model
-    [title]="'PLANS.CONFIRM_STATUS' | translate"
-    (confirm)="confirmActivation()"
-    (cancel)="confirmModal.hide()"
-  />
-</div>

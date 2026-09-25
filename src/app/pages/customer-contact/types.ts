@@ -1,4 +1,5 @@
 import { FormControl } from "@angular/forms";
+import { PlatformRequest } from "src/app/shared/platform-request";
 
 export interface Tenant {
   lastName: string;
@@ -63,4 +64,12 @@ export interface CustomerContact {
   // Null/absent for plain demo requests and general inquiries.
   preferredDate?: string | null;
   createdAt?: string;
+  platformRequest?: PlatformRequest | null;
+  createdSubscriptionPlanId?: number | null;
+}
+
+export interface CreatePlanFromContactState {
+  contactId: string;
+  contactName: string;
+  platformRequest: PlatformRequest;
 }
