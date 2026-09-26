@@ -604,18 +604,11 @@
   "PLANS": {
     "TITLE": "Subscription Plans",
     "ADD_NEW": "New Plan",
-    "LOADING": "Loading plans...",
-    "HERO_TITLE": "Pricing Plans",
-    "HERO_SUBTITLE": "Our cloud hosting plans are designed for companies of all sizes.",
-    "PER_MONTH": "mo",
-    "GET_STARTED": "Get Started",
     "EDIT_LIMITS": "Edit Limits",
     "EDIT_LIMITS_FOR": "Edit Limits — {{name}}",
     "LIMITS_HINT": "Use <strong>-1</strong> for unlimited. Boolean limits: <strong>1</strong> = enabled, <strong>0</strong> = disabled.",
     "SAVE_LIMITS": "Save Limits",
     "SAVING": "Saving…",
-    "CONFIRM_REMOVE": "Are you sure you want to remove this row?",
-    "CONFIRM_STATUS": "Are you sure you want to change the status?",
     "TOAST": {
       "LOAD_FAILED": "Failed to load limits",
       "SAVED": "Plan limits saved",
@@ -630,9 +623,6 @@
     "FORM": {
       "CREATE_TITLE": "Create Plan",
       "EDIT_TITLE": "Edit Plan",
-      "FROM_REQUEST": "Custom plan for",
-      "FROM_REQUEST_HINT": "Pre-filled from the teacher's platform request. Review the price and limits before saving.",
-      "DEFAULT_NAME": "Custom plan · {{name}}",
       "DETAILS": "Plan details",
       "DISPLAY_NAME": "Plan name",
       "DISPLAY_NAME_REQ": "Plan name is required",
@@ -694,7 +684,46 @@
     "EX_FIRST": "example: Mohamed",
     "EX_LAST": "example: Yassir",
     "EX_TITLE": "example: My Platform",
-    "EX_DOMAIN": "example: my-platform"
+    "EX_DOMAIN": "example: my-platform",
+    "CREATE_TITLE": "Create Platform",
+    "EDIT_TITLE": "Edit Platform",
+    "FROM_REQUEST": "Platform request from",
+    "FROM_REQUEST_HINT": "The teacher's choices are filled in as defaults. Review and adjust anything before creating the platform.",
+    "SECTION": {
+      "TEACHER": "Teacher details",
+      "PLATFORM": "Platform details",
+      "SUBSCRIPTION": "Subscription",
+      "CAPABILITIES": "Platform capabilities"
+    },
+    "SUBSCRIPTION_HINT": "Set the price and billing period for this platform.",
+    "TEMPLATE": "Start from",
+    "TEMPLATE_CUSTOM": "Custom (set everything manually)",
+    "TEMPLATE_FROM": "Fill from the {{name}} plan",
+    "TEMPLATE_HINT": "Optional: fills the price and capabilities from a plan so you can adjust them.",
+    "MONTHLY_PRICE": "Monthly price (EGP)",
+    "PRICE_INVALID": "Enter a valid price",
+    "TERM_LABEL": "Billing period",
+    "TERM": {
+      "MONTHLY": "Monthly",
+      "SEMIANNUAL": "Semi-annual",
+      "ANNUAL": "Annual (1 month free)"
+    },
+    "AMOUNT_DUE": "Amount due for {{days}} days",
+    "CAPABILITIES_HINT": "These values apply to this platform only.",
+    "LIMITS_TITLE": "Limits",
+    "FEATURES_TITLE": "Features",
+    "UNLIMITED": "Unlimited",
+    "ENABLE_ALL": "Enable all",
+    "DISABLE_ALL": "Disable all",
+    "EDIT_CAPABILITIES_HINT": "To change this platform's capabilities, subscription or price, open its subscription page.",
+    "MANAGE_SUBSCRIPTION": "Manage subscription & capabilities",
+    "TOAST": {
+      "CREATED": "Platform created successfully",
+      "UPDATED": "Platform updated successfully",
+      "SAVE_FAILED": "Failed to save the platform",
+      "LOAD_FAILED": "Failed to load data",
+      "TEMPLATE_FAILED": "Failed to load the plan capabilities"
+    }
   },
   "RENEWAL": {
     "TITLE": "Renewal Requests",
@@ -787,7 +816,7 @@
       "REPLY_EMAIL": "Reply by Email",
       "CALL": "Call",
       "DELETE": "Delete",
-      "CREATE_PLAN": "Create plan from request"
+      "CREATE_PLATFORM": "Create platform from request"
     },
     "LABEL": {
       "EMAIL": "Email",
@@ -824,8 +853,9 @@
         "SEMI_ANNUAL": "Semi-annual billing"
       },
       "PERIOD_TOTAL": "Amount for {{months}} months",
-      "PLAN_CREATED": "Plan created",
-      "PLAN_CREATED_HINT": "A plan was created from this request (plan #{{id}}). Assign it to the teacher from their tenant page."
+      "PLATFORM_CREATED": "Platform created",
+      "PLATFORM_CREATED_HINT": "A platform was created from this request.",
+      "OPEN_PLATFORM": "Open platform subscription"
     }
   },
   "TENANT": {

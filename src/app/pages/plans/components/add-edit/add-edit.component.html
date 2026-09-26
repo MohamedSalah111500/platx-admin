@@ -12,27 +12,6 @@
   </div>
   } @else {
   <form [formGroup]="planForm" (ngSubmit)="save()" novalidate>
-    @if (source) {
-    <div class="card source-card">
-      <div class="card-body">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-          <div>
-            <div class="text-muted font-size-12 fw-semibold">{{ 'PLANS.FORM.FROM_REQUEST' | translate }}</div>
-            <h5 class="mb-1">{{ source.contactName }}</h5>
-            <div class="text-muted font-size-13">{{ 'PLANS.FORM.FROM_REQUEST_HINT' | translate }}</div>
-          </div>
-          <div class="text-end">
-            <div class="source-total">
-              {{ source.platformRequest.monthlyTotal | number }}
-              <small>{{ 'CONTACT.PLATFORM.CURRENCY' | translate }} / {{ 'CONTACT.PLATFORM.PER_MONTH' | translate }}</small>
-            </div>
-            <span class="badge bg-primary-subtle text-primary">{{ sourceBillingLabel() | translate }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    }
-
     <div class="card">
       <div class="card-body">
         <h5 class="card-title mb-3">{{ 'PLANS.FORM.DETAILS' | translate }}</h5>

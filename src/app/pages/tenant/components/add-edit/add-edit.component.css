@@ -1,0 +1,54 @@
+.source-card {
+  border: 1px solid #e0dbff;
+  background: #faf9ff;
+}
+
+.source-total {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+}
+
+.source-total small {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.section-subtitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.capability-item {
+  height: 100%;
+  padding: 12px 14px;
+  border: 1px solid #eef0f4;
+  border-radius: 10px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.feature-item.is-on {
+  border-color: #c9bffd;
+  background: #faf9ff;
+}
+
+.subscription-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f9fafb;
+}
+
+.subscription-summary strong {
+  font-size: 18px;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+}

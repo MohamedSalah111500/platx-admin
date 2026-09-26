@@ -26,12 +26,6 @@ export interface PlanLimitDto {
   value: number;
 }
 
-export interface TenantLimitOverride {
-  limitKey: string;
-  value: number;
-  reason?: string;
-}
-
 export interface TenantLimitUsage {
   key: string;
   displayName: string;
@@ -86,15 +80,6 @@ export interface SubscriptionPlan {
   isFeatured: boolean;
   isPopular: boolean;
   isCustom?: boolean;
-  sortOrder: number;
-  features?: PlanFeature[];
-}
-
-export interface PlanFeature {
-  key: string;
-  unit: string;
-  valueType: LimitValueType;
-  value: number;
   sortOrder: number;
 }
 

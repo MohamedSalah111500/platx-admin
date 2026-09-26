@@ -76,6 +76,21 @@ export function platformRequestLimits(request: PlatformRequest): Record<string, 
   return limits;
 }
 
-export function planColumnValue(value: number): number {
-  return value === PLATFORM_UNLIMITED ? 0 : value;
-}
+
+export const SUBSCRIPTION_TERM = {
+  Monthly: "monthly",
+  SemiAnnual: PLATFORM_BILLING_CYCLE.SemiAnnual,
+  Annual: PLATFORM_BILLING_CYCLE.Annual,
+} as const;
+export type SubscriptionTerm = (typeof SUBSCRIPTION_TERM)[keyof typeof SUBSCRIPTION_TERM];
+
+export const SUBSCRIPTION_TERM_DETAILS: Record<SubscriptionTerm, { days: number; paidMonths: number; billingCycle: number }> = {
+  [SUBSCRIPTION_TERM.Monthly]: { days: 30, paidMonths: 1, billingCycle: 1 },
+  [SUBSCRIPTION_TERM.SemiAnnual]: { days: 182, paidMonths: 6, billingCycle: 6 },
+  [SUBSCRIPTION_TERM.Annual]: { days: 365, paidMonths: 11, billingCycle: 12 },
+};
+
+export const AI_UNLIMITED_QUOTA = 1_000_000;
+
+export const PLATFORM_MAX_QUANTITY = 1_000_000;
+export const LIMIT_VALUE_PATTERN = /^(-1|\d+)$/;

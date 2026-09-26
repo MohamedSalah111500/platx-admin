@@ -3,9 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { ToastrService } from "ngx-toastr";
-import { forkJoin, map, of, switchMap, tap } from "rxjs";
-import { CreatePlanFromContactState } from "src/app/pages/customer-contact/types";
-import { CustomerContactService } from "src/app/pages/customer-contact/services/customer-contact.service";
+import { forkJoin, map, switchMap, tap } from "rxjs";
 import { SubscriptionService } from "src/app/pages/tenant/services/subscription.service";
 import {
   LimitDefinition,
@@ -16,12 +14,11 @@ import {
 } from "src/app/pages/tenant/types/subscription.types";
 import {
   LIMIT_KEY,
-  PLATFORM_ADDON,
   PLATFORM_BILLING_CYCLE,
   PLATFORM_BILLING_MONTHS,
+  LIMIT_VALUE_PATTERN,
+  PLATFORM_MAX_QUANTITY,
   PLATFORM_UNLIMITED,
-  planColumnValue,
-  platformRequestLimits,
 } from "src/app/shared/platform-request";
 
 const CUSTOM_PLAN_SORT_ORDER = 100;
@@ -33,11 +30,9 @@ const CUSTOM_PLAN_SORT_ORDER = 100;
 })
 export class AddEditComponent implements OnInit {
   readonly LimitValueType = LimitValueType;
-  readonly PLATFORM_UNLIMITED = PLATFORM_UNLIMITED;
 
   breadCrumbItems: Array<{}> = [];
   planId: number | null = null;
-  source: CreatePlanFromContactState | null = null;
   definitions: LimitDefinition[] = [];
   loading = true;
   saving = false;
@@ -60,7 +55,6 @@ export class AddEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private subscriptionService: SubscriptionService,
-    private customerContactService: CustomerContactService,
     private toastr: ToastrService,
     private translate: TranslateService
   ) {}
@@ -72,11 +66,6 @@ export class AddEditComponent implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get("id"));
     this.planId = Number.isFinite(id) && id > 0 ? id : null;
-    const state = history.state as Partial<CreatePlanFromContactState> | null;
-    this.source =
-      !this.isEdit && state?.contactId && state.platformRequest
-        ? { contactId: state.contactId, contactName: state.contactName ?? "", platformRequest: state.platformRequest }
-        : null;
 
     this.breadCrumbItems = [
       { label: "MENUITEMS.PLANS.TEXT" },
@@ -92,12 +81,6 @@ export class AddEditComponent implements OnInit {
 
   isInvalid(control: FormControl): boolean {
     return this.submitted && control.invalid;
-  }
-
-  sourceBillingLabel(): string {
-    return this.source?.platformRequest.billingCycle === PLATFORM_BILLING_CYCLE.Annual
-      ? "CONTACT.PLATFORM.BILLING.ANNUAL"
-      : "CONTACT.PLATFORM.BILLING.SEMI_ANNUAL";
   }
 
   applyAnnualPrice(): void {
@@ -139,18 +122,13 @@ export class AddEditComponent implements OnInit {
           this.planId = plan.id;
           this.existingPlan = plan;
         }),
-        switchMap((plan) => this.subscriptionService.setPlanLimits(plan.id, limits).pipe(map(() => plan))),
-        switchMap((plan) =>
-          this.source
-            ? this.customerContactService.linkSubscriptionPlan(this.source.contactId, plan.id).pipe(map(() => plan))
-            : of(plan)
-        )
+        switchMap((plan) => this.subscriptionService.setPlanLimits(plan.id, limits).pipe(map(() => plan)))
       )
       .subscribe({
         next: () => {
           this.saving = false;
           this.toastr.success(this.translate.instant(creating ? "PLANS.FORM.CREATED" : "PLANS.FORM.UPDATED"));
-          this.router.navigate([this.source ? "/customer-contact" : "/plans"]);
+          this.router.navigate(["/plans"]);
         },
         error: (err) => {
           this.saving = false;
@@ -160,15 +138,13 @@ export class AddEditComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate([this.source ? "/customer-contact" : "/plans"]);
+    this.router.navigate(["/plans"]);
   }
 
   private loadForCreate(): void {
     this.subscriptionService.getDefinitions().subscribe({
       next: (definitions) => {
-        const requested = this.source ? platformRequestLimits(this.source.platformRequest) : {};
-        this.buildLimitControls(definitions, (def) => requested[def.key] ?? def.defaultValue);
-        if (this.source) this.prefillFromRequest();
+        this.buildLimitControls(definitions, (def) => def.defaultValue);
         this.loading = false;
       },
       error: () => this.onLoadFailed(),
@@ -201,20 +177,6 @@ export class AddEditComponent implements OnInit {
     });
   }
 
-  private prefillFromRequest(): void {
-    const { contactName, platformRequest: request } = this.source!;
-    const { paidMonths } = PLATFORM_BILLING_MONTHS[PLATFORM_BILLING_CYCLE.Annual];
-    this.planForm.patchValue({
-      displayName: this.translate.instant("PLANS.FORM.DEFAULT_NAME", { name: contactName }),
-      monthlyPrice: request.monthlyTotal,
-      yearlyPrice: request.monthlyTotal * paidMonths,
-      maxStudents: planColumnValue(request.students),
-      maxCourses: planColumnValue(request.courses),
-      maxVideoSizeGB: planColumnValue(request.videoStorageGb),
-      isCustom: true,
-    });
-  }
-
   private buildLimitControls(definitions: LimitDefinition[], valueOf: (def: LimitDefinition) => number): void {
     this.definitions = [...definitions].sort((a, b) => a.sortOrder - b.sortOrder);
     for (const def of this.definitions) {
@@ -222,7 +184,11 @@ export class AddEditComponent implements OnInit {
         def.key,
         new FormControl(valueOf(def), {
           nonNullable: true,
-          validators: [Validators.required, Validators.min(PLATFORM_UNLIMITED)],
+          validators: [
+            Validators.required,
+            Validators.max(PLATFORM_MAX_QUANTITY),
+            Validators.pattern(LIMIT_VALUE_PATTERN),
+          ],
         })
       );
     }
@@ -232,10 +198,9 @@ export class AddEditComponent implements OnInit {
     const form = this.planForm.getRawValue();
     const limits = this.limitsForm.getRawValue();
     const enabled = (key: string) => (limits[key] ?? 0) !== 0;
-    const addons = this.source?.platformRequest.addons ?? [];
 
     return {
-      name: this.existingPlan?.name ?? `custom-${this.source?.contactId ?? "plan"}-${Date.now()}`,
+      name: this.existingPlan?.name ?? `custom-${Date.now()}`,
       displayName: form.displayName.trim(),
       description: form.description.trim() || null,
       monthlyPrice: form.monthlyPrice,
@@ -246,7 +211,7 @@ export class AddEditComponent implements OnInit {
       maxVideoSizeGB: form.maxVideoSizeGB,
       hasSpecializedOptions: false,
       hasCustomUI: enabled(LIMIT_KEY.CustomUi),
-      hasQuizAndAssignments: enabled(LIMIT_KEY.Quizzes) || addons.includes(PLATFORM_ADDON.Exams),
+      hasQuizAndAssignments: enabled(LIMIT_KEY.Quizzes),
       hasTechnicalSupport: enabled(LIMIT_KEY.TechnicalSupport),
       hasDocumentAndMedia: enabled(LIMIT_KEY.DocumentsMedia),
       hasLifelongAccess: false,

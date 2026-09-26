@@ -1,5 +1,3 @@
-import { FormControl } from "@angular/forms";
-
 export interface Tenant {
   lastName: string;
   firstName: string;
@@ -30,23 +28,6 @@ interface TenantFile {
   fileType: number;
   creationTime: string;
   updateTime: null;
-}
-
-export interface TenantFormGroup {
-  id: FormControl;
-  LastName: FormControl;
-  FirstName: FormControl;
-  PhoneNumber: FormControl;
-  Domain: FormControl;
-  LogoFile: FormControl;
-  IsActive: FormControl;
-  CoverFile: FormControl;
-  Title: FormControl;
-  Email: FormControl;
-  Description: FormControl;
-  CreatedBy: FormControl;
-  QuotaAI:FormControl
-  SubscriptionPlanId: FormControl;
 }
 
 export interface GetAllTenantsResponse {

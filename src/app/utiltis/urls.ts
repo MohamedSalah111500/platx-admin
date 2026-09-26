@@ -114,8 +114,6 @@ export const PLATX_CONTACT_URLS = {
     .concat(PLATX_CONTACT_BASE)
     .concat("/GetContactDetailsList")}`,
     DELETE: (id: string) => `${environment.apiURL.concat(PLATX_CONTACT_BASE)}/${id}`,
-  LINK_SUBSCRIPTION_PLAN: (id: string, planId: number) =>
-    `${environment.apiURL.concat(PLATX_CONTACT_BASE)}/${id}/subscription-plan/${planId}`,
 };
 
 export const COMPANY_ANALYTICS_URLS = {

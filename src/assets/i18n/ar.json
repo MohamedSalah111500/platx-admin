@@ -604,18 +604,11 @@
   "PLANS": {
     "TITLE": "باقات الاشتراك",
     "ADD_NEW": "باقة جديدة",
-    "LOADING": "جاري تحميل الباقات...",
-    "HERO_TITLE": "باقات الأسعار",
-    "HERO_SUBTITLE": "باقات الاستضافة السحابية لدينا مصممة للشركات بجميع الأحجام.",
-    "PER_MONTH": "شهرياً",
-    "GET_STARTED": "ابدأ الآن",
     "EDIT_LIMITS": "تعديل الحدود",
     "EDIT_LIMITS_FOR": "تعديل الحدود — {{name}}",
     "LIMITS_HINT": "استخدم <strong>-1</strong> للحد اللانهائي. الحدود المنطقية: <strong>1</strong> = مفعّل، <strong>0</strong> = معطّل.",
     "SAVE_LIMITS": "حفظ الحدود",
     "SAVING": "جاري الحفظ…",
-    "CONFIRM_REMOVE": "هل أنت متأكد من حذف هذا العنصر؟",
-    "CONFIRM_STATUS": "هل أنت متأكد من تغيير الحالة؟",
     "TOAST": {
       "LOAD_FAILED": "فشل تحميل الحدود",
       "SAVED": "تم حفظ حدود الباقة",
@@ -630,9 +623,6 @@
     "FORM": {
       "CREATE_TITLE": "إنشاء باقة",
       "EDIT_TITLE": "تعديل الباقة",
-      "FROM_REQUEST": "باقة مخصصة للعميل",
-      "FROM_REQUEST_HINT": "تم ملء البيانات من طلب المدرس. راجع السعر والحدود قبل الحفظ.",
-      "DEFAULT_NAME": "باقة مخصصة · {{name}}",
       "DETAILS": "بيانات الباقة",
       "DISPLAY_NAME": "اسم الباقة",
       "DISPLAY_NAME_REQ": "اسم الباقة مطلوب",
@@ -694,7 +684,46 @@
     "EX_FIRST": "مثال: محمد",
     "EX_LAST": "مثال: ياسر",
     "EX_TITLE": "مثال: منصتي",
-    "EX_DOMAIN": "مثال: my-platform"
+    "EX_DOMAIN": "مثال: my-platform",
+    "CREATE_TITLE": "إنشاء منصة",
+    "EDIT_TITLE": "تعديل المنصة",
+    "FROM_REQUEST": "طلب منصة من",
+    "FROM_REQUEST_HINT": "تم وضع اختيارات المدرس كقيم افتراضية. راجع وعدّل ما تريد قبل إنشاء المنصة.",
+    "SECTION": {
+      "TEACHER": "بيانات المدرس",
+      "PLATFORM": "بيانات المنصة",
+      "SUBSCRIPTION": "الاشتراك",
+      "CAPABILITIES": "إمكانيات المنصة"
+    },
+    "SUBSCRIPTION_HINT": "حدد سعر المنصة ومدة الدفع.",
+    "TEMPLATE": "نقطة البداية",
+    "TEMPLATE_CUSTOM": "مخصص (أحدد كل شيء بنفسي)",
+    "TEMPLATE_FROM": "املأ من باقة {{name}}",
+    "TEMPLATE_HINT": "اختياري: يملأ السعر والإمكانيات من باقة لتعدّل عليها.",
+    "MONTHLY_PRICE": "السعر الشهري (ج.م)",
+    "PRICE_INVALID": "أدخل سعرًا صحيحًا",
+    "TERM_LABEL": "مدة الدفع",
+    "TERM": {
+      "MONTHLY": "شهري",
+      "SEMIANNUAL": "نصف سنوي",
+      "ANNUAL": "سنوي (شهر مجاني)"
+    },
+    "AMOUNT_DUE": "المبلغ المستحق عن {{days}} يوم",
+    "CAPABILITIES_HINT": "هذه القيم تُطبق على هذه المنصة فقط.",
+    "LIMITS_TITLE": "الحدود",
+    "FEATURES_TITLE": "المميزات",
+    "UNLIMITED": "غير محدود",
+    "ENABLE_ALL": "تفعيل الكل",
+    "DISABLE_ALL": "إيقاف الكل",
+    "EDIT_CAPABILITIES_HINT": "لتغيير إمكانيات المنصة أو اشتراكها أو سعرها، افتح صفحة الاشتراك الخاصة بها.",
+    "MANAGE_SUBSCRIPTION": "إدارة الاشتراك والإمكانيات",
+    "TOAST": {
+      "CREATED": "تم إنشاء المنصة بنجاح",
+      "UPDATED": "تم تحديث المنصة بنجاح",
+      "SAVE_FAILED": "تعذّر حفظ المنصة",
+      "LOAD_FAILED": "تعذّر تحميل البيانات",
+      "TEMPLATE_FAILED": "تعذّر تحميل إمكانيات الباقة"
+    }
   },
   "RENEWAL": {
     "TITLE": "طلبات التجديد",
@@ -787,7 +816,7 @@
       "REPLY_EMAIL": "الرد بالبريد",
       "CALL": "اتصال",
       "DELETE": "حذف",
-      "CREATE_PLAN": "إنشاء باقة من الطلب"
+      "CREATE_PLATFORM": "إنشاء منصة من الطلب"
     },
     "LABEL": {
       "EMAIL": "البريد الإلكتروني",
@@ -824,8 +853,9 @@
         "SEMI_ANNUAL": "دفع نصف سنوي"
       },
       "PERIOD_TOTAL": "المبلغ عن {{months}} شهر",
-      "PLAN_CREATED": "تم إنشاء الباقة",
-      "PLAN_CREATED_HINT": "تم إنشاء باقة من هذا الطلب (باقة رقم {{id}}). يمكنك تعيينها للمدرس من صفحة المنصة الخاصة به."
+      "PLATFORM_CREATED": "تم إنشاء المنصة",
+      "PLATFORM_CREATED_HINT": "تم إنشاء منصة من هذا الطلب.",
+      "OPEN_PLATFORM": "فتح اشتراك المنصة"
     }
   },
   "TENANT": {

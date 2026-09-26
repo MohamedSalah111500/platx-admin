@@ -1,124 +1,218 @@
 <div class="container-fluid">
-  <app-page-title [title]="'MENUITEMS.MANAGE_TENANT.TEXT' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title
+    [title]="(isCreate ? 'TENANT_FORM.CREATE_TITLE' : 'TENANT_FORM.EDIT_TITLE') | translate"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+
+  @if (loading) {
   <div class="card">
-    <div class="card-body">
-      <form [formGroup]="tenantForm" (ngSubmit)="onSubmit()" novalidate>
-        <div class="row">
-          <div class="col-lg-4 mb-3">
-            <label for="firstName">{{ 'TENANT_FORM.FIRST_NAME' | translate }} *</label>
-            <input type="text" id="firstName" class="form-control" formControlName="FirstName"
-              [placeholder]="'TENANT_FORM.EX_FIRST' | translate" />
-            <div *ngIf="submitted && tenantForm.controls.FirstName.invalid" class="text-danger">
-              {{ 'TENANT_FORM.FIRST_NAME_REQ' | translate }}
-            </div>
-          </div>
-          <div class="col-lg-4 mb-3">
-            <label for="lastName">{{ 'TENANT_FORM.LAST_NAME' | translate }} *</label>
-            <input type="text" id="lastName" class="form-control" formControlName="LastName"
-              [placeholder]="'TENANT_FORM.EX_LAST' | translate" />
-            <div *ngIf="submitted && tenantForm.controls.LastName.invalid" class="text-danger">
-              {{ 'TENANT_FORM.LAST_NAME_REQ' | translate }}
-            </div>
-          </div>
-          <div class="col-lg-4 mb-3">
-            <label for="title">{{ 'TENANT_FORM.PLATFORM_TITLE' | translate }} *</label>
-            <input type="text" id="title" class="form-control" formControlName="Title"
-              [placeholder]="'TENANT_FORM.EX_TITLE' | translate" />
-            <div *ngIf="submitted && tenantForm.controls.Title.invalid" class="text-danger">
-              {{ 'TENANT_FORM.TITLE_REQ' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3">
-            <label for="domain">{{ 'TENANT_FORM.DOMAIN' | translate }} *</label>
-            <input type="text" id="domain" class="form-control" formControlName="Domain"
-              [placeholder]="'TENANT_FORM.EX_DOMAIN' | translate" />
-            <div *ngIf="submitted && tenantForm.controls.Domain.invalid" class="text-danger">
-              {{ 'TENANT_FORM.DOMAIN_REQ' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3">
-            <label for="email">{{ 'TENANT_FORM.EMAIL' | translate }} *</label>
-            <input type="email" id="email" class="form-control" formControlName="Email"
-              placeholder="example@domain.com" dir="ltr" />
-            <div *ngIf="submitted && tenantForm.controls.Email.invalid" class="text-danger">
-              {{ 'TENANT_FORM.EMAIL_INVALID' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3">
-            <label for="PhoneNumber">{{ 'TENANT_FORM.PHONE' | translate }} *</label>
-            <input type="text" id="PhoneNumber" class="form-control" formControlName="PhoneNumber"
-              placeholder="+1234567890" dir="ltr" />
-            <div *ngIf="submitted && tenantForm.controls.PhoneNumber.invalid" class="text-danger">
-              {{ 'TENANT_FORM.PHONE_REQ' | translate }}
-            </div>
-          </div>
-          <div class="col-lg-6 mb-3">
-            <label for="quota">{{ 'TENANT_FORM.AI_QUOTA' | translate }} *</label>
-            <input type="number" id="quota" class="form-control" formControlName="QuotaAI" placeholder="30" />
-            <div *ngIf="submitted && tenantForm.controls.QuotaAI.invalid" class="text-danger">
-              {{ 'TENANT_FORM.QUOTA_INVALID' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-6 mb-3" *ngIf="mode !== 'edit'">
-            <label for="subscriptionPlan">{{ 'TENANT_FORM.PLAN' | translate }} *</label>
-            <select id="subscriptionPlan" class="form-control" formControlName="SubscriptionPlanId">
-              <option [ngValue]="null" disabled>{{ 'TENANT_FORM.SELECT_PLAN' | translate }}</option>
-              <option *ngFor="let plan of plans" [ngValue]="plan.id">
-                {{ plan.displayName }} — {{ plan.monthlyPrice }} {{ 'TENANT_FORM.EGP_MONTH' | translate }}
-              </option>
-            </select>
-            <div *ngIf="submitted && tenantForm.controls.SubscriptionPlanId.invalid" class="text-danger">
-              {{ 'TENANT_FORM.PLAN_REQ' | translate }}
-            </div>
-          </div>
-          <hr class="text-gray" />
-
-          <div class="col-lg-6 mb-3">
-            <label for="logoFile">{{ 'TENANT_FORM.LOGO_FILE' | translate }} <span class="text-muted">({{ 'TENANT_FORM.OPTIONAL' | translate }})</span></label>
-            <platx-file-upload [imageFile]="tenantForm.controls.LogoFile.value"
-              (fileUploadSuccess)="onFileUploadSuccess('LogoFile', $event)"></platx-file-upload>
-            <div *ngIf="submitted && tenantForm.controls.LogoFile.invalid" class="text-danger">
-              {{ 'TENANT_FORM.LOGO_REQ' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-6 mb-3">
-            <label for="coverFile">{{ 'TENANT_FORM.COVER_FILE' | translate }} <span class="text-muted">({{ 'TENANT_FORM.OPTIONAL' | translate }})</span></label>
-            <platx-file-upload [imageFile]="tenantForm.controls.CoverFile.value"
-              (fileUploadSuccess)="onFileUploadSuccess('CoverFile', $event)"></platx-file-upload>
-            <div *ngIf="submitted && tenantForm.controls.CoverFile.invalid" class="text-danger">
-              {{ 'TENANT_FORM.COVER_REQ' | translate }}
-            </div>
-          </div>
-
-          <div class="col-lg-6 mb-3">
-            <div>
-              <label for="isActive d-block">{{ 'TENANT_FORM.IS_ACTIVE' | translate }}</label>
-            </div>
-            <ui-switch id="isActive" [uncheckedLabel]="'TENANT_FORM.INACTIVE' | translate"
-              [checkedLabel]="'TENANT_FORM.ACTIVE' | translate" size="small" class="me-1"
-              formControlName="IsActive"></ui-switch>
-          </div>
-
-          <div class="col-lg-12 mb-3">
-            <label for="description">{{ 'TENANT_FORM.DESCRIPTION' | translate }} <span class="text-muted">({{ 'TENANT_FORM.OPTIONAL' | translate }})</span></label>
-            <textarea id="description" class="form-control" formControlName="Description"></textarea>
-            <div *ngIf="submitted && tenantForm.controls.Description.invalid" class="text-danger">
-              {{ 'TENANT_FORM.DESCRIPTION_REQ' | translate }}
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <button type="submit" class="btn btn-primary w-100" [disabled]="submitted">
-              {{ (mode == "edit" ? "TENANT_FORM.UPDATE" : "TENANT_FORM.CREATE") | translate }}
-            </button>
-          </div>
-        </div>
-      </form>
+    <div class="card-body text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
     </div>
   </div>
+  } @else {
+  <form (ngSubmit)="save()" novalidate>
+    @if (source) {
+    <div class="card source-card">
+      <div class="card-body d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <div class="text-muted font-size-12 fw-semibold">{{ 'TENANT_FORM.FROM_REQUEST' | translate }}</div>
+          <h5 class="mb-1">{{ source.name }}</h5>
+          <div class="text-muted font-size-13">{{ 'TENANT_FORM.FROM_REQUEST_HINT' | translate }}</div>
+        </div>
+        <div class="text-end">
+          <div class="source-total">
+            {{ source.platformRequest.monthlyTotal | number }}
+            <small>{{ 'CONTACT.PLATFORM.CURRENCY' | translate }} / {{ 'CONTACT.PLATFORM.PER_MONTH' | translate }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
 
+    <div class="card" [formGroup]="tenantForm">
+      <div class="card-body">
+        <h5 class="card-title mb-3">{{ 'TENANT_FORM.SECTION.TEACHER' | translate }}</h5>
+        <div class="row">
+          <div class="col-lg-6 mb-3">
+            <label class="form-label" for="firstName">{{ 'TENANT_FORM.FIRST_NAME' | translate }} *</label>
+            <input id="firstName" type="text" class="form-control" formControlName="FirstName"
+              [class.is-invalid]="isInvalid(tenantForm.controls.FirstName)" />
+            <div class="invalid-feedback">{{ 'TENANT_FORM.FIRST_NAME_REQ' | translate }}</div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <label class="form-label" for="lastName">{{ 'TENANT_FORM.LAST_NAME' | translate }} *</label>
+            <input id="lastName" type="text" class="form-control" formControlName="LastName"
+              [class.is-invalid]="isInvalid(tenantForm.controls.LastName)" />
+            <div class="invalid-feedback">{{ 'TENANT_FORM.LAST_NAME_REQ' | translate }}</div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <label class="form-label" for="email">{{ 'TENANT_FORM.EMAIL' | translate }} *</label>
+            <input id="email" type="email" class="form-control" formControlName="Email" dir="ltr"
+              placeholder="example@domain.com" [class.is-invalid]="isInvalid(tenantForm.controls.Email)" />
+            <div class="invalid-feedback">{{ 'TENANT_FORM.EMAIL_INVALID' | translate }}</div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <label class="form-label" for="phone">{{ 'TENANT_FORM.PHONE' | translate }} *</label>
+            <input id="phone" type="tel" class="form-control" formControlName="PhoneNumber" dir="ltr"
+              [class.is-invalid]="isInvalid(tenantForm.controls.PhoneNumber)" />
+            <div class="invalid-feedback">{{ 'TENANT_FORM.PHONE_REQ' | translate }}</div>
+          </div>
+        </div>
+
+        <h5 class="card-title mb-3 mt-2">{{ 'TENANT_FORM.SECTION.PLATFORM' | translate }}</h5>
+        <div class="row">
+          <div class="col-lg-6 mb-3">
+            <label class="form-label" for="title">{{ 'TENANT_FORM.PLATFORM_TITLE' | translate }} *</label>
+            <input id="title" type="text" class="form-control" formControlName="Title"
+              [class.is-invalid]="isInvalid(tenantForm.controls.Title)" />
+            <div class="invalid-feedback">{{ 'TENANT_FORM.TITLE_REQ' | translate }}</div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <label class="form-label" for="domain">{{ 'TENANT_FORM.DOMAIN' | translate }} *</label>
+            <input id="domain" type="text" class="form-control" formControlName="Domain" dir="ltr"
+              [class.is-invalid]="isInvalid(tenantForm.controls.Domain)" />
+            <div class="invalid-feedback">{{ 'TENANT_FORM.DOMAIN_REQ' | translate }}</div>
+          </div>
+          <div class="col-lg-12 mb-3">
+            <label class="form-label" for="description">
+              {{ 'TENANT_FORM.DESCRIPTION' | translate }} <span class="text-muted">({{ 'TENANT_FORM.OPTIONAL' | translate }})</span>
+            </label>
+            <textarea id="description" rows="2" class="form-control" formControlName="Description"></textarea>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <label class="form-label">
+              {{ 'TENANT_FORM.LOGO_FILE' | translate }} <span class="text-muted">({{ 'TENANT_FORM.OPTIONAL' | translate }})</span>
+            </label>
+            <platx-file-upload [imageFile]="tenantForm.controls.LogoFile.value"
+              (fileUploadSuccess)="onFileUploadSuccess('LogoFile', $event)"></platx-file-upload>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <label class="form-label">
+              {{ 'TENANT_FORM.COVER_FILE' | translate }} <span class="text-muted">({{ 'TENANT_FORM.OPTIONAL' | translate }})</span>
+            </label>
+            <platx-file-upload [imageFile]="tenantForm.controls.CoverFile.value"
+              (fileUploadSuccess)="onFileUploadSuccess('CoverFile', $event)"></platx-file-upload>
+          </div>
+          <div class="col-lg-6 mb-1">
+            <label class="form-label d-block">{{ 'TENANT_FORM.IS_ACTIVE' | translate }}</label>
+            <ui-switch [uncheckedLabel]="'TENANT_FORM.INACTIVE' | translate" [checkedLabel]="'TENANT_FORM.ACTIVE' | translate"
+              size="small" formControlName="IsActive"></ui-switch>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if (isCreate) {
+    <div class="card" [formGroup]="subscriptionForm">
+      <div class="card-body">
+        <h5 class="card-title mb-1">{{ 'TENANT_FORM.SECTION.SUBSCRIPTION' | translate }}</h5>
+        <p class="text-muted font-size-13 mb-3">{{ 'TENANT_FORM.SUBSCRIPTION_HINT' | translate }}</p>
+        <div class="row">
+          <div class="col-lg-4 mb-3">
+            <label class="form-label" for="template">{{ 'TENANT_FORM.TEMPLATE' | translate }}</label>
+            <select id="template" class="form-select" formControlName="template" (change)="applyTemplate($any($event.target).value)">
+              <option [value]="CUSTOM_TEMPLATE">{{ 'TENANT_FORM.TEMPLATE_CUSTOM' | translate }}</option>
+              @for (plan of plans; track plan.id) {
+              <option [value]="plan.id">{{ 'TENANT_FORM.TEMPLATE_FROM' | translate: { name: plan.displayName || plan.name } }}</option>
+              }
+            </select>
+            <div class="form-text">{{ 'TENANT_FORM.TEMPLATE_HINT' | translate }}</div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label" for="monthlyPrice">{{ 'TENANT_FORM.MONTHLY_PRICE' | translate }} *</label>
+            <input id="monthlyPrice" type="number" min="0" class="form-control" formControlName="monthlyPrice"
+              [class.is-invalid]="isInvalid(subscriptionForm.controls.monthlyPrice)" />
+            <div class="invalid-feedback">{{ 'TENANT_FORM.PRICE_INVALID' | translate }}</div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label d-block">{{ 'TENANT_FORM.TERM_LABEL' | translate }}</label>
+            <div class="btn-group w-100" role="group">
+              @for (term of terms; track term) {
+              <input type="radio" class="btn-check" formControlName="term" [id]="'term-' + term" [value]="term" />
+              <label class="btn btn-outline-primary" [for]="'term-' + term">{{ termLabel(term) | translate }}</label>
+              }
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="subscription-summary">
+              <span>{{ 'TENANT_FORM.AMOUNT_DUE' | translate: { days: subscriptionDays } }}</span>
+              <strong>{{ subscriptionAmount | number }} {{ 'CONTACT.PLATFORM.CURRENCY' | translate }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" [formGroup]="limitsForm">
+      <div class="card-body">
+        <h5 class="card-title mb-1">{{ 'TENANT_FORM.SECTION.CAPABILITIES' | translate }}</h5>
+        <p class="text-muted font-size-13 mb-3">{{ 'TENANT_FORM.CAPABILITIES_HINT' | translate }}</p>
+
+        <h6 class="section-subtitle">{{ 'TENANT_FORM.LIMITS_TITLE' | translate }}</h6>
+        <div class="row">
+          @for (def of numberDefinitions; track def.key) {
+          <div class="col-md-6 col-xl-4 mb-3">
+            <div class="capability-item">
+              <label class="form-label fw-semibold mb-1" [for]="'limit-' + def.key">
+                {{ def.displayName }}
+                <span class="text-muted fw-normal font-size-12">({{ def.unit }})</span>
+              </label>
+              <input type="number" class="form-control" [id]="'limit-' + def.key" [formControlName]="def.key"
+                [readonly]="isUnlimited(def.key)" [class.is-invalid]="submitted && limitControl(def.key).invalid" />
+              <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" [id]="'unlimited-' + def.key"
+                  [checked]="isUnlimited(def.key)" (change)="toggleUnlimited(def.key, $any($event.target).checked)" />
+                <label class="form-check-label font-size-12" [for]="'unlimited-' + def.key">
+                  {{ 'TENANT_FORM.UNLIMITED' | translate }}
+                </label>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2 mb-2">
+          <h6 class="section-subtitle mb-0">{{ 'TENANT_FORM.FEATURES_TITLE' | translate }}</h6>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-sm btn-light" (click)="setAllFeatures(true)">{{ 'TENANT_FORM.ENABLE_ALL' | translate }}</button>
+            <button type="button" class="btn btn-sm btn-light" (click)="setAllFeatures(false)">{{ 'TENANT_FORM.DISABLE_ALL' | translate }}</button>
+          </div>
+        </div>
+        <div class="row">
+          @for (def of featureDefinitions; track def.key) {
+          <div class="col-md-6 col-xl-4 mb-2">
+            <div class="capability-item feature-item" [class.is-on]="limitControl(def.key).value !== 0">
+              <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" [id]="'feature-' + def.key"
+                  [checked]="limitControl(def.key).value !== 0"
+                  (change)="toggleFeature(def.key, $any($event.target).checked)" />
+                <label class="form-check-label fw-semibold" [for]="'feature-' + def.key">{{ def.displayName }}</label>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    } @else {
+    <div class="alert alert-info d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <span>{{ 'TENANT_FORM.EDIT_CAPABILITIES_HINT' | translate }}</span>
+      <a class="btn btn-sm btn-primary" [routerLink]="['/tenant/subscription', tenantId]">
+        {{ 'TENANT_FORM.MANAGE_SUBSCRIPTION' | translate }}
+      </a>
+    </div>
+    }
+
+    <div class="d-flex justify-content-end gap-2 mb-4">
+      <button type="button" class="btn btn-light" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="saving">
+        @if (saving) {
+        <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+        }
+        {{ (isCreate ? 'TENANT_FORM.CREATE' : 'TENANT_FORM.UPDATE') | translate }}
+      </button>
+    </div>
+  </form>
+  }
 </div>

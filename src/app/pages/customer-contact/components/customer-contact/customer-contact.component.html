@@ -200,10 +200,10 @@
                     <div class="font-size-11 fw-semibold text-primary mt-1">
                       {{ item.platformRequest.monthlyTotal | number }} {{ 'CONTACT.PLATFORM.CURRENCY' | translate }} / {{ 'CONTACT.PLATFORM.PER_MONTH' | translate }}
                     </div>
-                    @if (item.createdSubscriptionPlanId) {
+                    @if (item.createdTenantId) {
                     <span class="pill pill-success mt-1">
                       <span class="pill-dot"></span>
-                      {{ 'CONTACT.PLATFORM.PLAN_CREATED' | translate }}
+                      {{ 'CONTACT.PLATFORM.PLATFORM_CREATED' | translate }}
                     </span>
                     }
                     }
@@ -233,10 +233,10 @@
                             <i class="mdi mdi-eye-outline text-primary me-2"></i> {{ 'CONTACT.ACTIONS.VIEW_MESSAGE' | translate }}
                           </a>
                         </li>
-                        @if (canCreatePlan && item.platformRequest && !item.createdSubscriptionPlanId) {
+                        @if (canCreatePlatform && item.platformRequest && !item.createdTenantId) {
                         <li>
-                          <a href="javascript:void(0);" (click)="createPlanFromRequest(item)" class="dropdown-item">
-                            <i class="mdi mdi-package-variant-plus text-primary me-2"></i> {{ 'CONTACT.ACTIONS.CREATE_PLAN' | translate }}
+                          <a href="javascript:void(0);" (click)="createPlatformFromRequest(item)" class="dropdown-item">
+                            <i class="mdi mdi-web-plus text-primary me-2"></i> {{ 'CONTACT.ACTIONS.CREATE_PLATFORM' | translate }}
                           </a>
                         </li>
                         }
@@ -413,10 +413,11 @@
               </div>
             </div>
           </div>
-          @if (selectedMessage.createdSubscriptionPlanId) {
+          @if (selectedMessage.createdTenantId) {
           <div class="platform-request-done">
             <i class="mdi mdi-check-circle-outline"></i>
-            {{ 'CONTACT.PLATFORM.PLAN_CREATED_HINT' | translate: { id: selectedMessage.createdSubscriptionPlanId } }}
+            {{ 'CONTACT.PLATFORM.PLATFORM_CREATED_HINT' | translate }}
+            <a class="ms-1" [routerLink]="['/tenant/subscription', selectedMessage.createdTenantId]" (click)="closeMessage()">{{ 'CONTACT.PLATFORM.OPEN_PLATFORM' | translate }}</a>
           </div>
           }
         </div>
@@ -427,9 +428,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        @if (canCreatePlan && selectedMessage.platformRequest && !selectedMessage.createdSubscriptionPlanId) {
-        <button type="button" class="btn btn-success" (click)="createPlanFromRequest(selectedMessage)">
-          <i class="mdi mdi-package-variant-plus me-1"></i> {{ 'CONTACT.ACTIONS.CREATE_PLAN' | translate }}
+        @if (canCreatePlatform && selectedMessage.platformRequest && !selectedMessage.createdTenantId) {
+        <button type="button" class="btn btn-success" (click)="createPlatformFromRequest(selectedMessage)">
+          <i class="mdi mdi-web-plus me-1"></i> {{ 'CONTACT.ACTIONS.CREATE_PLATFORM' | translate }}
         </button>
         }
         <a *ngIf="selectedMessage.email" href="mailto:{{ selectedMessage.email }}" class="btn btn-primary">

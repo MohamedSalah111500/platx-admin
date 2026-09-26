@@ -5,7 +5,7 @@ import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
 import { CurrentUserService } from "src/app/core/services/current-user.service";
-import { CreatePlanFromContactState, CustomerContact } from "../../types";
+import { CreatePlatformFromContactState, CustomerContact } from "../../types";
 import { Router } from "@angular/router";
 import {
   PLATFORM_BILLING_CYCLE,
@@ -59,7 +59,7 @@ export class CustomerContactComponent implements OnInit {
     private router: Router
   ) {}
 
-  get canCreatePlan(): boolean {
+  get canCreatePlatform(): boolean {
     return this.currentUser.isSuperAdmin;
   }
 
@@ -253,15 +253,17 @@ export class CustomerContactComponent implements OnInit {
     return PLATFORM_BILLING_MONTHS[request.billingCycle].paidMonths;
   }
 
-  createPlanFromRequest(item: CustomerContact) {
+  createPlatformFromRequest(item: CustomerContact) {
     if (!item.id || !item.platformRequest) return;
-    const state: CreatePlanFromContactState = {
-      contactId: item.id,
-      contactName: item.name,
+    const state: CreatePlatformFromContactState = {
+      contactId: String(item.id),
+      name: item.name,
+      email: item.email,
+      phone: item.phone,
       platformRequest: item.platformRequest,
     };
     this.messageModal?.hide();
-    this.router.navigate(["/plans/add-edit"], { state });
+    this.router.navigate(["/tenant/add-edit"], { state });
   }
 
   openMessage(item: CustomerContact) {
