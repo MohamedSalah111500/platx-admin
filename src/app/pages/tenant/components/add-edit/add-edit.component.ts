@@ -7,7 +7,10 @@ import { Observable, forkJoin, map } from "rxjs";
 import { CreatePlatformFromContactState } from "src/app/pages/customer-contact/types";
 import { errorMapper } from "src/app/utiltis/functions";
 import {
+  ADDON_LIMIT_KEYS,
   AI_UNLIMITED_QUOTA,
+  FEATURE_DISABLED,
+  FEATURE_ENABLED,
   LIMIT_KEY,
   LIMIT_VALUE_PATTERN,
   PLATFORM_MAX_QUANTITY,
@@ -21,6 +24,12 @@ import { SubscriptionService } from "../../services/subscription.service";
 import { TenantService } from "../../services/tenantService.service";
 import { Tenant } from "../../types";
 import { LimitDefinition, LimitValueType, SubscriptionPlan } from "../../types/subscription.types";
+
+interface FeatureGroup {
+  titleKey: string;
+  hintKey: string;
+  definitions: LimitDefinition[];
+}
 
 const CUSTOM_TEMPLATE = "custom";
 const DEFAULT_AI_QUOTA = 30;
@@ -45,7 +54,7 @@ export class AddEditComponent implements OnInit {
   submitted = false;
   plans: SubscriptionPlan[] = [];
   numberDefinitions: LimitDefinition[] = [];
-  featureDefinitions: LimitDefinition[] = [];
+  featureGroups: FeatureGroup[] = [];
   private currentQuotaAI = DEFAULT_AI_QUOTA;
 
   readonly tenantForm = new FormGroup({
@@ -128,11 +137,11 @@ export class AddEditComponent implements OnInit {
   }
 
   toggleFeature(key: string, enabled: boolean): void {
-    this.limitControl(key).setValue(enabled ? 1 : 0);
+    this.limitControl(key).setValue(enabled ? FEATURE_ENABLED : FEATURE_DISABLED);
   }
 
-  setAllFeatures(enabled: boolean): void {
-    for (const def of this.featureDefinitions) this.toggleFeature(def.key, enabled);
+  setGroupFeatures(group: FeatureGroup, enabled: boolean): void {
+    for (const def of group.definitions) this.toggleFeature(def.key, enabled);
   }
 
   applyTemplate(template: string): void {
@@ -144,7 +153,7 @@ export class AddEditComponent implements OnInit {
     this.subscriptionService.getPlanLimits(plan.id).subscribe({
       next: (limits) => {
         const values = new Map(limits.map((l) => [l.limitKey, l.value]));
-        for (const def of [...this.numberDefinitions, ...this.featureDefinitions]) {
+        for (const def of [...this.numberDefinitions, ...this.featureGroups.flatMap((g) => g.definitions)]) {
           this.limitControl(def.key).setValue(values.get(def.key) ?? def.defaultValue);
         }
       },
@@ -208,7 +217,7 @@ export class AddEditComponent implements OnInit {
       next: ({ plans, definitions }) => {
         this.plans = plans.filter((p) => p.isActive && !p.isCustom).sort((a, b) => a.sortOrder - b.sortOrder);
         const requested = this.source ? platformRequestLimits(this.source.platformRequest) : {};
-        this.buildLimitControls(definitions, (def) => requested[def.key] ?? def.defaultValue);
+        this.buildLimitControls(definitions, (def) => requested[def.key] ?? this.defaultLimitValue(def));
         if (this.source) this.prefillFromRequest();
         this.loading = false;
       },
@@ -260,10 +269,27 @@ export class AddEditComponent implements OnInit {
     });
   }
 
+  private defaultLimitValue(def: LimitDefinition): number {
+    const isCoreFeature = def.valueType === LimitValueType.Boolean && !ADDON_LIMIT_KEYS.has(def.key);
+    return isCoreFeature ? FEATURE_ENABLED : def.defaultValue;
+  }
+
   private buildLimitControls(definitions: LimitDefinition[], valueOf: (def: LimitDefinition) => number): void {
     const sorted = [...definitions].sort((a, b) => a.sortOrder - b.sortOrder);
+    const features = sorted.filter((d) => d.valueType === LimitValueType.Boolean);
     this.numberDefinitions = sorted.filter((d) => d.valueType !== LimitValueType.Boolean);
-    this.featureDefinitions = sorted.filter((d) => d.valueType === LimitValueType.Boolean);
+    this.featureGroups = [
+      {
+        titleKey: "TENANT_FORM.ADDON_FEATURES_TITLE",
+        hintKey: "TENANT_FORM.ADDON_FEATURES_HINT",
+        definitions: features.filter((d) => ADDON_LIMIT_KEYS.has(d.key)),
+      },
+      {
+        titleKey: "TENANT_FORM.CORE_FEATURES_TITLE",
+        hintKey: "TENANT_FORM.CORE_FEATURES_HINT",
+        definitions: features.filter((d) => !ADDON_LIMIT_KEYS.has(d.key)),
+      },
+    ];
     for (const def of sorted) {
       this.limitsForm.addControl(
         def.key,

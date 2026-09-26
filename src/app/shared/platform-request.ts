@@ -40,8 +40,6 @@ export const LIMIT_KEY = {
   CompletionCertificate: "completion_certificate",
   LiveEnabled: "live_enabled",
   Attendance: "attendance",
-  CustomDomain: "custom_domain",
-  VideoProtection: "video_protection",
   TechnicalSupport: "technical_support",
   CustomUi: "custom_ui",
   DocumentsMedia: "documents_media",
@@ -55,11 +53,10 @@ export const PLATFORM_ADDON_LIMIT_KEY: Record<PlatformAddon, string> = {
   [PLATFORM_ADDON.Attendance]: LIMIT_KEY.Attendance,
 };
 
-export const PLATFORM_BASE_LIMIT_KEYS = [
-  LIMIT_KEY.CustomDomain,
-  LIMIT_KEY.VideoProtection,
-  LIMIT_KEY.TechnicalSupport,
-];
+export const ADDON_LIMIT_KEYS: ReadonlySet<string> = new Set(Object.values(PLATFORM_ADDON_LIMIT_KEY));
+
+export const FEATURE_ENABLED = 1;
+export const FEATURE_DISABLED = 0;
 
 export function platformRequestLimits(request: PlatformRequest): Record<string, number> {
   const limits: Record<string, number> = {
@@ -69,9 +66,8 @@ export function platformRequestLimits(request: PlatformRequest): Record<string, 
     [LIMIT_KEY.FileStorageGb]: request.fileStorageGb,
     [LIMIT_KEY.AiCredits]: request.aiCredits,
   };
-  for (const key of PLATFORM_BASE_LIMIT_KEYS) limits[key] = 1;
   for (const addon of Object.values(PLATFORM_ADDON)) {
-    limits[PLATFORM_ADDON_LIMIT_KEY[addon]] = request.addons.includes(addon) ? 1 : 0;
+    limits[PLATFORM_ADDON_LIMIT_KEY[addon]] = request.addons.includes(addon) ? FEATURE_ENABLED : FEATURE_DISABLED;
   }
   return limits;
 }

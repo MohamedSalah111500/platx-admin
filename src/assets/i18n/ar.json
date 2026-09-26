@@ -711,7 +711,6 @@
     "AMOUNT_DUE": "المبلغ المستحق عن {{days}} يوم",
     "CAPABILITIES_HINT": "هذه القيم تُطبق على هذه المنصة فقط.",
     "LIMITS_TITLE": "الحدود",
-    "FEATURES_TITLE": "المميزات",
     "UNLIMITED": "غير محدود",
     "ENABLE_ALL": "تفعيل الكل",
     "DISABLE_ALL": "إيقاف الكل",
@@ -723,7 +722,11 @@
       "SAVE_FAILED": "تعذّر حفظ المنصة",
       "LOAD_FAILED": "تعذّر تحميل البيانات",
       "TEMPLATE_FAILED": "تعذّر تحميل إمكانيات الباقة"
-    }
+    },
+    "ADDON_FEATURES_TITLE": "المميزات الإضافية",
+    "ADDON_FEATURES_HINT": "المميزات الإضافية التي يختارها المدرس من صفحة «ابنِ منصتك».",
+    "CORE_FEATURES_TITLE": "المميزات الأساسية",
+    "CORE_FEATURES_HINT": "متضمنة في كل منصة ومفعّلة تلقائيًا."
   },
   "RENEWAL": {
     "TITLE": "طلبات التجديد",

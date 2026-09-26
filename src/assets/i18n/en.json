@@ -711,7 +711,6 @@
     "AMOUNT_DUE": "Amount due for {{days}} days",
     "CAPABILITIES_HINT": "These values apply to this platform only.",
     "LIMITS_TITLE": "Limits",
-    "FEATURES_TITLE": "Features",
     "UNLIMITED": "Unlimited",
     "ENABLE_ALL": "Enable all",
     "DISABLE_ALL": "Disable all",
@@ -723,7 +722,11 @@
       "SAVE_FAILED": "Failed to save the platform",
       "LOAD_FAILED": "Failed to load data",
       "TEMPLATE_FAILED": "Failed to load the plan capabilities"
-    }
+    },
+    "ADDON_FEATURES_TITLE": "Add-on features",
+    "ADDON_FEATURES_HINT": "The extra features the teacher chooses on the build-your-platform page.",
+    "CORE_FEATURES_TITLE": "Core features",
+    "CORE_FEATURES_HINT": "Included in every platform and enabled by default."
   },
   "RENEWAL": {
     "TITLE": "Renewal Requests",
