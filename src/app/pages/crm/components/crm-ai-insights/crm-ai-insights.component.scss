@@ -1,0 +1,133 @@
+.ai-card .card-body {
+  min-height: calc(100vh - 220px);
+}
+
+.ai-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #f1eeff;
+  color: #5b45e0;
+  font-size: 22px;
+}
+
+.conversation {
+  flex: 1;
+  min-height: 320px;
+  max-height: calc(100vh - 380px);
+  overflow-y: auto;
+  padding: 12px;
+  border: 1px solid #eef0f4;
+  border-radius: 12px;
+  background: #fafafb;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px 12px;
+
+  > i {
+    font-size: 40px;
+    color: #9ca3af;
+  }
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+
+  &.compact {
+    justify-content: flex-start;
+
+    .suggestion {
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+  }
+}
+
+.suggestion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #fff;
+  color: #374151;
+  font-size: 13px;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: #7c63fd;
+    color: #5b45e0;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.message {
+  display: flex;
+  margin-bottom: 12px;
+
+  &.from-user {
+    justify-content: flex-end;
+
+    .bubble {
+      background: #7c63fd;
+      color: #fff;
+      border-color: transparent;
+    }
+  }
+}
+
+.bubble {
+  max-width: min(760px, 90%);
+  padding: 10px 14px;
+  border: 1px solid #eef0f4;
+  border-radius: 14px;
+  background: #fff;
+  color: #111827;
+  font-size: 14px;
+  line-height: 1.8;
+
+  &.thinking {
+    display: inline-flex;
+    align-items: center;
+    color: #6b7280;
+  }
+}
+
+.bubble-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.bubble-meta {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed #e5e7eb;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+
+  textarea {
+    resize: none;
+  }
+
+  .btn {
+    min-height: 44px;
+  }
+}

@@ -394,6 +394,9 @@
           }
         }
       }
+    },
+    "CRM_AI_INSIGHTS": {
+      "TEXT": "AI Assistant"
     }
   },
   "TENANT_SUB": {
@@ -1304,6 +1307,27 @@
     "PAGES": {
       "CUSTOMER_CONTACT": "Customer contact",
       "PLANS": "Plans & pricing"
+    },
+    "AI": {
+      "PAGE_TITLE": "Sales AI Assistant",
+      "HEADING": "Ask anything about your CRM",
+      "SUBTITLE": "The assistant reads every lead, comment and status and answers with numbers, percentages and recommendations.",
+      "EMPTY_HINT": "Type your question or start with a suggestion:",
+      "NEW_CHAT": "New chat",
+      "PLACEHOLDER": "e.g. What's the most common reason leads don't convert?",
+      "SEND": "Send",
+      "THINKING": "Analysing your CRM data…",
+      "COVERAGE": "Details of {{analyzed}} of {{total}} leads analysed; totals are computed over all leads.",
+      "ERROR": "Couldn't get an answer. Please try again.",
+      "PRIVACY_NOTE": "Lead data and comments are sent to the AI service for analysis, without phone numbers or emails.",
+      "SUGGESTIONS": {
+        "NOT_CONVERTING": "What are the most common reasons leads don't convert?",
+        "COMPLAINTS": "What bothers customers most about PlatX?",
+        "MEETING_NO_SHOW": "What percentage of leads don't show up to meetings?",
+        "BEST_SOURCE": "Which source brings the best leads and highest conversion?",
+        "STUCK_LEADS": "Which important leads are stuck without follow-up?",
+        "TEAM_PERFORMANCE": "Compare the sales team's performance and tell me who needs support."
+      }
     }
   }
 }

@@ -21,6 +21,7 @@ import { CrmAppointmentsComponent } from "./components/crm-appointments/crm-appo
 import { CrmLeadFormComponent } from "./components/crm-lead-form/crm-lead-form.component";
 import { CrmStatusModalComponent } from "./components/crm-status-modal/crm-status-modal.component";
 import { CrmImportModalComponent } from "./components/crm-import-modal/crm-import-modal.component";
+import { CrmAiInsightsComponent } from "./components/crm-ai-insights/crm-ai-insights.component";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { CrmImportModalComponent } from "./components/crm-import-modal/crm-impor
     CrmLeadFormComponent,
     CrmStatusModalComponent,
     CrmImportModalComponent,
+    CrmAiInsightsComponent,
   ],
   imports: [
     CommonModule,

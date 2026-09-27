@@ -314,3 +314,25 @@ export interface CrmReportRange {
   from?: string | null;
   to?: string | null;
 }
+
+export const CRM_AI_ROLE = {
+  User: "user",
+  Assistant: "assistant",
+} as const;
+export type CrmAiRole = (typeof CRM_AI_ROLE)[keyof typeof CRM_AI_ROLE];
+
+export interface CrmAiMessage {
+  role: CrmAiRole;
+  content: string;
+}
+
+export interface CrmAiAskPayload {
+  question: string;
+  history: CrmAiMessage[];
+}
+
+export interface CrmAiAnswer {
+  answer: string;
+  leadsAnalyzed: number;
+  totalLeads: number;
+}

@@ -6,6 +6,8 @@ import { IGeneralSuccessMessageResponse } from "src/app/shared/general-types";
 import { normalizeServerDate } from "../crm-utils";
 import {
   CrmActivity,
+  CrmAiAnswer,
+  CrmAiAskPayload,
   CrmActivityPayload,
   CrmAgent,
   CrmAgentCreatePayload,
@@ -150,6 +152,10 @@ export class CrmService {
       CRM_URLS.APPOINTMENT_REMINDER(leadId),
       { minutesBefore: 120 }
     );
+  }
+
+  askAiInsights(payload: CrmAiAskPayload): Observable<CrmAiAnswer> {
+    return this.http.post<CrmAiAnswer>(CRM_URLS.AI_INSIGHTS_ASK, payload);
   }
 }
 
