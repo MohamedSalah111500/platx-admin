@@ -569,6 +569,11 @@
       "DAYS": "{{days}} يوم",
       "NO_OVERDUE": "لا توجد دفعات متأخرة.",
       "EGP": "جنيه"
+    },
+    "GROWTH_SERIES": {
+      "USERS": "مستخدمون جدد",
+      "ENROLLMENTS": "اشتراكات جديدة",
+      "TENANTS": "منصات جديدة"
     }
   },
   "PAYMENTS": {

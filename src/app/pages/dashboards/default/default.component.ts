@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject, takeUntil } from 'rxjs';
 import { ChartType } from './dashboard.model';
 import { AnalyticsService } from '../analytics.service';
 import {
@@ -13,12 +15,17 @@ import {
 
 const PRIMARY_CURRENCY = 'EGP';
 
+// The API labels every month as "MMM yyyy" in the invariant culture, so the
+// month name has to be re-formatted for the reader's language.
+const INVARIANT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 @Component({
   selector: 'app-default',
   templateUrl: './default.component.html',
   styleUrls: ['./default.component.scss'],
 })
-export class DefaultComponent implements OnInit {
+export class DefaultComponent implements OnInit, OnDestroy {
   loading = true;
 
   overview?: CompanyOverview;
@@ -34,10 +41,21 @@ export class DefaultComponent implements OnInit {
   growthChart?: ChartType;
   maxPlanCount = 0;
 
-  constructor(private analytics: AnalyticsService) {}
+  private destroy$ = new Subject<void>();
+
+  constructor(private analytics: AnalyticsService, private translate: TranslateService) {}
 
   ngOnInit(): void {
     this.loadAll();
+    this.translate.onLangChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      if (this.collections) this.buildCollectionsChart(this.collections);
+      if (this.growth) this.buildGrowthChart(this.growth);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   refresh(): void {
@@ -49,16 +67,31 @@ export class DefaultComponent implements OnInit {
     return Math.min(100, Math.max(0, this.collections?.collectionRate ?? 0));
   }
 
+  private monthLabel(label: string): string {
+    const [month, year] = (label || '').split(' ');
+    const index = INVARIANT_MONTHS.indexOf(month);
+    if (index < 0 || !year) return label;
+    const locale = this.translate.currentLang === 'ar' ? 'ar-EG' : 'en';
+    return new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric' })
+      .format(new Date(Number(year), index, 1));
+  }
+
   private buildCollectionsChart(c: CompanyCollections): void {
     this.collectionsChart = {
       chart: { height: 300, type: 'bar', toolbar: { show: false }, stacked: false },
       plotOptions: { bar: { horizontal: false, columnWidth: '45%', borderRadius: 4 } },
       dataLabels: { enabled: false },
       series: [
-        { name: 'DASHBOARD.COLLECTIONS.DUE', data: c.monthlyCollections.map((p) => p.due) },
-        { name: 'DASHBOARD.COLLECTIONS.COLLECTED', data: c.monthlyCollections.map((p) => p.collected) },
+        {
+          name: this.translate.instant('DASHBOARD.COLLECTIONS.DUE'),
+          data: c.monthlyCollections.map((p) => p.due),
+        },
+        {
+          name: this.translate.instant('DASHBOARD.COLLECTIONS.COLLECTED'),
+          data: c.monthlyCollections.map((p) => p.collected),
+        },
       ],
-      xaxis: { categories: c.monthlyCollections.map((p) => p.label) },
+      xaxis: { categories: c.monthlyCollections.map((p) => this.monthLabel(p.label)) },
       colors: ['#e9ecef', '#34c38f'],
       legend: { position: 'bottom' },
       fill: { opacity: 1 },
@@ -161,11 +194,20 @@ export class DefaultComponent implements OnInit {
       plotOptions: { bar: { horizontal: false, columnWidth: '35%', borderRadius: 4 } },
       dataLabels: { enabled: false },
       series: [
-        { name: 'New Users', data: g.points.map((p) => p.newUsers) },
-        { name: 'New Enrollments', data: g.points.map((p) => p.newEnrollments) },
-        { name: 'New Tenants', data: g.points.map((p) => p.newTenants) },
+        {
+          name: this.translate.instant('DASHBOARD.GROWTH_SERIES.USERS'),
+          data: g.points.map((p) => p.newUsers),
+        },
+        {
+          name: this.translate.instant('DASHBOARD.GROWTH_SERIES.ENROLLMENTS'),
+          data: g.points.map((p) => p.newEnrollments),
+        },
+        {
+          name: this.translate.instant('DASHBOARD.GROWTH_SERIES.TENANTS'),
+          data: g.points.map((p) => p.newTenants),
+        },
       ],
-      xaxis: { categories: g.points.map((p) => p.label) },
+      xaxis: { categories: g.points.map((p) => this.monthLabel(p.label)) },
       colors: ['#556ee6', '#34c38f', '#f1b44c'],
       legend: { position: 'bottom' },
       fill: { opacity: 1 },

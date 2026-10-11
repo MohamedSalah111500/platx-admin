@@ -569,6 +569,11 @@
       "DAYS": "{{days}} days",
       "NO_OVERDUE": "No overdue instalments.",
       "EGP": "EGP"
+    },
+    "GROWTH_SERIES": {
+      "USERS": "New users",
+      "ENROLLMENTS": "New enrollments",
+      "TENANTS": "New platforms"
     }
   },
   "PAYMENTS": {

@@ -20,6 +20,14 @@ body[dir="rtl"] {
     float: right;
   }
 
+  // The header's gutter sits on the right, which in RTL is exactly where the
+  // brand box is: it left a white strip between the logo and the screen edge
+  // and pushed the logo 12px out of line with the sidebar below it.
+  .navbar-header {
+    padding-right: 0;
+    padding-left: 12px;
+  }
+
   // The little chevron next to expandable menu items — float should mirror
   // and the rotate keyframe still points the arrow correctly on both sides,
   // so we just swap the float here.
