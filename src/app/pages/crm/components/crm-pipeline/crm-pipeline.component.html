@@ -18,7 +18,9 @@
 
   <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
 
-  <div class="board" *ngIf="!loading">
+  <platx-load-error *ngIf="!loading && loadError" (retry)="load()"></platx-load-error>
+
+  <div class="board" *ngIf="!loading && !loadError">
     @for (col of visibleColumns; track col.status) {
     <div class="board-column">
       <div class="column-header">

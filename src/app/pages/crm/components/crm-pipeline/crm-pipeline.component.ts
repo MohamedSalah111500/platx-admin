@@ -25,6 +25,7 @@ export class CrmPipelineComponent implements OnInit {
   statuses = LEAD_STATUSES;
   columns: CrmPipelineColumn[] = [];
   loading = true;
+  loadError = false;
   agents: CrmAgent[] = [];
   showClosed = false;
 
@@ -42,10 +43,14 @@ export class CrmPipelineComponent implements OnInit {
     this.loading = true;
     this.crm.getPipeline(30).subscribe({
       next: (columns) => {
+        this.loadError = false;
         this.columns = columns;
         this.loading = false;
       },
-      error: () => (this.loading = false),
+      error: () => {
+        this.loading = false;
+        this.loadError = true;
+      },
     });
   }
 

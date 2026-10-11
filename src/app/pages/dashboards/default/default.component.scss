@@ -93,3 +93,34 @@
 .table-nowrap tbody tr {
   transition: background-color 0.15s ease-in-out;
 }
+
+.collection-tile {
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  padding: 16px 18px;
+  height: 100%;
+
+  p {
+    font-size: 13px;
+  }
+
+  &.collection-tile-danger {
+    border-color: #fecaca;
+    background: #fef2f2;
+  }
+}
+
+.collection-progress {
+  height: 8px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  overflow: hidden;
+}
+
+.collection-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #34c38f;
+  transition: width 0.3s ease;
+}
+

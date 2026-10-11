@@ -11,16 +11,16 @@ import { PagetitleComponent } from "./pagetitle/pagetitle.component";
 import { LoaderComponent } from "./loader/loader.component";
 import { SpinnerComponent } from "./spinner/spinner.component";
 import { ConfirmModelComponent } from "./confirm-model/confirm-model.component";
-import { EmptyStateComponent } from "./empty-state/empty-state.component";
 import { EnvSwitcherComponent } from "./env-switcher/env-switcher.component";
+import { LoadErrorComponent } from "./load-error/load-error.component";
 @NgModule({
   declarations: [
     PagetitleComponent,
     LoaderComponent,
     SpinnerComponent,
     ConfirmModelComponent,
-    EmptyStateComponent,
     EnvSwitcherComponent,
+    LoadErrorComponent,
   ],
   imports: [
     CommonModule,
@@ -35,8 +35,8 @@ import { EnvSwitcherComponent } from "./env-switcher/env-switcher.component";
     LoaderComponent,
     SpinnerComponent,
     ConfirmModelComponent,
-    EmptyStateComponent,
     EnvSwitcherComponent,
+    LoadErrorComponent,
   ],
 })
 export class UIModule {}

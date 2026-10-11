@@ -46,7 +46,9 @@
 
       <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
 
-      <div class="table-responsive" *ngIf="!loading">
+      <platx-load-error *ngIf="!loading && loadError" (retry)="load()"></platx-load-error>
+
+      <div class="table-responsive" *ngIf="!loading && !loadError">
         <table class="table align-middle smart-table mb-0">
           <thead>
             <tr>
@@ -101,6 +103,17 @@
                       </a>
                     </li>
                   </ul>
+                </div>
+              </td>
+            </tr>
+            }
+            @if (!agents.length) {
+            <tr>
+              <td colspan="8">
+                <div class="empty-block">
+                  <i class="mdi mdi-account-group-outline font-size-32 text-muted mb-2 d-block"></i>
+                  <div class="fw-semibold text-dark">{{ 'CRM.AGENTS.EMPTY' | translate }}</div>
+                  <div class="text-muted">{{ 'CRM.AGENTS.EMPTY_HINT' | translate }}</div>
                 </div>
               </td>
             </tr>

@@ -35,6 +35,8 @@ export class CrmReportsComponent implements OnInit {
   feed: CrmAgentDayEntry[] = [];
   loading = false;
   feedLoading = false;
+  loadError = false;
+  feedError = false;
   selectedAgentId: string | null = null;
 
   constructor(private crm: CrmService, private auth: CrmAuthService) {}
@@ -70,24 +72,41 @@ export class CrmReportsComponent implements OnInit {
   }
 
   load() {
+    this.loadReport();
+    this.loadFeed();
+  }
+
+  loadReport() {
     const range = { from: this.from, to: this.to };
 
     this.loading = true;
     this.crm.getTeamReport(range).subscribe({
       next: (report) => {
+        this.loadError = false;
         this.report = report;
         this.loading = false;
       },
-      error: () => (this.loading = false),
+      error: () => {
+        this.loading = false;
+        this.loadError = true;
+      },
     });
+  }
+
+  loadFeed() {
+    const range = { from: this.from, to: this.to };
 
     this.feedLoading = true;
     this.crm.getActivityFeed(range, 150).subscribe({
       next: (feed) => {
+        this.feedError = false;
         this.feed = feed;
         this.feedLoading = false;
       },
-      error: () => (this.feedLoading = false),
+      error: () => {
+        this.feedLoading = false;
+        this.feedError = true;
+      },
     });
   }
 

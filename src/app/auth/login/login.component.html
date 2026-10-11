@@ -1,4 +1,4 @@
-<div  class="account-pages my-5 pt-sm-5">
+<div class="account-pages my-5 pt-sm-5">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6 col-xl-5">
@@ -7,12 +7,12 @@
             <div class="row">
               <div class="col-7">
                 <div class="text-primary p-4">
-                  <h5 class="text-primary">Welcome Back !</h5>
-                  <p>Sign in to continue to PlatX</p>
+                  <h5 class="text-primary">{{ "AUTH.WELCOME" | translate }}</h5>
+                  <p>{{ "AUTH.SUBTITLE" | translate }}</p>
                 </div>
               </div>
               <div class="col-5 align-self-end">
-                <img src="assets/images/profile-img.png" alt="" class="img-fluid">
+                <img src="assets/images/profile-img.png" alt="" class="img-fluid" />
               </div>
             </div>
           </div>
@@ -21,7 +21,7 @@
               <a routerLink="/">
                 <div class="avatar-md profile-user-wid mb-4">
                   <span class="avatar-title rounded-circle bg-light">
-                    <img src="assets/images/logo-icon-color.png" alt="" class="rounded-circle" height="50">
+                    <img src="assets/images/logo-icon-color.png" alt="" class="rounded-circle" height="50" />
                   </span>
                 </div>
               </a>
@@ -36,64 +36,61 @@
                 }
 
                 <div class="mb-3">
-                  <label for="Email">Email</label>
-                  <input type="userName" formControlName="userName" class="form-control" id="Email" placeholder="Email" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.userName.errors }" />
+                  <label for="userName">{{ "AUTH.USERNAME" | translate }}</label>
+                  <input
+                    type="text"
+                    id="userName"
+                    formControlName="userName"
+                    class="form-control"
+                    autocomplete="username"
+                    [placeholder]="'AUTH.USERNAME' | translate"
+                    [ngClass]="{ 'is-invalid': submitted && loginForm.controls.userName.errors }" />
                   @if(submitted && loginForm.controls.userName.errors){
-                  <div class="invalid-feedback">
-                    @if(loginForm.controls.userName.errors.required){
-                    <div>User Name is required</div>
-                    }@if(loginForm.controls.userName.errors.userName){
-                    <div>User Name must be a valid User Name </div>
-                    }
-                  </div>
+                  <div class="invalid-feedback">{{ "AUTH.USERNAME_REQUIRED" | translate }}</div>
                   }
                 </div>
 
                 <div class="mb-3">
-                  <label for="password">Password</label>
+                  <label for="password">{{ "AUTH.PASSWORD" | translate }}</label>
                   <div class="input-group auth-pass-inputgroup">
-                    <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" formControlName="password" placeholder="Enter password" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.password.errors }">
+                    <input
+                      [type]="fieldTextType ? 'text' : 'password'"
+                      id="password"
+                      class="form-control"
+                      formControlName="password"
+                      autocomplete="current-password"
+                      [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate"
+                      [ngClass]="{ 'is-invalid': submitted && loginForm.controls.password.errors }" />
 
-                    <button class="btn btn-light ms-0" type="button" id="password-addon" (click)="toggleFieldTextType()">
-                      <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}"></i></button>
+                    <button
+                      class="btn btn-light ms-0"
+                      type="button"
+                      [attr.aria-label]="(fieldTextType ? 'AUTH.HIDE_PASSWORD' : 'AUTH.SHOW_PASSWORD') | translate"
+                      (click)="toggleFieldTextType()">
+                      <i
+                        class="mdi"
+                        [ngClass]="fieldTextType ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"></i>
+                    </button>
                     @if(submitted && loginForm.controls.password.errors){
-                    <div class="invalid-feedback">
-                      @if(loginForm.controls.password.errors.required){
-                      <span>Password is required</span>
-                      }
-                    </div>}
-                  </div>
-                </div>
-
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="remember-check">
-                  <label class="form-check-label" for="remember-check">
-                    Remember me
-                  </label>
-                </div>
-
-                <div id="elmLoader" class="text-center d-none">
-                  <div class="spinner-border text-primary avatar-sm" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <div class="invalid-feedback">{{ "AUTH.PASSWORD_REQUIRED" | translate }}</div>
+                    }
                   </div>
                 </div>
 
                 <div class="mt-3 d-grid">
-                  <button class="btn btn-primary" type="submit">Log In</button>
+                  <button class="btn btn-primary" type="submit" [disabled]="loading">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                    {{ (loading ? "AUTH.SUBMITTING" : "AUTH.SUBMIT") | translate }}
+                  </button>
                 </div>
-
               </form>
             </div>
-
           </div>
         </div>
         <div class="mt-5 text-center">
-          <p>© {{year}} PlatX Crafted with <i class="mdi mdi-heart text-danger"></i>  </p>
+          <p>&#169; {{ year }} PlatX</p>
         </div>
-
       </div>
     </div>
   </div>
-
-  <!-- end container -->
 </div>

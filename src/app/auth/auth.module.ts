@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AlertModule } from 'ngx-bootstrap/alert';
-// Swiper Slider
+import { TranslateModule } from '@ngx-translate/core';
 import { LoginComponent } from './login/login.component';
 import { AuthRoutingModule } from './auth-routing';
 import { UIModule } from '../shared/ui/ui.module';
@@ -15,6 +15,7 @@ import { UIModule } from '../shared/ui/ui.module';
     ReactiveFormsModule,
     FormsModule,
     AlertModule.forRoot(),
+    TranslateModule,
     UIModule,
     AuthRoutingModule,
   ]

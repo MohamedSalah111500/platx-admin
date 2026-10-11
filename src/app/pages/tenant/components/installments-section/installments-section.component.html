@@ -7,141 +7,297 @@
           <h4 class="mb-1 fw-bold">{{ 'INST.TITLE' | translate }}</h4>
           <p class="text-muted mb-0">{{ 'INST.SUBTITLE' | translate }}</p>
         </div>
-        <button type="button" class="btn btn-primary" (click)="openAddModal(addEditTpl)">
-          <i class="mdi mdi-plus me-1"></i> {{ 'INST.ADD' | translate }}
-        </button>
+        <div class="d-flex flex-wrap gap-2">
+          <button type="button" class="btn btn-light" (click)="openAddModal(addEditTpl)">
+            <i class="mdi mdi-plus me-1"></i> {{ 'INST.ADD' | translate }}
+          </button>
+          <button type="button" class="btn btn-primary" (click)="openPlanModal(planTpl)">
+            <i class="mdi mdi-calendar-check-outline me-1"></i>
+            {{ (items.length > 0 ? 'INST.PLAN.REBUILD' : 'INST.PLAN.BUILD') | translate }}
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Total platform price -->
+    <!-- Financial snapshot -->
     <div class="card-body inst-section">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <h6 class="fw-semibold mb-0">{{ 'INST.TOTAL_PRICE' | translate }}</h6>
-        <button type="button" class="btn btn-action btn-sm" *ngIf="!editingTotalAmount" (click)="startEditTotalAmount()">
-          <i class="mdi mdi-pencil-outline me-1"></i>
-          {{ (tenantTotalAmount != null ? 'INST.EDIT' : 'INST.SET_PRICE') | translate }}
-        </button>
-      </div>
-
-      <ng-container *ngIf="!editingTotalAmount">
-        <div class="info-tile">
-          <span class="info-label">{{ 'INST.CONTRACT_PRICE' | translate }}</span>
-          <div class="info-value">
-            {{ tenantTotalAmount != null ? (tenantTotalAmount + " " + ('INST.EGP' | translate)) : ('INST.NOT_SET' | translate) }}
-          </div>
-          <div class="info-sub" *ngIf="tenantTotalAmount != null && remainingToAllocate !== 0">
-            {{ 'INST.NOT_ALLOCATED' | translate: { amount: remainingToAllocate } }}
-          </div>
-        </div>
-      </ng-container>
-
-      <div class="d-flex gap-2 align-items-center" *ngIf="editingTotalAmount">
-        <input type="number" class="form-control" style="max-width: 220px" [(ngModel)]="totalAmountInput" min="0" step="0.01"
-          [placeholder]="'INST.EX_AMOUNT' | translate" />
-        <span class="text-muted">{{ 'INST.EGP' | translate }}</span>
-        <button type="button" class="btn btn-primary btn-sm" [disabled]="savingTotalAmount" (click)="saveTotalAmount()">
-          {{ 'COMMON.SAVE' | translate }}
-        </button>
-        <button type="button" class="btn btn-light btn-sm" (click)="cancelEditTotalAmount()">{{ 'COMMON.CANCEL' | translate }}</button>
-      </div>
-    </div>
-
-    <!-- Summary -->
-    <div class="card-body inst-section" *ngIf="items.length > 0">
-      <div class="row g-3">
-        <div class="col-md-4">
-          <div class="info-tile h-100">
-            <span class="info-label">{{ 'INST.INSTALLMENTS_TOTAL' | translate }}</span>
-            <div class="info-value">{{ installmentsTotal }} {{ 'INST.EGP' | translate }}</div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="info-tile h-100">
-            <span class="info-label">{{ 'INST.PAID' | translate }}</span>
-            <div class="info-value">{{ paidAmount }} {{ 'INST.EGP' | translate }}</div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="info-tile h-100">
-            <span class="info-label">{{ 'INST.OUTSTANDING' | translate }}</span>
-            <div class="info-value">{{ outstandingAmount }} {{ 'INST.EGP' | translate }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- List -->
-    <div class="card-body inst-section">
-      <div *ngIf="loading" class="text-center py-4">
-        <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-      </div>
-
-      <ng-container *ngIf="!loading">
-        <div class="empty-state text-center py-5" *ngIf="items.length === 0">
-          <div class="empty-icon mx-auto mb-3">
-            <i class="mdi mdi-cash-multiple"></i>
-          </div>
-          <h6 class="fw-semibold mb-2">{{ 'INST.EMPTY_TITLE' | translate }}</h6>
-          <p class="text-muted mb-3">{{ 'INST.EMPTY_HINT' | translate }}</p>
-        </div>
-
-        <div class="installments-table" *ngIf="items.length > 0">
-          <div class="inst-row inst-head">
-            <div>{{ 'INST.COL.DUE_DATE' | translate }}</div>
-            <div class="text-end">{{ 'INST.COL.AMOUNT' | translate }}</div>
-            <div>{{ 'INST.COL.NOTE' | translate }}</div>
-            <div>{{ 'INST.COL.STATUS' | translate }}</div>
-            <div class="text-end">{{ 'INST.COL.ACTIONS' | translate }}</div>
-          </div>
-          <div class="inst-row" *ngFor="let item of items">
-            <div>{{ item.dueDate | date: "MMM d, yyyy" }}</div>
-            <div class="text-end fw-medium">{{ item.amount }} {{ 'INST.EGP' | translate }}</div>
-            <div class="text-muted">{{ item.note || "-" }}</div>
-            <div>
-              <span class="pill" [ngClass]="pillClass(item.status)">
-                <span class="status-dot" [ngClass]="dotClass(item.status)"></span>
-                {{ statusLabel(item.status) | translate }}
-                <ng-container *ngIf="item.status === InstallmentStatus.Overdue">
-                  ({{ 'INST.DAYS_SHORT' | translate: { days: item.daysOverdue } }})
-                </ng-container>
-              </span>
+      <ng-container *ngIf="summary && summary.installmentsCount > 0; else noPlanYet">
+        <div class="collection-head">
+          <div>
+            <span class="info-label d-block">{{ 'INST.CONTRACT_PRICE' | translate }}</span>
+            <div class="info-value">
+              {{ (summary.contractAmount ?? summary.scheduledAmount) | number: '1.0-2' }} {{ 'INST.EGP' | translate }}
             </div>
-            <div class="text-end">
-              <div dropdown container="body" class="dropdown d-inline-block">
-                <a dropdownToggle href="javascript:void(0);" class="btn btn-sm btn-light action-btn" aria-expanded="false">
-                  <i class="mdi mdi-dots-horizontal font-size-18"></i>
-                </a>
-                <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
-                  <li *ngIf="!item.isPaid">
-                    <a href="javascript:void(0);" (click)="markPaid(item)" class="dropdown-item">
-                      <i class="mdi mdi-check-circle-outline text-success me-2"></i> {{ 'INST.MARK_PAID' | translate }}
-                    </a>
-                  </li>
-                  <li *ngIf="item.isPaid">
-                    <a href="javascript:void(0);" (click)="markUnpaid(item)" class="dropdown-item">
-                      <i class="mdi mdi-close-circle-outline text-warning me-2"></i> {{ 'INST.MARK_UNPAID' | translate }}
-                    </a>
-                  </li>
-                  <li>
-                    <a href="javascript:void(0);" (click)="openEditModal(addEditTpl, item)" class="dropdown-item">
-                      <i class="mdi mdi-pencil-outline text-primary me-2"></i> {{ 'INST.EDIT' | translate }}
-                    </a>
-                  </li>
-                  <li><hr class="dropdown-divider" /></li>
-                  <li>
-                    <a href="javascript:void(0);" (click)="openDeleteConfirm(deleteTpl, item)" class="dropdown-item">
-                      <i class="mdi mdi-trash-can-outline text-danger me-2"></i> {{ 'INST.DELETE' | translate }}
-                    </a>
-                  </li>
-                </ul>
+          </div>
+          <div class="text-md-end">
+            <span class="info-label d-block">{{ 'INST.COLLECTED' | translate }}</span>
+            <div class="info-value text-success">{{ collectedPercentage | number: '1.0-1' }}%</div>
+          </div>
+        </div>
+
+        <div class="collection-bar mt-3">
+          <div class="collection-bar-fill" [style.width.%]="collectedPercentage"></div>
+        </div>
+
+        <div class="row g-3 mt-1">
+          <div class="col-md-3 col-6">
+            <div class="info-tile h-100">
+              <span class="info-label">{{ 'INST.PAID' | translate }}</span>
+              <div class="info-value text-success">{{ summary.paidAmount | number: '1.0-2' }}</div>
+              <div class="info-sub">{{ 'INST.OF_COUNT' | translate: { paid: summary.paidCount, total: summary.installmentsCount } }}</div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="info-tile h-100">
+              <span class="info-label">{{ 'INST.OUTSTANDING' | translate }}</span>
+              <div class="info-value">{{ summary.outstandingAmount | number: '1.0-2' }}</div>
+              <div class="info-sub">{{ 'INST.EGP' | translate }}</div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="info-tile h-100" [class.tile-danger]="summary.overdueCount > 0">
+              <span class="info-label">{{ 'INST.OVERDUE' | translate }}</span>
+              <div class="info-value" [class.text-danger]="summary.overdueCount > 0">
+                {{ summary.overdueAmount | number: '1.0-2' }}
+              </div>
+              <div class="info-sub">{{ 'INST.OVERDUE_COUNT' | translate: { count: summary.overdueCount } }}</div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="info-tile h-100">
+              <span class="info-label">{{ 'INST.NEXT_DUE' | translate }}</span>
+              <div class="info-value" *ngIf="summary.nextDueDate">{{ summary.nextDueAmount | number: '1.0-2' }}</div>
+              <div class="info-value" *ngIf="!summary.nextDueDate">—</div>
+              <div class="info-sub">
+                {{ summary.nextDueDate ? (summary.nextDueDate | date: 'd MMM yyyy') : ('INST.ALL_SETTLED' | translate) }}
               </div>
             </div>
           </div>
         </div>
+
+        <div class="alert alert-warning mt-3 mb-0" *ngIf="summary.unallocatedAmount !== 0">
+          <i class="mdi mdi-alert-circle-outline me-1"></i>
+          {{ (summary.unallocatedAmount > 0 ? 'INST.UNALLOCATED_WARN' : 'INST.OVERALLOCATED_WARN')
+             | translate: { amount: (summary.unallocatedAmount < 0 ? -summary.unallocatedAmount : summary.unallocatedAmount) | number: '1.0-2' } }}
+        </div>
       </ng-container>
+
+      <ng-template #noPlanYet>
+        <div class="plan-cta">
+          <div class="empty-icon">
+            <i class="mdi mdi-cash-multiple"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h6 class="fw-semibold mb-1">{{ 'INST.EMPTY_TITLE' | translate }}</h6>
+            <p class="text-muted mb-0">{{ 'INST.PLAN.CTA_HINT' | translate }}</p>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="openPlanModal(planTpl)">
+            <i class="mdi mdi-calendar-check-outline me-1"></i> {{ 'INST.PLAN.BUILD' | translate }}
+          </button>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- List -->
+    <div class="card-body inst-section" *ngIf="loading || items.length > 0">
+      <div *ngIf="loading" class="text-center py-4">
+        <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+      </div>
+
+      <div class="installments-table" *ngIf="!loading && items.length > 0">
+        <div class="inst-row inst-head">
+          <div>{{ 'INST.COL.DUE_DATE' | translate }}</div>
+          <div class="text-end">{{ 'INST.COL.AMOUNT' | translate }}</div>
+          <div>{{ 'INST.COL.NOTE' | translate }}</div>
+          <div>{{ 'INST.COL.STATUS' | translate }}</div>
+          <div class="text-end">{{ 'INST.COL.ACTIONS' | translate }}</div>
+        </div>
+        <div class="inst-row" *ngFor="let item of items">
+          <div>{{ item.dueDate | date: "d MMM yyyy" }}</div>
+          <div class="text-end fw-medium">{{ item.amount | number: '1.0-2' }} {{ 'INST.EGP' | translate }}</div>
+          <div class="text-muted">{{ item.note || "-" }}</div>
+          <div>
+            <span class="pill" [ngClass]="pillClass(item.status)">
+              <span class="status-dot" [ngClass]="dotClass(item.status)"></span>
+              {{ statusLabel(item.status) | translate }}
+              <ng-container *ngIf="item.status === InstallmentStatus.Overdue">
+                ({{ 'INST.DAYS_SHORT' | translate: { days: item.daysOverdue } }})
+              </ng-container>
+            </span>
+          </div>
+          <div class="text-end">
+            <button type="button" class="btn btn-sm btn-light me-1" *ngIf="!item.isPaid" (click)="markPaid(item)">
+              <i class="mdi mdi-check me-1"></i>{{ 'INST.MARK_PAID' | translate }}
+            </button>
+            <div dropdown container="body" class="dropdown d-inline-block">
+              <a dropdownToggle href="javascript:void(0);" class="btn btn-sm btn-light action-btn" aria-expanded="false">
+                <i class="mdi mdi-dots-horizontal font-size-18"></i>
+              </a>
+              <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
+                <li *ngIf="item.isPaid">
+                  <a href="javascript:void(0);" (click)="markUnpaid(item)" class="dropdown-item">
+                    <i class="mdi mdi-close-circle-outline text-warning me-2"></i> {{ 'INST.MARK_UNPAID' | translate }}
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" (click)="openEditModal(addEditTpl, item)" class="dropdown-item">
+                    <i class="mdi mdi-pencil-outline text-primary me-2"></i> {{ 'INST.EDIT' | translate }}
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a href="javascript:void(0);" (click)="openDeleteConfirm(deleteTpl, item)" class="dropdown-item">
+                    <i class="mdi mdi-trash-can-outline text-danger me-2"></i> {{ 'INST.DELETE' | translate }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Payment plan builder -->
+<ng-template #planTpl>
+  <div class="modal-header">
+    <div>
+      <h5 class="modal-title mb-1">{{ 'INST.PLAN.TITLE' | translate }}</h5>
+      <p class="text-muted mb-0 font-size-13">{{ 'INST.PLAN.SUBTITLE' | translate }}</p>
+    </div>
+    <button type="button" class="btn-close" (click)="planModalRef?.hide()"></button>
+  </div>
+
+  <div class="modal-body plan-body">
+    <div class="mb-4">
+      <label class="form-label fw-semibold">{{ 'INST.PLAN.TOTAL_LABEL' | translate }} <span class="text-danger">*</span></label>
+      <div class="input-group input-group-lg" style="max-width: 320px">
+        <input type="number" class="form-control" [(ngModel)]="plan.totalAmount" (ngModelChange)="onPlanChange()"
+          min="1" step="0.01" [placeholder]="'INST.EX_AMOUNT' | translate" />
+        <span class="input-group-text">{{ 'INST.EGP' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label fw-semibold">{{ 'INST.PLAN.KIND_LABEL' | translate }}</label>
+      <div class="plan-choices">
+        <button type="button" class="plan-choice" [class.selected]="plan.kind === PaymentPlanKind.PaidInFull"
+          (click)="selectKind(PaymentPlanKind.PaidInFull)">
+          <i class="mdi mdi-cash-check"></i>
+          <span class="plan-choice-title">{{ 'INST.PLAN.KIND_FULL' | translate }}</span>
+          <span class="plan-choice-hint">{{ 'INST.PLAN.KIND_FULL_HINT' | translate }}</span>
+        </button>
+        <button type="button" class="plan-choice" [class.selected]="plan.kind === PaymentPlanKind.EqualInstallments"
+          (click)="selectKind(PaymentPlanKind.EqualInstallments)">
+          <i class="mdi mdi-calendar-multiple"></i>
+          <span class="plan-choice-title">{{ 'INST.PLAN.KIND_EQUAL' | translate }}</span>
+          <span class="plan-choice-hint">{{ 'INST.PLAN.KIND_EQUAL_HINT' | translate }}</span>
+        </button>
+        <button type="button" class="plan-choice" [class.selected]="plan.kind === PaymentPlanKind.DepositThenInstallments"
+          (click)="selectKind(PaymentPlanKind.DepositThenInstallments)">
+          <i class="mdi mdi-wallet-outline"></i>
+          <span class="plan-choice-title">{{ 'INST.PLAN.KIND_DEPOSIT' | translate }}</span>
+          <span class="plan-choice-hint">{{ 'INST.PLAN.KIND_DEPOSIT_HINT' | translate }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3" *ngIf="plan.kind === PaymentPlanKind.DepositThenInstallments">
+      <div class="col-md-6">
+        <label class="form-label">{{ 'INST.PLAN.DEPOSIT_LABEL' | translate }} <span class="text-danger">*</span></label>
+        <div class="input-group">
+          <input type="number" class="form-control" [(ngModel)]="plan.depositAmount" (ngModelChange)="onPlanChange()"
+            min="0.01" step="0.01" />
+          <span class="input-group-text">{{ 'INST.EGP' | translate }}</span>
+        </div>
+        <div class="quick-chips mt-2" *ngIf="plan.totalAmount">
+          <button type="button" class="quick-chip" *ngFor="let p of depositPercents" (click)="applyDepositPercent(p)">
+            {{ p }}%
+          </button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">{{ 'INST.PLAN.DEPOSIT_DATE' | translate }}</label>
+        <input type="date" class="form-control" [(ngModel)]="plan.depositDueDate" (ngModelChange)="onPlanChange()" />
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" id="depositPaid" [(ngModel)]="plan.depositAlreadyPaid" />
+          <label class="form-check-label" for="depositPaid">{{ 'INST.PLAN.DEPOSIT_PAID' | translate }}</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3" *ngIf="plan.kind !== PaymentPlanKind.PaidInFull">
+      <div class="col-md-4">
+        <label class="form-label">{{ 'INST.PLAN.COUNT_LABEL' | translate }} <span class="text-danger">*</span></label>
+        <input type="number" class="form-control" [(ngModel)]="plan.installmentsCount" (ngModelChange)="onPlanChange()"
+          min="1" max="120" step="1" />
+        <div class="quick-chips mt-2">
+          <button type="button" class="quick-chip" *ngFor="let c of quickCounts" (click)="applyCount(c)">{{ c }}</button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">{{ 'INST.PLAN.FREQUENCY_LABEL' | translate }}</label>
+        <select class="form-select" [(ngModel)]="plan.frequency" (ngModelChange)="onPlanChange()">
+          <option [ngValue]="InstallmentFrequency.Monthly">{{ 'INST.PLAN.FREQ_MONTHLY' | translate }}</option>
+          <option [ngValue]="InstallmentFrequency.Quarterly">{{ 'INST.PLAN.FREQ_QUARTERLY' | translate }}</option>
+          <option [ngValue]="InstallmentFrequency.Weekly">{{ 'INST.PLAN.FREQ_WEEKLY' | translate }}</option>
+          <option [ngValue]="InstallmentFrequency.Yearly">{{ 'INST.PLAN.FREQ_YEARLY' | translate }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">{{ 'INST.PLAN.FIRST_DATE' | translate }} <span class="text-danger">*</span></label>
+        <input type="date" class="form-control" [(ngModel)]="plan.firstDueDate" (ngModelChange)="onPlanChange()" />
+      </div>
+    </div>
+
+    <div class="mt-3" *ngIf="plan.kind === PaymentPlanKind.PaidInFull">
+      <label class="form-label">{{ 'INST.PLAN.PAY_DATE' | translate }} <span class="text-danger">*</span></label>
+      <input type="date" class="form-control" style="max-width: 240px" [(ngModel)]="plan.firstDueDate"
+        (ngModelChange)="onPlanChange()" />
+    </div>
+
+    <div class="plan-preview mt-4" *ngIf="preview.length > 0">
+      <div class="plan-preview-head">
+        <div>
+          <span class="info-label d-block">{{ 'INST.PLAN.PREVIEW' | translate }}</span>
+          <strong class="font-size-15">{{ planSentence }}</strong>
+        </div>
+        <span class="pill" [ngClass]="previewMatchesTotal ? 'pill-active' : 'pill-expired'">
+          <span class="status-dot" [ngClass]="previewMatchesTotal ? 'dot-active' : 'dot-expired'"></span>
+          {{ previewTotal | number: '1.0-2' }} {{ 'INST.EGP' | translate }}
+        </span>
+      </div>
+
+      <div class="plan-preview-list">
+        <div class="plan-preview-row" *ngFor="let line of preview; let i = index">
+          <span class="plan-preview-index">{{ i + 1 }}</span>
+          <span class="plan-preview-date">{{ line.dueDate | date: 'd MMM yyyy' }}</span>
+          <span class="plan-preview-tag" *ngIf="line.isDeposit">{{ 'INST.PLAN.DEPOSIT_TAG' | translate }}</span>
+          <span class="plan-preview-amount">{{ line.amount | number: '1.0-2' }} {{ 'INST.EGP' | translate }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-danger mt-3 mb-0" *ngIf="hasPaidInstallments">
+      <i class="mdi mdi-alert-outline me-1"></i>
+      {{ 'INST.PLAN.HAS_PAID_WARNING' | translate }}
+    </div>
+
+    <div class="alert alert-warning mt-3 mb-0" *ngIf="!hasPaidInstallments && items.length > 0">
+      <i class="mdi mdi-information-outline me-1"></i>
+      {{ 'INST.PLAN.REPLACE_WARNING' | translate: { count: items.length } }}
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="planModalRef?.hide()">{{ 'COMMON.CANCEL' | translate }}</button>
+    <button type="button" class="btn btn-primary" [disabled]="!canSavePlan || savingPlan" (click)="savePlan()">
+      <span class="spinner-border spinner-border-sm me-1" *ngIf="savingPlan"></span>
+      {{ 'INST.PLAN.SAVE' | translate }}
+    </button>
+  </div>
+</ng-template>
 
 <!-- Add / Edit Modal -->
 <ng-template #addEditTpl>
@@ -180,7 +336,7 @@
     <button type="button" class="btn-close" (click)="deleteModalRef?.hide()"></button>
   </div>
   <div class="modal-body">
-    <p class="mb-0" [innerHTML]="'INST.DELETE_CONFIRM' | translate: { amount: (itemToDelete?.amount || 0), date: (itemToDelete?.dueDate | date: 'MMM d, yyyy') }"></p>
+    <p class="mb-0" [innerHTML]="'INST.DELETE_CONFIRM' | translate: { amount: (itemToDelete?.amount || 0), date: (itemToDelete?.dueDate | date: 'd MMM yyyy') }"></p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light" (click)="deleteModalRef?.hide()">{{ 'COMMON.CANCEL' | translate }}</button>

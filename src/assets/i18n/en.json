@@ -63,7 +63,11 @@
       "SETTINGS": "Settings",
       "LOCK_SCREEN": "Lock screen",
       "LOGOUT": "Logout"
-    }
+    },
+    "LANGUAGE": "Language",
+    "FULLSCREEN": "Full screen",
+    "TESTING_ENV": "Testing environment",
+    "TESTING_ENV_HINT": "You are viewing data from the test API. Changes do not affect production."
   },
   "MENUITEMS": {
     "MENU": {
@@ -542,6 +546,29 @@
       "LIVE": "Live Classes",
       "QR": "QR Redemptions",
       "MESSAGES": "Messages"
+    },
+    "COLLECTIONS": {
+      "TITLE": "Collections",
+      "SUBTITLE": "Academy instalments: collected, outstanding and overdue.",
+      "CONTRACTED": "Contracted total",
+      "COLLECTED": "Collected",
+      "OUTSTANDING": "Outstanding",
+      "OVERDUE": "Overdue",
+      "OVERDUE_DETAIL": "{{count}} instalments across {{tenants}} academies",
+      "DUE_THIS_MONTH": "Due this month",
+      "DUE_COUNT": "{{count}} instalments",
+      "RATE": "Collection rate",
+      "TREND": "Collected vs due",
+      "DUE": "Due",
+      "NO_PLAN": "{{count}} academies without a payment plan",
+      "TOP_OVERDUE": "Most overdue academies",
+      "COL_TENANT": "Academy",
+      "COL_OVERDUE": "Overdue",
+      "COL_AGE": "Oldest arrears",
+      "COL_OUTSTANDING": "Total outstanding",
+      "DAYS": "{{days}} days",
+      "NO_OVERDUE": "No overdue instalments.",
+      "EGP": "EGP"
     }
   },
   "PAYMENTS": {
@@ -562,6 +589,14 @@
     "TOAST": {
       "MARKED_PAID": "Marked as paid",
       "MARK_FAILED": "Failed to mark as paid"
+    },
+    "SEARCH_PLACEHOLDER": "Search by academy or note",
+    "EMPTY_SEARCH": "No instalments match your search.",
+    "SUM": {
+      "TOTAL": "Shown total",
+      "OVERDUE": "Overdue",
+      "THIS_MONTH": "Due this month",
+      "COUNT": "{{count}} instalments"
     }
   },
   "INST": {
@@ -602,6 +637,65 @@
       "PAID": "Paid",
       "OVERDUE": "Overdue",
       "UPCOMING": "Upcoming"
+    },
+    "COLLECTED": "Collected",
+    "OVERDUE": "Overdue",
+    "OVERDUE_COUNT": "{{count}} overdue instalments",
+    "NEXT_DUE": "Next due",
+    "ALL_SETTLED": "Fully settled",
+    "OF_COUNT": "{{paid}} of {{total}} instalments",
+    "UNALLOCATED_WARN": "{{amount}} EGP of the contract value is not allocated to any instalment.",
+    "OVERALLOCATED_WARN": "The instalments exceed the contract value by {{amount}} EGP.",
+    "TOAST": {
+      "ADDED": "Instalment added.",
+      "UPDATED": "Instalment updated.",
+      "DELETED": "Instalment deleted.",
+      "MARKED_PAID": "Marked as paid.",
+      "MARKED_UNPAID": "Marked as unpaid.",
+      "ADD_FAILED": "Could not add the instalment.",
+      "UPDATE_FAILED": "Could not update the instalment.",
+      "DELETE_FAILED": "Could not delete the instalment.",
+      "MARK_FAILED": "Could not change the instalment status."
+    },
+    "PLAN": {
+      "TITLE": "Build a payment plan",
+      "SUBTITLE": "Enter the contract value and pick how it is paid — the schedule is generated for you.",
+      "BUILD": "Build payment plan",
+      "REBUILD": "Rebuild plan",
+      "CTA_HINT": "Enter the contract value once and the system proposes the instalments and their dates.",
+      "TOTAL_LABEL": "Total contract value",
+      "KIND_LABEL": "How is it paid?",
+      "KIND_FULL": "Paid in full",
+      "KIND_FULL_HINT": "One payment on a single date.",
+      "KIND_EQUAL": "Equal instalments",
+      "KIND_EQUAL_HINT": "Split the amount into equal instalments.",
+      "KIND_DEPOSIT": "Deposit, then instalments",
+      "KIND_DEPOSIT_HINT": "An upfront deposit, then the rest in instalments.",
+      "DEPOSIT_LABEL": "Deposit amount",
+      "DEPOSIT_DATE": "Deposit due date",
+      "DEPOSIT_PAID": "The deposit is already collected",
+      "DEPOSIT_TAG": "Deposit",
+      "COUNT_LABEL": "Number of instalments",
+      "FREQUENCY_LABEL": "Frequency",
+      "FREQ_MONTHLY": "Monthly",
+      "FREQ_QUARTERLY": "Quarterly",
+      "FREQ_WEEKLY": "Weekly",
+      "FREQ_YEARLY": "Yearly",
+      "EVERY_MONTH": "monthly",
+      "EVERY_QUARTER": "quarterly",
+      "EVERY_WEEK": "weekly",
+      "EVERY_YEAR": "yearly",
+      "FIRST_DATE": "First due date",
+      "PAY_DATE": "Payment date",
+      "PREVIEW": "Schedule preview",
+      "SENTENCE_FULL": "One payment of {{amount}} EGP.",
+      "SENTENCE_EQUAL": "{{count}} instalments of {{amount}} EGP each, due {{frequency}}.",
+      "SENTENCE_DEPOSIT": "{{deposit}} EGP deposit, then {{count}} instalments of {{amount}} EGP each, due {{frequency}}.",
+      "REPLACE_WARNING": "This schedule will replace the {{count}} instalments currently recorded.",
+      "HAS_PAID_WARNING": "The plan cannot be rebuilt while paid instalments exist. Delete them first or adjust the instalments manually.",
+      "SAVE": "Save plan",
+      "SAVED": "Payment plan saved.",
+      "SAVE_FAILED": "Could not save the payment plan."
     }
   },
   "PLANS": {
@@ -970,7 +1064,11 @@
     "CONFIRM": "Confirm",
     "SEARCH": "Search",
     "REFRESH": "Refresh",
-    "CLOSE": "Close"
+    "CLOSE": "Close",
+    "RETRY": "Retry",
+    "LOAD_FAILED": "Could not load the data",
+    "LOAD_FAILED_HINT": "The server did not answer the request. Retry or refresh the page.",
+    "DELETE": "Delete"
   },
   "CRM": {
     "MOVE_TO": "Move to",
@@ -1011,7 +1109,8 @@
     },
     "TOAST": {
       "STATUS_SET": "Status set to {{status}}",
-      "ASSIGNED_TO": "Assigned to {{name}}"
+      "ASSIGNED_TO": "Assigned to {{name}}",
+      "ACTION_FAILED": "The action could not be completed. Try again."
     },
     "REPORTS": {
       "PAGE_TITLE": "CRM · Reports",
@@ -1302,7 +1401,9 @@
       "PAGES_TITLE": "Page permissions",
       "PAGES_FOR": "Pages <b>{{name}}</b> can open outside the CRM (read only).",
       "PAGES_HINT": "The member sees the selected pages in the sidebar after the next refresh or login.",
-      "ROLE_CHANGE_HINT": "The change takes effect at the member's next login."
+      "ROLE_CHANGE_HINT": "The change takes effect at the member's next login.",
+      "EMPTY": "No agents yet",
+      "EMPTY_HINT": "Add the first agent so leads can be followed up."
     },
     "PAGES": {
       "CUSTOMER_CONTACT": "Customer contact",
@@ -1329,5 +1430,31 @@
         "TEAM_PERFORMANCE": "Compare the sales team's performance and tell me who needs support."
       }
     }
+  },
+  "HTTP": {
+    "TITLE": "Error",
+    "OFFLINE": "Could not reach the server. Check your connection and try again.",
+    "FORBIDDEN": "You do not have permission to perform this action.",
+    "NOT_FOUND": "The requested item was not found.",
+    "SERVER_ERROR": "The server ran into a problem. Try again shortly.",
+    "GENERIC": "The request could not be completed. Try again."
+  },
+  "AUTH": {
+    "WELCOME": "Welcome back",
+    "SUBTITLE": "Sign in to continue to PlatX",
+    "USERNAME": "Username",
+    "USERNAME_REQUIRED": "Username is required",
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "PASSWORD_REQUIRED": "Password is required",
+    "SHOW_PASSWORD": "Show password",
+    "HIDE_PASSWORD": "Hide password",
+    "SUBMIT": "Sign in",
+    "SUBMITTING": "Signing in…",
+    "SUCCESS": "Signed in successfully",
+    "FAILED": "Could not sign in. Check your username and password, then try again."
+  },
+  "UPLOAD": {
+    "DROP_HINT": "Drop files here or click to choose."
   }
 }

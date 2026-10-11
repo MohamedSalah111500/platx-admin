@@ -8,6 +8,13 @@ import {
   TenantInstallment,
   UpdateInstallmentPayload,
 } from "../types/installment.types";
+import {
+  DueInstallmentsFilter,
+  DueInstallmentsResult,
+  GeneratePaymentPlanPayload,
+  PaymentPlanResult,
+  TenantFinancialSummary,
+} from "../types/payment-plan.types";
 import { TENANT_INSTALLMENTS_URLS } from "src/app/utiltis/urls";
 
 @Injectable({ providedIn: "root" })
@@ -38,12 +45,14 @@ export class TenantInstallmentService {
     return this.http.put<TenantInstallment>(TENANT_INSTALLMENTS_URLS.MARK_UNPAID(id), {});
   }
 
-  getDue(unpaidOnly: boolean, page: number, size: number): Observable<PagedInstallmentsResponse> {
-    const params = new HttpParams()
-      .set("unpaidOnly", unpaidOnly)
-      .set("page", page)
-      .set("size", size);
-    return this.http.get<PagedInstallmentsResponse>(TENANT_INSTALLMENTS_URLS.GET_DUE, { params });
+  getDue(filter: DueInstallmentsFilter): Observable<DueInstallmentsResult> {
+    let params = new HttpParams()
+      .set("unpaidOnly", filter.unpaidOnly)
+      .set("page", filter.page)
+      .set("size", filter.size);
+    if (filter.status !== null && filter.status !== undefined) params = params.set("status", filter.status);
+    if (filter.search) params = params.set("search", filter.search);
+    return this.http.get<DueInstallmentsResult>(TENANT_INSTALLMENTS_URLS.GET_DUE, { params });
   }
 
   setTotalAmount(tenantId: string, totalAmount: number | null): Observable<{ totalAmount: number | null }> {
@@ -51,5 +60,13 @@ export class TenantInstallmentService {
       TENANT_INSTALLMENTS_URLS.SET_TOTAL_AMOUNT(tenantId),
       { totalAmount }
     );
+  }
+
+  generatePlan(tenantId: string, payload: GeneratePaymentPlanPayload): Observable<PaymentPlanResult> {
+    return this.http.post<PaymentPlanResult>(TENANT_INSTALLMENTS_URLS.GENERATE_PLAN(tenantId), payload);
+  }
+
+  getSummary(tenantId: string): Observable<TenantFinancialSummary> {
+    return this.http.get<TenantFinancialSummary>(TENANT_INSTALLMENTS_URLS.SUMMARY(tenantId));
   }
 }

@@ -28,8 +28,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReactiveFormsModule ,
     TooltipModule.forRoot(),
     PaginationModule.forRoot(),
-    BsDropdownModule,
-    ModalModule
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot()
   ]
 })
 export class ManageModule { }

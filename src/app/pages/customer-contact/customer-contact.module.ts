@@ -31,8 +31,8 @@ import { CustomerContactComponent } from './components/customer-contact/customer
     ReactiveFormsModule ,
     TooltipModule.forRoot(),
     PaginationModule.forRoot(),
-    BsDropdownModule,
-    ModalModule,
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
     DropzoneModule,
     TranslateModule,
   ]

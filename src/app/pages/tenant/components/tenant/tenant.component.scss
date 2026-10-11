@@ -123,34 +123,6 @@
     max-width: 220px;
   }
 
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
-    white-space: nowrap;
-
-    .pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    &.pill-success { background: #ecfdf5; color: #047857;
-      .pill-dot { background: #10b981; } }
-    &.pill-warning { background: #fef3c7; color: #92400e;
-      .pill-dot { background: #f59e0b; } }
-    &.pill-danger  { background: #fee2e2; color: #b91c1c;
-      .pill-dot { background: #ef4444; } }
-    &.pill-muted   { background: #f3f4f6; color: #6b7280;
-      .pill-dot { background: #9ca3af; } }
-  }
-
   // Action button — override Bootstrap .btn .btn-light specificity
   .smart-table .action-btn,
   a.action-btn {

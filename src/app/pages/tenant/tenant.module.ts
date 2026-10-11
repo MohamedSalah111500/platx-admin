@@ -17,7 +17,6 @@ import { TenantComponent } from './components/tenant/tenant.component';
 import { FileUploadComponent } from 'src/app/shared/components/file-upload/file-upload.component';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { UiSwitchModule } from 'ngx-ui-switch';
-import { ImageUploadComponent } from 'src/app/shared/components/image-upload/image-upload.component';
 import { SubscriptionSectionComponent } from './components/subscription-section/subscription-section.component';
 import { TenantSubscriptionComponent } from './components/tenant-subscription/tenant-subscription.component';
 import { InstallmentsSectionComponent } from './components/installments-section/installments-section.component';
@@ -25,7 +24,7 @@ import { TenantDomainsComponent } from './components/tenant-domains/tenant-domai
 
 
 @NgModule({
-  declarations: [TenantComponent, AddEditComponent,FileUploadComponent,ImageUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent, TenantDomainsComponent],
+  declarations: [TenantComponent, AddEditComponent,FileUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent, TenantDomainsComponent],
   imports: [
     CommonModule,
     TenantRoutingModule,
@@ -35,8 +34,8 @@ import { TenantDomainsComponent } from './components/tenant-domains/tenant-domai
     ReactiveFormsModule ,
     TooltipModule.forRoot(),
     PaginationModule.forRoot(),
-    BsDropdownModule,
-    ModalModule,
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
     DropzoneModule,
     UiSwitchModule,
     TranslateModule

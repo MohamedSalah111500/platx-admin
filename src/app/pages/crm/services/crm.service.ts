@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { silentRequest } from "src/app/core/helpers/http-context";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, map } from "rxjs";
 import { CRM_URLS } from "src/app/utiltis/urls";
@@ -37,12 +38,12 @@ export class CrmService {
       params = params.set(key, String(value));
     });
     return this.http
-      .get<Paged<CrmLead>>(CRM_URLS.LEADS, { params })
+      .get<Paged<CrmLead>>(CRM_URLS.LEADS, { params, ...silentRequest() })
       .pipe(map((res) => ({ ...res, items: res.items.map(normalizeLead) })));
   }
 
   getLead(id: number): Observable<CrmLead> {
-    return this.http.get<CrmLead>(CRM_URLS.LEAD(id)).pipe(map(normalizeLead));
+    return this.http.get<CrmLead>(CRM_URLS.LEAD(id), silentRequest()).pipe(map(normalizeLead));
   }
 
   createLead(payload: CrmLeadPayload): Observable<CrmLead> {
@@ -74,7 +75,7 @@ export class CrmService {
   getActivities(leadId: number, page: number, size: number): Observable<Paged<CrmActivity>> {
     const params = new HttpParams().set("page", page).set("size", size);
     return this.http
-      .get<Paged<CrmActivity>>(CRM_URLS.LEAD_ACTIVITIES(leadId), { params })
+      .get<Paged<CrmActivity>>(CRM_URLS.LEAD_ACTIVITIES(leadId), { params, ...silentRequest() })
       .pipe(map((res) => ({ ...res, items: res.items.map(normalizeActivity) })));
   }
 
@@ -85,19 +86,19 @@ export class CrmService {
   }
 
   getStats(): Observable<CrmStats> {
-    return this.http.get<CrmStats>(CRM_URLS.STATS);
+    return this.http.get<CrmStats>(CRM_URLS.STATS, silentRequest());
   }
 
   getPipeline(perColumn = 25): Observable<CrmPipelineColumn[]> {
     const params = new HttpParams().set("perColumn", perColumn);
     return this.http
-      .get<CrmPipelineColumn[]>(CRM_URLS.PIPELINE, { params })
+      .get<CrmPipelineColumn[]>(CRM_URLS.PIPELINE, { params, ...silentRequest() })
       .pipe(map((cols) => cols.map((c) => ({ ...c, leads: c.leads.map(normalizeLead) }))));
   }
 
   getAgents(): Observable<CrmAgent[]> {
     return this.http
-      .get<CrmAgent[]>(CRM_URLS.AGENTS)
+      .get<CrmAgent[]>(CRM_URLS.AGENTS, silentRequest())
       .pipe(map((agents) => agents.map((a) => ({ ...a, lastLoginAt: normalizeServerDate(a.lastLoginAt) }))));
   }
 
@@ -110,12 +111,18 @@ export class CrmService {
   }
 
   getTeamReport(range: CrmReportRange): Observable<CrmTeamReport> {
-    return this.http.get<CrmTeamReport>(CRM_URLS.REPORT_TEAM, { params: rangeParams(range) });
+    return this.http.get<CrmTeamReport>(CRM_URLS.REPORT_TEAM, {
+      params: rangeParams(range),
+      ...silentRequest(),
+    });
   }
 
   getActivityFeed(range: CrmReportRange, take = 100): Observable<CrmAgentDayEntry[]> {
     return this.http
-      .get<CrmAgentDayEntry[]>(CRM_URLS.REPORT_ACTIVITY, { params: rangeParams(range).set("take", take) })
+      .get<CrmAgentDayEntry[]>(CRM_URLS.REPORT_ACTIVITY, {
+        params: rangeParams(range).set("take", take),
+        ...silentRequest(),
+      })
       .pipe(map((entries) => entries.map((e) => ({ ...e, at: normalizeServerDate(e.at) as string }))));
   }
 
@@ -137,7 +144,7 @@ export class CrmService {
   getAppointments(from: string, to: string): Observable<CrmLead[]> {
     const params = new HttpParams().set("from", from).set("to", to);
     return this.http
-      .get<CrmLead[]>(CRM_URLS.APPOINTMENTS, { params })
+      .get<CrmLead[]>(CRM_URLS.APPOINTMENTS, { params, ...silentRequest() })
       .pipe(map((items) => (items ?? []).map(normalizeLead)));
   }
 
@@ -155,7 +162,7 @@ export class CrmService {
   }
 
   askAiInsights(payload: CrmAiAskPayload): Observable<CrmAiAnswer> {
-    return this.http.post<CrmAiAnswer>(CRM_URLS.AI_INSIGHTS_ASK, payload);
+    return this.http.post<CrmAiAnswer>(CRM_URLS.AI_INSIGHTS_ASK, payload, silentRequest());
   }
 }
 

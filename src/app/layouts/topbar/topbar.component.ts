@@ -1,8 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Inject } from "@angular/core";
-import { Router } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
-import { AuthfakeauthenticationService } from "../../core/services/authfake.service";
-import { environment } from "../../../environments/environment";
 import { CookieService } from "ngx-cookie-service";
 import { LanguageService } from "../../core/services/language.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -16,10 +13,6 @@ import { AuthenticationService } from "src/app/auth/services/auth.service";
   templateUrl: "./topbar.component.html",
   styleUrls: ["./topbar.component.scss"],
 })
-
-/**
- * Topbar component
- */
 export class TopbarComponent implements OnInit {
   user: User;
   element: any;
@@ -41,9 +34,7 @@ export class TopbarComponent implements OnInit {
 
   constructor(
     @Inject(DOCUMENT) private document: any,
-    private router: Router,
     private authService: AuthenticationService,
-    private authFackservice: AuthfakeauthenticationService,
     public languageService: LanguageService,
     public translate: TranslateService,
     public _cookiesService: CookieService,
@@ -57,12 +48,10 @@ export class TopbarComponent implements OnInit {
 
   openMobileMenu: boolean;
 
-  @Output() settingsButtonClicked = new EventEmitter();
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
   ngOnInit() {
     this.user = this.authService.currentUser();
-    // this.initialAppState = initialState;
     this.store.select("layout").subscribe((data) => {
       this.theme = data.DATA_LAYOUT;
     });
@@ -88,36 +77,15 @@ export class TopbarComponent implements OnInit {
     this.languageService.setLanguage(lang);
   }
 
-  /**
-   * Toggles the right sidebar
-   */
-  toggleRightSidebar() {
-    this.settingsButtonClicked.emit();
-  }
-
-  /**
-   * Toggle the menu bar when having mobile screen
-   */
   toggleMobileMenu(event: any) {
     event.preventDefault();
     this.mobileMenuButtonClicked.emit();
   }
 
-  /**
-   * Logout the user
-   */
   logout() {
-    if (environment.defaultauth === "firebase") {
-      this.authService.logout();
-    } else {
-      this.authFackservice.logout();
-    }
-    this.router.navigate(["/auth/login"]);
+    this.authService.logout();
   }
 
-  /**
-   * Fullscreen method
-   */
   fullscreen() {
     document.body.classList.toggle("fullscreen-enable");
     if (

@@ -6,6 +6,7 @@ import {
   CompanyEngagement,
   CompanyGrowth,
   CompanyOverview,
+  CompanyCollections,
   CompanyRevenue,
   CurrencyAmount,
 } from '../analytics.models';
@@ -25,6 +26,8 @@ export class DefaultComponent implements OnInit {
   engagement?: CompanyEngagement;
   growth?: CompanyGrowth;
   revenue?: CompanyRevenue;
+  collections?: CompanyCollections;
+  collectionsChart?: ChartType;
 
   statData: { title: string; value: string; icon: string }[] = [];
   activityStats: { label: string; value: number; icon: string }[] = [];
@@ -42,7 +45,35 @@ export class DefaultComponent implements OnInit {
     this.loadAll();
   }
 
+  get collectionRate(): number {
+    return Math.min(100, Math.max(0, this.collections?.collectionRate ?? 0));
+  }
+
+  private buildCollectionsChart(c: CompanyCollections): void {
+    this.collectionsChart = {
+      chart: { height: 300, type: 'bar', toolbar: { show: false }, stacked: false },
+      plotOptions: { bar: { horizontal: false, columnWidth: '45%', borderRadius: 4 } },
+      dataLabels: { enabled: false },
+      series: [
+        { name: 'DASHBOARD.COLLECTIONS.DUE', data: c.monthlyCollections.map((p) => p.due) },
+        { name: 'DASHBOARD.COLLECTIONS.COLLECTED', data: c.monthlyCollections.map((p) => p.collected) },
+      ],
+      xaxis: { categories: c.monthlyCollections.map((p) => p.label) },
+      colors: ['#e9ecef', '#34c38f'],
+      legend: { position: 'bottom' },
+      fill: { opacity: 1 },
+    };
+  }
+
   private loadAll(): void {
+    this.analytics.getCollections(6, 5).subscribe({
+      next: (c) => {
+        this.collections = c;
+        this.buildCollectionsChart(c);
+      },
+      error: () => (this.collections = undefined),
+    });
+
     this.analytics.getOverview().subscribe({
       next: (o) => {
         this.overview = o;

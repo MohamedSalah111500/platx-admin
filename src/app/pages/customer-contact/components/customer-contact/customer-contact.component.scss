@@ -148,7 +148,6 @@
     .pill-dot { display: none; }
   }
 
-
   .smart-table .action-btn,
   a.action-btn {
     border-radius: 8px;
@@ -285,34 +284,6 @@
   white-space: pre-wrap;
   word-break: break-word;
   line-height: 1.55;
-}
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1;
-  white-space: nowrap;
-
-  .pill-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  &.pill-success { background: #ecfdf5; color: #047857;
-    .pill-dot { background: #10b981; } }
-  &.pill-info { background: #ecfeff; color: #0e7490;
-    .pill-dot { background: #06b6d4; } }
-  &.pill-primary { background: #f1eeff; color: #5b45e0;
-    .pill-dot { background: #7c63fd; } }
-  &.pill-warning { background: #fffbeb; color: #b45309;
-    .pill-dot { background: #f59e0b; } }
 }
 
 .platform-request {

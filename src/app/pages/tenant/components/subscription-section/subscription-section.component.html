@@ -40,7 +40,7 @@
                   </span>
                 </div>
               </div>
-              <div class="info-value">{{ current.amountPaid }} {{ current.currency }}</div>
+              <div class="info-value">{{ current.amountPaid | number: '1.0-2' }} {{ current.currency }}</div>
               <div class="info-sub">{{ 'SUB_SECTION.PER_PERIOD' | translate }}</div>
             </div>
           </div>
@@ -130,7 +130,7 @@
               {{ statusLabel(h.status) | translate }}
             </span>
           </div>
-          <div class="text-end">{{ h.amountPaid }} {{ h.currency }}</div>
+          <div class="text-end">{{ h.amountPaid | number: '1.0-2' }} {{ h.currency }}</div>
         </div>
       </div>
     </div>
@@ -246,7 +246,7 @@
         <select class="form-select" formControlName="subscriptionPlanId" (change)="onPlanChange()">
           <option [ngValue]="null" disabled>{{ 'SUB_SECTION.SELECT_PLAN' | translate }}</option>
           <option *ngFor="let p of plans" [ngValue]="p.id">
-            {{ p.displayName || p.name }} — {{ p.monthlyPrice }} {{ 'SUB_SECTION.EGP' | translate }}
+            {{ p.displayName || p.name }} — {{ p.monthlyPrice | number: '1.0-0' }} {{ 'SUB_SECTION.EGP' | translate }}
           </option>
         </select>
       </div>

@@ -39,6 +39,7 @@ export class CrmLeadDetailsComponent implements OnInit {
   leadId = 0;
   lead: CrmLead | null = null;
   loading = true;
+  loadError = false;
   agents: CrmAgent[] = [];
 
   activities: CrmActivity[] = [];
@@ -82,11 +83,16 @@ export class CrmLeadDetailsComponent implements OnInit {
     this.crm.getLead(this.leadId).subscribe({
       next: (lead) => {
         this.lead = lead;
+        this.loadError = false;
         this.loading = false;
       },
-      error: () => {
+      error: (err) => {
         this.loading = false;
-        this.router.navigate(["/crm/leads"]);
+        if (err?.status === 404) {
+          this.router.navigate(["/crm/leads"]);
+          return;
+        }
+        this.loadError = true;
       },
     });
   }

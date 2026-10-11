@@ -18,6 +18,7 @@ export class CrmAgentsComponent implements OnInit {
 
   agents: CrmAgent[] = [];
   loading = true;
+  loadError = false;
   currentUserId = this.auth.userId;
   isSuperAdmin = this.auth.isSuperAdmin;
 
@@ -56,10 +57,14 @@ export class CrmAgentsComponent implements OnInit {
     this.loading = true;
     this.crm.getAgents().subscribe({
       next: (agents) => {
+        this.loadError = false;
         this.agents = agents;
         this.loading = false;
       },
-      error: () => (this.loading = false),
+      error: () => {
+        this.loading = false;
+        this.loadError = true;
+      },
     });
   }
 

@@ -64,7 +64,9 @@
             <div class="spinner-border spinner-border-sm text-primary"></div>
           </div>
 
-          <full-calendar *ngIf="!loading" [options]="calendarOptions"></full-calendar>
+          <platx-load-error *ngIf="!loading && loadError" (retry)="load()"></platx-load-error>
+
+          <full-calendar *ngIf="!loading && !loadError" [options]="calendarOptions"></full-calendar>
 
           <!-- Reminder note -->
           <div class="reminder-note mt-3">
@@ -85,7 +87,7 @@
             <span class="text-muted fw-normal" style="font-size:12px">({{ filteredList.length }})</span>
           </h6>
 
-          <div *ngIf="!loading && !filteredList.length" class="empty-block">
+          <div *ngIf="!loading && !loadError && !filteredList.length" class="empty-block">
             <i class="mdi mdi-calendar-remove-outline font-size-32 text-muted d-block mb-2"></i>
             <div class="text-muted" style="font-size:13px">{{ 'CRM.APPOINTMENTS.EMPTY' | translate }}</div>
           </div>

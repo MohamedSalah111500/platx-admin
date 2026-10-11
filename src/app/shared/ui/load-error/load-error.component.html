@@ -1,0 +1,10 @@
+<div class="empty-state" [class.py-4]="compact">
+  <div class="empty-icon mx-auto mb-3" [class.empty-icon-sm]="compact">
+    <i class="mdi mdi-cloud-off-outline"></i>
+  </div>
+  <h6 class="mb-1">{{ title | translate }}</h6>
+  <p class="text-muted mb-3">{{ hint | translate }}</p>
+  <button type="button" class="btn btn-primary btn-sm" (click)="retry.emit()">
+    <i class="mdi mdi-refresh me-1"></i>{{ "COMMON.RETRY" | translate }}
+  </button>
+</div>

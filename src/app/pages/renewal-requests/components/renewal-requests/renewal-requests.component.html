@@ -19,16 +19,23 @@
 
     <!-- Filter -->
     <div class="card-body sub-section">
-      <div class="row g-3 align-items-end">
-        <div class="col-md-4">
-          <label class="info-label d-block mb-2">{{ 'RENEWAL.FILTER_BY_STATUS' | translate }}</label>
-          <select class="form-select form-select-clean" [(ngModel)]="filterStatus" (change)="onFilterChange()">
-            <option [ngValue]="null">{{ 'RENEWAL.FILTER.ALL' | translate }}</option>
-            <option [ngValue]="RenewalRequestStatus.Pending">{{ 'RENEWAL.STATUS.PENDING' | translate }}</option>
-            <option [ngValue]="RenewalRequestStatus.Handled">{{ 'RENEWAL.STATUS.HANDLED' | translate }}</option>
-            <option [ngValue]="RenewalRequestStatus.Rejected">{{ 'RENEWAL.STATUS.REJECTED' | translate }}</option>
-          </select>
-        </div>
+      <label class="info-label d-block mb-2">{{ 'RENEWAL.FILTER_BY_STATUS' | translate }}</label>
+      <div class="status-tabs">
+        <button type="button" class="status-tab" [class.active]="filterStatus === RenewalRequestStatus.Pending"
+          (click)="setStatus(RenewalRequestStatus.Pending)">
+          {{ 'RENEWAL.STATUS.PENDING' | translate }}
+        </button>
+        <button type="button" class="status-tab" [class.active]="filterStatus === RenewalRequestStatus.Handled"
+          (click)="setStatus(RenewalRequestStatus.Handled)">
+          {{ 'RENEWAL.STATUS.HANDLED' | translate }}
+        </button>
+        <button type="button" class="status-tab" [class.active]="filterStatus === RenewalRequestStatus.Rejected"
+          (click)="setStatus(RenewalRequestStatus.Rejected)">
+          {{ 'RENEWAL.STATUS.REJECTED' | translate }}
+        </button>
+        <button type="button" class="status-tab" [class.active]="filterStatus === null" (click)="setStatus(null)">
+          {{ 'RENEWAL.FILTER.ALL' | translate }}
+        </button>
       </div>
     </div>
 
@@ -64,7 +71,7 @@
             <div class="fw-medium">{{ item.tenantTitle || "—" }}</div>
             <div class="text-muted font-size-12">{{ item.tenantId }}</div>
           </div>
-          <div>{{ item.requestedAt | date: "MMM d, yyyy HH:mm" }}</div>
+          <div>{{ item.requestedAt | date: "d MMM yyyy HH:mm" }}</div>
           <div>
             <span class="pill" [ngClass]="pillClass(item.status)">
               <span class="status-dot" [ngClass]="dotClass(item.status)"></span>
@@ -82,7 +89,7 @@
               {{ 'RENEWAL.HANDLE' | translate }}
             </button>
             <span class="text-muted font-size-12" *ngIf="item.status !== RenewalRequestStatus.Pending">
-              {{ 'RENEWAL.HANDLED_AT' | translate }} {{ item.handledAt | date: "MMM d, yyyy" }}
+              {{ 'RENEWAL.HANDLED_AT' | translate }} {{ item.handledAt | date: "d MMM yyyy" }}
             </span>
           </div>
         </div>

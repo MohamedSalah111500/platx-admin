@@ -144,7 +144,9 @@
 
       <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
 
-      <div class="table-responsive" *ngIf="!loading">
+      <platx-load-error *ngIf="!loading && loadError" (retry)="load()"></platx-load-error>
+
+      <div class="table-responsive" *ngIf="!loading && !loadError">
         <table class="table align-middle smart-table mb-0">
           <thead>
             <tr>
@@ -315,5 +317,6 @@
 <div bsModal #removeModal="bs-modal" class="modal fade" tabindex="-1" aria-hidden="true">
   <platx-confirm-model
     [title]="'CRM.LEADS.CONFIRM_DELETE' | translate: { name: (deleteTarget?.name || '') }"
+    [busy]="deleting"
     (confirm)="confirmDelete()" (cancel)="removeModal.hide()" />
 </div>

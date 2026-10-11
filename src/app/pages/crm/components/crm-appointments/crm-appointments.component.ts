@@ -30,6 +30,7 @@ export class CrmAppointmentsComponent implements OnInit {
 
   appointments: CrmLead[] = [];
   loading = false;
+  loadError = false;
 
   activeFilter: FilterKey = "all";
   selected: CrmLead | null = null;
@@ -74,6 +75,7 @@ export class CrmAppointmentsComponent implements OnInit {
     this.loading = true;
     this.crm.getAppointments(from, to).subscribe({
       next: (leads) => {
+        this.loadError = false;
         this.appointments = (leads ?? []).filter((l) => !!l.nextFollowUpAt);
         this.calendarOptions = {
           ...this.calendarOptions,
@@ -84,6 +86,7 @@ export class CrmAppointmentsComponent implements OnInit {
       error: () => {
         this.appointments = [];
         this.loading = false;
+        this.loadError = true;
       },
     });
   }

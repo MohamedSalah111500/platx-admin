@@ -67,7 +67,13 @@ export function createTranslateLoader(http: HttpClient): any {
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
     ScrollToModule.forRoot(),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      resetTimeoutOnDuplicate: true,
+      countDuplicates: true,
+      progressBar: true,
+      closeButton: true,
+    }),
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

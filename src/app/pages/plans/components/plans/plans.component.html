@@ -88,7 +88,10 @@
             </div>
             } @empty {
             <div class="col-12">
-              <platx-empty-state [message]="'PLANS.EMPTY' | translate"></platx-empty-state>
+              <div class="empty-state">
+                <div class="empty-icon mx-auto mb-3"><i class="mdi mdi-cube-outline"></i></div>
+                <h6 class="mb-0">{{ 'PLANS.EMPTY' | translate }}</h6>
+              </div>
             </div>
             }
           </div>

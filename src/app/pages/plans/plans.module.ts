@@ -17,7 +17,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AddEditComponent } from './components/add-edit/add-edit.component';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { UiSwitchModule } from 'ngx-ui-switch';
-import { ImageUploadComponent } from 'src/app/shared/components/image-upload/image-upload.component';
 import { PlansRoutingModule } from './plans-routing.module';
 import { PlansComponent } from './components/plans/plans.component';
 
@@ -35,8 +34,8 @@ import { PlansComponent } from './components/plans/plans.component';
     ReactiveFormsModule ,
     TooltipModule.forRoot(),
     PaginationModule.forRoot(),
-    BsDropdownModule,
-    ModalModule,
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
     DropzoneModule,
     UiSwitchModule,
     TranslateModule

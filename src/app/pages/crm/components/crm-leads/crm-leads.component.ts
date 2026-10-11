@@ -48,9 +48,11 @@ export class CrmLeadsComponent implements OnInit, OnDestroy {
   leads: CrmLead[] = [];
   total = 0;
   loading = false;
+  loadError = false;
   stats: CrmStats | null = null;
   agents: CrmAgent[] = [];
   deleteTarget: CrmLead | null = null;
+  deleting = false;
 
   @ViewChild("leadForm") leadForm?: CrmLeadFormComponent;
   @ViewChild("statusModal") statusModal?: CrmStatusModalComponent;
@@ -88,9 +90,13 @@ export class CrmLeadsComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.leads = res.items;
         this.total = res.totalCount;
+        this.loadError = false;
         this.loading = false;
       },
-      error: () => (this.loading = false),
+      error: () => {
+        this.loading = false;
+        this.loadError = true;
+      },
     });
   }
 
@@ -226,16 +232,20 @@ export class CrmLeadsComponent implements OnInit, OnDestroy {
 
   confirmDelete() {
     if (!this.deleteTarget) return;
-    this.crm.deleteLead(this.deleteTarget.id).subscribe(() => {
-      this.toastr.success(
-        this.translate.instant("CRM.LEADS.TOAST.DELETED"),
-        this.translate.instant("MENUITEMS.CRM.TEXT")
-      );
-      this.removeModal?.hide();
-      this.deleteTarget = null;
-      this.refreshAll();
+    this.deleting = true;
+    this.crm.deleteLead(this.deleteTarget.id).subscribe({
+      next: () => {
+        this.toastr.success(
+          this.translate.instant("CRM.LEADS.TOAST.DELETED"),
+          this.translate.instant("MENUITEMS.CRM.TEXT")
+        );
+        this.deleting = false;
+        this.removeModal?.hide();
+        this.deleteTarget = null;
+        this.refreshAll();
+      },
+      error: () => (this.deleting = false),
     });
-    this.removeModal?.hide();
   }
 
   statusMeta(status: CrmLeadStatus): EnumMeta {

@@ -1,0 +1,345 @@
+// PlatX admin design system
+//
+// One definition for every surface, status pill, tile, table and empty state the admin uses.
+// Before this file the same patterns were redeclared in 17 component stylesheets with values that
+// had drifted apart (.pill-soft was #374151 on one screen and #4b5563 on another; .empty-icon was
+// 64px on two screens and 56px on a third). The class names here are the ones the templates
+// already speak, so screens consume them instead of restyling them. A genuinely new pattern
+// belongs here too, not in a component file where the next screen cannot find it.
+
+:root {
+  --px-surface: #ffffff;
+  --px-surface-muted: #f9fafb;
+  --px-border: #e9ecef;
+
+  --px-text: #111827;
+  --px-text-secondary: #374151;
+  --px-text-muted: #6b7280;
+
+  --px-primary: #556ee6;
+  --px-primary-soft: #f5f7ff;
+  --px-primary-border: #c7d2fe;
+
+  --px-success: #10b981;
+  --px-success-soft: #ecfdf5;
+  --px-success-text: #047857;
+
+  --px-warning: #f59e0b;
+  --px-warning-soft: #fef3c7;
+  --px-warning-text: #92400e;
+
+  --px-danger: #ef4444;
+  --px-danger-soft: #fee2e2;
+  --px-danger-text: #b91c1c;
+  --px-danger-border: #fecaca;
+  --px-danger-bg: #fef2f2;
+
+  --px-neutral-soft: #f3f4f6;
+
+  --px-radius: 10px;
+  --px-radius-lg: 12px;
+  --px-radius-pill: 999px;
+  --px-pad: 24px 28px;
+}
+
+// ---------------------------------------------------------------- page shell
+
+.sub-shell,
+.inst-shell {
+  border-radius: var(--px-radius-lg);
+  border: 1px solid var(--px-border);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.sub-header,
+.inst-header {
+  border-bottom: 1px solid var(--px-border);
+  padding: var(--px-pad);
+
+  h4 {
+    font-size: 18px;
+    color: var(--px-text);
+  }
+
+  p {
+    font-size: 14px;
+  }
+}
+
+.sub-section,
+.inst-section {
+  padding: var(--px-pad);
+  border-bottom: 1px solid var(--px-border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// ---------------------------------------------------------------- tiles
+
+.info-tile {
+  border: 1px solid var(--px-border);
+  border-radius: var(--px-radius);
+  padding: 18px 20px;
+  background: var(--px-surface);
+  transition: border-color 0.15s ease;
+
+  &:hover {
+    border-color: #d1d5db;
+  }
+
+  &.tile-danger {
+    border-color: var(--px-danger-border);
+    background: var(--px-danger-bg);
+  }
+
+  &.tile-success {
+    border-color: #a7f3d0;
+    background: var(--px-success-soft);
+  }
+}
+
+.info-label {
+  font-size: 13px;
+  color: var(--px-text-muted);
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--px-text);
+  line-height: 1.3;
+  margin-top: 4px;
+}
+
+.info-sub {
+  font-size: 13px;
+  color: var(--px-text-muted);
+  margin-top: 2px;
+}
+
+// ---------------------------------------------------------------- status pills
+//
+// Three vocabularies grew up independently (active/grace/expired for subscriptions,
+// pending/handled/rejected for requests, soft for neutral). They are kept as aliases so the
+// templates read naturally, but they all resolve to the same four palettes.
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--px-radius-pill);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  background: var(--px-neutral-soft);
+  color: var(--px-text-secondary);
+}
+
+.pill-active,
+.pill-handled,
+.pill-success {
+  background: var(--px-success-soft);
+  color: var(--px-success-text);
+}
+
+.pill-grace,
+.pill-pending,
+.pill-warning {
+  background: var(--px-warning-soft);
+  color: var(--px-warning-text);
+}
+
+.pill-expired,
+.pill-rejected,
+.pill-danger {
+  background: var(--px-danger-soft);
+  color: var(--px-danger-text);
+}
+
+.pill-soft {
+  background: var(--px-neutral-soft);
+  color: var(--px-text-secondary);
+}
+
+.pill-info {
+  background: var(--px-primary-soft);
+  color: var(--px-primary);
+}
+
+.pill {
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    background: currentColor;
+    opacity: 0.85;
+    flex-shrink: 0;
+  }
+
+  &.pill-sm {
+    padding: 3px 9px;
+    font-size: 11px;
+  }
+}
+
+.pill-muted {
+  background: var(--px-neutral-soft);
+  color: var(--px-text-muted);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  background: var(--px-text-muted);
+
+  &.dot-active,
+  &.dot-handled,
+  &.dot-success {
+    background: var(--px-success);
+  }
+
+  &.dot-grace,
+  &.dot-pending,
+  &.dot-warning {
+    background: var(--px-warning);
+  }
+
+  &.dot-expired,
+  &.dot-rejected,
+  &.dot-danger {
+    background: var(--px-danger);
+  }
+
+  &.dot-cancelled {
+    background: var(--px-text-muted);
+  }
+
+  &.dot-info {
+    background: var(--px-primary);
+  }
+}
+
+// ---------------------------------------------------------------- filters
+
+.status-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status-tab {
+  border: 1px solid var(--px-border);
+  background: var(--px-surface);
+  border-radius: var(--px-radius-pill);
+  padding: 7px 16px;
+  font-size: 14px;
+  color: var(--px-text-secondary);
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    border-color: var(--px-primary-border);
+  }
+
+  &.active {
+    border-color: var(--px-primary);
+    background: var(--px-primary);
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--px-primary);
+    outline-offset: 2px;
+  }
+}
+
+.quick-chip {
+  border: 1px solid var(--px-border);
+  background: var(--px-surface);
+  border-radius: var(--px-radius-pill);
+  padding: 3px 12px;
+  font-size: 13px;
+  color: var(--px-text-secondary);
+
+  &:hover {
+    border-color: var(--px-primary);
+    color: var(--px-primary);
+  }
+}
+
+.quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+// ---------------------------------------------------------------- empty state
+
+.empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--px-neutral-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--px-text-muted);
+  font-size: 28px;
+
+  &.empty-icon-sm {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.empty-row {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--px-text-muted);
+  grid-column: 1 / -1;
+}
+
+// ---------------------------------------------------------------- progress
+
+.collection-bar,
+.px-progress {
+  height: 8px;
+  border-radius: var(--px-radius-pill);
+  background: var(--px-neutral-soft);
+  overflow: hidden;
+}
+
+.collection-bar-fill,
+.px-progress-fill {
+  height: 100%;
+  border-radius: var(--px-radius-pill);
+  background: var(--px-success);
+  transition: width 0.3s ease;
+}
+
+// ---------------------------------------------------------------- links
+
+.tenant-link,
+.px-link {
+  color: var(--px-text);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--px-primary);
+    text-decoration: underline;
+  }
+}

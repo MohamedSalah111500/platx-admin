@@ -7,16 +7,12 @@ import {
 } from "@angular/common/http";
 import { TokenStorageService } from "../../core/services/token-storage.service";
 import { Observable } from "rxjs";
-import { SpinnerService } from "../../shared/ui/spinner/spinner.service";
 
 const TOKEN_HEADER_KEY = "Authorization";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(
-    private token: TokenStorageService,
-    private spinnerService: SpinnerService
-  ) {}
+  constructor(private token: TokenStorageService) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -25,7 +21,6 @@ export class AuthInterceptor implements HttpInterceptor {
     let authReq = req;
     const token = this.token.getToken();
     if (token != null) {
-      // for Spring Boot back-end
       authReq = req.clone({
         headers: req.headers.set(TOKEN_HEADER_KEY, "Bearer " + token),
       });

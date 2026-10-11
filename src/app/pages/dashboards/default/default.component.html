@@ -96,6 +96,128 @@
     </div>
   </div>
 
+  <!-- Collections -->
+  @if (collections) {
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+            <div>
+              <h4 class="card-title mb-1">
+                <i class="bx bx-receipt text-primary me-1"></i> {{ 'DASHBOARD.COLLECTIONS.TITLE' | translate }}
+              </h4>
+              <p class="text-muted mb-0 font-size-13">{{ 'DASHBOARD.COLLECTIONS.SUBTITLE' | translate }}</p>
+            </div>
+            @if (collections.tenantsWithoutPlan > 0) {
+            <span class="badge bg-soft-warning text-warning font-size-12 px-3 py-2">
+              <i class="bx bx-error-circle me-1"></i>
+              {{ 'DASHBOARD.COLLECTIONS.NO_PLAN' | translate: { count: collections.tenantsWithoutPlan } }}
+            </span>
+            }
+          </div>
+
+          <div class="row g-3">
+            <div class="col-xl-3 col-md-6">
+              <div class="collection-tile">
+                <p class="text-muted mb-1">{{ 'DASHBOARD.COLLECTIONS.CONTRACTED' | translate }}</p>
+                <h4 class="mb-0">{{ collections.contractedAmount | number: '1.0-0' }}</h4>
+                <small class="text-muted">{{ 'DASHBOARD.COLLECTIONS.EGP' | translate }}</small>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="collection-tile">
+                <p class="text-muted mb-1">{{ 'DASHBOARD.COLLECTIONS.COLLECTED' | translate }}</p>
+                <h4 class="mb-0 text-success">{{ collections.collectedAmount | number: '1.0-0' }}</h4>
+                <small class="text-muted">{{ 'DASHBOARD.COLLECTIONS.RATE' | translate }}: {{ collectionRate | number: '1.0-1' }}%</small>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="collection-tile">
+                <p class="text-muted mb-1">{{ 'DASHBOARD.COLLECTIONS.OUTSTANDING' | translate }}</p>
+                <h4 class="mb-0">{{ collections.outstandingAmount | number: '1.0-0' }}</h4>
+                <small class="text-muted">
+                  {{ 'DASHBOARD.COLLECTIONS.DUE_THIS_MONTH' | translate }}: {{ collections.dueThisMonthAmount | number: '1.0-0' }}
+                </small>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="collection-tile" [class.collection-tile-danger]="collections.overdueCount > 0">
+                <p class="text-muted mb-1">{{ 'DASHBOARD.COLLECTIONS.OVERDUE' | translate }}</p>
+                <h4 class="mb-0" [class.text-danger]="collections.overdueCount > 0">
+                  {{ collections.overdueAmount | number: '1.0-0' }}
+                </h4>
+                <small class="text-muted">
+                  {{ 'DASHBOARD.COLLECTIONS.OVERDUE_DETAIL' | translate: { count: collections.overdueCount, tenants: collections.overdueTenants } }}
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="collection-progress mt-4">
+            <div class="collection-progress-fill" [style.width.%]="collectionRate"></div>
+          </div>
+
+          <div class="row g-4 mt-1">
+            <div class="col-lg-7">
+              <h6 class="text-muted font-size-13 mb-2">{{ 'DASHBOARD.COLLECTIONS.TREND' | translate }}</h6>
+              @if (collectionsChart) {
+              <apx-chart dir="ltr" class="apex-charts"
+                [series]="collectionsChart.series"
+                [chart]="collectionsChart.chart"
+                [plotOptions]="collectionsChart.plotOptions"
+                [dataLabels]="collectionsChart.dataLabels"
+                [xaxis]="collectionsChart.xaxis"
+                [colors]="collectionsChart.colors"
+                [legend]="collectionsChart.legend"
+                [fill]="collectionsChart.fill">
+              </apx-chart>
+              }
+            </div>
+
+            <div class="col-lg-5">
+              <h6 class="text-muted font-size-13 mb-2">{{ 'DASHBOARD.COLLECTIONS.TOP_OVERDUE' | translate }}</h6>
+              @if (collections.topOverdueTenants.length > 0) {
+              <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th>{{ 'DASHBOARD.COLLECTIONS.COL_TENANT' | translate }}</th>
+                      <th class="text-end">{{ 'DASHBOARD.COLLECTIONS.COL_OVERDUE' | translate }}</th>
+                      <th class="text-end">{{ 'DASHBOARD.COLLECTIONS.COL_AGE' | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (t of collections.topOverdueTenants; track t.tenantId) {
+                    <tr>
+                      <td>
+                        <div class="fw-medium">{{ t.tenantTitle }}</div>
+                        <small class="text-muted">
+                          {{ 'DASHBOARD.COLLECTIONS.COL_OUTSTANDING' | translate }}: {{ t.outstandingAmount | number: '1.0-0' }}
+                        </small>
+                      </td>
+                      <td class="text-end text-danger fw-semibold">{{ t.overdueAmount | number: '1.0-0' }}</td>
+                      <td class="text-end">
+                        <span class="badge bg-soft-danger text-danger font-size-11">
+                          {{ 'DASHBOARD.COLLECTIONS.DAYS' | translate: { days: t.maxDaysOverdue } }}
+                        </span>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+              } @else {
+              <p class="text-muted mb-0">{{ 'DASHBOARD.COLLECTIONS.NO_OVERDUE' | translate }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+
   <!-- Subscriptions & Revenue -->
   <div class="row">
     <div class="col-xl-3 col-md-6">

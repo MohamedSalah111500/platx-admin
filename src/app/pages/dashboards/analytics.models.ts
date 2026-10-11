@@ -99,3 +99,35 @@ export interface TenantStats {
   expiringSoon: number;
   expired: number;
 }
+
+export interface CollectionPoint {
+  label: string;
+  collected: number;
+  due: number;
+}
+
+export interface TenantCollection {
+  tenantId: string;
+  tenantTitle: string;
+  overdueAmount: number;
+  overdueCount: number;
+  maxDaysOverdue: number;
+  outstandingAmount: number;
+}
+
+export interface CompanyCollections {
+  contractedAmount: number;
+  scheduledAmount: number;
+  collectedAmount: number;
+  outstandingAmount: number;
+  overdueAmount: number;
+  overdueCount: number;
+  overdueTenants: number;
+  dueThisMonthAmount: number;
+  dueThisMonthCount: number;
+  collectionRate: number;
+  tenantsWithPlan: number;
+  tenantsWithoutPlan: number;
+  monthlyCollections: CollectionPoint[];
+  topOverdueTenants: TenantCollection[];
+}

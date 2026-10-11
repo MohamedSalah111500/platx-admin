@@ -20,7 +20,9 @@
 
   <div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
 
-  <ng-container *ngIf="!loading && report">
+  <platx-load-error *ngIf="!loading && loadError" (retry)="loadReport()"></platx-load-error>
+
+  <ng-container *ngIf="!loading && !loadError && report">
     <div class="row g-3 mb-3">
       <div class="col-md-4 col-xl">
         <div class="kpi-card">
@@ -182,7 +184,9 @@
 
         <div *ngIf="feedLoading" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div></div>
 
-        <div *ngIf="!feedLoading">
+        <platx-load-error *ngIf="!feedLoading && feedError" [compact]="true" (retry)="loadFeed()"></platx-load-error>
+
+        <div *ngIf="!feedLoading && !feedError">
           @for (e of visibleFeed; track $index) {
           <div class="feed-item">
             <div class="feed-icon" [class.added]="e.kind === entryKind.LeadAdded">

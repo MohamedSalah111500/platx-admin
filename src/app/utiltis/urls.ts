@@ -91,6 +91,10 @@ export const TENANT_INSTALLMENTS_URLS = {
   GET_DUE: `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/due`,
   SET_TOTAL_AMOUNT: (tenantId: string) =>
     `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/tenant/${tenantId}/total-amount`,
+  GENERATE_PLAN: (tenantId: string) =>
+    `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/tenant/${tenantId}/plan`,
+  SUMMARY: (tenantId: string) =>
+    `${environment.apiURL.concat(TENANT_INSTALLMENTS_BASE)}/tenant/${tenantId}/summary`,
 };
 
 export const RENEWAL_REQUESTS_URLS = {
@@ -125,6 +129,8 @@ export const COMPANY_ANALYTICS_URLS = {
     `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/engagement?recentTake=${recentTake}&topTake=${topTake}`,
   REVENUE: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/revenue`,
   TENANT_STATS: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/tenant-stats`,
+  COLLECTIONS: (trendMonths: number, topOverdueTake: number) =>
+    `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/collections?trendMonths=${trendMonths}&topOverdueTake=${topOverdueTake}`,
 };
 
 export const CRM_URLS = {

@@ -58,6 +58,12 @@ export class RenewalRequestsComponent implements OnInit {
     });
   }
 
+  setStatus(status: RenewalRequestStatus | null): void {
+    this.filterStatus = status;
+    this.page = 1;
+    this.load();
+  }
+
   onFilterChange(): void {
     this.page = 1;
     this.load();

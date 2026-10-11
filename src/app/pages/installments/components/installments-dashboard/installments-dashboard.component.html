@@ -4,28 +4,68 @@
   <div class="card sub-shell">
     <!-- Header -->
     <div class="card-body sub-header">
-      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
-        <div>
-          <h4 class="mb-1 fw-bold">{{ 'PAYMENTS.TITLE' | translate }}</h4>
-          <p class="text-muted mb-0">{{ 'PAYMENTS.SUBTITLE' | translate }}</p>
+      <div>
+        <h4 class="mb-1 fw-bold">{{ 'PAYMENTS.TITLE' | translate }}</h4>
+        <p class="text-muted mb-0">{{ 'PAYMENTS.SUBTITLE' | translate }}</p>
+      </div>
+    </div>
+
+    <!-- Totals for the active filter -->
+    <div class="card-body sub-section">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="info-tile h-100">
+            <span class="info-label">{{ 'PAYMENTS.SUM.TOTAL' | translate }}</span>
+            <div class="info-value">{{ totalAmount | number: '1.0-0' }}</div>
+            <div class="info-sub">{{ 'PAYMENTS.SUM.COUNT' | translate: { count: totalCount } }}</div>
+          </div>
         </div>
-        <div class="d-flex flex-wrap gap-2">
-          <span class="pill pill-soft">
-            {{ 'PAYMENTS.TOTAL' | translate }} <strong class="ms-1">{{ totalCount }}</strong>
-          </span>
+        <div class="col-md-4">
+          <div class="info-tile h-100" [class.tile-danger]="overdueCount > 0">
+            <span class="info-label">{{ 'PAYMENTS.SUM.OVERDUE' | translate }}</span>
+            <div class="info-value" [class.text-danger]="overdueCount > 0">{{ overdueAmount | number: '1.0-0' }}</div>
+            <div class="info-sub">{{ 'PAYMENTS.SUM.COUNT' | translate: { count: overdueCount } }}</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="info-tile h-100">
+            <span class="info-label">{{ 'PAYMENTS.SUM.THIS_MONTH' | translate }}</span>
+            <div class="info-value">{{ dueThisMonthAmount | number: '1.0-0' }}</div>
+            <div class="info-sub">{{ 'PAYMENTS.SUM.COUNT' | translate: { count: dueThisMonthCount } }}</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Filter -->
+    <!-- Filters -->
     <div class="card-body sub-section">
       <div class="row g-3 align-items-end">
-        <div class="col-md-4">
+        <div class="col-lg-5 col-md-6">
+          <label class="info-label d-block mb-2" for="paymentsSearch">{{ 'COMMON.SEARCH' | translate }}</label>
+          <input id="paymentsSearch" type="text" class="form-control form-control-clean"
+            [ngModel]="search" (ngModelChange)="onSearch($event)"
+            [placeholder]="'PAYMENTS.SEARCH_PLACEHOLDER' | translate" />
+        </div>
+
+        <div class="col-lg-7 col-md-6">
           <label class="info-label d-block mb-2">{{ 'PAYMENTS.FILTER' | translate }}</label>
-          <select class="form-select form-select-clean" [(ngModel)]="unpaidOnly" (change)="onFilterChange()">
-            <option [ngValue]="true">{{ 'PAYMENTS.UNPAID_ONLY' | translate }}</option>
-            <option [ngValue]="false">{{ 'PAYMENTS.ALL' | translate }}</option>
-          </select>
+          <div class="status-tabs">
+            <button type="button" class="status-tab" [class.active]="status === null" (click)="setStatus(null)">
+              {{ 'PAYMENTS.UNPAID_ONLY' | translate }}
+            </button>
+            <button type="button" class="status-tab" [class.active]="status === InstallmentStatus.Overdue"
+              (click)="setStatus(InstallmentStatus.Overdue)">
+              {{ 'INST.STATUS.OVERDUE' | translate }}
+            </button>
+            <button type="button" class="status-tab" [class.active]="status === InstallmentStatus.Upcoming"
+              (click)="setStatus(InstallmentStatus.Upcoming)">
+              {{ 'INST.STATUS.UPCOMING' | translate }}
+            </button>
+            <button type="button" class="status-tab" [class.active]="status === InstallmentStatus.Paid"
+              (click)="setStatus(InstallmentStatus.Paid)">
+              {{ 'INST.STATUS.PAID' | translate }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -51,17 +91,19 @@
             <div class="empty-icon mx-auto mb-2">
               <i class="mdi mdi-inbox-outline"></i>
             </div>
-            {{ 'PAYMENTS.EMPTY' | translate }}
+            {{ (search ? 'PAYMENTS.EMPTY_SEARCH' : 'PAYMENTS.EMPTY') | translate }}
           </div>
         </div>
 
         <div class="history-row" *ngFor="let item of items">
           <div>
-            <div class="fw-medium">{{ item.tenantTitle || "—" }}</div>
-            <div class="text-muted font-size-12">{{ item.tenantId }}</div>
+            <a href="javascript:void(0);" class="tenant-link fw-medium" (click)="openTenant(item)">
+              {{ item.tenantTitle || "—" }}
+            </a>
+            <div class="text-muted font-size-12" *ngIf="item.note">{{ item.note }}</div>
           </div>
-          <div>{{ item.dueDate | date: "MMM d, yyyy" }}</div>
-          <div class="text-end fw-medium">{{ item.amount }} {{ 'INST.EGP' | translate }}</div>
+          <div>{{ item.dueDate | date: "d MMM yyyy" }}</div>
+          <div class="text-end fw-medium">{{ item.amount | number: '1.0-2' }} {{ 'INST.EGP' | translate }}</div>
           <div>
             <span class="pill" [ngClass]="pillClass(item.status)">
               <span class="status-dot" [ngClass]="dotClass(item.status)"></span>
@@ -72,9 +114,14 @@
             </span>
           </div>
           <div class="text-end">
-            <button type="button" class="btn btn-primary btn-sm" *ngIf="!item.isPaid" (click)="markPaid(item)">
+            <button type="button" class="btn btn-primary btn-sm" *ngIf="!item.isPaid"
+              [disabled]="markingId === item.id" (click)="markPaid(item)">
+              <span class="spinner-border spinner-border-sm me-1" *ngIf="markingId === item.id"></span>
               {{ 'INST.MARK_PAID' | translate }}
             </button>
+            <span class="text-muted font-size-12" *ngIf="item.isPaid && item.paidDate">
+              {{ item.paidDate | date: "d MMM yyyy" }}
+            </span>
           </div>
         </div>
       </div>

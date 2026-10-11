@@ -7,6 +7,7 @@ import {
   CompanyEngagement,
   CompanyGrowth,
   CompanyOverview,
+  CompanyCollections,
   CompanyRevenue,
   TenantStats,
 } from "./analytics.models";
@@ -37,6 +38,12 @@ export class AnalyticsService {
 
   getRevenue(): Observable<CompanyRevenue> {
     return this.http.get<CompanyRevenue>(COMPANY_ANALYTICS_URLS.REVENUE);
+  }
+
+  getCollections(trendMonths = 6, topOverdueTake = 5): Observable<CompanyCollections> {
+    return this.http.get<CompanyCollections>(
+      COMPANY_ANALYTICS_URLS.COLLECTIONS(trendMonths, topOverdueTake)
+    );
   }
 
   getTenantStats(): Observable<TenantStats> {
