@@ -412,6 +412,19 @@
                 }
               </div>
             </div>
+            <div class="platform-request-item">
+              <span>{{ 'CONTACT.PLATFORM.WHATSAPP' | translate }}</span>
+              @if (request.whatsAppMessages) {
+              <strong>{{ request.whatsAppMessages | number }}</strong>
+              <div class="d-flex flex-wrap gap-1">
+                @for (country of request.whatsAppCountries ?? []; track country) {
+                <span class="pill pill-info">{{ country }}</span>
+                }
+              </div>
+              } @else {
+              <strong>—</strong>
+              }
+            </div>
           </div>
           @if (selectedMessage.createdTenantId) {
           <div class="platform-request-done">
