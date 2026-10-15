@@ -43,7 +43,6 @@ export interface Student {
   enrollment: string;
   address: string;
   phoneNumber: string;
-  emergencyContact: string;
   grades: string;
   userId: string;
   profileImage: string;
@@ -72,7 +71,6 @@ export interface Staff {
   dateOfBirth: string;
   address: string;
   phoneNumber: string;
-  emergencyContact: string;
   userId: string;
   profileImage: string;
   subjectsTaught?: string;
