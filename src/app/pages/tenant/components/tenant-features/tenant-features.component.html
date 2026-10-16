@@ -1,0 +1,192 @@
+<div class="card" id="features">
+  <div class="card-body border-bottom">
+    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3">
+      <div>
+        <h4 class="card-title mb-1">{{ 'LIMITS.TITLE' | translate }}</h4>
+        <p class="text-muted mb-0">
+          {{ 'LIMITS.SUBTITLE' | translate }}
+          @if (planName) {
+          <span class="badge bg-primary-subtle text-primary font-size-14 ms-1">{{ planName }}</span>
+          }
+        </p>
+      </div>
+      <button type="button" class="btn btn-light" (click)="load()" [disabled]="loading">
+        <i class="mdi mdi-refresh me-1"></i>{{ 'LIMITS.RELOAD' | translate }}
+      </button>
+    </div>
+  </div>
+
+  @if (loading) {
+  <div class="card-body text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+  } @else if (failed) {
+  <div class="card-body text-center py-5">
+    <p class="text-muted mb-3">{{ 'LIMITS.LOAD_FAILED' | translate }}</p>
+    <button type="button" class="btn btn-primary" (click)="load()">{{ 'LIMITS.RETRY' | translate }}</button>
+  </div>
+  } @else {
+  @for (section of sections; track section.group) {
+  <div class="card-body border-bottom">
+    <h5 class="font-size-16 mb-1">{{ section.title | translate }}</h5>
+    <p class="text-muted mb-3">{{ section.hint | translate }}</p>
+
+    @if (section.group === LIMIT_GROUP.Usage) {
+    <div class="vstack gap-3">
+      @for (item of section.items; track item.key) {
+      <div class="border rounded-3 p-3">
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <div class="avatar-sm flex-shrink-0">
+            <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-20">
+              <i class="mdi" [ngClass]="icon(item)"></i>
+            </span>
+          </div>
+          <div class="flex-grow-1" style="min-width: 200px">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+              <span class="fw-semibold font-size-15">{{ limitName(item.key) | translate }}</span>
+              @if (periodKey(item.period); as period) {
+              <span class="badge bg-info-subtle text-info font-size-14">{{ period | translate }}</span>
+              }
+              @if (item.isOverridden) {
+              <span class="badge bg-warning-subtle text-warning font-size-14">{{ 'LIMITS.CUSTOM' | translate }}</span>
+              }
+            </div>
+            <div class="text-muted">{{ limitHint(item.key) | translate }}</div>
+          </div>
+          <div class="text-end">
+            <div class="fw-semibold font-size-16">
+              @if (item.isUnlimited) {
+              {{ 'LIMITS.UNLIMITED' | translate }}
+              } @else {
+              {{ item.used | number }} / {{ item.limit | number }}
+              }
+            </div>
+            <div class="text-muted">
+              @if (item.isUnlimited) {
+              {{ 'LIMITS.USED' | translate: { count: (item.used | number) } }}
+              } @else {
+              {{ 'LIMITS.REMAINING' | translate: { count: ((item.remaining ?? 0) | number) } }}
+              }
+            </div>
+          </div>
+        </div>
+
+        @if (!item.isUnlimited) {
+        <div class="progress mt-3" style="height: 6px">
+          <div class="progress-bar" [ngClass]="barClass(item)" [style.width.%]="percent(item)"></div>
+        </div>
+        }
+
+        @if (editingKey === item.key) {
+        <div class="bg-light rounded-3 p-3 mt-3">
+          <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+              <label class="form-label" [for]="'value-' + item.key">{{ 'LIMITS.NEW_VALUE' | translate }}</label>
+              <input type="number" min="0" class="form-control" [id]="'value-' + item.key"
+                [(ngModel)]="draft.value" [disabled]="draft.unlimited"
+                [class.is-invalid]="!draftValid()" />
+            </div>
+            <div class="col-md-8">
+              <div class="d-flex flex-wrap align-items-center gap-2">
+                @for (preset of presets(item); track preset) {
+                <button type="button" class="btn btn-light"
+                  [class.active]="!draft.unlimited && draft.value === preset" (click)="applyPreset(preset)">
+                  {{ preset | number }}
+                </button>
+                }
+                <div class="form-check form-switch mb-0 ms-1">
+                  <input class="form-check-input" type="checkbox" [id]="'unlimited-' + item.key"
+                    [(ngModel)]="draft.unlimited" />
+                  <label class="form-check-label" [for]="'unlimited-' + item.key">{{ 'LIMITS.UNLIMITED' | translate }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label" [for]="'reason-' + item.key">{{ 'LIMITS.REASON' | translate }}</label>
+              <input type="text" maxlength="200" class="form-control" [id]="'reason-' + item.key"
+                [(ngModel)]="draft.reason" [placeholder]="'LIMITS.REASON_PLACEHOLDER' | translate" />
+            </div>
+          </div>
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-3">
+            <span class="text-muted">
+              {{ 'LIMITS.PLAN_VALUE' | translate }}:
+              {{ isUnlimitedValue(baseValue(item)) ? ('LIMITS.UNLIMITED' | translate) : (baseValue(item) | number) }}
+            </span>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-light" (click)="cancelEdit()">{{ 'COMMON.CANCEL' | translate }}</button>
+              <button type="button" class="btn btn-primary" [disabled]="!draftValid() || busy.has(item.key)" (click)="saveEdit(item)">
+                @if (busy.has(item.key)) {
+                <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                }
+                {{ 'LIMITS.SAVE' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        } @else {
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-3">
+          <span class="text-muted">
+            @if (item.isOverridden && item.reason) {
+            <i class="mdi mdi-information-outline me-1"></i>{{ item.reason }}
+            } @else {
+            {{ 'LIMITS.PLAN_VALUE' | translate }}:
+            {{ isUnlimitedValue(baseValue(item)) ? ('LIMITS.UNLIMITED' | translate) : (baseValue(item) | number) }}
+            }
+          </span>
+          <div class="d-flex gap-2">
+            @if (item.isOverridden) {
+            <button type="button" class="btn btn-light" [disabled]="busy.has(item.key)" (click)="reset(item)">
+              <i class="mdi mdi-restore me-1"></i>{{ 'LIMITS.RESET' | translate }}
+            </button>
+            }
+            <button type="button" class="btn btn-light" (click)="startEdit(item)">
+              <i class="mdi mdi-pencil-outline me-1"></i>{{ 'LIMITS.EDIT' | translate }}
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+    } @else {
+    <div class="row g-3">
+      @for (item of section.items; track item.key) {
+      <div class="col-md-6 col-xl-4">
+        <div class="border rounded-3 p-3 h-100 d-flex gap-3" [class.bg-light]="!isOn(item)">
+          <div class="avatar-sm flex-shrink-0">
+            <span class="avatar-title rounded-circle font-size-20"
+              [ngClass]="isOn(item) ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary'">
+              <i class="mdi" [ngClass]="icon(item)"></i>
+            </span>
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex align-items-start justify-content-between gap-2">
+              <label class="fw-semibold font-size-15 mb-1" [for]="'feature-' + item.key">{{ limitName(item.key) | translate }}</label>
+              <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" role="switch" [id]="'feature-' + item.key"
+                  [checked]="isOn(item)" [disabled]="busy.has(item.key)"
+                  (change)="toggle(item, $any($event.target).checked)" />
+              </div>
+            </div>
+            <div class="text-muted">{{ limitHint(item.key) | translate }}</div>
+            <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+              <span class="badge font-size-14" [ngClass]="isOn(item) ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary'">
+                {{ (isOn(item) ? 'LIMITS.ON' : 'LIMITS.OFF') | translate }}
+              </span>
+              @if (item.isOverridden) {
+              <span class="badge bg-warning-subtle text-warning font-size-14">{{ 'LIMITS.CUSTOM' | translate }}</span>
+              <button type="button" class="btn btn-link p-0" [disabled]="busy.has(item.key)" (click)="reset(item)">
+                {{ 'LIMITS.RESET' | translate }}
+              </button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
+  }
+</div>

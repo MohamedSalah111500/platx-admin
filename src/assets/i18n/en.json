@@ -708,7 +708,7 @@
     "ADD_NEW": "New Plan",
     "EDIT_LIMITS": "Edit Limits",
     "EDIT_LIMITS_FOR": "Edit Limits — {{name}}",
-    "LIMITS_HINT": "Use <strong>-1</strong> for unlimited. Boolean limits: <strong>1</strong> = enabled, <strong>0</strong> = disabled.",
+    "LIMITS_HINT": "These values apply to every academy on this plan unless it has its own custom value.",
     "SAVE_LIMITS": "Save Limits",
     "SAVING": "Saving…",
     "TOAST": {
@@ -978,8 +978,6 @@
     "PER_PAGE": "{{count}} / page",
     "PAGINATION_RANGE": "Showing {{from}} – {{to}} of {{total}} tenants",
     "NO_PLAN": "No plan",
-    "QUOTA": "Quota",
-    "QUOTA_INVALID": "Enter a valid quota.",
     "CANCEL": "Cancel",
     "CONFIRM_BTN": "Confirm",
     "EMPTY_TITLE": "No tenants found",
@@ -1006,7 +1004,7 @@
     "COL": {
       "TENANT": "Tenant",
       "CONTACT": "Contact",
-      "PLAN_QUOTA": "Plan & Quota",
+      "PLAN_QUOTA": "Plan",
       "RENEWAL": "Renewal",
       "CREATED": "Created",
       "STATUS": "Status",
@@ -1035,9 +1033,9 @@
       "EDIT": "Edit",
       "MANAGE_SUBSCRIPTION": "Manage Subscription",
       "MANAGE_DOMAINS": "Manage Domains",
-      "UPDATE_QUOTA": "Update Quota",
       "SOFT_DELETE": "Soft Delete",
-      "FULL_DELETE": "Full Delete"
+      "FULL_DELETE": "Full Delete",
+      "MANAGE_FEATURES": "Features control"
     },
     "CONFIRM": {
       "REMOVE": "Are you sure you want to remove this row?",
@@ -1055,8 +1053,6 @@
       "ACTIVATE_FAILED": "Failed to activate tenant",
       "DEACTIVATED": "Tenant deactivated successfully",
       "DEACTIVATE_FAILED": "Failed to deactivate tenant",
-      "QUOTA_UPDATED": "Quota updated successfully",
-      "QUOTA_UPDATE_FAILED": "Failed to update quota",
       "DELETED": "Tenant deleted successfully",
       "FULL_DELETED": "Tenant deleted permanently",
       "FULL_DELETE_FAILED": "Failed to delete tenant"
@@ -1462,5 +1458,137 @@
   },
   "UPLOAD": {
     "DROP_HINT": "Drop files here or click to choose."
+  },
+  "LIMITS": {
+    "TITLE": "Platform features",
+    "SUBTITLE": "Changes apply to this academy only and take effect within a minute. Current plan:",
+    "RELOAD": "Refresh",
+    "LOAD_FAILED": "Could not load the features.",
+    "RETRY": "Retry",
+    "CUSTOM": "Custom",
+    "UNLIMITED": "Unlimited",
+    "USED": "Used: {{count}}",
+    "REMAINING": "Remaining: {{count}}",
+    "NEW_VALUE": "New value",
+    "REASON": "Reason (optional)",
+    "REASON_PLACEHOLDER": "e.g. one-month gift",
+    "PLAN_VALUE": "Plan value",
+    "SAVE": "Save",
+    "RESET": "Back to plan value",
+    "EDIT": "Edit",
+    "ON": "On",
+    "OFF": "Off",
+    "SAVED": "Saved",
+    "SAVE_FAILED": "Could not save, try again.",
+    "PERIOD": {
+      "MONTHLY": "Monthly",
+      "DAILY": "Daily"
+    },
+    "GROUP": {
+      "usage": {
+        "TITLE": "Usage & limits",
+        "HINT": "Numeric limits with current consumption."
+      },
+      "core": {
+        "TITLE": "Core features",
+        "HINT": "A disabled feature disappears from the platform and is blocked right away."
+      },
+      "addons": {
+        "TITLE": "Paid add-ons",
+        "HINT": "Features sold separately."
+      }
+    },
+    "max_students": {
+      "NAME": "Students",
+      "HINT": "Maximum number of students registered in the academy."
+    },
+    "online_courses_count": {
+      "NAME": "Online courses",
+      "HINT": "Number of courses the academy can create."
+    },
+    "file_storage_gb": {
+      "NAME": "File storage (GB)",
+      "HINT": "Space available in the file manager."
+    },
+    "video_upload_gb": {
+      "NAME": "Video storage (GB)",
+      "HINT": "Space for uploaded videos."
+    },
+    "ai_credits": {
+      "NAME": "AI credits",
+      "HINT": "Monthly AI requests: question generation, homework grading and the assistant."
+    },
+    "whatsapp_messages": {
+      "NAME": "WhatsApp messages",
+      "HINT": "Monthly parent report messages."
+    },
+    "live_minutes_per_day": {
+      "NAME": "Live minutes per day",
+      "HINT": "Daily limit of internal live minutes."
+    },
+    "live_max_participants": {
+      "NAME": "Live participants",
+      "HINT": "Maximum attendees in one live session."
+    },
+    "student_groups": {
+      "NAME": "Student groups",
+      "HINT": "Create student groups and sub-groups."
+    },
+    "chat": {
+      "NAME": "Chat",
+      "HINT": "Teacher-student messages and group chats."
+    },
+    "realtime_notifications": {
+      "NAME": "Realtime notifications",
+      "HINT": "Instant in-app and mobile push notifications."
+    },
+    "leaderboard": {
+      "NAME": "Leaderboard",
+      "HINT": "Ranking of top students."
+    },
+    "ai_bot": {
+      "NAME": "AI bot",
+      "HINT": "The in-app AI chat assistant."
+    },
+    "video_protection": {
+      "NAME": "Video protection",
+      "HINT": "Watermark on videos."
+    },
+    "advanced_reports": {
+      "NAME": "Advanced reports",
+      "HINT": "Performance reports and statistics."
+    },
+    "custom_ui": {
+      "NAME": "Custom interface",
+      "HINT": "Edit the academy landing page sections."
+    },
+    "custom_domain": {
+      "NAME": "Custom domain",
+      "HINT": "Connect a custom domain to the academy."
+    },
+    "technical_support": {
+      "NAME": "Account manager & support",
+      "HINT": "Dedicated follow-up from the support team."
+    },
+    "quizzes": {
+      "NAME": "Quizzes & homework",
+      "HINT": "Create and grade quizzes and homework."
+    },
+    "completion_certificate": {
+      "NAME": "Completion certificates",
+      "HINT": "Issue certificates when a course is completed."
+    },
+    "live_enabled": {
+      "NAME": "Internal live",
+      "HINT": "Live streaming inside the platform; external Zoom links stay available."
+    },
+    "attendance": {
+      "NAME": "Sessions & attendance",
+      "HINT": "Manage sessions and record attendance."
+    },
+    "whatsapp_enabled": {
+      "NAME": "WhatsApp reports",
+      "HINT": "Send student reports to parents on WhatsApp."
+    }
   }
 }

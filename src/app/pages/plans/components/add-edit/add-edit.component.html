@@ -91,12 +91,11 @@
                 <input class="form-check-input" type="checkbox" [id]="'limit-' + def.key"
                   [checked]="limitControl(def.key).value !== 0"
                   (change)="toggleFeature(def.key, $any($event.target).checked)" />
-                <label class="form-check-label fw-semibold" [for]="'limit-' + def.key">{{ def.displayName }}</label>
+                <label class="form-check-label fw-semibold" [for]="'limit-' + def.key">{{ limitName(def.key) | translate }}</label>
               </div>
               } @else {
               <label class="form-label fw-semibold" [for]="'limit-' + def.key">
-                {{ def.displayName }}
-                <span class="text-muted fw-normal font-size-12">({{ def.unit }})</span>
+                {{ limitName(def.key) | translate }}
               </label>
               <input type="number" class="form-control" [id]="'limit-' + def.key" [formControlName]="def.key"
                 [readonly]="isLimitUnlimited(def.key)" [class.is-invalid]="submitted && limitControl(def.key).invalid" />
@@ -104,14 +103,12 @@
                 <input class="form-check-input" type="checkbox" [id]="'unlimited-' + def.key"
                   [checked]="isLimitUnlimited(def.key)"
                   (change)="toggleUnlimited(def.key, $any($event.target).checked)" />
-                <label class="form-check-label font-size-12" [for]="'unlimited-' + def.key">
+                <label class="form-check-label" [for]="'unlimited-' + def.key">
                   {{ 'PLANS.FORM.UNLIMITED' | translate }}
                 </label>
               </div>
               }
-              @if (def.description) {
-              <div class="form-text">{{ def.description }}</div>
-              }
+              <div class="form-text">{{ ('LIMITS.' + def.key + '.HINT') | translate }}</div>
             </div>
           </div>
           }

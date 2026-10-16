@@ -5,11 +5,8 @@ import { ToastrService } from "ngx-toastr";
 import { TemplateRef } from "@angular/core";
 import { SubscriptionService } from "../../services/subscription.service";
 import {
-  LimitPeriod,
   SubscriptionPlan,
   SubscriptionStatus,
-  TenantLimitsDashboard,
-  TenantLimitUsage,
   TenantSubscription,
 } from "../../types/subscription.types";
 
@@ -23,22 +20,15 @@ export class SubscriptionSectionComponent implements OnChanges {
 
   // Expose enums to template
   SubscriptionStatus = SubscriptionStatus;
-  LimitPeriod = LimitPeriod;
 
   current: TenantSubscription | null = null;
   history: TenantSubscription[] = [];
   plans: SubscriptionPlan[] = [];
   loading = false;
 
-  dashboard: TenantLimitsDashboard | null = null;
-  limitsLoading = false;
-
   modalRef?: BsModalRef;
   assignForm: FormGroup;
   extendForm: FormGroup;
-  overrideModalRef?: BsModalRef;
-  overrideItem?: TenantLimitUsage;
-  overrideForm: FormGroup;
 
   constructor(
     private subService: SubscriptionService,
@@ -53,9 +43,6 @@ export class SubscriptionSectionComponent implements OnChanges {
     });
     this.extendForm = this.fb.group({
       days: [30, [Validators.required, Validators.min(1)]],
-    });
-    this.overrideForm = this.fb.group({
-      value: [null, Validators.required],
     });
   }
 
@@ -83,18 +70,6 @@ export class SubscriptionSectionComponent implements OnChanges {
         next: (p) => (this.plans = p),
       });
     }
-    this.loadDashboard();
-  }
-
-  loadDashboard(): void {
-    this.limitsLoading = true;
-    this.subService.getTenantDashboard(this.tenantId).subscribe({
-      next: (d) => {
-        this.dashboard = d;
-        this.limitsLoading = false;
-      },
-      error: () => (this.limitsLoading = false),
-    });
   }
 
   statusLabel(status: SubscriptionStatus): string {
@@ -195,56 +170,5 @@ export class SubscriptionSectionComponent implements OnChanges {
         },
         error: (err) => this.toastr.error(err?.error?.message ?? "Failed to extend"),
       });
-  }
-
-  openOverrideModal(template: TemplateRef<any>, item: TenantLimitUsage): void {
-    this.overrideItem = item;
-    this.overrideForm.reset({
-      value: item.isUnlimited ? -1 : item.limit,
-    });
-    this.overrideModalRef = this.modalService.show(template, { class: "modal-sm" });
-  }
-
-  submitOverride(): void {
-    if (this.overrideForm.invalid || !this.overrideItem) return;
-    const v = this.overrideForm.value;
-    this.subService
-      .setTenantOverride({
-        tenantId: this.tenantId,
-        limitKey: this.overrideItem.key,
-        value: v.value,
-      })
-      .subscribe({
-        next: () => {
-          this.toastr.success("Override saved");
-          this.overrideModalRef?.hide();
-          this.loadDashboard();
-        },
-        error: (err) => this.toastr.error(err?.error?.message ?? "Failed to save override"),
-      });
-  }
-
-  removeOverride(key: string): void {
-    this.subService.removeTenantOverride(this.tenantId, key).subscribe({
-      next: () => {
-        this.toastr.success("Override removed");
-        this.loadDashboard();
-      },
-      error: () => this.toastr.error("Failed to remove override"),
-    });
-  }
-
-  limitPercent(item: TenantLimitUsage): number {
-    if (item.isUnlimited || item.limit <= 0) return 0;
-    return Math.min(100, Math.round((item.used / item.limit) * 100));
-  }
-
-  periodLabel(p: LimitPeriod): string {
-    switch (p) {
-      case LimitPeriod.Monthly: return "SUB_SECTION.PERIOD_MONTHLY";
-      case LimitPeriod.Daily: return "SUB_SECTION.PERIOD_DAILY";
-      case LimitPeriod.Total: return "SUB_SECTION.PERIOD_TOTAL";
-      default: return "";
-    }
   }
 }

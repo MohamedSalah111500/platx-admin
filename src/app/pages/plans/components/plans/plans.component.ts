@@ -6,8 +6,11 @@ import { forkJoin } from "rxjs";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { CurrentUserService } from "src/app/core/services/current-user.service";
 import { SubscriptionService } from "src/app/pages/tenant/services/subscription.service";
+import { limitHint, limitName, limitOrder } from "src/app/shared/limit-catalog";
+import { PLATFORM_UNLIMITED } from "src/app/shared/platform-request";
 import {
   LimitDefinition,
+  LimitValueType,
   PlanLimitDto,
   SubscriptionPlan,
 } from "src/app/pages/tenant/types/subscription.types";
@@ -18,6 +21,10 @@ import {
   styleUrls: ["./plans.component.scss"],
 })
 export class PlansComponent implements OnInit {
+  readonly LimitValueType = LimitValueType;
+  readonly UNLIMITED = PLATFORM_UNLIMITED;
+  readonly limitName = limitName;
+  readonly limitHint = limitHint;
   breadCrumbItems: Array<{}> = [];
   term = "";
   loading = false;
@@ -96,7 +103,7 @@ export class PlansComponent implements OnInit {
       limits: this.subService.getPlanLimits(plan.id),
     }).subscribe({
       next: ({ defs, limits }) => {
-        this.definitions = defs;
+        this.definitions = [...defs].sort((a, b) => limitOrder(a.key) - limitOrder(b.key));
         const values: Record<string, number> = {};
         defs.forEach((d) => {
           const existing = limits.find((l) => l.limitKey === d.key);

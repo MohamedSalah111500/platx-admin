@@ -1,3 +1,4 @@
+import { limitName, limitOrder } from "src/app/shared/limit-catalog";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -42,6 +43,7 @@ const EDIT_LOCKED_FIELDS = ["FirstName", "LastName", "Email", "IsActive"] as con
   styleUrl: "./add-edit.component.css",
 })
 export class AddEditComponent implements OnInit {
+  readonly limitName = limitName;
   readonly CUSTOM_TEMPLATE = CUSTOM_TEMPLATE;
   readonly terms = Object.values(SUBSCRIPTION_TERM);
 

@@ -174,10 +174,6 @@
                     <ng-template #noPlan>
                       <div class="text-muted font-size-13">{{ 'TENANT.NO_PLAN' | translate }}</div>
                     </ng-template>
-                    <div class="font-size-12 text-muted mt-1">
-                      <i class="mdi mdi-alpha-k-circle text-secondary me-1"></i>
-                      {{ 'TENANT.QUOTA' | translate }}: <span class="fw-medium text-dark">{{ item.quotaAI || 0 }}</span>
-                    </div>
                   </td>
 
                   <!-- Renewal countdown -->
@@ -231,15 +227,15 @@
                           </a>
                         </li>
                         <li>
-                          <a href="javascript:void(0);" (click)="domainsModal.open(item)" class="dropdown-item">
-                            <i class="mdi mdi-web text-info me-2"></i>
-                            {{ 'TENANT.ACTIONS.MANAGE_DOMAINS' | translate }}
+                          <a href="javascript:void(0);" (click)="manageFeatures(item)" class="dropdown-item">
+                            <i class="mdi mdi-tune-variant text-primary me-2"></i>
+                            {{ 'TENANT.ACTIONS.MANAGE_FEATURES' | translate }}
                           </a>
                         </li>
                         <li>
-                          <a href="javascript:void(0);" (click)="openUpgradeQuotaModal(item.id, item.quotaAI)"
-                            class="dropdown-item">
-                            <i class="mdi mdi-alpha-k-circle text-secondary me-2"></i> {{ 'TENANT.ACTIONS.UPDATE_QUOTA' | translate }}
+                          <a href="javascript:void(0);" (click)="domainsModal.open(item)" class="dropdown-item">
+                            <i class="mdi mdi-web text-info me-2"></i>
+                            {{ 'TENANT.ACTIONS.MANAGE_DOMAINS' | translate }}
                           </a>
                         </li>
                         <li>
@@ -333,27 +329,3 @@
 </div>
 
 <platx-tenant-domains-modal #domainsModal></platx-tenant-domains-modal>
-
-<!-- update quota -->
-<div bsModal #updateQuota="bs-modal" class="modal fade" id="updateQuota" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-body p-4 text-center">
-        <label for="quota">{{ 'TENANT.QUOTA' | translate }} *</label>
-        <input type="number" id="quota" class="form-control" [(ngModel)]="newQuota" placeholder="30" />
-        <div *ngIf="isSubmitedNewQuota && !newQuota" class="text-danger text-start">
-          {{ 'TENANT.QUOTA_INVALID' | translate }}
-        </div>
-
-        <div class="hstack gap-2 justify-content-center mb-0 mt-2">
-          <button type="button" class="btn btn-primary me-1" (click)="onConfirmChangeQuota()">
-            {{ 'TENANT.CONFIRM_BTN' | translate }}
-          </button>
-          <button type="button" class="btn btn-secondary" (click)="onCancelChangeQuota()">
-            {{ 'TENANT.CANCEL' | translate }}
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

@@ -78,7 +78,7 @@
                       <i class="mdi mdi-pencil-outline me-1"></i> {{ 'PLANS.EDIT' | translate }}
                     </button>
                     }
-                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openLimitsModal(limitsTpl, plan)">
+                    <button type="button" class="btn btn-sm btn-light" (click)="openLimitsModal(limitsTpl, plan)">
                       <i class="mdi mdi-tune me-1"></i> {{ 'PLANS.EDIT_LIMITS' | translate }}
                     </button>
                   </div>
@@ -113,14 +113,29 @@
       <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
     </div>
     } @else {
-    <p class="text-muted mb-3 font-size-13" [innerHTML]="'PLANS.LIMITS_HINT' | translate"></p>
+    <p class="text-muted mb-3" [innerHTML]="'PLANS.LIMITS_HINT' | translate"></p>
     @for (def of definitions; track def.key) {
-    <div class="mb-3">
-      <label class="form-label fw-semibold">
-        {{ def.displayName }}
-        <span class="text-muted fw-normal ms-1 font-size-12">({{ def.unit }}@if (def.description) { — {{ def.description }}})</span>
-      </label>
-      <input type="number" class="form-control" [(ngModel)]="planLimitValues[def.key]" />
+    <div class="border rounded-3 p-3 mb-2">
+      @if (def.valueType === LimitValueType.Boolean) {
+      <div class="form-check form-switch mb-0">
+        <input class="form-check-input" type="checkbox" role="switch" [id]="'plan-limit-' + def.key"
+          [checked]="planLimitValues[def.key] !== 0" (change)="planLimitValues[def.key] = $any($event.target).checked ? 1 : 0" />
+        <label class="form-check-label fw-semibold" [for]="'plan-limit-' + def.key">{{ limitName(def.key) | translate }}</label>
+      </div>
+      <div class="text-muted">{{ limitHint(def.key) | translate }}</div>
+      } @else {
+      <label class="form-label fw-semibold mb-1" [for]="'plan-limit-' + def.key">{{ limitName(def.key) | translate }}</label>
+      <div class="text-muted mb-2">{{ limitHint(def.key) | translate }}</div>
+      <div class="d-flex align-items-center gap-3">
+        <input type="number" min="0" class="form-control" [id]="'plan-limit-' + def.key"
+          [(ngModel)]="planLimitValues[def.key]" [disabled]="planLimitValues[def.key] === UNLIMITED" />
+        <div class="form-check form-switch mb-0 flex-shrink-0">
+          <input class="form-check-input" type="checkbox" role="switch" [id]="'plan-unlimited-' + def.key"
+            [checked]="planLimitValues[def.key] === UNLIMITED" (change)="planLimitValues[def.key] = $any($event.target).checked ? UNLIMITED : 0" />
+          <label class="form-check-label" [for]="'plan-unlimited-' + def.key">{{ 'LIMITS.UNLIMITED' | translate }}</label>
+        </div>
+      </div>
+      }
     </div>
     }
     }

@@ -21,10 +21,11 @@ import { SubscriptionSectionComponent } from './components/subscription-section/
 import { TenantSubscriptionComponent } from './components/tenant-subscription/tenant-subscription.component';
 import { InstallmentsSectionComponent } from './components/installments-section/installments-section.component';
 import { TenantDomainsComponent } from './components/tenant-domains/tenant-domains.component';
+import { TenantFeaturesComponent } from './components/tenant-features/tenant-features.component';
 
 
 @NgModule({
-  declarations: [TenantComponent, AddEditComponent,FileUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent, TenantDomainsComponent],
+  declarations: [TenantComponent, AddEditComponent,FileUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent, TenantDomainsComponent, TenantFeaturesComponent],
   imports: [
     CommonModule,
     TenantRoutingModule,

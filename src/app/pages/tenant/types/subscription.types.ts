@@ -31,6 +31,11 @@ export interface TenantLimitUsage {
   displayName: string;
   unit: string;
   period: LimitPeriod;
+  valueType: LimitValueType;
+  description?: string;
+  planValue?: number | null;
+  defaultValue: number;
+  reason?: string | null;
   limit: number;
   isUnlimited: boolean;
   isOverridden: boolean;

@@ -32,7 +32,6 @@ export class TenantComponent implements OnInit {
 
   @ViewChild("removeItemModal") removeItemModal?: ModalDirective;
   @ViewChild("confirmModal") confirmModal?: ModalDirective;
-  @ViewChild("updateQuota") updateQuota?: ModalDirective;
   @ViewChild("fullDeleteModal") fullDeleteModal?: ModalDirective;
 
   deleteId: any;
@@ -40,15 +39,12 @@ export class TenantComponent implements OnInit {
   fullDeleteTenantName: string = "";
   fullDeleteConfirmText: string = "";
   returnedArray: Tenant[] = [];
-  tenantIdOfQuota: string;
   // -------------------
   loading: boolean = false;
   list: Tenant[] = [];
   totalCount: number = 0;
   page: number = 1;
   pageSize: number = 10;
-  newQuota: number = 0;
-  isSubmitedNewQuota = false;
   selectedTenant: any;
 
   // subscriptions per tenant on the current page
@@ -302,6 +298,10 @@ export class TenantComponent implements OnInit {
     this.router.navigate(["/tenant/subscription", item.id]);
   }
 
+  manageFeatures(item: Tenant) {
+    this.router.navigate(["/tenant/subscription", item.id], { fragment: "features" });
+  }
+
   onToggle(event, tenant: Tenant) {
     this.selectedTenant = tenant;
   }
@@ -351,32 +351,6 @@ export class TenantComponent implements OnInit {
   openDeleteModel(id: any) {
     this.deleteId = id;
     this.removeItemModal?.show();
-  }
-  openUpgradeQuotaModal(id: string, quota: number) {
-    this.tenantIdOfQuota = id;
-    this.newQuota = quota;
-    this.updateQuota?.show();
-  }
-  onConfirmChangeQuota() {
-    this.isSubmitedNewQuota = true;
-    if (!this.newQuota) return;
-    this.tenantService
-      .updateTenantQuota(this.tenantIdOfQuota, this.newQuota)
-      .subscribe({
-        next: () => {
-          this.toastr.success(this.translate.instant("TENANT.TOAST.QUOTA_UPDATED"));
-          this.getAllData(this.page, this.pageSize);
-        },
-        error: () => this.toastr.error(this.translate.instant("TENANT.TOAST.QUOTA_UPDATE_FAILED")),
-        complete: () => {
-          this.updateQuota?.hide();
-          this.isSubmitedNewQuota = false;
-        },
-      });
-  }
-  onCancelChangeQuota() {
-    this.newQuota = 0;
-    this.updateQuota?.hide();
   }
   confirmDelete(id: any) {
     this.tenantService.deleteTenant(id).subscribe(() => {

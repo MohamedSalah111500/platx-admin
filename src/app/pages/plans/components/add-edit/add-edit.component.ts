@@ -1,3 +1,4 @@
+import { limitName, limitOrder } from "src/app/shared/limit-catalog";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -29,6 +30,7 @@ const CUSTOM_PLAN_SORT_ORDER = 100;
   styleUrls: ["./add-edit.component.css"],
 })
 export class AddEditComponent implements OnInit {
+  readonly limitName = limitName;
   readonly LimitValueType = LimitValueType;
 
   breadCrumbItems: Array<{}> = [];
@@ -178,7 +180,7 @@ export class AddEditComponent implements OnInit {
   }
 
   private buildLimitControls(definitions: LimitDefinition[], valueOf: (def: LimitDefinition) => number): void {
-    this.definitions = [...definitions].sort((a, b) => a.sortOrder - b.sortOrder);
+    this.definitions = [...definitions].sort((a, b) => limitOrder(a.key) - limitOrder(b.key));
     for (const def of this.definitions) {
       this.limitsForm.addControl(
         def.key,
@@ -213,7 +215,7 @@ export class AddEditComponent implements OnInit {
       hasCustomUI: enabled(LIMIT_KEY.CustomUi),
       hasQuizAndAssignments: enabled(LIMIT_KEY.Quizzes),
       hasTechnicalSupport: enabled(LIMIT_KEY.TechnicalSupport),
-      hasDocumentAndMedia: enabled(LIMIT_KEY.DocumentsMedia),
+      hasDocumentAndMedia: false,
       hasLifelongAccess: false,
       hasAdvancedReports: enabled(LIMIT_KEY.AdvancedReports),
       sortOrder: this.existingPlan?.sortOrder ?? CUSTOM_PLAN_SORT_ORDER,

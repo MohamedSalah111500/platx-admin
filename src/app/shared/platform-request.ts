@@ -44,7 +44,6 @@ export const LIMIT_KEY = {
   Attendance: "attendance",
   TechnicalSupport: "technical_support",
   CustomUi: "custom_ui",
-  DocumentsMedia: "documents_media",
   AdvancedReports: "advanced_reports",
   WhatsAppEnabled: "whatsapp_enabled",
   WhatsAppMessages: "whatsapp_messages",

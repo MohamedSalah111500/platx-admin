@@ -155,15 +155,14 @@
           <div class="col-md-6 col-xl-4 mb-3">
             <div class="capability-item">
               <label class="form-label fw-semibold mb-1" [for]="'limit-' + def.key">
-                {{ def.displayName }}
-                <span class="text-muted fw-normal font-size-12">({{ def.unit }})</span>
+                {{ limitName(def.key) | translate }}
               </label>
               <input type="number" class="form-control" [id]="'limit-' + def.key" [formControlName]="def.key"
                 [readonly]="isUnlimited(def.key)" [class.is-invalid]="submitted && limitControl(def.key).invalid" />
               <div class="form-check mt-2">
                 <input class="form-check-input" type="checkbox" [id]="'unlimited-' + def.key"
                   [checked]="isUnlimited(def.key)" (change)="toggleUnlimited(def.key, $any($event.target).checked)" />
-                <label class="form-check-label font-size-12" [for]="'unlimited-' + def.key">
+                <label class="form-check-label" [for]="'unlimited-' + def.key">
                   {{ 'TENANT_FORM.UNLIMITED' | translate }}
                 </label>
               </div>
@@ -180,7 +179,7 @@
             <button type="button" class="btn btn-sm btn-light" (click)="setGroupFeatures(group, false)">{{ 'TENANT_FORM.DISABLE_ALL' | translate }}</button>
           </div>
         </div>
-        <p class="text-muted font-size-12 mb-2">{{ group.hintKey | translate }}</p>
+        <p class="text-muted mb-2">{{ group.hintKey | translate }}</p>
         <div class="row">
           @for (def of group.definitions; track def.key) {
           <div class="col-md-6 col-xl-3 mb-2">
@@ -189,7 +188,7 @@
                 <input class="form-check-input" type="checkbox" [id]="'feature-' + def.key"
                   [checked]="limitControl(def.key).value !== 0"
                   (change)="toggleFeature(def.key, $any($event.target).checked)" />
-                <label class="form-check-label fw-semibold" [for]="'feature-' + def.key">{{ def.displayName }}</label>
+                <label class="form-check-label fw-semibold" [for]="'feature-' + def.key">{{ limitName(def.key) | translate }}</label>
               </div>
             </div>
           </div>
