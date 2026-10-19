@@ -131,3 +131,33 @@ export interface CompanyCollections {
   monthlyCollections: CollectionPoint[];
   topOverdueTenants: TenantCollection[];
 }
+
+export type TenantActivityState = 0 | 1 | 2 | 3;
+
+export interface TenantActivity {
+  tenantId: string;
+  title: string;
+  domain: string | null;
+  isActive: boolean;
+  adminEmail: string | null;
+  adminName: string | null;
+  students: number;
+  activeUsers: number;
+  newStudents: number;
+  enrollments: number;
+  lastLoginAt: string | null;
+  lastEnrollmentAt: string | null;
+  lastActivityAt: string | null;
+  daysSinceActivity: number | null;
+  state: TenantActivityState;
+}
+
+export interface TenantActivityResult {
+  days: number;
+  totalTenants: number;
+  activeCount: number;
+  quietCount: number;
+  dormantCount: number;
+  neverCount: number;
+  tenants: TenantActivity[];
+}

@@ -133,6 +133,8 @@ export const COMPANY_ANALYTICS_URLS = {
     `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/engagement?recentTake=${recentTake}&topTake=${topTake}`,
   REVENUE: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/revenue`,
   TENANT_STATS: `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/tenant-stats`,
+  TENANT_ACTIVITY: (days: number) =>
+    `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/tenant-activity?days=${days}`,
   COLLECTIONS: (trendMonths: number, topOverdueTake: number) =>
     `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/collections?trendMonths=${trendMonths}&topOverdueTake=${topOverdueTake}`,
 };

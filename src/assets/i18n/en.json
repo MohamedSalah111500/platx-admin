@@ -574,6 +574,35 @@
       "USERS": "New users",
       "ENROLLMENTS": "New enrollments",
       "TENANTS": "New platforms"
+    },
+    "ACTIVITY_BOARD": {
+      "TITLE": "Platform activity",
+      "SUBTITLE": "Sign-ins and enrolments over the last {{days}} days",
+      "ACTIVE": "Active",
+      "ACTIVE_HINT": "Used within 7 days",
+      "QUIET": "Quiet",
+      "QUIET_HINT": "Last used within a month",
+      "DORMANT": "Dormant",
+      "DORMANT_HINT": "Nothing for over a month",
+      "NEVER": "Never used",
+      "NEVER_HINT": "Nobody has signed in yet",
+      "COL_PLATFORM": "Platform",
+      "COL_USERS": "Users signed in",
+      "COL_NEW_STUDENTS": "New students",
+      "COL_ENROLLMENTS": "Enrolments",
+      "COL_LAST": "Last activity",
+      "COL_STATE": "State",
+      "COL_CONTACT": "Alert",
+      "STUDENTS": "students",
+      "DISABLED": "Disabled",
+      "DAYS_AGO": "{{days}} days ago",
+      "SEND_ALERT": "Email the admin",
+      "NO_ADMIN": "No admin email",
+      "EMPTY": "No platforms in this state",
+      "MAIL_SUBJECT": "Your PlatX platform {{name}}",
+      "MAIL_BODY": "Hello,\n\nWe noticed little activity on {{name}} recently and wanted to check whether you need a hand getting it going.\n\nThe PlatX team",
+      "TODAY": "Today",
+      "YESTERDAY": "Yesterday"
     }
   },
   "PAYMENTS": {
@@ -1070,7 +1099,8 @@
     "RETRY": "Retry",
     "LOAD_FAILED": "Could not load the data",
     "LOAD_FAILED_HINT": "The server did not answer the request. Retry or refresh the page.",
-    "DELETE": "Delete"
+    "DELETE": "Delete",
+    "ALL": "All"
   },
   "CRM": {
     "MOVE_TO": "Move to",

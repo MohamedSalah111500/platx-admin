@@ -10,6 +10,7 @@ import {
   CompanyCollections,
   CompanyRevenue,
   TenantStats,
+  TenantActivityResult,
 } from "./analytics.models";
 
 @Injectable({
@@ -43,6 +44,12 @@ export class AnalyticsService {
   getCollections(trendMonths = 6, topOverdueTake = 5): Observable<CompanyCollections> {
     return this.http.get<CompanyCollections>(
       COMPANY_ANALYTICS_URLS.COLLECTIONS(trendMonths, topOverdueTake)
+    );
+  }
+
+  getTenantActivity(days = 30): Observable<TenantActivityResult> {
+    return this.http.get<TenantActivityResult>(
+      COMPANY_ANALYTICS_URLS.TENANT_ACTIVITY(days)
     );
   }
 
