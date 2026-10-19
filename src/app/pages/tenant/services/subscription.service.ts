@@ -21,6 +21,7 @@ import {
   SUBSCRIPTION_LIMITS_URLS,
   SUBSCRIPTION_PLANS_URLS,
   TENANT_SUBSCRIPTIONS_URLS,
+  WHATSAPP_ADMIN_URLS,
 } from "src/app/utiltis/urls";
 
 @Injectable({ providedIn: "root" })
@@ -115,6 +116,14 @@ export class SubscriptionService {
 
   setTenantOverride(payload: SetTenantOverridePayload): Observable<unknown> {
     return this.http.post(SUBSCRIPTION_LIMITS_URLS.SET_OVERRIDE, payload);
+  }
+
+  getWhatsAppCountries(tenantId: string): Observable<{ countries: string[] }> {
+    return this.http.get<{ countries: string[] }>(WHATSAPP_ADMIN_URLS.COUNTRIES(tenantId));
+  }
+
+  setWhatsAppCountries(tenantId: string, countries: string[]): Observable<{ countries: string[] }> {
+    return this.http.put<{ countries: string[] }>(WHATSAPP_ADMIN_URLS.COUNTRIES(tenantId), { countries });
   }
 
   removeTenantOverride(tenantId: string, key: string): Observable<unknown> {

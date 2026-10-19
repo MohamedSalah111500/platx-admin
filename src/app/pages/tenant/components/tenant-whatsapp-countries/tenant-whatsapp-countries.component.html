@@ -1,0 +1,48 @@
+<div class="card">
+  <div class="card-body border-bottom">
+    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3">
+      <div>
+        <h4 class="card-title mb-1"><i class="mdi mdi-whatsapp text-success me-1"></i>{{ 'WHATSAPP_COUNTRIES.TITLE' | translate }}</h4>
+        <p class="text-muted mb-0">{{ 'WHATSAPP_COUNTRIES.HINT' | translate }}</p>
+      </div>
+      @if (!loading && !failed) {
+      <div class="d-flex gap-2">
+        @if (dirty) {
+        <button type="button" class="btn btn-light" [disabled]="saving" (click)="reset()">{{ 'COMMON.CANCEL' | translate }}</button>
+        }
+        <button type="button" class="btn btn-primary" [disabled]="!dirty || !selected.size || saving" (click)="save()">
+          @if (saving) {
+          <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+          }
+          {{ 'WHATSAPP_COUNTRIES.SAVE' | translate }}
+        </button>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="card-body">
+    @if (loading) {
+    <div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>
+    } @else if (failed) {
+    <div class="text-center py-4">
+      <p class="text-muted mb-3">{{ 'WHATSAPP_COUNTRIES.LOAD_FAILED' | translate }}</p>
+      <button type="button" class="btn btn-primary" (click)="load()">{{ 'LIMITS.RETRY' | translate }}</button>
+    </div>
+    } @else {
+    <div class="row g-2">
+      @for (option of options; track option.code) {
+      <div class="col-6 col-md-4 col-xl-3">
+        <label class="d-flex align-items-center gap-2 border rounded-3 p-2 mb-0 w-100" [class.bg-light]="selected.has(option.code)">
+          <input class="form-check-input m-0 flex-shrink-0" type="checkbox"
+            [checked]="selected.has(option.code)" (change)="toggle(option.code, $any($event.target).checked)" />
+          <span>{{ option.name }}</span>
+        </label>
+      </div>
+      }
+    </div>
+    @if (!selected.size) {
+    <p class="text-danger mt-3 mb-0">{{ 'WHATSAPP_COUNTRIES.REQUIRED' | translate }}</p>
+    }
+    }
+  </div>
+</div>

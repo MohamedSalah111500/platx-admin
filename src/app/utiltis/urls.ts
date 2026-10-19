@@ -113,6 +113,10 @@ export const SUBSCRIPTION_LIMITS_URLS = {
     `${environment.apiURL.concat(SUBSCRIPTION_LIMITS_BASE)}/tenants/${tenantId}/overrides/${key}`,
 };
 
+export const WHATSAPP_ADMIN_URLS = {
+  COUNTRIES: (tenantId: string) => `${environment.apiURL}api/whatsapp/admin/tenants/${tenantId}/countries`,
+};
+
 export const PLATX_CONTACT_URLS = {
   GET_CONTACT: `${environment.apiURL
     .concat(PLATX_CONTACT_BASE)

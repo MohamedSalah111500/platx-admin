@@ -1590,5 +1590,14 @@
       "NAME": "WhatsApp reports",
       "HINT": "Send student reports to parents on WhatsApp."
     }
+  },
+  "WHATSAPP_COUNTRIES": {
+    "TITLE": "Allowed WhatsApp countries",
+    "HINT": "Parent messages are sent only to numbers from these countries; others are not sent and not charged.",
+    "SAVE": "Save countries",
+    "SAVED": "Countries saved",
+    "SAVE_FAILED": "Couldn't save the countries, try again.",
+    "LOAD_FAILED": "Couldn't load the countries.",
+    "REQUIRED": "Choose at least one country."
   }
 }

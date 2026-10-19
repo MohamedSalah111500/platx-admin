@@ -344,6 +344,8 @@ export class AddEditComponent implements OnInit {
       JSON.stringify(Object.entries(limits).map(([limitKey, value]) => ({ limitKey, value: Number(value) })))
     );
     if (this.source) formData.append("SourceContactId", this.source.contactId);
+    const countries = this.source?.platformRequest.whatsAppCountries ?? [];
+    if (countries.length) formData.append("WhatsAppCountries", countries.join(","));
     return formData;
   }
 

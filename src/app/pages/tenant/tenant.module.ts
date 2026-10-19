@@ -22,10 +22,11 @@ import { TenantSubscriptionComponent } from './components/tenant-subscription/te
 import { InstallmentsSectionComponent } from './components/installments-section/installments-section.component';
 import { TenantDomainsComponent } from './components/tenant-domains/tenant-domains.component';
 import { TenantFeaturesComponent } from './components/tenant-features/tenant-features.component';
+import { TenantWhatsAppCountriesComponent } from './components/tenant-whatsapp-countries/tenant-whatsapp-countries.component';
 
 
 @NgModule({
-  declarations: [TenantComponent, AddEditComponent,FileUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent, TenantDomainsComponent, TenantFeaturesComponent],
+  declarations: [TenantComponent, AddEditComponent,FileUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent, TenantDomainsComponent, TenantFeaturesComponent, TenantWhatsAppCountriesComponent],
   imports: [
     CommonModule,
     TenantRoutingModule,
