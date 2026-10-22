@@ -152,6 +152,32 @@ export interface TenantActivity {
   state: TenantActivityState;
 }
 
+export interface TenantBreakdown {
+  tenantId: string;
+  title: string;
+  signIns: number;
+  enrollments: number;
+  lessonsCompleted: number;
+  examsTaken: number;
+  homeworkSubmissions: number;
+  liveClasses: number;
+  messagesSent: number;
+  total: number;
+  topActivity: string;
+}
+
+export interface TenantBreakdownResult {
+  days: number;
+  signIns: number;
+  enrollments: number;
+  lessonsCompleted: number;
+  examsTaken: number;
+  homeworkSubmissions: number;
+  liveClasses: number;
+  messagesSent: number;
+  tenants: TenantBreakdown[];
+}
+
 export interface TenantActivityResult {
   days: number;
   totalTenants: number;

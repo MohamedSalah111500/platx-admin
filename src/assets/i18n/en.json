@@ -603,6 +603,20 @@
       "MAIL_BODY": "Hello,\n\nWe noticed little activity on {{name}} recently and wanted to check whether you need a hand getting it going.\n\nThe PlatX team",
       "TODAY": "Today",
       "YESTERDAY": "Yesterday"
+    },
+    "BREAKDOWN": {
+      "TITLE": "What happens on each platform",
+      "SUBTITLE": "Actions recorded on every platform over the last {{days}} days",
+      "SIGN_INS": "Sign-ins",
+      "LESSONS": "Lessons completed",
+      "EXAMS": "Exams",
+      "HOMEWORK": "Homework",
+      "ENROLLMENTS": "Enrolments",
+      "LIVE": "Live classes",
+      "MESSAGES": "Messages",
+      "COL_PLATFORM": "Platform",
+      "COL_TOP": "Busiest",
+      "EMPTY": "Nothing recorded yet"
     }
   },
   "PAYMENTS": {

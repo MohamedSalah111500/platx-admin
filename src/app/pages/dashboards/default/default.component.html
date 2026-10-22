@@ -359,6 +359,92 @@
   </div>
   }
 
+  <!-- What people actually do on each platform -->
+  @if (breakdown) {
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="mb-4">
+            <h4 class="card-title mb-1">
+              <i class="bx bx-bar-chart-alt-2 text-primary me-1"></i>
+              {{ 'DASHBOARD.BREAKDOWN.TITLE' | translate }}
+            </h4>
+            <p class="text-muted mb-0 font-size-13">
+              {{ 'DASHBOARD.BREAKDOWN.SUBTITLE' | translate: { days: breakdown.days } }}
+            </p>
+          </div>
+
+          <div class="row g-3 mb-4">
+            @for (total of breakdownTotals; track total.key) {
+            <div class="col-xl col-md-4 col-6">
+              <div class="collection-tile h-100">
+                <p class="text-muted mb-1">{{ 'DASHBOARD.BREAKDOWN.' + total.key | translate }}</p>
+                <h4 class="mb-0">{{ total.value | number }}</h4>
+              </div>
+            </div>
+            }
+          </div>
+
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap mb-0">
+              <thead>
+                <tr>
+                  <th>{{ 'DASHBOARD.BREAKDOWN.COL_PLATFORM' | translate }}</th>
+                  <th class="text-center">{{ 'DASHBOARD.BREAKDOWN.SIGN_INS' | translate }}</th>
+                  <th class="text-center">{{ 'DASHBOARD.BREAKDOWN.LESSONS' | translate }}</th>
+                  <th class="text-center">{{ 'DASHBOARD.BREAKDOWN.EXAMS' | translate }}</th>
+                  <th class="text-center">{{ 'DASHBOARD.BREAKDOWN.HOMEWORK' | translate }}</th>
+                  <th class="text-center">{{ 'DASHBOARD.BREAKDOWN.ENROLLMENTS' | translate }}</th>
+                  <th class="text-center">{{ 'DASHBOARD.BREAKDOWN.LIVE' | translate }}</th>
+                  <th class="text-center">{{ 'DASHBOARD.BREAKDOWN.MESSAGES' | translate }}</th>
+                  <th>{{ 'DASHBOARD.BREAKDOWN.COL_TOP' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (t of breakdown.tenants; track t.tenantId) {
+                <tr>
+                  <td>
+                    <div class="fw-semibold text-dark">{{ t.title }}</div>
+                    <div class="collection-bar mt-2" style="max-width:150px">
+                      <div class="collection-bar-fill" [style.width.%]="share(t)"></div>
+                    </div>
+                  </td>
+                  <td class="text-center">{{ t.signIns | number }}</td>
+                  <td class="text-center">{{ t.lessonsCompleted | number }}</td>
+                  <td class="text-center">{{ t.examsTaken | number }}</td>
+                  <td class="text-center">{{ t.homeworkSubmissions | number }}</td>
+                  <td class="text-center">{{ t.enrollments | number }}</td>
+                  <td class="text-center">{{ t.liveClasses | number }}</td>
+                  <td class="text-center">{{ t.messagesSent | number }}</td>
+                  <td>
+                    @if (t.topActivity) {
+                    <span class="pill pill-info">{{ 'DASHBOARD.BREAKDOWN.' + t.topActivity | translate }}</span>
+                    } @else {
+                    <span class="text-muted">—</span>
+                    }
+                  </td>
+                </tr>
+                }
+                @if (!breakdown.tenants.length) {
+                <tr>
+                  <td colspan="9">
+                    <div class="empty-state">
+                      <div class="empty-icon empty-icon-sm mx-auto mb-3"><i class="mdi mdi-chart-line"></i></div>
+                      <h6 class="mb-0">{{ 'DASHBOARD.BREAKDOWN.EMPTY' | translate }}</h6>
+                    </div>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+
   <!-- Subscriptions & Revenue -->
   <div class="row">
     <div class="col-xl-3 col-md-6">

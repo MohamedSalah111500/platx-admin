@@ -11,6 +11,7 @@ import {
   CompanyRevenue,
   TenantStats,
   TenantActivityResult,
+  TenantBreakdownResult,
 } from "./analytics.models";
 
 @Injectable({
@@ -50,6 +51,12 @@ export class AnalyticsService {
   getTenantActivity(days = 30): Observable<TenantActivityResult> {
     return this.http.get<TenantActivityResult>(
       COMPANY_ANALYTICS_URLS.TENANT_ACTIVITY(days)
+    );
+  }
+
+  getTenantBreakdown(days = 30): Observable<TenantBreakdownResult> {
+    return this.http.get<TenantBreakdownResult>(
+      COMPANY_ANALYTICS_URLS.TENANT_BREAKDOWN(days)
     );
   }
 
