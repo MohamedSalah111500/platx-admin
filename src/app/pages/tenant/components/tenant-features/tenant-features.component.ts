@@ -117,6 +117,7 @@ export class TenantFeaturesComponent implements OnChanges {
     switch (period) {
       case LimitPeriod.Monthly: return "LIMITS.PERIOD.MONTHLY";
       case LimitPeriod.Daily: return "LIMITS.PERIOD.DAILY";
+      case LimitPeriod.Subscription: return "LIMITS.PERIOD.SUBSCRIPTION";
       default: return null;
     }
   }

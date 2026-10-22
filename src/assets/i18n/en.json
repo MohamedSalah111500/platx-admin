@@ -1482,7 +1482,8 @@
     "SAVE_FAILED": "Could not save, try again.",
     "PERIOD": {
       "MONTHLY": "Monthly",
-      "DAILY": "Daily"
+      "DAILY": "Daily",
+      "SUBSCRIPTION": "Whole subscription"
     },
     "GROUP": {
       "usage": {
@@ -1520,7 +1521,7 @@
     },
     "whatsapp_messages": {
       "NAME": "WhatsApp messages",
-      "HINT": "Monthly parent report messages."
+      "HINT": "Parent report messages for the whole subscription term, including 500 free with every subscription."
     },
     "live_minutes_per_day": {
       "NAME": "Live minutes per day",

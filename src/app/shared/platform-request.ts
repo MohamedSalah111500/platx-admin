@@ -29,8 +29,11 @@ export interface PlatformRequest {
   billingCycle: PlatformBillingCycle;
   monthlyTotal: number;
   whatsAppMessages?: number;
+  whatsAppTotal?: number;
   whatsAppCountries?: string[];
 }
+
+export const INCLUDED_WHATSAPP_MESSAGES = 500;
 
 export const LIMIT_KEY = {
   MaxStudents: "max_students",
@@ -68,8 +71,8 @@ export function platformRequestLimits(request: PlatformRequest): Record<string, 
     [LIMIT_KEY.VideoUploadGb]: request.videoStorageGb,
     [LIMIT_KEY.FileStorageGb]: request.fileStorageGb,
     [LIMIT_KEY.AiCredits]: request.aiCredits,
-    [LIMIT_KEY.WhatsAppEnabled]: request.whatsAppMessages ? FEATURE_ENABLED : FEATURE_DISABLED,
-    [LIMIT_KEY.WhatsAppMessages]: request.whatsAppMessages ?? 0,
+    [LIMIT_KEY.WhatsAppEnabled]: FEATURE_ENABLED,
+    [LIMIT_KEY.WhatsAppMessages]: INCLUDED_WHATSAPP_MESSAGES + (request.whatsAppMessages ?? 0),
   };
   for (const addon of Object.values(PLATFORM_ADDON)) {
     limits[PLATFORM_ADDON_LIMIT_KEY[addon]] = request.addons.includes(addon) ? FEATURE_ENABLED : FEATURE_DISABLED;

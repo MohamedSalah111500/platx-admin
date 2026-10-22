@@ -95,7 +95,7 @@ export class AddEditComponent implements OnInit {
 
   get subscriptionAmount(): number {
     const { monthlyPrice, term } = this.subscriptionForm.getRawValue();
-    return (monthlyPrice || 0) * SUBSCRIPTION_TERM_DETAILS[term].paidMonths;
+    return (monthlyPrice || 0) * SUBSCRIPTION_TERM_DETAILS[term].paidMonths + (this.source?.platformRequest.whatsAppTotal ?? 0);
   }
 
   get subscriptionDays(): number {

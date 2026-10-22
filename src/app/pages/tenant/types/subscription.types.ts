@@ -8,6 +8,7 @@ export enum LimitPeriod {
   Total = 1,
   Monthly = 2,
   Daily = 3,
+  Subscription = 4,
 }
 
 export interface LimitDefinition {
