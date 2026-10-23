@@ -1,0 +1,69 @@
+<div class="container-fluid">
+  <app-page-title [title]="'MOBILE_APP.TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="card inst-shell">
+    <div class="card-body inst-header">
+      <h4 class="mb-1 fw-bold">{{ "MOBILE_APP.TITLE" | translate }}</h4>
+      <p class="text-muted mb-0">{{ "MOBILE_APP.SUBTITLE" | translate }}</p>
+    </div>
+
+    <div class="card-body inst-section">
+      @if (loading) {
+        <div class="text-center py-5"><span class="spinner-border text-primary" role="status"></span></div>
+      } @else if (failed) {
+        <div class="text-center py-5">
+          <p class="text-muted mb-3">{{ "MOBILE_APP.LOAD_FAILED" | translate }}</p>
+          <button type="button" class="btn btn-primary" (click)="load()">{{ "MOBILE_APP.RETRY" | translate }}</button>
+        </div>
+      } @else {
+        <div class="row g-3">
+          @for (policy of policies; track policy.platform) {
+            <div class="col-md-6">
+              <div class="info-tile h-100">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="avatar-sm flex-shrink-0">
+                    <span class="avatar-title rounded bg-primary-subtle text-primary font-size-24">
+                      <i class="bx {{ icon(policy.platform) }}"></i>
+                    </span>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h5 class="mb-0">{{ "MOBILE_APP." + (policy.platform === "ios" ? "IOS" : "ANDROID") | translate }}</h5>
+                    <span class="info-sub">
+                      {{ "MOBILE_APP.PUBLISHED" | translate }}:
+                      <strong dir="ltr">{{ policy.publishedVersion || ("MOBILE_APP.NOT_READ" | translate) }}</strong>
+                    </span>
+                  </div>
+                  <span class="pill" [class.pill-danger]="policy.forceUpdate" [class.pill-soft]="!policy.forceUpdate">
+                    {{ (policy.forceUpdate ? "MOBILE_APP.FORCED" : "MOBILE_APP.OPTIONAL") | translate }}
+                  </span>
+                </div>
+
+                <div class="form-check form-switch mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    [id]="'force-' + policy.platform"
+                    [(ngModel)]="policy.forceUpdate"
+                    (ngModelChange)="toggle(policy, $event)"
+                    [disabled]="saving === policy.platform" />
+                  <label class="form-check-label fw-medium" [for]="'force-' + policy.platform">
+                    {{ "MOBILE_APP.FORCE_LABEL" | translate }}
+                  </label>
+                </div>
+                <p class="text-muted mb-3">
+                  {{ (policy.forceUpdate ? "MOBILE_APP.FORCE_ON_HINT" : "MOBILE_APP.FORCE_OFF_HINT") | translate }}
+                </p>
+
+                <a class="px-link" [href]="policy.storeUrl" target="_blank" rel="noopener">
+                  <i class="bx bx-link-external me-1"></i>{{ "MOBILE_APP.OPEN_STORE" | translate }}
+                </a>
+              </div>
+            </div>
+          }
+        </div>
+        <p class="text-muted mt-3 mb-0">{{ "MOBILE_APP.STORE_NOTE" | translate }}</p>
+      }
+    </div>
+  </div>
+</div>

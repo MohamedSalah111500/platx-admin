@@ -21,6 +21,13 @@ export const MENU: MenuItem[] = [
   },
   {
     id: 2,
+    label: "MENUITEMS.MOBILE_APP.TEXT",
+    icon: "bx-mobile-alt",
+    link: "/mobile-app",
+    roles: ["SuperAdmin"],
+  },
+  {
+    id: 2,
     label: "MENUITEMS.CUSTOMER_CONTACT.TEXT",
     icon: "bx-user",
     link: "/customer-contact",

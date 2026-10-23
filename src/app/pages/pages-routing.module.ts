@@ -49,6 +49,12 @@ const routes: Routes = [
     loadChildren: () => import("./crm/crm.module").then((m) => m.CrmModule),
   },
   {
+    path: "mobile-app",
+    canActivate: [superAdminGuard],
+    loadChildren: () =>
+      import("./mobile-app/mobile-app.module").then((m) => m.MobileAppModule),
+  },
+  {
     path: "installments",
     canActivate: [superAdminGuard],
     loadChildren: () =>

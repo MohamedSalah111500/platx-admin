@@ -1,4 +1,22 @@
 {
+  "MOBILE_APP": {
+    "TITLE": "Mobile app",
+    "SUBTITLE": "Choose whether students must update the app, per platform.",
+    "ANDROID": "Android",
+    "IOS": "iPhone",
+    "PUBLISHED": "Version published in the store",
+    "NOT_READ": "Could not be read",
+    "FORCED": "Forced",
+    "OPTIONAL": "Optional",
+    "FORCE_LABEL": "Force update",
+    "FORCE_ON_HINT": "Students on a version older than the store's cannot use the app until they update.",
+    "FORCE_OFF_HINT": "Students only see a suggestion to update and can keep using their version.",
+    "OPEN_STORE": "Open the store page",
+    "STORE_NOTE": "The published version is read from the store automatically every 30 minutes, so you never enter it after a release.",
+    "SAVED": "Setting saved",
+    "LOAD_FAILED": "Could not load the settings.",
+    "RETRY": "Try again"
+  },
   "HEADER": {
     "SEARCH": "Search...",
     "MEGA_MENU": "Mega Menu",
@@ -138,6 +156,9 @@
     },
     "RENEWAL_REQUESTS": {
       "TEXT": "Renewal Requests"
+    },
+    "MOBILE_APP": {
+      "TEXT": "Mobile app"
     },
     "PAYMENTS_DUE": {
       "TEXT": "Payments Due"
