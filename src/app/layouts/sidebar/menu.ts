@@ -14,6 +14,12 @@ export const MENU: MenuItem[] = [
     link: "/dashboard",
   },
   {
+    id: 5,
+    label: "MENUITEMS.PLATFORM_ACTIVITY.TEXT",
+    icon: "bx-pulse",
+    link: "/platform-activity",
+  },
+  {
     id: 2,
     label: "MENUITEMS.MANAGE_TENANT.TEXT",
     icon: "bx-cog",

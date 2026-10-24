@@ -11,10 +11,6 @@ import {
   CompanyCollections,
   CompanyRevenue,
   CurrencyAmount,
-  TenantActivity,
-  TenantActivityResult,
-  TenantBreakdown,
-  TenantBreakdownResult,
 } from '../analytics.models';
 
 const PRIMARY_CURRENCY = 'EGP';
@@ -39,9 +35,6 @@ export class DefaultComponent implements OnInit, OnDestroy {
   revenue?: CompanyRevenue;
   collections?: CompanyCollections;
   collectionsChart?: ChartType;
-  activityBoard?: TenantActivityResult;
-  activityFilter: 'all' | 'dormant' | 'quiet' | 'active' = 'all';
-  breakdown?: TenantBreakdownResult;
 
   statData: { title: string; value: string; icon: string }[] = [];
   activityStats: { label: string; value: number; icon: string }[] = [];
@@ -105,68 +98,14 @@ export class DefaultComponent implements OnInit, OnDestroy {
     };
   }
 
-  get visibleTenants(): TenantActivity[] {
-    const tenants = this.activityBoard?.tenants ?? [];
-    if (this.activityFilter === 'all') return tenants;
-    const wanted = { dormant: 3, quiet: 2, active: 1 }[this.activityFilter];
-    return tenants.filter((t) => t.state === wanted || (this.activityFilter === 'dormant' && t.state === 0));
-  }
 
-  get breakdownTotals(): { key: string; value: number }[] {
-    const b = this.breakdown;
-    if (!b) return [];
-    return [
-      { key: 'SIGN_INS', value: b.signIns },
-      { key: 'LESSONS', value: b.lessonsCompleted },
-      { key: 'EXAMS', value: b.examsTaken },
-      { key: 'HOMEWORK', value: b.homeworkSubmissions },
-      { key: 'ENROLLMENTS', value: b.enrollments },
-      { key: 'LIVE', value: b.liveClasses },
-      { key: 'MESSAGES', value: b.messagesSent },
-    ];
-  }
 
-  share(tenant: TenantBreakdown): number {
-    const busiest = this.breakdown?.tenants[0]?.total ?? 0;
-    if (!busiest) return 0;
-    return Math.round((tenant.total / busiest) * 100);
-  }
 
-  stateClass(state: number): string {
-    return ['pill-muted', 'pill-active', 'pill-grace', 'pill-expired'][state] ?? 'pill-muted';
-  }
 
-  stateLabel(state: number): string {
-    return ['DASHBOARD.ACTIVITY_BOARD.NEVER', 'DASHBOARD.ACTIVITY_BOARD.ACTIVE',
-            'DASHBOARD.ACTIVITY_BOARD.QUIET', 'DASHBOARD.ACTIVITY_BOARD.DORMANT'][state]
-           ?? 'DASHBOARD.ACTIVITY_BOARD.NEVER';
-  }
 
-  lastActivityLabel(tenant: TenantActivity): string {
-    const days = tenant.daysSinceActivity;
-    if (days === null || days === undefined) return '';
-    if (days === 0) return this.translate.instant('DASHBOARD.ACTIVITY_BOARD.TODAY');
-    if (days === 1) return this.translate.instant('DASHBOARD.ACTIVITY_BOARD.YESTERDAY');
-    return this.translate.instant('DASHBOARD.ACTIVITY_BOARD.DAYS_AGO', { days });
-  }
 
-  alertLink(tenant: TenantActivity): string {
-    const subject = this.translate.instant('DASHBOARD.ACTIVITY_BOARD.MAIL_SUBJECT', { name: tenant.title });
-    const body = this.translate.instant('DASHBOARD.ACTIVITY_BOARD.MAIL_BODY', { name: tenant.title });
-    return `mailto:${tenant.adminEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
 
   private loadAll(): void {
-    this.analytics.getTenantActivity(30).subscribe({
-      next: (board) => (this.activityBoard = board),
-      error: () => (this.activityBoard = undefined),
-    });
-
-    this.analytics.getTenantBreakdown(30).subscribe({
-      next: (breakdown) => (this.breakdown = breakdown),
-      error: () => (this.breakdown = undefined),
-    });
-
     this.analytics.getCollections(6, 5).subscribe({
       next: (c) => {
         this.collections = c;
