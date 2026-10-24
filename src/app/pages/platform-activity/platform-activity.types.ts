@@ -46,6 +46,28 @@ export interface PlatformActivityResult {
   platforms: PlatformActivityRow[];
 }
 
+export interface SignInEntry {
+  at: string;
+  userId: string;
+  name: string;
+  email: string;
+  role: string;
+  source: number;
+  tenantId: string | null;
+  tenantTitle: string;
+}
+
+export interface SignInLogResult {
+  days: number;
+  totalCount: number;
+  page: number;
+  size: number;
+  uniqueUsers: number;
+  webCount: number;
+  mobileCount: number;
+  items: SignInEntry[];
+}
+
 export interface PlatformGroup {
   key: string;
   icon: string;

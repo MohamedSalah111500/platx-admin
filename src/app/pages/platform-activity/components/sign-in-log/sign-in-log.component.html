@@ -1,0 +1,135 @@
+<div class="container-fluid">
+  <app-page-title [title]="'PLATFORM_ACTIVITY.LOG.TITLE' | translate" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+        <div>
+          <h4 class="card-title mb-1">
+            <i class="bx bx-log-in text-primary me-1"></i>
+            {{ "PLATFORM_ACTIVITY.LOG.HEADING" | translate }}
+          </h4>
+          <p class="text-muted mb-0 font-size-13">{{ "PLATFORM_ACTIVITY.LOG.SUBTITLE" | translate }}</p>
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <div class="status-tabs">
+            @for (period of periods; track period) {
+            <button type="button" class="status-tab" [class.active]="days === period" (click)="selectPeriod(period)">
+              {{ "PLATFORM_ACTIVITY.PERIOD_" + period | translate }}
+            </button>
+            }
+          </div>
+          <button type="button" class="btn btn-light" [disabled]="refreshing || loading" (click)="load()">
+            <i class="bx bx-refresh" [class.bx-spin]="refreshing"></i>
+            {{ "COMMON.REFRESH" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (loading) {
+  <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+  }
+
+  <platx-load-error *ngIf="!loading && loadError" (retry)="load()"></platx-load-error>
+
+  @if (log && !loading && !loadError) {
+  <div class="row g-3 mb-1">
+    <div class="col-xl-3 col-md-6">
+      <div class="card mb-0 h-100">
+        <div class="card-body">
+          <p class="text-muted mb-1">{{ "PLATFORM_ACTIVITY.LOG.TOTAL" | translate }}</p>
+          <h3 class="mb-0">{{ log.totalCount | number }}</h3>
+          <small class="text-muted">{{ "PLATFORM_ACTIVITY.IN_PERIOD" | translate: { days: log.days } }}</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card mb-0 h-100">
+        <div class="card-body">
+          <p class="text-muted mb-1">{{ "PLATFORM_ACTIVITY.LOG.UNIQUE_USERS" | translate }}</p>
+          <h3 class="mb-0">{{ log.uniqueUsers | number }}</h3>
+          <small class="text-muted">{{ "PLATFORM_ACTIVITY.LOG.UNIQUE_HINT" | translate }}</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card mb-0 h-100">
+        <div class="card-body">
+          <p class="text-muted mb-1">{{ "PLATFORM_ACTIVITY.LOG.WEB" | translate }}</p>
+          <h3 class="mb-0">{{ log.webCount | number }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="card mb-0 h-100">
+        <div class="card-body">
+          <p class="text-muted mb-1">{{ "PLATFORM_ACTIVITY.LOG.MOBILE" | translate }}</p>
+          <h3 class="mb-0">{{ log.mobileCount | number }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table align-middle table-nowrap mb-0">
+          <thead>
+            <tr>
+              <th>{{ "PLATFORM_ACTIVITY.LOG.COL_WHEN" | translate }}</th>
+              <th>{{ "PLATFORM_ACTIVITY.LOG.COL_USER" | translate }}</th>
+              <th>{{ "PLATFORM_ACTIVITY.COL_PLATFORM" | translate }}</th>
+              <th>{{ "PLATFORM_ACTIVITY.LOG.COL_ROLE" | translate }}</th>
+              <th>{{ "PLATFORM_ACTIVITY.LOG.COL_SOURCE" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of log.items; track $index) {
+            <tr>
+              <td><span [title]="entry.at | date: 'medium'">{{ entry.at | date: "short" }}</span></td>
+              <td>
+                <div class="fw-semibold text-dark">{{ entry.name || "—" }}</div>
+                <small class="text-muted">{{ entry.email }}</small>
+              </td>
+              <td>{{ entry.tenantTitle || "—" }}</td>
+              <td>{{ roleLabel(entry) }}</td>
+              <td>
+                <span class="pill" [ngClass]="entry.source === 1 ? 'pill-info' : 'pill-muted'">
+                  {{ sourceLabel(entry) }}
+                </span>
+              </td>
+            </tr>
+            }
+            @if (!log.items.length) {
+            <tr>
+              <td colspan="5">
+                <div class="empty-state">
+                  <div class="empty-icon empty-icon-sm mx-auto mb-3"><i class="mdi mdi-login-variant"></i></div>
+                  <h6 class="mb-1">{{ "PLATFORM_ACTIVITY.LOG.EMPTY" | translate }}</h6>
+                  <p class="text-muted mb-0">{{ "PLATFORM_ACTIVITY.LOG.EMPTY_HINT" | translate }}</p>
+                </div>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (log.totalCount > log.size) {
+      <div class="d-flex justify-content-end mt-3">
+        <pagination
+          [totalItems]="log.totalCount"
+          [itemsPerPage]="log.size"
+          [maxSize]="5"
+          [(ngModel)]="page"
+          (pageChanged)="pageChanged($event)"
+          class="pagination-wrap hstack gap-2"></pagination>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>

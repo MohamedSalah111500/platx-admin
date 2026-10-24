@@ -404,6 +404,12 @@
     },
     "PLATFORM_ACTIVITY": {
       "TEXT": "Platform activity"
+    },
+    "PLATFORM_ACTIVITY_OVERVIEW": {
+      "TEXT": "Overview"
+    },
+    "PLATFORM_ACTIVITY_SIGN_INS": {
+      "TEXT": "Sign-in log"
     }
   },
   "TENANT_SUB": {
@@ -1656,6 +1662,26 @@
     "LIVE": "Live classes",
     "MESSAGES": "Messages",
     "MAIL_SUBJECT": "Your PlatX platform {{name}}",
-    "MAIL_BODY": "Hello,\n\nWe noticed little activity on {{name}} recently and wanted to check whether you need a hand getting it going.\n\nThe PlatX team"
+    "MAIL_BODY": "Hello,\n\nWe noticed little activity on {{name}} recently and wanted to check whether you need a hand getting it going.\n\nThe PlatX team",
+    "LOG": {
+      "TITLE": "Sign-in log",
+      "HEADING": "Who signed in, and when",
+      "SUBTITLE": "Every recorded sign-in, with the platform and the device",
+      "TOTAL": "Sign-ins",
+      "UNIQUE_USERS": "Distinct users",
+      "UNIQUE_HINT": "A person is counted once",
+      "WEB": "From the browser",
+      "MOBILE": "From the app",
+      "COL_WHEN": "When",
+      "COL_USER": "User",
+      "COL_ROLE": "Role",
+      "COL_SOURCE": "Source",
+      "ROLE_STUDENT": "Student",
+      "ROLE_STAFF": "Staff",
+      "ROLE_ADMIN": "Platform admin",
+      "ROLE_SUPERADMIN": "System owner",
+      "EMPTY": "No sign-ins in this period",
+      "EMPTY_HINT": "Recording starts when this feature ships; there is no earlier data."
+    }
   }
 }

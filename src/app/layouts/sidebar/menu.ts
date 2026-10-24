@@ -17,7 +17,20 @@ export const MENU: MenuItem[] = [
     id: 5,
     label: "MENUITEMS.PLATFORM_ACTIVITY.TEXT",
     icon: "bx-pulse",
-    link: "/platform-activity",
+    subItems: [
+      {
+        id: 51,
+        label: "MENUITEMS.PLATFORM_ACTIVITY_OVERVIEW.TEXT",
+        link: "/platform-activity",
+        parentId: 5,
+      },
+      {
+        id: 52,
+        label: "MENUITEMS.PLATFORM_ACTIVITY_SIGN_INS.TEXT",
+        link: "/platform-activity/sign-ins",
+        parentId: 5,
+      },
+    ],
   },
   {
     id: 2,
