@@ -19,7 +19,7 @@ export class PlatformActivityComponent implements OnInit {
     { label: "PLATFORM_ACTIVITY.TITLE", active: true },
   ];
 
-  periods = [1, 7, 30, 90];
+  periods = [1, 7, 30];
   days = 30;
 
   loading = true;

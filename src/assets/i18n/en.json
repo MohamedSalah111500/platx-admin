@@ -1670,6 +1670,7 @@
       "TITLE": "Sign-in log",
       "HEADING": "Who signed in, and when",
       "SUBTITLE": "Every recorded sign-in, with the platform and the device",
+      "RETENTION": "The log keeps one month; older sign-ins are deleted automatically.",
       "TOTAL": "Sign-ins",
       "UNIQUE_USERS": "Distinct users",
       "UNIQUE_HINT": "A person is counted once",
