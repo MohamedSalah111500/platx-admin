@@ -410,6 +410,9 @@
     },
     "PLATFORM_ACTIVITY_SIGN_INS": {
       "TEXT": "Sign-in log"
+    },
+    "EXTERNAL_USAGE": {
+      "TEXT": "External usage"
     }
   },
   "TENANT_SUB": {
@@ -1687,5 +1690,44 @@
       "ACTIVE_30D": "Active in 30 days",
       "COL_LAST_SEEN": "Last seen"
     }
+  },
+  "EXTERNAL_USAGE": {
+    "TITLE": "External services usage",
+    "HEADING": "What we pay our providers",
+    "SUBTITLE": "WhatsApp messages, AI requests and stored media, with the cost of each",
+    "PERIOD_7": "7 days",
+    "PERIOD_30": "30 days",
+    "PERIOD_90": "90 days",
+    "PERIOD_365": "A year",
+    "GENERATED_AT": "Last updated:",
+    "STOCK_NOTE": "Messages and requests are for the period; storage is what is held right now",
+    "SERVICE_WHATSAPP": "WhatsApp",
+    "SERVICE_AI": "AI",
+    "SERVICE_R2": "File storage (R2)",
+    "SERVICE_BUNNY": "Bunny video",
+    "UNIT_MESSAGE": "messages",
+    "UNIT_REQUEST": "requests",
+    "UNIT_GB": "GB",
+    "RATE_IS": "Rate",
+    "STOCK": "held now",
+    "TOTAL": "Estimated total",
+    "IN_PERIOD": "over {{days}} days",
+    "FREE_QUOTA": "Messages within the free quota",
+    "FAILED": "Failed messages",
+    "FAILED_HINT": "Failed and free-quota messages are not billed.",
+    "PER_PLATFORM": "Per platform",
+    "COL_PLATFORM": "Platform",
+    "COL_COST": "Cost",
+    "EMPTY": "Nothing consumed in this period",
+    "IDLE_PLATFORMS": "And {{count}} platforms with no usage at all.",
+    "RATES": "Rates",
+    "RATES_TITLE": "Provider rates",
+    "RATES_HINT": "Change a rate the day the provider changes it; the figures follow at once.",
+    "RATES_SAVED": "Rates saved",
+    "CURRENCY": "Currency",
+    "RATE_WHATSAPP": "Per message",
+    "RATE_AI": "Per request",
+    "RATE_R2": "Per GB/month (R2)",
+    "RATE_BUNNY": "Per GB/month (Bunny)"
   }
 }

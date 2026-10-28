@@ -145,6 +145,12 @@ export const COMPANY_ANALYTICS_URLS = {
     `${environment.apiURL.concat(COMPANY_ANALYTICS_BASE)}/collections?trendMonths=${trendMonths}&topOverdueTake=${topOverdueTake}`,
 };
 
+export const EXTERNAL_USAGE_URLS = {
+  USAGE: (days: number) =>
+    `${environment.apiURL.concat("api/admin/ExternalUsage")}?days=${days}`,
+  RATES: `${environment.apiURL.concat("api/admin/ExternalUsage")}/rates`,
+};
+
 export const CRM_URLS = {
   LEADS: `${environment.apiURL.concat(CRM_BASE)}/leads`,
   LEAD: (id: number) => `${environment.apiURL.concat(CRM_BASE)}/leads/${id}`,

@@ -57,6 +57,12 @@ const routes: Routes = [
       ),
   },
   {
+    path: "external-usage",
+    canActivate: [superAdminGuard],
+    loadChildren: () =>
+      import("./external-usage/external-usage.module").then((m) => m.ExternalUsageModule),
+  },
+  {
     path: "installments",
     canActivate: [superAdminGuard],
     loadChildren: () =>

@@ -30,6 +30,12 @@ export const MENU: MenuItem[] = [
         link: "/platform-activity/sign-ins",
         parentId: 5,
       },
+      {
+        id: 53,
+        label: "MENUITEMS.EXTERNAL_USAGE.TEXT",
+        link: "/external-usage",
+        parentId: 5,
+      },
     ],
   },
   {
