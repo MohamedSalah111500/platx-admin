@@ -1728,6 +1728,12 @@
     "RATE_WHATSAPP": "للرسالة",
     "RATE_AI": "للطلب",
     "RATE_R2": "جيجا/شهر (R2)",
-    "RATE_BUNNY": "جيجا/شهر (Bunny)"
+    "RATE_BUNNY": "جيجا/شهر (Bunny)",
+    "SERVICE_BUNNY_STREAM": "بث Bunny (تقديري)",
+    "ESTIMATE": "تقديري",
+    "RATE_STREAM": "جيجا بث",
+    "STREAM_FACTOR": "معامل البث",
+    "STREAM_FACTOR_HINT": "كم مرة تُشاهَد الجيجا شهريًا",
+    "ESTIMATE_NOTE": "البث غير مقاس — يُقدَّر من حجم المكتبة. عدّل المعامل عند وصول فاتورة Bunny."
   }
 }

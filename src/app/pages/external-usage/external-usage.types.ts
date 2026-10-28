@@ -5,6 +5,7 @@ export interface ExternalUsageRates {
   r2PerGbMonth: number;
   bunnyStoragePerGbMonth: number;
   bunnyStreamingPerGb: number;
+  bunnyStreamingFactor: number;
 }
 
 export interface ExternalUsageService {
@@ -14,6 +15,7 @@ export interface ExternalUsageService {
   rate: number;
   cost: number;
   isStock: boolean;
+  isEstimate: boolean;
 }
 
 export interface ExternalUsageRow {
@@ -26,11 +28,13 @@ export interface ExternalUsageRow {
   aiRequests: number;
   r2Gb: number;
   bunnyGb: number;
+  bunnyStreamingGb: number;
   accountedStorageGb: number;
   whatsAppCost: number;
   aiCost: number;
   r2Cost: number;
   bunnyCost: number;
+  bunnyStreamingCost: number;
   totalCost: number;
 }
 
@@ -44,6 +48,7 @@ export interface ExternalUsageResult {
   aiRequests: number;
   r2Gb: number;
   bunnyGb: number;
+  bunnyStreamingGb: number;
   totalCost: number;
   services: ExternalUsageService[];
   tenants: ExternalUsageRow[];

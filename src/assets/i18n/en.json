@@ -1728,6 +1728,12 @@
     "RATE_WHATSAPP": "Per message",
     "RATE_AI": "Per request",
     "RATE_R2": "Per GB/month (R2)",
-    "RATE_BUNNY": "Per GB/month (Bunny)"
+    "RATE_BUNNY": "Per GB/month (Bunny)",
+    "SERVICE_BUNNY_STREAM": "Bunny streaming (estimate)",
+    "ESTIMATE": "estimate",
+    "RATE_STREAM": "Per GB streamed",
+    "STREAM_FACTOR": "Streaming factor",
+    "STREAM_FACTOR_HINT": "Times a stored GB is watched per month",
+    "ESTIMATE_NOTE": "Streaming is not measured — it is derived from the library size. Tune the factor against a real Bunny invoice."
   }
 }

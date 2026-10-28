@@ -36,6 +36,7 @@
         <span [title]="board.generatedAt | date: 'medium'">{{ board.generatedAt | date: "shortTime" }}</span>
         <span class="mx-2">·</span>{{ "EXTERNAL_USAGE.STOCK_NOTE" | translate }}
       </p>
+      <p class="text-muted font-size-13 mb-0">{{ "EXTERNAL_USAGE.ESTIMATE_NOTE" | translate }}</p>
       }
     </div>
   </div>
@@ -66,6 +67,15 @@
         <div class="col-md-2 col-6">
           <label class="form-label">{{ "EXTERNAL_USAGE.RATE_BUNNY" | translate }}</label>
           <input type="number" class="form-control" [(ngModel)]="rates.bunnyStoragePerGbMonth" min="0" step="0.001" />
+        </div>
+        <div class="col-md-2 col-6">
+          <label class="form-label">{{ "EXTERNAL_USAGE.RATE_STREAM" | translate }}</label>
+          <input type="number" class="form-control" [(ngModel)]="rates.bunnyStreamingPerGb" min="0" step="0.001" />
+        </div>
+        <div class="col-md-2 col-6">
+          <label class="form-label">{{ "EXTERNAL_USAGE.STREAM_FACTOR" | translate }}</label>
+          <input type="number" class="form-control" [(ngModel)]="rates.bunnyStreamingFactor" min="0" step="0.5" />
+          <small class="text-muted">{{ "EXTERNAL_USAGE.STREAM_FACTOR_HINT" | translate }}</small>
         </div>
         <div class="col-md-2 col-6 d-flex align-items-end">
           <button type="button" class="btn btn-primary w-100" [disabled]="savingRates" (click)="saveRates()">
@@ -106,6 +116,9 @@
             <span>/ {{ "EXTERNAL_USAGE.UNIT_" + service.unit | translate }}</span>
             @if (service.isStock) {
             <span class="pill pill-muted pill-sm ms-1">{{ "EXTERNAL_USAGE.STOCK" | translate }}</span>
+            }
+            @if (service.isEstimate) {
+            <span class="pill pill-grace pill-sm ms-1">{{ "EXTERNAL_USAGE.ESTIMATE" | translate }}</span>
             }
           </div>
         </div>
@@ -155,6 +168,7 @@
               <th class="text-center">{{ "EXTERNAL_USAGE.SERVICE_AI" | translate }}</th>
               <th class="text-center">{{ "EXTERNAL_USAGE.SERVICE_R2" | translate }}</th>
               <th class="text-center">{{ "EXTERNAL_USAGE.SERVICE_BUNNY" | translate }}</th>
+              <th class="text-center">{{ "EXTERNAL_USAGE.SERVICE_BUNNY_STREAM" | translate }}</th>
               <th class="text-end">{{ "EXTERNAL_USAGE.COL_COST" | translate }}</th>
             </tr>
           </thead>
@@ -183,12 +197,16 @@
                 {{ row.bunnyGb | number: "1.0-3" }}
                 <div class="text-muted font-size-13">{{ row.bunnyCost | number: "1.2-2" }}</div>
               </td>
+              <td class="text-center">
+                {{ row.bunnyStreamingGb | number: "1.0-1" }}
+                <div class="text-muted font-size-13">{{ row.bunnyStreamingCost | number: "1.2-2" }}</div>
+              </td>
               <td class="text-end fw-semibold">{{ row.totalCost | number: "1.2-2" }}</td>
             </tr>
             }
             @if (!spendingTenants.length) {
             <tr>
-              <td colspan="6">
+              <td colspan="7">
                 <div class="empty-state">
                   <div class="empty-icon empty-icon-sm mx-auto mb-3"><i class="mdi mdi-cash-remove"></i></div>
                   <h6 class="mb-0">{{ "EXTERNAL_USAGE.EMPTY" | translate }}</h6>

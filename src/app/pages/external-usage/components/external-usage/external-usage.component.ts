@@ -36,6 +36,7 @@ export class ExternalUsageComponent implements OnInit {
     r2PerGbMonth: 0,
     bunnyStoragePerGbMonth: 0,
     bunnyStreamingPerGb: 0,
+    bunnyStreamingFactor: 0,
   };
 
   readonly serviceIcons: Record<string, string> = {
@@ -43,6 +44,7 @@ export class ExternalUsageComponent implements OnInit {
     AI: "bx-brain",
     R2: "bx-cloud",
     BUNNY: "bx-video-recording",
+    BUNNY_STREAM: "bx-broadcast",
   };
 
   constructor(
