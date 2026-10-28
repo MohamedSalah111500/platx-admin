@@ -1681,7 +1681,11 @@
       "ROLE_ADMIN": "Platform admin",
       "ROLE_SUPERADMIN": "System owner",
       "EMPTY": "No sign-ins in this period",
-      "EMPTY_HINT": "Recording starts when this feature ships; there is no earlier data."
+      "EMPTY_HINT": "Recording starts when this feature ships; there is no earlier data.",
+      "RECENT_USERS": "Recently active users",
+      "ACTIVE_7D": "Active in 7 days",
+      "ACTIVE_30D": "Active in 30 days",
+      "COL_LAST_SEEN": "Last seen"
     }
   }
 }

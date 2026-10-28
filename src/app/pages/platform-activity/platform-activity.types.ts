@@ -74,3 +74,17 @@ export interface PlatformGroup {
   tone: string;
   rows: PlatformActivityRow[];
 }
+
+export interface RecentUser {
+  name: string;
+  email: string;
+  tenantTitle: string;
+  lastLoginAt: string | null;
+}
+
+export interface EngagementSummary {
+  totalUsers: number;
+  activeUsers7d: number;
+  activeUsers30d: number;
+  recentActiveUsers: RecentUser[];
+}

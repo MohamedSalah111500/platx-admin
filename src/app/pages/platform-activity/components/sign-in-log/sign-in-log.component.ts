@@ -1,7 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { PlatformActivityService } from "../../platform-activity.service";
-import { SignInEntry, SignInLogResult } from "../../platform-activity.types";
+import {
+  EngagementSummary,
+  SignInEntry,
+  SignInLogResult,
+} from "../../platform-activity.types";
 
 @Component({
   selector: "app-sign-in-log",
@@ -22,6 +26,7 @@ export class SignInLogComponent implements OnInit {
   refreshing = false;
   loadError = false;
   log?: SignInLogResult;
+  engagement?: EngagementSummary;
 
   constructor(
     private service: PlatformActivityService,
@@ -30,6 +35,20 @@ export class SignInLogComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    this.loadEngagement();
+  }
+
+  loadEngagement(): void {
+    this.service.engagement(10).subscribe({
+      next: (engagement) => (this.engagement = engagement),
+      error: () => (this.engagement = undefined),
+    });
+  }
+
+  initials(name: string): string {
+    const parts = (name || "").trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return "?";
+    return (parts[0][0] + (parts[1]?.[0] || "")).toUpperCase();
   }
 
   load(): void {
@@ -39,6 +58,7 @@ export class SignInLogComponent implements OnInit {
       this.loading = true;
     }
 
+    this.loadEngagement();
     this.service.signIns(this.days, this.page, this.size).subscribe({
       next: (log) => {
         this.log = log;

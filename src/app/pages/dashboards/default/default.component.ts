@@ -4,8 +4,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { ChartType } from './dashboard.model';
 import { AnalyticsService } from '../analytics.service';
 import {
-  CompanyActivity,
-  CompanyEngagement,
   CompanyGrowth,
   CompanyOverview,
   CompanyCollections,
@@ -29,15 +27,12 @@ export class DefaultComponent implements OnInit, OnDestroy {
   loading = true;
 
   overview?: CompanyOverview;
-  activity?: CompanyActivity;
-  engagement?: CompanyEngagement;
   growth?: CompanyGrowth;
   revenue?: CompanyRevenue;
   collections?: CompanyCollections;
   collectionsChart?: ChartType;
 
   statData: { title: string; value: string; icon: string }[] = [];
-  activityStats: { label: string; value: number; icon: string }[] = [];
   growthChart?: ChartType;
   maxPlanCount = 0;
 
@@ -121,17 +116,6 @@ export class DefaultComponent implements OnInit, OnDestroy {
       },
     });
 
-    this.analytics.getActivity().subscribe({
-      next: (a) => {
-        this.activity = a;
-        this.buildActivity(a);
-      },
-    });
-
-    this.analytics.getEngagement().subscribe({
-      next: (e) => (this.engagement = e),
-    });
-
     this.analytics.getRevenue().subscribe({
       next: (r) => {
         this.revenue = r;
@@ -163,6 +147,12 @@ export class DefaultComponent implements OnInit, OnDestroy {
     ];
   }
 
+  initials(name: string): string {
+    const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '?';
+    return (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase();
+  }
+
   primaryRevenue(): CurrencyAmount {
     const totals = this.revenue?.totalRevenue || [];
     return (
@@ -174,25 +164,6 @@ export class DefaultComponent implements OnInit, OnDestroy {
   otherRevenues(): CurrencyAmount[] {
     const primary = this.primaryRevenue();
     return (this.revenue?.totalRevenue || []).filter((r) => r.currency !== primary.currency);
-  }
-
-  initials(name: string): string {
-    const parts = name.trim().split(/\s+/).filter(Boolean);
-    if (parts.length === 0) return '?';
-    return (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase();
-  }
-
-  private buildActivity(a: CompanyActivity): void {
-    // labels are translation keys — rendered via `| translate` in the template
-    this.activityStats = [
-      { label: 'DASHBOARD.ACTIVITY.ENROLLMENTS', value: a.enrollments, icon: 'bx-collection' },
-      { label: 'DASHBOARD.ACTIVITY.EXAMS', value: a.examsTaken, icon: 'bx-edit-alt' },
-      { label: 'DASHBOARD.ACTIVITY.HOMEWORK', value: a.homeworkSubmissions, icon: 'bx-task' },
-      { label: 'DASHBOARD.ACTIVITY.LESSONS', value: a.lessonsCompleted, icon: 'bx-check-circle' },
-      { label: 'DASHBOARD.ACTIVITY.LIVE', value: a.liveClasses, icon: 'bx-video' },
-      { label: 'DASHBOARD.ACTIVITY.QR', value: a.qrRedemptions, icon: 'bx-qr-scan' },
-      { label: 'DASHBOARD.ACTIVITY.MESSAGES', value: a.messagesSent, icon: 'bx-message-dots' },
-    ];
   }
 
   private buildGrowthChart(g: CompanyGrowth): void {
