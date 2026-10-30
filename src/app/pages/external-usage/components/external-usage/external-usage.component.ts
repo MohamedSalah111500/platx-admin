@@ -106,14 +106,14 @@ export class ExternalUsageComponent implements OnInit {
   }
 
   get spendingTenants(): ExternalUsageRow[] {
-    return (this.board?.tenants ?? []).filter(
-      (t) => t.totalCost > 0 || t.whatsAppSent > 0 || t.aiRequests > 0
-    );
+    return (this.board?.tenants ?? []).filter((t) => this.hasActivity(t));
   }
 
   get idleTenants(): ExternalUsageRow[] {
-    return (this.board?.tenants ?? []).filter(
-      (t) => t.totalCost === 0 && t.whatsAppSent === 0 && t.aiRequests === 0
-    );
+    return (this.board?.tenants ?? []).filter((t) => !this.hasActivity(t));
+  }
+
+  private hasActivity(row: ExternalUsageRow): boolean {
+    return row.totalCost > 0 || row.whatsAppSent > 0 || row.aiRequests > 0 || row.r2Gb > 0 || row.bunnyGb > 0;
   }
 }

@@ -1,4 +1,8 @@
 {
+  "STORAGE_SIZE": {
+    "MB": "MB",
+    "GB": "GB"
+  },
   "HEADER": {
     "SEARCH": "Search...",
     "MEGA_MENU": "Mega Menu",

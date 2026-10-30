@@ -17,6 +17,7 @@ import {
 import { PLATFORM_MAX_QUANTITY, PLATFORM_UNLIMITED } from "src/app/shared/platform-request";
 import { SubscriptionService } from "../../services/subscription.service";
 import { LimitPeriod, LimitValueType, TenantLimitUsage } from "../../types/subscription.types";
+import { isStorageKey } from "src/app/shared/storage/storage-size";
 
 interface FeatureSection {
   group: LimitGroup;
@@ -106,6 +107,19 @@ export class TenantFeaturesComponent implements OnChanges {
   percent(item: TenantLimitUsage): number {
     if (item.isUnlimited || item.limit <= 0) return 0;
     return Math.min(100, Math.round((item.used / item.limit) * 100));
+  }
+
+  isStorage(item: TenantLimitUsage): boolean {
+    return isStorageKey(item.key);
+  }
+
+  remainingGb(item: TenantLimitUsage): number {
+    return Math.max(0, item.limit - item.used);
+  }
+
+  badgeClass(item: TenantLimitUsage): string {
+    const percent = this.percent(item);
+    return percent >= 90 ? "bg-danger-subtle text-danger" : percent >= 75 ? "bg-warning-subtle text-warning" : "bg-primary-subtle text-primary";
   }
 
   barClass(item: TenantLimitUsage): string {

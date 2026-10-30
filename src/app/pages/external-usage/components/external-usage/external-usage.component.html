@@ -105,8 +105,12 @@
             <h6 class="mb-0">{{ "EXTERNAL_USAGE.SERVICE_" + service.key | translate }}</h6>
           </div>
           <h3 class="mb-0">
+            @if (service.unit === "GB") {
+            {{ service.quantity | storageGb }}
+            } @else {
             {{ service.quantity | number: "1.0-3" }}
             <span class="text-muted font-size-14">{{ "EXTERNAL_USAGE.UNIT_" + service.unit | translate }}</span>
+            }
           </h3>
           <div class="text-muted font-size-13 mt-1">
             {{ service.cost | number: "1.2-2" }} {{ board.rates.currency }}
@@ -190,15 +194,15 @@
                 <div class="text-muted font-size-13">{{ row.aiCost | number: "1.2-2" }}</div>
               </td>
               <td class="text-center">
-                {{ row.r2Gb | number: "1.0-3" }}
+                {{ row.r2Gb | storageGb }}
                 <div class="text-muted font-size-13">{{ row.r2Cost | number: "1.2-2" }}</div>
               </td>
               <td class="text-center">
-                {{ row.bunnyGb | number: "1.0-3" }}
+                {{ row.bunnyGb | storageGb }}
                 <div class="text-muted font-size-13">{{ row.bunnyCost | number: "1.2-2" }}</div>
               </td>
               <td class="text-center">
-                {{ row.bunnyStreamingGb | number: "1.0-1" }}
+                {{ row.bunnyStreamingGb | storageGb }}
                 <div class="text-muted font-size-13">{{ row.bunnyStreamingCost | number: "1.2-2" }}</div>
               </td>
               <td class="text-end fw-semibold">{{ row.totalCost | number: "1.2-2" }}</td>

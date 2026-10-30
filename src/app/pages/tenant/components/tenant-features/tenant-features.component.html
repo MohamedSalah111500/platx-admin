@@ -53,6 +53,24 @@
             </div>
             <div class="text-muted">{{ limitHint(item.key) | translate }}</div>
           </div>
+          @if (isStorage(item)) {
+          <div class="text-end">
+            <div class="fw-semibold font-size-16">
+              {{ item.used | storageGb }}
+              @if (!item.isUnlimited) {
+              / {{ item.limit | storageGb }}
+              <span class="badge font-size-14 ms-1" [ngClass]="badgeClass(item)">{{ percent(item) }}%</span>
+              }
+            </div>
+            <div class="text-muted">
+              @if (item.isUnlimited) {
+              {{ 'LIMITS.UNLIMITED' | translate }}
+              } @else {
+              {{ 'LIMITS.REMAINING' | translate: { count: (remainingGb(item) | storageGb) } }}
+              }
+            </div>
+          </div>
+          } @else {
           <div class="text-end">
             <div class="fw-semibold font-size-16">
               @if (item.isUnlimited) {
@@ -69,6 +87,7 @@
               }
             </div>
           </div>
+          }
         </div>
 
         @if (!item.isUnlimited) {
