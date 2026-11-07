@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { ToastrService } from "ngx-toastr";
-import { TenantService } from "../../services/tenantService.service";
+import { LandingThemeOption, TenantService } from "../../services/tenantService.service";
 
 @Component({
   selector: "platx-tenant-landing-theme",
@@ -10,7 +10,7 @@ import { TenantService } from "../../services/tenantService.service";
 export class TenantLandingThemeComponent implements OnChanges {
   @Input() tenantId!: string;
 
-  themes: string[] = [];
+  themes: LandingThemeOption[] = [];
   selected = "";
   saved = "";
   loading = false;
@@ -42,6 +42,10 @@ export class TenantLandingThemeComponent implements OnChanges {
         this.failed = true;
       },
     });
+  }
+
+  themeName(theme: LandingThemeOption): string {
+    return (this.translate.currentLang || "ar") === "ar" ? theme.nameAr : theme.nameEn;
   }
 
   save(): void {

@@ -24,19 +24,15 @@
       <button type="button" class="btn btn-primary" (click)="load()">{{ 'LIMITS.RETRY' | translate }}</button>
     </div>
     } @else {
-    <div class="row g-2">
-      @for (theme of themes; track theme) {
-      <div class="col-12 col-md-4">
-        <label class="d-flex align-items-start gap-2 border rounded-3 p-3 mb-0 w-100 h-100" [class.bg-light]="selected === theme">
-          <input class="form-check-input mt-1 flex-shrink-0" type="radio" name="landing-theme-{{ tenantId }}"
-            [checked]="selected === theme" (change)="selected = theme" />
-          <span>
-            <span class="d-block fw-semibold">{{ 'LANDING_THEME.NAMES.' + theme | translate }}</span>
-            <span class="d-block text-muted">{{ 'LANDING_THEME.DESCRIPTIONS.' + theme | translate }}</span>
-          </span>
-        </label>
+    <div class="row">
+      <div class="col-md-6 col-lg-4">
+        <label class="form-label" for="landing-theme-{{ tenantId }}">{{ 'LANDING_THEME.LABEL' | translate }}</label>
+        <select class="form-select" id="landing-theme-{{ tenantId }}" [(ngModel)]="selected">
+          @for (theme of themes; track theme.id) {
+          <option [ngValue]="theme.id">{{ themeName(theme) }}</option>
+          }
+        </select>
       </div>
-      }
     </div>
     }
   </div>

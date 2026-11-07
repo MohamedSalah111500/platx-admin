@@ -152,11 +152,22 @@ export class TenantService {
     });
   }
 
-  getLandingTheme(tenantId: string): Observable<{ themeId: string; themes: string[] }> {
-    return this.http.get<{ themeId: string; themes: string[] }>(TENANT_URLS.LANDING_THEME(tenantId));
+  getLandingTheme(tenantId: string): Observable<TenantLandingTheme> {
+    return this.http.get<TenantLandingTheme>(TENANT_URLS.LANDING_THEME(tenantId));
   }
 
-  setLandingTheme(tenantId: string, themeId: string): Observable<{ themeId: string; themes: string[] }> {
-    return this.http.put<{ themeId: string; themes: string[] }>(TENANT_URLS.LANDING_THEME(tenantId), { themeId });
+  setLandingTheme(tenantId: string, themeId: string): Observable<TenantLandingTheme> {
+    return this.http.put<TenantLandingTheme>(TENANT_URLS.LANDING_THEME(tenantId), { themeId });
   }
+}
+
+export interface LandingThemeOption {
+  id: string;
+  nameAr: string;
+  nameEn: string;
+}
+
+export interface TenantLandingTheme {
+  themeId: string;
+  themes: LandingThemeOption[];
 }
