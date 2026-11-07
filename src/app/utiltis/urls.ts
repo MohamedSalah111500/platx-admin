@@ -41,6 +41,7 @@ export const TENANT_URLS = {
   GET_ALL: `${environment.apiURL.concat(TENANT_BASE)}`,
   UPDATE: `${environment.apiURL.concat(TENANT_BASE)}`,
   GET_BY_ID: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/${id}`,
+  LANDING_THEME: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/${id}/landing-theme`,
   DELETE: (id: string) => `${environment.apiURL.concat(TENANT_BASE)}/${id}`,
   ACTIVATE: (id: string) =>
     `${environment.apiURL.concat(TENANT_BASE)}/ActivateTenant/${id}`,

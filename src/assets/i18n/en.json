@@ -1609,6 +1609,23 @@
       "HINT": "Send student reports to parents on WhatsApp."
     }
   },
+  "LANDING_THEME": {
+    "TITLE": "Home page theme",
+    "HINT": "Sets the home page design for this platform. Only the chosen theme is loaded when the page opens.",
+    "SAVE": "Save theme",
+    "SAVED": "Theme saved",
+    "LOAD_FAILED": "Could not load the current theme.",
+    "NAMES": {
+      "classic": "Classic",
+      "modern": "Modern",
+      "cinema": "Cinema"
+    },
+    "DESCRIPTIONS": {
+      "classic": "The default home page design.",
+      "modern": "A modern look for the page sections.",
+      "cinema": "A cover image fills the top of the page with the title over it."
+    }
+  },
   "WHATSAPP_COUNTRIES": {
     "TITLE": "Allowed WhatsApp countries",
     "HINT": "Parent messages are sent only to numbers from these countries; others are not sent and not charged.",

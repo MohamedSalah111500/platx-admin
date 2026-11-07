@@ -1,0 +1,43 @@
+<div class="card">
+  <div class="card-body border-bottom">
+    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3">
+      <div>
+        <h4 class="card-title mb-1"><i class="mdi mdi-palette-outline text-primary me-1"></i>{{ 'LANDING_THEME.TITLE' | translate }}</h4>
+        <p class="text-muted mb-0">{{ 'LANDING_THEME.HINT' | translate }}</p>
+      </div>
+      @if (!loading && !failed) {
+      <button type="button" class="btn btn-primary" [disabled]="selected === saved || saving" (click)="save()">
+        @if (saving) {
+        <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+        }
+        {{ 'LANDING_THEME.SAVE' | translate }}
+      </button>
+      }
+    </div>
+  </div>
+  <div class="card-body">
+    @if (loading) {
+    <div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>
+    } @else if (failed) {
+    <div class="text-center py-4">
+      <p class="text-muted mb-3">{{ 'LANDING_THEME.LOAD_FAILED' | translate }}</p>
+      <button type="button" class="btn btn-primary" (click)="load()">{{ 'LIMITS.RETRY' | translate }}</button>
+    </div>
+    } @else {
+    <div class="row g-2">
+      @for (theme of themes; track theme) {
+      <div class="col-12 col-md-4">
+        <label class="d-flex align-items-start gap-2 border rounded-3 p-3 mb-0 w-100 h-100" [class.bg-light]="selected === theme">
+          <input class="form-check-input mt-1 flex-shrink-0" type="radio" name="landing-theme-{{ tenantId }}"
+            [checked]="selected === theme" (change)="selected = theme" />
+          <span>
+            <span class="d-block fw-semibold">{{ 'LANDING_THEME.NAMES.' + theme | translate }}</span>
+            <span class="d-block text-muted">{{ 'LANDING_THEME.DESCRIPTIONS.' + theme | translate }}</span>
+          </span>
+        </label>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

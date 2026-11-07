@@ -151,4 +151,12 @@ export class TenantService {
       );
     });
   }
+
+  getLandingTheme(tenantId: string): Observable<{ themeId: string; themes: string[] }> {
+    return this.http.get<{ themeId: string; themes: string[] }>(TENANT_URLS.LANDING_THEME(tenantId));
+  }
+
+  setLandingTheme(tenantId: string, themeId: string): Observable<{ themeId: string; themes: string[] }> {
+    return this.http.put<{ themeId: string; themes: string[] }>(TENANT_URLS.LANDING_THEME(tenantId), { themeId });
+  }
 }

@@ -23,11 +23,12 @@ import { InstallmentsSectionComponent } from './components/installments-section/
 import { TenantDomainsComponent } from './components/tenant-domains/tenant-domains.component';
 import { TenantFeaturesComponent } from './components/tenant-features/tenant-features.component';
 import { TenantWhatsAppCountriesComponent } from './components/tenant-whatsapp-countries/tenant-whatsapp-countries.component';
+import { TenantLandingThemeComponent } from './components/tenant-landing-theme/tenant-landing-theme.component';
 import { StorageGbPipe } from 'src/app/shared/storage/storage-size.pipe';
 
 
 @NgModule({
-  declarations: [TenantComponent, AddEditComponent,FileUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent, TenantDomainsComponent, TenantFeaturesComponent, TenantWhatsAppCountriesComponent],
+  declarations: [TenantComponent, AddEditComponent,FileUploadComponent, SubscriptionSectionComponent, TenantSubscriptionComponent, InstallmentsSectionComponent, TenantDomainsComponent, TenantFeaturesComponent, TenantWhatsAppCountriesComponent, TenantLandingThemeComponent],
   imports: [
     CommonModule,
     TenantRoutingModule,
