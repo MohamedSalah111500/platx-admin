@@ -5,6 +5,7 @@ export const PLATFORM_ADDON = {
   Certificates: "certificates",
   Live: "live",
   Attendance: "attendance",
+  Store: "store",
 } as const;
 export type PlatformAddon = (typeof PLATFORM_ADDON)[keyof typeof PLATFORM_ADDON];
 
@@ -50,6 +51,7 @@ export const LIMIT_KEY = {
   AdvancedReports: "advanced_reports",
   WhatsAppEnabled: "whatsapp_enabled",
   WhatsAppMessages: "whatsapp_messages",
+  StoreEnabled: "store_enabled",
 } as const;
 
 export const PLATFORM_ADDON_LIMIT_KEY: Record<PlatformAddon, string> = {
@@ -57,6 +59,7 @@ export const PLATFORM_ADDON_LIMIT_KEY: Record<PlatformAddon, string> = {
   [PLATFORM_ADDON.Certificates]: LIMIT_KEY.CompletionCertificate,
   [PLATFORM_ADDON.Live]: LIMIT_KEY.LiveEnabled,
   [PLATFORM_ADDON.Attendance]: LIMIT_KEY.Attendance,
+  [PLATFORM_ADDON.Store]: LIMIT_KEY.StoreEnabled,
 };
 
 export const ADDON_LIMIT_KEYS: ReadonlySet<string> = new Set(Object.values(PLATFORM_ADDON_LIMIT_KEY));
