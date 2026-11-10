@@ -41,6 +41,7 @@ export class InstallmentsSectionComponent implements OnChanges {
   modalRef?: BsModalRef;
   form: FormGroup;
   editingId: number | null = null;
+  isRefundForm = false;
 
   deleteModalRef?: BsModalRef;
   itemToDelete: TenantInstallment | null = null;
@@ -285,14 +286,23 @@ export class InstallmentsSectionComponent implements OnChanges {
 
   openAddModal(template: TemplateRef<any>): void {
     this.editingId = null;
+    this.isRefundForm = false;
     this.form.reset({ amount: null, dueDate: null, note: "" });
+    this.modalRef = this.modalService.show(template, { class: "modal-md" });
+  }
+
+  openRefundModal(template: TemplateRef<any>): void {
+    this.editingId = null;
+    this.isRefundForm = true;
+    this.form.reset({ amount: null, dueDate: new Date().toISOString().substring(0, 10), note: "" });
     this.modalRef = this.modalService.show(template, { class: "modal-md" });
   }
 
   openEditModal(template: TemplateRef<any>, item: TenantInstallment): void {
     this.editingId = item.id;
+    this.isRefundForm = item.isRefund;
     this.form.reset({
-      amount: item.amount,
+      amount: Math.abs(item.amount),
       dueDate: item.dueDate ? item.dueDate.substring(0, 10) : null,
       note: item.note ?? "",
     });
@@ -322,10 +332,10 @@ export class InstallmentsSectionComponent implements OnChanges {
         });
     } else {
       this.installmentService
-        .create(this.tenantId, { amount: v.amount, dueDate: v.dueDate, note: v.note })
+        .create(this.tenantId, { amount: v.amount, dueDate: v.dueDate, note: v.note, isRefund: this.isRefundForm })
         .subscribe({
           next: () => {
-            this.toastr.success(this.translate.instant("INST.TOAST.ADDED"));
+            this.toastr.success(this.translate.instant(this.isRefundForm ? "INST.TOAST.REFUND_ADDED" : "INST.TOAST.ADDED"));
             this.modalRef?.hide();
             this.load();
           },

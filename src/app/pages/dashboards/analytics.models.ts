@@ -119,6 +119,7 @@ export interface CompanyCollections {
   contractedAmount: number;
   scheduledAmount: number;
   collectedAmount: number;
+  refundedAmount: number;
   outstandingAmount: number;
   overdueAmount: number;
   overdueCount: number;
