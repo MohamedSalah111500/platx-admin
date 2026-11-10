@@ -26,13 +26,13 @@ export interface GeneratePaymentPlanPayload {
 }
 
 export interface TenantFinancialSummary {
-  contractAmount: number | null;
+  contractAmount: number;
   scheduledAmount: number;
   paidAmount: number;
   outstandingAmount: number;
   overdueAmount: number;
   overdueCount: number;
-  unallocatedAmount: number;
+  refundedAmount: number;
   installmentsCount: number;
   paidCount: number;
   collectedPercentage: number;

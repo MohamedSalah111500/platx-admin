@@ -11,6 +11,9 @@
           <button type="button" class="btn btn-light" (click)="openAddModal(addEditTpl)">
             <i class="mdi mdi-plus me-1"></i> {{ 'INST.ADD' | translate }}
           </button>
+          <button type="button" class="btn btn-light" *ngIf="(summary?.paidAmount ?? 0) > 0" (click)="openRefundModal(addEditTpl)">
+            <i class="mdi mdi-cash-refund me-1"></i> {{ 'INST.ADD_REFUND' | translate }}
+          </button>
           <button type="button" class="btn btn-primary" (click)="openPlanModal(planTpl)">
             <i class="mdi mdi-calendar-check-outline me-1"></i>
             {{ (items.length > 0 ? 'INST.PLAN.REBUILD' : 'INST.PLAN.BUILD') | translate }}
@@ -26,7 +29,7 @@
           <div>
             <span class="info-label d-block">{{ 'INST.CONTRACT_PRICE' | translate }}</span>
             <div class="info-value">
-              {{ (summary.contractAmount ?? summary.scheduledAmount) | number: '1.0-2' }} {{ 'INST.EGP' | translate }}
+              {{ summary.contractAmount | number: '1.0-2' }} {{ 'INST.EGP' | translate }}
             </div>
           </div>
           <div class="text-md-end">
@@ -45,6 +48,9 @@
               <span class="info-label">{{ 'INST.PAID' | translate }}</span>
               <div class="info-value text-success">{{ summary.paidAmount | number: '1.0-2' }}</div>
               <div class="info-sub">{{ 'INST.OF_COUNT' | translate: { paid: summary.paidCount, total: summary.installmentsCount } }}</div>
+              <div class="info-sub text-danger" *ngIf="summary.refundedAmount > 0">
+                {{ 'INST.REFUNDED_SUB' | translate: { amount: (summary.refundedAmount | number: '1.0-2') } }}
+              </div>
             </div>
           </div>
           <div class="col-md-3 col-6">
@@ -73,12 +79,6 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="alert alert-warning mt-3 mb-0" *ngIf="summary.unallocatedAmount !== 0">
-          <i class="mdi mdi-alert-circle-outline me-1"></i>
-          {{ (summary.unallocatedAmount > 0 ? 'INST.UNALLOCATED_WARN' : 'INST.OVERALLOCATED_WARN')
-             | translate: { amount: (summary.unallocatedAmount < 0 ? -summary.unallocatedAmount : summary.unallocatedAmount) | number: '1.0-2' } }}
         </div>
       </ng-container>
 
@@ -114,10 +114,14 @@
         </div>
         <div class="inst-row" *ngFor="let item of items">
           <div>{{ item.dueDate | date: "d MMM yyyy" }}</div>
-          <div class="text-end fw-medium">{{ item.amount | number: '1.0-2' }} {{ 'INST.EGP' | translate }}</div>
+          <div class="text-end fw-medium" [class.text-danger]="item.isRefund">{{ item.amount | number: '1.0-2' }} {{ 'INST.EGP' | translate }}</div>
           <div class="text-muted">{{ item.note || "-" }}</div>
           <div>
-            <span class="pill" [ngClass]="pillClass(item.status)">
+            <span class="pill pill-expired" *ngIf="item.isRefund">
+              <span class="status-dot dot-expired"></span>
+              {{ 'INST.STATUS.REFUNDED' | translate }}
+            </span>
+            <span class="pill" *ngIf="!item.isRefund" [ngClass]="pillClass(item.status)">
               <span class="status-dot" [ngClass]="dotClass(item.status)"></span>
               {{ statusLabel(item.status) | translate }}
               <ng-container *ngIf="item.status === InstallmentStatus.Overdue">
@@ -134,7 +138,7 @@
                 <i class="mdi mdi-dots-horizontal font-size-18"></i>
               </a>
               <ul *dropdownMenu class="dropdown-menu dropdown-menu-end">
-                <li *ngIf="item.isPaid">
+                <li *ngIf="item.isPaid && !item.isRefund">
                   <a href="javascript:void(0);" (click)="markUnpaid(item)" class="dropdown-item">
                     <i class="mdi mdi-close-circle-outline text-warning me-2"></i> {{ 'INST.MARK_UNPAID' | translate }}
                   </a>
@@ -302,28 +306,35 @@
 <!-- Add / Edit Modal -->
 <ng-template #addEditTpl>
   <div class="modal-header">
-    <h5 class="modal-title">{{ (editingId ? 'INST.EDIT_MODAL' : 'INST.ADD_MODAL') | translate }}</h5>
+    <h5 class="modal-title">
+      {{ (isRefundForm
+            ? (editingId ? 'INST.EDIT_REFUND_MODAL' : 'INST.REFUND_MODAL')
+            : (editingId ? 'INST.EDIT_MODAL' : 'INST.ADD_MODAL')) | translate }}
+    </h5>
     <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
   </div>
   <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="modal-body">
+      <div class="alert alert-info py-2 font-size-13" *ngIf="isRefundForm">
+        <i class="mdi mdi-information-outline me-1"></i> {{ 'INST.REFUND_HINT' | translate }}
+      </div>
       <div class="mb-3">
         <label class="form-label">{{ 'INST.AMOUNT_LABEL' | translate }} <span class="text-danger">*</span></label>
         <input type="number" class="form-control" formControlName="amount" min="0.01" step="0.01" />
       </div>
       <div class="mb-3">
-        <label class="form-label">{{ 'INST.COL.DUE_DATE' | translate }} <span class="text-danger">*</span></label>
+        <label class="form-label">{{ (isRefundForm ? 'INST.REFUND_DATE' : 'INST.COL.DUE_DATE') | translate }} <span class="text-danger">*</span></label>
         <input type="date" class="form-control" formControlName="dueDate" />
       </div>
       <div class="mb-3">
         <label class="form-label">{{ 'INST.COL.NOTE' | translate }}</label>
-        <input type="text" class="form-control" formControlName="note" [placeholder]="'INST.NOTE_PLACEHOLDER' | translate" />
+        <input type="text" class="form-control" formControlName="note" [placeholder]="(isRefundForm ? 'INST.REFUND_NOTE_PLACEHOLDER' : 'INST.NOTE_PLACEHOLDER') | translate" />
       </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light" (click)="modalRef?.hide()">{{ 'COMMON.CANCEL' | translate }}</button>
       <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
-        {{ (editingId ? 'COMMON.SAVE' : 'INST.ADD') | translate }}
+        {{ (editingId ? 'COMMON.SAVE' : (isRefundForm ? 'INST.ADD_REFUND' : 'INST.ADD')) | translate }}
       </button>
     </div>
   </form>

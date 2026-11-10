@@ -16,12 +16,14 @@ export interface TenantInstallment {
   sortOrder: number;
   status: InstallmentStatus;
   daysOverdue: number;
+  isRefund: boolean;
 }
 
 export interface CreateInstallmentPayload {
   amount: number;
   dueDate: string;
   note?: string;
+  isRefund?: boolean;
 }
 
 export interface UpdateInstallmentPayload {

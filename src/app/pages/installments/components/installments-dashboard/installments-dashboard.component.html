@@ -103,9 +103,13 @@
             <div class="text-muted font-size-12" *ngIf="item.note">{{ item.note }}</div>
           </div>
           <div>{{ item.dueDate | date: "d MMM yyyy" }}</div>
-          <div class="text-end fw-medium">{{ item.amount | number: '1.0-2' }} {{ 'INST.EGP' | translate }}</div>
+          <div class="text-end fw-medium" [class.text-danger]="item.isRefund">{{ item.amount | number: '1.0-2' }} {{ 'INST.EGP' | translate }}</div>
           <div>
-            <span class="pill" [ngClass]="pillClass(item.status)">
+            <span class="pill pill-expired" *ngIf="item.isRefund">
+              <span class="status-dot dot-expired"></span>
+              {{ 'INST.STATUS.REFUNDED' | translate }}
+            </span>
+            <span class="pill" *ngIf="!item.isRefund" [ngClass]="pillClass(item.status)">
               <span class="status-dot" [ngClass]="dotClass(item.status)"></span>
               {{ statusLabel(item.status) | translate }}
               <ng-container *ngIf="item.status === InstallmentStatus.Overdue">
