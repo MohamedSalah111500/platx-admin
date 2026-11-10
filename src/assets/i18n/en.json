@@ -968,7 +968,8 @@
         "exams": "Exams",
         "certificates": "Certificates",
         "live": "Live sessions",
-        "attendance": "Attendance"
+        "attendance": "Attendance",
+        "store": "Store"
       },
       "BILLING": {
         "ANNUAL": "Annual billing",
@@ -1591,6 +1592,10 @@
     "quizzes": {
       "NAME": "Quizzes & homework",
       "HINT": "Create and grade quizzes and homework."
+    },
+    "store_enabled": {
+      "NAME": "Store",
+      "HINT": "Sell books and products to students on the platform."
     },
     "completion_certificate": {
       "NAME": "Completion certificates",
