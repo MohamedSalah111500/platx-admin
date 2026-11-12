@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 
 import { DashboardsRoutingModule } from './dashboards-routing.module';
 import { UIModule } from '../../shared/ui/ui.module';
-import { WidgetModule } from '../../shared/widget/widget.module';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
 
@@ -15,7 +14,6 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
-import { SimplebarAngularModule } from 'simplebar-angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { DefaultComponent } from './default/default.component';
@@ -33,9 +31,7 @@ import { DefaultComponent } from './default/default.component';
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
     CarouselModule.forRoot(),
-    WidgetModule,
     NgApexchartsModule,
-    SimplebarAngularModule,
     ModalModule.forRoot(),
     TranslateModule
   ],

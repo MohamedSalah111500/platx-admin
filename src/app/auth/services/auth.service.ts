@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { User } from "src/app/store/Authentication/auth.models";
+import { User } from "src/app/auth/types";
 import { Observable, Observer, catchError, from, map, throwError } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AUTH_URLS } from "src/app/utiltis/urls";

@@ -3,9 +3,7 @@ import { DOCUMENT } from "@angular/common";
 import { CookieService } from "ngx-cookie-service";
 import { LanguageService } from "../../core/services/language.service";
 import { TranslateService } from "@ngx-translate/core";
-import { Store } from "@ngrx/store";
-import { RootReducerState } from "src/app/store";
-import { User } from "src/app/store/Authentication/auth.models";
+import { User } from "src/app/auth/types";
 import { AuthenticationService } from "src/app/auth/services/auth.service";
 
 @Component({
@@ -20,7 +18,6 @@ export class TopbarComponent implements OnInit {
   flagvalue: any;
   countryName: any;
   valueset: any;
-  theme: any;
 
   /** First two letters of the user's name for the avatar bubble. */
   get userInitials(): string {
@@ -37,8 +34,7 @@ export class TopbarComponent implements OnInit {
     private authService: AuthenticationService,
     public languageService: LanguageService,
     public translate: TranslateService,
-    public _cookiesService: CookieService,
-    public store: Store<RootReducerState>
+    public _cookiesService: CookieService
   ) {}
 
   listLang: any = [
@@ -52,9 +48,6 @@ export class TopbarComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.authService.currentUser();
-    this.store.select("layout").subscribe((data) => {
-      this.theme = data.DATA_LAYOUT;
-    });
     this.openMobileMenu = false;
     this.element = document.documentElement;
 

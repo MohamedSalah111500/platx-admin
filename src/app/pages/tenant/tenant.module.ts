@@ -6,7 +6,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { WidgetModule } from '../../shared/widget/widget.module';
 import { UIModule } from '../../shared/ui/ui.module';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -32,7 +31,6 @@ import { StorageGbPipe } from 'src/app/shared/storage/storage-size.pipe';
   imports: [
     CommonModule,
     TenantRoutingModule,
-    WidgetModule,
     UIModule,
     FormsModule,
     ReactiveFormsModule ,

@@ -16,7 +16,6 @@ const routes: Routes = [
       import("./pages/pages.module").then((m) => m.PagesModule),
     canActivate: [AuthGuard],
   },
-  //{ path: 'pages', loadChildren: () => import('./extrapages/extrapages.module').then(m => m.ExtrapagesModule) },
   { path: "**", component: Page404Component },
 ];
 

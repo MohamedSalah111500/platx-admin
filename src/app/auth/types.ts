@@ -13,6 +13,18 @@ export interface ResetPasswordForm {
   email: FormControl;
 }
 
+export class User {
+  id?: number;
+  userName?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  token?: string;
+  email?: string;
+  roles?: string[];
+  userId?: string;
+}
+
 export interface LoginAPIResponse {
   token: string;
   expiryDateTime: string;

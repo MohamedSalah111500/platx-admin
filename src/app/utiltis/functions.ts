@@ -36,22 +36,22 @@ export function getIconClass(mimeType: string): string {
 
   switch (mimeType) {
     case "application/pdf":
-      return "fa fa-file-pdf text-danger";
+      return "mdi mdi-file-pdf-box text-danger";
     case "application/document":
       return "mdi mdi-file-document text-primary ";
     case "image/png":
     case "image/jpeg":
     case "image/gif":
-      return "fa fa-file-image";
+      return "mdi mdi-file-image";
     case "video/mp4":
     case "video/avi":
     case "video/mpeg":
-      return "fa fa-file-video";
+      return "mdi mdi-file-video";
     case "text/html":
     case "text/plain":
-      return "fa fa-file-alt";
+      return "mdi mdi-file-document-outline";
     default:
-      return "fa fa-file"; // Font Awesome default file icon class
+      return "mdi mdi-file";
   }
 }
 
