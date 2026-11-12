@@ -20,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let authReq = req;
     const token = this.token.getToken();
-    if (token != null) {
+    if (token != null && !req.headers.has(TOKEN_HEADER_KEY)) {
       authReq = req.clone({
         headers: req.headers.set(TOKEN_HEADER_KEY, "Bearer " + token),
       });

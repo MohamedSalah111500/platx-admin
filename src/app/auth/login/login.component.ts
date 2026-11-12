@@ -5,7 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
 import { CrmPageAccessService } from "src/app/core/services/crm-page-access.service";
 import { UserService } from "src/app/core/services/user.service";
-import { AuthenticationService } from "../services/auth.service";
+import { AuthenticationService, PLATFORM_DOMAIN } from "../services/auth.service";
 import { LoginForm } from "../types";
 
 @Component({
@@ -42,7 +42,7 @@ export class LoginComponent {
     const { userName, password } = this.loginForm.value;
     this.loading = true;
 
-    this.authenticationService.login(userName, password, "mohamed-salah").subscribe({
+    this.authenticationService.login(userName, password, PLATFORM_DOMAIN).subscribe({
       next: (response) => {
         this.toastr.success(this.translate.instant("AUTH.SUCCESS"));
         localStorage.setItem("currentUser", JSON.stringify(response));

@@ -1,7 +1,7 @@
 // roles.service.ts
 
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, Observer } from "rxjs";
 import {
   CreateTenantResponse,
@@ -17,6 +17,8 @@ import {
 import { pagination } from "src/app/utiltis/functions";
 import { environment } from "src/environments/environment";
 import { ToastrService } from "ngx-toastr";
+
+const actionOtpHeaders = (code: string) => new HttpHeaders({ "X-Action-Otp": code });
 
 @Injectable({
   providedIn: "root",
@@ -102,17 +104,8 @@ export class TenantService {
     });
   }
 
-  deleteTenant(id: string): Observable<Tenant> {
-    return new Observable((observer: Observer<Tenant>) => {
-      this.http.delete<Tenant>(TENANT_URLS.DELETE(id)).subscribe(
-        (responseData: Tenant) => {
-          observer.next(responseData);
-        },
-        (error) => {
-          observer.error(error);
-        }
-      );
-    });
+  deleteTenant(id: string, actionOtp: string): Observable<Tenant> {
+    return this.http.delete<Tenant>(TENANT_URLS.DELETE(id), { headers: actionOtpHeaders(actionOtp) });
   }
 
   activateTenant(id: string): Observable<Tenant> {
@@ -139,17 +132,8 @@ export class TenantService {
     return this.http.delete<IGeneralSuccessMessageResponse>(TENANT_URLS.DELETE_DOMAIN(id));
   }
 
-  fullDeleteTenant(id: string): Observable<Tenant> {
-    return new Observable((observer: Observer<Tenant>) => {
-      this.http.delete<Tenant>(TENANT_URLS.FULL_DELETE(id)).subscribe(
-        (responseData: Tenant) => {
-          observer.next(responseData);
-        },
-        (error) => {
-          observer.error(error);
-        }
-      );
-    });
+  fullDeleteTenant(id: string, actionOtp: string): Observable<Tenant> {
+    return this.http.delete<Tenant>(TENANT_URLS.FULL_DELETE(id), { headers: actionOtpHeaders(actionOtp) });
   }
 
   getLandingTheme(tenantId: string): Observable<TenantLandingTheme> {

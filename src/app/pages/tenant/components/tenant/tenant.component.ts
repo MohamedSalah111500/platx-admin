@@ -4,6 +4,7 @@ import { PageChangedEvent } from "ngx-bootstrap/pagination";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
 import { TenantService } from "./../../services/tenantService.service";
+import { AuthenticationService } from "src/app/auth/services/auth.service";
 import { SubscriptionService } from "./../../services/subscription.service";
 import { AnalyticsService } from "src/app/pages/dashboards/analytics.service";
 import { Router } from "@angular/router";
@@ -30,14 +31,15 @@ export class TenantComponent implements OnInit {
   breadCrumbItems: Array<{}>;
   term: any;
 
-  @ViewChild("removeItemModal") removeItemModal?: ModalDirective;
   @ViewChild("confirmModal") confirmModal?: ModalDirective;
-  @ViewChild("fullDeleteModal") fullDeleteModal?: ModalDirective;
+  @ViewChild("deleteModal") deleteModal?: ModalDirective;
 
-  deleteId: any;
-  fullDeleteId: string;
-  fullDeleteTenantName: string = "";
-  fullDeleteConfirmText: string = "";
+  deleteMode: "soft" | "full" = "full";
+  deleteId = "";
+  deleteTenantName = "";
+  deleteCode = "";
+  deleteCodeSent = false;
+  deleteBusy = false;
   returnedArray: Tenant[] = [];
   // -------------------
   loading: boolean = false;
@@ -69,7 +71,8 @@ export class TenantComponent implements OnInit {
     public subscriptionService: SubscriptionService,
     private analyticsService: AnalyticsService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private auth: AuthenticationService
   ) {}
   OnBeforeChange: Observable<boolean> = new Observable((observer) => {
     this.confirmModal.show();
@@ -348,43 +351,51 @@ export class TenantComponent implements OnInit {
     this.getAllData(this.page, this.pageSize);
   }
 
-  openDeleteModel(id: any) {
+  openDeleteModal(mode: "soft" | "full", id: string, name: string) {
+    this.deleteMode = mode;
     this.deleteId = id;
-    this.removeItemModal?.show();
+    this.deleteTenantName = name;
+    this.deleteCode = "";
+    this.deleteCodeSent = false;
+    this.deleteBusy = false;
+    this.deleteModal?.show();
   }
-  confirmDelete(id: any) {
-    this.tenantService.deleteTenant(id).subscribe(() => {
-      this.toastr.success(this.translate.instant("TENANT.TOAST.DELETED"));
-      this.getAllData(this.page, this.pageSize);
-      this.loadStats();
+
+  sendDeleteCode() {
+    if (this.deleteBusy) return;
+    this.deleteBusy = true;
+    this.auth.sendSensitiveActionOtp().subscribe({
+      next: () => {
+        this.deleteBusy = false;
+        this.deleteCodeSent = true;
+        this.toastr.success(this.translate.instant("TENANT.DELETE_OTP.SENT"));
+      },
+      error: () => (this.deleteBusy = false),
     });
-    this.removeItemModal?.hide();
   }
 
-  openFullDeleteModel(id: string, name: string) {
-    this.fullDeleteId = id;
-    this.fullDeleteTenantName = name;
-    this.fullDeleteConfirmText = "";
-    this.fullDeleteModal?.show();
-  }
-
-  confirmFullDelete() {
-    if (this.fullDeleteConfirmText !== "delete") return;
-    this.tenantService.fullDeleteTenant(this.fullDeleteId).subscribe(
-      () => {
-        this.toastr.success(this.translate.instant("TENANT.TOAST.FULL_DELETED"));
+  confirmDeleteWithCode() {
+    const code = this.deleteCode.trim();
+    if (!code || this.deleteBusy) return;
+    this.deleteBusy = true;
+    const full = this.deleteMode === "full";
+    const request = full
+      ? this.tenantService.fullDeleteTenant(this.deleteId, code)
+      : this.tenantService.deleteTenant(this.deleteId, code);
+    request.subscribe({
+      next: () => {
+        this.deleteBusy = false;
+        this.toastr.success(this.translate.instant(full ? "TENANT.TOAST.FULL_DELETED" : "TENANT.TOAST.DELETED"));
         this.getAllData(this.page, this.pageSize);
         this.loadStats();
-        this.fullDeleteModal?.hide();
+        this.deleteModal?.hide();
       },
-      () => {
-        this.toastr.error(this.translate.instant("TENANT.TOAST.FULL_DELETE_FAILED"));
-      }
-    );
+      error: () => (this.deleteBusy = false),
+    });
   }
 
-  cancelFullDelete() {
-    this.fullDeleteConfirmText = "";
-    this.fullDeleteModal?.hide();
+  cancelDelete() {
+    this.deleteCode = "";
+    this.deleteModal?.hide();
   }
 }

@@ -242,12 +242,12 @@
                           <hr class="dropdown-divider" />
                         </li>
                         <li>
-                          <a href="javascript:void(0);" (click)="openDeleteModel(item.id)" class="dropdown-item">
+                          <a href="javascript:void(0);" (click)="openDeleteModal('soft', item.id, item.title)" class="dropdown-item">
                             <i class="mdi mdi-trash-can-outline text-warning me-2"></i> {{ 'TENANT.ACTIONS.SOFT_DELETE' | translate }}
                           </a>
                         </li>
                         <li>
-                          <a href="javascript:void(0);" (click)="openFullDeleteModel(item.id, item.title)"
+                          <a href="javascript:void(0);" (click)="openDeleteModal('full', item.id, item.title)"
                             class="dropdown-item">
                             <i class="mdi mdi-delete-forever-outline text-danger me-2"></i> {{ 'TENANT.ACTIONS.FULL_DELETE' | translate }}
                           </a>
@@ -289,40 +289,48 @@
   </div>
 </div>
 
-<!-- removeItemModal -->
-<div bsModal #removeItemModal="bs-modal" class="modal fade" id="removeItemModal" tabindex="-1" aria-hidden="true">
-  <platx-confirm-model [title]="'TENANT.CONFIRM.REMOVE' | translate" (confirm)="confirmDelete(deleteId)"
-    (cancel)="removeItemModal.hide()" />
-</div>
-
 <!-- confirmModal -->
 <div bsModal #confirmModal="bs-modal" class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
   <platx-confirm-model [title]="'TENANT.CONFIRM.STATUS' | translate" (confirm)="confirmActivation()"
     (cancel)="confirmModal.hide()" />
 </div>
 
-<!-- fullDeleteModal -->
-<div bsModal #fullDeleteModal="bs-modal" class="modal fade" id="fullDeleteModal" tabindex="-1" aria-hidden="true">
+<div bsModal #deleteModal="bs-modal" class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content">
       <div class="modal-body p-4 text-center">
         <i class="mdi mdi-alert-circle-outline text-danger" style="font-size: 48px;"></i>
-        <p class="text-muted font-size-16 mb-2 mt-2"
-          [innerHTML]="'TENANT.FULL_DELETE.BODY' | translate: { name: fullDeleteTenantName }">
-        </p>
-        <p class="text-danger font-size-14 mb-3">{{ 'TENANT.FULL_DELETE.WARNING' | translate }}</p>
-        <label class="form-label" [innerHTML]="'TENANT.FULL_DELETE.CONFIRM_LABEL' | translate"></label>
-        <input type="text" class="form-control text-center" [(ngModel)]="fullDeleteConfirmText"
-          [placeholder]="'TENANT.FULL_DELETE.PLACEHOLDER' | translate" />
-        <div class="hstack gap-2 justify-content-center mb-0 mt-3">
-          <button type="button" class="btn btn-danger me-1" [disabled]="fullDeleteConfirmText !== 'delete'"
-            (click)="confirmFullDelete()">
-            {{ 'TENANT.FULL_DELETE.BUTTON' | translate }}
-          </button>
-          <button type="button" class="btn btn-secondary" (click)="cancelFullDelete()">
-            {{ 'TENANT.CANCEL' | translate }}
-          </button>
-        </div>
+        @if (deleteMode === "full") {
+          <p class="text-muted font-size-16 mb-2 mt-2"
+            [innerHTML]="'TENANT.FULL_DELETE.BODY' | translate: { name: deleteTenantName }"></p>
+          <p class="text-danger font-size-14 mb-3">{{ 'TENANT.FULL_DELETE.WARNING' | translate }}</p>
+        } @else {
+          <p class="text-muted font-size-16 mb-3 mt-2">{{ 'TENANT.CONFIRM.REMOVE' | translate }}</p>
+        }
+
+        @if (!deleteCodeSent) {
+          <p class="font-size-14 mb-3">{{ 'TENANT.DELETE_OTP.HINT' | translate }}</p>
+          <div class="hstack gap-2 justify-content-center">
+            <button type="button" class="btn btn-primary" [disabled]="deleteBusy" (click)="sendDeleteCode()">
+              {{ 'TENANT.DELETE_OTP.SEND' | translate }}
+            </button>
+            <button type="button" class="btn btn-light" (click)="cancelDelete()">{{ 'TENANT.CANCEL' | translate }}</button>
+          </div>
+        } @else {
+          <label class="form-label" for="deleteCode">{{ 'TENANT.DELETE_OTP.LABEL' | translate }}</label>
+          <input id="deleteCode" type="text" class="form-control text-center" inputmode="numeric"
+            autocomplete="one-time-code" maxlength="6" [(ngModel)]="deleteCode" (keyup.enter)="confirmDeleteWithCode()" />
+          <div class="hstack gap-2 justify-content-center mt-3">
+            <button type="button" class="btn btn-danger" [disabled]="deleteBusy || !deleteCode.trim()"
+              (click)="confirmDeleteWithCode()">
+              {{ (deleteMode === "full" ? 'TENANT.FULL_DELETE.BUTTON' : 'TENANT.ACTIONS.SOFT_DELETE') | translate }}
+            </button>
+            <button type="button" class="btn btn-light" [disabled]="deleteBusy" (click)="sendDeleteCode()">
+              {{ 'TENANT.DELETE_OTP.RESEND' | translate }}
+            </button>
+          </div>
+          <button type="button" class="btn btn-link text-muted mt-2" (click)="cancelDelete()">{{ 'TENANT.CANCEL' | translate }}</button>
+        }
       </div>
     </div>
   </div>

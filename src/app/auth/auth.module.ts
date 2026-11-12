@@ -5,11 +5,12 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { TranslateModule } from '@ngx-translate/core';
 import { LoginComponent } from './login/login.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AuthRoutingModule } from './auth-routing';
 import { UIModule } from '../shared/ui/ui.module';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, ForgotPasswordComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

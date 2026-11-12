@@ -1081,6 +1081,13 @@
       "DELETED": "Tenant deleted successfully",
       "FULL_DELETED": "Tenant deleted permanently",
       "FULL_DELETE_FAILED": "Failed to delete tenant"
+    },
+    "DELETE_OTP": {
+      "HINT": "To protect platforms, we will email you a confirmation code before deleting.",
+      "SEND": "Send confirmation code",
+      "SENT": "A confirmation code was sent to your email.",
+      "LABEL": "Enter the confirmation code sent to your email",
+      "RESEND": "Resend"
     }
   },
   "COMMON": {
@@ -1480,7 +1487,27 @@
     "SUBMIT": "Sign in",
     "SUBMITTING": "Signing in…",
     "SUCCESS": "Signed in successfully",
-    "FAILED": "Could not sign in. Check your username and password, then try again."
+    "FAILED": "Could not sign in. Check your username and password, then try again.",
+    "FORGOT": {
+      "LINK": "Forgot password?",
+      "TITLE": "Reset password",
+      "SUBTITLE_EMAIL": "Enter your email and we will send you a verification code.",
+      "SUBTITLE_CODE": "Enter the code sent to your email.",
+      "SUBTITLE_PASSWORD": "Choose a new password.",
+      "EMAIL": "Email",
+      "SEND_CODE": "Send code",
+      "CODE_SENT": "A verification code was sent to your email.",
+      "CODE": "Verification code",
+      "VERIFY": "Verify",
+      "RESEND": "Resend code",
+      "NEW_PASSWORD": "New password",
+      "CONFIRM_PASSWORD": "Confirm password",
+      "SAVE": "Save password",
+      "MISMATCH": "The passwords do not match.",
+      "DONE": "Password changed. Sign in with your new password.",
+      "FAILED": "Something went wrong. Please try again.",
+      "BACK_TO_LOGIN": "Back to sign in"
+    }
   },
   "UPLOAD": {
     "DROP_HINT": "Drop files here or click to choose."

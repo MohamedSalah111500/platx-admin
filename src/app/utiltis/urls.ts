@@ -18,6 +18,8 @@ export const AUTH_URLS = {
   LOGIN: `${environment.apiURL.concat(AUTH_BASE)}login`,
   REGISTRATION: `${environment.apiURL.concat(AUTH_BASE)}register`,
   FORGOT_PASSWORD: `${environment.apiURL.concat(AUTH_BASE)}forgot-password`,
+  VERIFY_RESET_CODE: `${environment.apiURL.concat(AUTH_BASE)}verify-otp-reset-password`,
+  SENSITIVE_ACTION_OTP: `${environment.apiURL.concat(AUTH_BASE)}sensitive-action-otp`,
   RESET_PASSWORD: `${environment.apiURL.concat(AUTH_BASE)}reset-password`,
 };
 

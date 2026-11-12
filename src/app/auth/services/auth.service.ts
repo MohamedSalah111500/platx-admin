@@ -2,10 +2,12 @@ import { Injectable } from "@angular/core";
 
 import { User } from "src/app/store/Authentication/auth.models";
 import { Observable, Observer, catchError, from, map, throwError } from "rxjs";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AUTH_URLS } from "src/app/utiltis/urls";
 import { LoginAPIResponse } from "../types";
 import { Router } from "@angular/router";
+
+export const PLATFORM_DOMAIN = "mohamed-salah";
 
 @Injectable({ providedIn: "root" })
 export class AuthenticationService {
@@ -35,6 +37,26 @@ export class AuthenticationService {
           }
         );
     });
+  }
+
+  forgotPassword(email: string): Observable<unknown> {
+    return this.http.post(AUTH_URLS.FORGOT_PASSWORD, { username: email, domain: PLATFORM_DOMAIN });
+  }
+
+  verifyResetCode(email: string, code: string): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(AUTH_URLS.VERIFY_RESET_CODE, { username: email, code, domain: PLATFORM_DOMAIN });
+  }
+
+  resetPassword(token: string, password: string, confirmPassword: string): Observable<unknown> {
+    return this.http.post(
+      AUTH_URLS.RESET_PASSWORD,
+      { password, confirmPassword },
+      { headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) }
+    );
+  }
+
+  sendSensitiveActionOtp(): Observable<unknown> {
+    return this.http.post(AUTH_URLS.SENSITIVE_ACTION_OTP, null);
   }
 
   register(user: User): Observable<any> {
