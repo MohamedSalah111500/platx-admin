@@ -38,6 +38,7 @@ export const LIMIT_META: Record<string, LimitMeta> = {
   attendance: { group: LIMIT_GROUP.Addons, icon: "mdi-calendar-check-outline" },
   whatsapp_enabled: { group: LIMIT_GROUP.Addons, icon: "mdi-whatsapp" },
   store_enabled: { group: LIMIT_GROUP.Addons, icon: "mdi-storefront-outline" },
+  live_cloudflare_realtime: { group: LIMIT_GROUP.Addons, icon: "mdi-video-wireless-outline" },
 };
 
 export const LIMIT_GROUPS: LimitGroup[] = [LIMIT_GROUP.Usage, LIMIT_GROUP.Core, LIMIT_GROUP.Addons];

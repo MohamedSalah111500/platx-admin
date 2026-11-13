@@ -1645,6 +1645,10 @@
       "NAME": "Sessions & attendance",
       "HINT": "Manage sessions and record attendance."
     },
+    "live_cloudflare_realtime": {
+      "NAME": "New live streaming",
+      "HINT": "Run live sessions on the new in-platform streaming system."
+    },
     "whatsapp_enabled": {
       "NAME": "WhatsApp reports",
       "HINT": "Send student reports to parents on WhatsApp."
