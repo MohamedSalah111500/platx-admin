@@ -8,7 +8,7 @@ const STORAGE_KEY = "platx_api_env";
 // Both base URLs are known up-front so the interceptor can rewrite outgoing
 // requests to whichever mode the user has selected at runtime.
 export const API_URLS: Record<ApiEnvMode, string> = {
-  production: "https://platx-backend-prod.runasp.net/",
+  production: "https://platx-backend-prod.tryasp.net/",
   testing: "https://platx.runasp.net/",
 };
 
